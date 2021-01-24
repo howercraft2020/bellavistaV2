@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">bave</string>
+
+    <string-array name="combo_attributo1lote">
+        <item>Atributo 1</item>
+        <item>Original</item>
+        <item>Alternativo</item>
+    </string-array>
+    <string-array name="combo_attributo2lote">
+        <item>Atributo 2</item>
+        <item>Si</item>
+        <item>No</item>
+    </string-array>
+</resources>

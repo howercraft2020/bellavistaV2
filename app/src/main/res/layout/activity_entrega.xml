@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Entrega">
+
+    <Button
+        android:id="@+id/btnConfirmarLineaE"
+        android:layout_width="177dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="472dp"
+        android:enabled="false"
+        android:text="Confirma Linea"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.435"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnControlLote"
+        android:layout_width="144dp"
+        android:layout_height="41dp"
+        android:enabled="true"
+        android:text="Control Lote"
+        app:layout_constraintBottom_toTopOf="@+id/btnConfirmarLineaE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.086"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSubinventario"
+        app:layout_constraintVertical_bias="0.318" />
+
+    <Button
+        android:id="@+id/btnConfirmarRecepcionE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:enabled="false"
+        android:text="Confirmar Entrada Bodega"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.426"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnConfirmarLineaE" />
+
+    <TextView
+        android:id="@+id/txtNumeroParteE"
+        android:layout_width="151dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="28dp"
+        android:background="@android:drawable/editbox_background"
+        android:drawableEnd="@drawable/ic_arrow"
+        android:drawableRight="@drawable/ic_arrow"
+        android:hint="Numero Parte"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNumeroOcE" />
+
+    <TextView
+        android:id="@+id/txtSubinventario"
+        android:layout_width="151dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:drawable/editbox_background"
+        android:drawableEnd="@drawable/ic_arrow"
+        android:drawableRight="@drawable/ic_arrow"
+        android:hint="Subinventario"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnConfirmarLineaE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCantidadE"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/txtLocalizador"
+        android:layout_width="151dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:drawable/editbox_background"
+        android:drawableEnd="@drawable/ic_arrow"
+        android:drawableRight="@drawable/ic_arrow"
+        android:hint="Localizador"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnConfirmarLineaE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.013"
+        app:layout_constraintStart_toEndOf="@+id/txtSubinventario"
+        app:layout_constraintTop_toBottomOf="@+id/txtCantidadE"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/txtUDME"
+        android:layout_width="151dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:enabled="false"
+        android:hint="UDM"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.013"
+        app:layout_constraintStart_toEndOf="@+id/txtCantidadE"
+        app:layout_constraintTop_toBottomOf="@+id/txtCodigoSigleE" />
+
+    <EditText
+        android:id="@+id/txtCantidadE"
+        android:layout_width="151dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:enabled="true"
+        android:hint="Cantidad"
+        android:imeOptions="actionNext"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNumeroParteE" />
+
+    <EditText
+        android:id="@+id/txtCodigoSigleE"
+        android:layout_width="151dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        android:enabled="false"
+        android:hint="Codigo Sigle"
+        android:imeOptions="actionNext"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/txtNumeroParteE"
+        app:layout_constraintTop_toBottomOf="@+id/txtNumeroRecepcionE" />
+
+    <EditText
+        android:id="@+id/txtNumeroOcE"
+        android:layout_width="120dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:enabled="false"
+        android:hint="Nº Oc"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNombreArchivoE" />
+
+    <EditText
+        android:id="@+id/txtNumeroRecepcionE"
+        android:layout_width="120dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:enabled="false"
+        android:hint="Nº Recepción"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.222"
+        app:layout_constraintStart_toEndOf="@+id/txtNumeroOcE"
+        app:layout_constraintTop_toBottomOf="@+id/txtNombreArchivoE" />
+
+    <Button
+        android:id="@+id/btnBuscarE"
+        android:layout_width="111dp"
+        android:layout_height="42dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:text="Cargar OC"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/txtNombreArchivoE"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.049" />
+
+    <TextView
+        android:id="@+id/txtNombreArchivoE"
+        android:layout_width="223dp"
+        android:layout_height="42dp"
+        android:background="@android:drawable/editbox_background"
+        android:drawableEnd="@drawable/ic_arrow"
+        android:drawableRight="@drawable/ic_arrow"
+        android:hint="Buscar Archivo"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.109"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.048" />
+</androidx.constraintlayout.widget.ConstraintLayout>
