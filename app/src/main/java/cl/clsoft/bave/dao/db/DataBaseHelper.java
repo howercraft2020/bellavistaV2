@@ -6,10 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import com.example.bave.utilidades.Utilidades;
-
 import cl.clsoft.bave.InventarioApplication;
 import cl.clsoft.bave.dao.catalogo.LocalizadorCatalogo;
+import cl.clsoft.bave.dao.catalogo.MtlOnhandQuantitiesCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlSystemItemsCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlTransactionsLotsIfaceCatalogo;
 import cl.clsoft.bave.dao.catalogo.OrganizacionCatalogo;
@@ -44,19 +43,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL(OrganizacionCatalogo.CREAR_TABLA);
-        db.execSQL(LocalizadorCatalogo.CREAR_TABLA);
-        db.execSQL(SubinventarioCatalogo.CREAR_TABLA);
-        db.execSQL(PoHeadersAllCatalogo.CREAR_TABLA);
-        db.execSQL(PoLinesAllCatalogo.CREAR_TABLA);
-        db.execSQL(PoLineLocationsAllCatalogo.CREAR_TABLA);
-        db.execSQL(PoDistributionsAllCatalogo.CREAR_TABLA);
-        db.execSQL(MtlSystemItemsCatalogo.CREAR_TABLA);
-        db.execSQL(RcvHeadersInterfaceCatalogo.CREAR_TABLA);
-        db.execSQL(RcvTransactionsInterfaceCatalogo.CREAR_TABLA);
-        db.execSQL(RcvShipmentHeadersCatalogo.CREAR_TABLA);
-        db.execSQL(RcvTransactionsCatalogo.CREAR_TABLA);
-        db.execSQL(MtlTransactionsLotsIfaceCatalogo.CREAR_TABLA);
+        db.execSQL(OrganizacionCatalogo.CREATE_TABLE);
+        db.execSQL(LocalizadorCatalogo.CREATE_TABLE);
+        db.execSQL(SubinventarioCatalogo.CREATE_TABLE);
+        db.execSQL(PoHeadersAllCatalogo.CREATE_TABLE);
+        db.execSQL(PoLinesAllCatalogo.CREATE_TABLE);
+        db.execSQL(PoLineLocationsAllCatalogo.CREATE_TABLE);
+        db.execSQL(PoDistributionsAllCatalogo.CREATE_TABLE);
+        db.execSQL(MtlSystemItemsCatalogo.CREATE_TABLE);
+        db.execSQL(RcvHeadersInterfaceCatalogo.CREATE_TABLE);
+        db.execSQL(RcvTransactionsInterfaceCatalogo.CREATE_TABLE);
+        db.execSQL(RcvShipmentHeadersCatalogo.CREATE_TABLE);
+        db.execSQL(RcvTransactionsCatalogo.CREATE_TABLE);
+        db.execSQL(MtlTransactionsLotsIfaceCatalogo.CREATE_TABLE);
+        db.execSQL(MtlOnhandQuantitiesCatalogo.CREATE_TABLE);
 
     }
 

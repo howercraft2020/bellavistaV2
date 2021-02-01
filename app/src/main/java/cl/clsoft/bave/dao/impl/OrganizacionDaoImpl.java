@@ -12,21 +12,21 @@ public class OrganizacionDaoImpl extends GenericDao<Organizacion> implements IOr
     @Override
     public void insert(Organizacion organizacion) {
         ContentValues values = new ContentValues();
-        values.put(OrganizacionCatalogo.CAMPO_ID, organizacion.getIdOrganizacion());
-        values.put(OrganizacionCatalogo.CAMPO_CODE, organizacion.getCode());
-        super.insert(OrganizacionCatalogo.TABLA, values);
+        values.put(OrganizacionCatalogo.COLUMN_ID, organizacion.getIdOrganizacion());
+        values.put(OrganizacionCatalogo.COLUMN_CODE, organizacion.getCode());
+        super.insert(OrganizacionCatalogo.TABLE, values);
     }
 
     @Override
     public void update(Organizacion organizacion) {
         ContentValues values = new ContentValues();
-        values.put(OrganizacionCatalogo.CAMPO_CODE, organizacion.getCode());
-        super.update(OrganizacionCatalogo.TABLA, values, OrganizacionCatalogo.UPDATE, organizacion.getIdOrganizacion());
+        values.put(OrganizacionCatalogo.COLUMN_CODE, organizacion.getCode());
+        super.update(OrganizacionCatalogo.TABLE, values, OrganizacionCatalogo.UPDATE, organizacion.getIdOrganizacion());
     }
 
     @Override
     public void delete(Long idOrganizacion) {
-        super.delete(OrganizacionCatalogo.TABLA, OrganizacionCatalogo.DELETE, idOrganizacion);
+        super.delete(OrganizacionCatalogo.TABLE, OrganizacionCatalogo.DELETE, idOrganizacion);
     }
 
     @Override

@@ -2,15 +2,29 @@ package cl.clsoft.bave.dao.catalogo;
 
 public class MtlSystemItemsCatalogo {
 
-    public static final String TABLA = "mtl_system_items";
-    public static final String CAMPO_INVENTORY_ITEM_ID_MSI = "inventory_item_id";
-    public static final String CAMPO_DESCRIPTION_MSI = "description";
-    public static final String CAMPO_LONG_DESCRIPTION_MSI = "long_description";
-    public static final String CAMPO_SEGMENT1_MSI = "segment1";
-    public static final String CAMPO_PRIMARY_UOM_CODE_MSI = "primary_uom_code";
-    public static final String CAMPO_LOT_CONTROL_CODE_MSI = "lot_control_code";
-    public static final String CAMPO_SHELF_LIFE_CODE_MSI = "shelf_life_code";
-    public static final String CAMPO_SERIAL_NUMBER_CONTROL_CODE_MSI = "serial_number_control_code";
-    public static final String CREAR_TABLA = "CREATE TABLE "+TABLA +"("+CAMPO_INVENTORY_ITEM_ID_MSI+" INTEGER, "+CAMPO_DESCRIPTION_MSI+" TEXT, "+CAMPO_LONG_DESCRIPTION_MSI+" TEXT, "+CAMPO_SEGMENT1_MSI+" TEXT, "+CAMPO_PRIMARY_UOM_CODE_MSI+" TEXT, "+CAMPO_LOT_CONTROL_CODE_MSI+" TEXT, "+CAMPO_SHELF_LIFE_CODE_MSI+" TEXT, "+CAMPO_SERIAL_NUMBER_CONTROL_CODE_MSI+" TEXT) ";
+    public static final String TABLE = "mtl_system_items";
+    public static final String COLUMN_ID = "inventory_item_id";
+    public static final String COLUMN_DESCRIPTION = "description";
+    public static final String COLUMN_LONG_DESCRIPTION = "long_description";
+    public static final String COLUMN_SEGMENT1 = "segment1";
+    public static final String COLUMN_PRIMARY_UOM_CODE = "primary_uom_code";
+    public static final String COLUMN_LOT_CONTROL_CODE = "lot_control_code";
+    public static final String COLUMN_SHELF_LIFE_CODE = "shelf_life_code";
+    public static final String COLUMN_SERIAL_NUMBER_CONTROL_CODE = "serial_number_control_code";
+
+    public static final String CREATE_TABLE =
+            "CREATE TABLE "+ TABLE + "(" +
+                    COLUMN_ID + " INTEGER, " +
+                    COLUMN_DESCRIPTION + " TEXT, " +
+                    COLUMN_LONG_DESCRIPTION + " TEXT, " +
+                    COLUMN_SEGMENT1 + " TEXT, " +
+                    COLUMN_PRIMARY_UOM_CODE + " TEXT, " +
+                    COLUMN_LOT_CONTROL_CODE + " TEXT, " +
+                    COLUMN_SHELF_LIFE_CODE + " TEXT, " +
+                    COLUMN_SERIAL_NUMBER_CONTROL_CODE + " TEXT " +
+                    ")";
+    public static final String UPDATE = " WHERE " + COLUMN_ID + " = ?";
+    public static final String DELETE = " WHERE " + COLUMN_ID + " = ?";
+    public static final String SELECT = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_ID + " = ? ";
 
 }

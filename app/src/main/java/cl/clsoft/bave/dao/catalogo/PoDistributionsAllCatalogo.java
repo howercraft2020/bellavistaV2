@@ -2,20 +2,36 @@ package cl.clsoft.bave.dao.catalogo;
 
 public class PoDistributionsAllCatalogo {
 
-    public static final String TABLA = "po_distributions_all";
-    public static final String CAMPO_PO_DISTRIBUTION_ID_PDA = "po_distribution_id";
-    public static final String CAMPO_LINE_LOCATION_ID_PDA = "line_location_id";
-    public static final String CAMPO_PO_LINE_ID_PDA = "po_line_id";
-    public static final String CAMPO_PO_HEADER_ID_PDA = "po_header_id";
-    public static final String CAMPO_DISTRIBUTION_NUM_PDA = "distribution_num";
-    public static final String CAMPO_RATE_DATE_PDA = "rate_date";
-    public static final String CAMPO_RATE_PDA = "rate";
-    public static final String CAMPO_DESTINATION_SUBINVENTORY_PDA = "destination_subinventory";
-    public static final String CAMPO_DELIVER_TO_LOCATION_ID_PDA = "deliver_to_location_id";
-    public static final String CAMPO_QUANTITY_ORDERED_PDA = "quantity_ordered";
-    public static final String CAMPO_QUANTITY_DELIVERED_PDA = "quantity_delivered";
-    public static final String CAMPO_QUANTITY_BILLED_PDA = "quantity_billed";
-    public static final String CAMPO_QUANTITY_CANCELLED_PDA = "quantity_cancelled";
-    public static final String CREAR_TABLA = "CREATE TABLE "+TABLA +"("+CAMPO_PO_DISTRIBUTION_ID_PDA+" INTEGER, "+CAMPO_LINE_LOCATION_ID_PDA+" INTEGER, "+CAMPO_PO_LINE_ID_PDA+" INTEGER, "+CAMPO_PO_HEADER_ID_PDA+" INTEGER, "+CAMPO_DISTRIBUTION_NUM_PDA+" INTEGER, "+CAMPO_RATE_DATE_PDA+" TEXT, "+CAMPO_RATE_PDA+" TEXT, "+CAMPO_DESTINATION_SUBINVENTORY_PDA+" TEXT, "+CAMPO_DELIVER_TO_LOCATION_ID_PDA+" INTEGER, "+ CAMPO_QUANTITY_ORDERED_PDA+" INTEGER, "+CAMPO_QUANTITY_DELIVERED_PDA+" INTEGER, "+CAMPO_QUANTITY_BILLED_PDA+" INTEGER, "+CAMPO_QUANTITY_CANCELLED_PDA+" INTEGER) ";
+    public static final String TABLE = "po_distributions_all";
+    public static final String COLUMN_ID = "po_distribution_id";
+    public static final String COLUMN_LINE_LOCATION_ID = "line_location_id";
+    public static final String COLUMN_PO_LINE_ID = "po_line_id";
+    public static final String COLUMN_PO_HEADER_ID = "po_header_id";
+    public static final String COLUMN_DISTRIBUTION_NUM = "distribution_num";
+    public static final String COLUMN_RATE_DATE = "rate_date";
+    public static final String COLUMN_RATE = "rate";
+    public static final String COLUMN_DESTINATION_SUBINVENTORY = "destination_subinventory";
+    public static final String COLUMN_DELIVER_TO_LOCATION_ID = "deliver_to_location_id";
+    public static final String COLUMN_QUANTITY_ORDERED = "quantity_ordered";
+    public static final String COLUMN_QUANTITY_DELIVERED = "quantity_delivered";
+    public static final String COLUMN_QUANTITY_BILLED = "quantity_billed";
+    public static final String COLUMN_QUANTITY_CANCELLED = "quantity_cancelled";
+
+    public static final String CREATE_TABLE =
+            "CREATE TABLE " + TABLE + "( " +
+                    COLUMN_ID +" INTEGER, " +
+                    COLUMN_LINE_LOCATION_ID + " INTEGER, " +
+                    COLUMN_PO_LINE_ID + " INTEGER, " +
+                    COLUMN_PO_HEADER_ID + " INTEGER, " +
+                    COLUMN_DISTRIBUTION_NUM + " INTEGER, " +
+                    COLUMN_RATE_DATE + " TEXT, " +
+                    COLUMN_RATE + " TEXT, " +
+                    COLUMN_DESTINATION_SUBINVENTORY +" TEXT, " +
+                    COLUMN_DELIVER_TO_LOCATION_ID + " INTEGER, " +
+                    COLUMN_QUANTITY_ORDERED + " INTEGER, " +
+                    COLUMN_QUANTITY_DELIVERED + " INTEGER, " +
+                    COLUMN_QUANTITY_BILLED + " INTEGER, " +
+                    COLUMN_QUANTITY_CANCELLED + " INTEGER" +
+            ")";
 
 }
