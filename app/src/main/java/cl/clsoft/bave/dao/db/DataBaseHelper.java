@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.example.bave.utilidades.Utilidades;
 
+import cl.clsoft.bave.InventarioApplication;
 import cl.clsoft.bave.dao.catalogo.LocalizadorCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlSystemItemsCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlTransactionsLotsIfaceCatalogo;
@@ -29,9 +30,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static DataBaseHelper sInstance;
 
-    public static synchronized DataBaseHelper getInstance(Context context) {
+    public static synchronized DataBaseHelper getInstance() {
         if (sInstance == null) {
-            sInstance = new DataBaseHelper(context.getApplicationContext());
+            sInstance = new DataBaseHelper(InventarioApplication.getAppContext());
         }
         return sInstance;
     }
