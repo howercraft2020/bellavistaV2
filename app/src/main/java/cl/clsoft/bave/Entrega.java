@@ -1,12 +1,10 @@
-package com.example.bave;
+package cl.clsoft.bave;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -26,25 +24,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.bave.ConexionSQLiteHelper;
 import com.example.bave.Model.Modelo;
 import com.example.bave.entidades.MtlTransactionLotsIfaceDto;
-import com.example.bave.entidades.RcvHeadersInterfaceDTO;
 import com.example.bave.utilidades.Utilidades;
-
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 

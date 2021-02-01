@@ -1,4 +1,4 @@
-package com.example.bave;
+package cl.clsoft.bave;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bave.ConexionSQLiteHelper;
 import com.example.bave.Model.Modelo;
 import com.example.bave.entidades.RcvHeadersInterfaceDTO;
 import com.example.bave.entidades.RcvTransactionsInterfaceDTO;

@@ -1,4 +1,4 @@
-package com.example.bave;
+package cl.clsoft.bave;
 
 import org.junit.Test;
 
