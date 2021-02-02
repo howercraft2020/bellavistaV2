@@ -1,7 +1,6 @@
 package cl.clsoft.bave.dao.rowmapper;
 
 import android.database.Cursor;
-
 import java.sql.SQLException;
 
 import cl.clsoft.bave.dao.catalogo.OrganizacionCatalogo;
