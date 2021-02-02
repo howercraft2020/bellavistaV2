@@ -8,7 +8,7 @@ public class MtlOnhandQuantities {
     private Long locatorId;
     private String lotNumber;
     private Long serialNumber;
-    private Long prinaryTransactionQuantity;
+    private Long primaryTransactionQuantity;
     private Long userId;
     private Long statusId;
 
@@ -62,12 +62,12 @@ public class MtlOnhandQuantities {
         this.serialNumber = serialNumber;
     }
 
-    public Long getPrinaryTransactionQuantity() {
-        return prinaryTransactionQuantity;
+    public Long getPrimaryTransactionQuantity() {
+        return primaryTransactionQuantity;
     }
 
-    public void setPrinaryTransactionQuantity(Long prinaryTransactionQuantity) {
-        this.prinaryTransactionQuantity = prinaryTransactionQuantity;
+    public void setPrimaryTransactionQuantity(Long primaryTransactionQuantity) {
+        this.primaryTransactionQuantity = primaryTransactionQuantity;
     }
 
     public Long getUserId() {
