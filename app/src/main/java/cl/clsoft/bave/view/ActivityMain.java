@@ -153,7 +153,6 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
 
             InputStreamReader abrirArchivo = new InputStreamReader(fis);
 
-
             BufferedReader leerArchivo = new BufferedReader(abrirArchivo);
             String linea = leerArchivo.readLine();
 
