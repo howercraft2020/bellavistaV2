@@ -1,9 +1,11 @@
-package cl.clsoft.bave;
+package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +29,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class MainActivity extends AppCompatActivity {
+import cl.clsoft.bave.Entrega;
+import cl.clsoft.bave.R;
+import cl.clsoft.bave.Recepcion;
+import cl.clsoft.bave.base.BaseActivity;
+import cl.clsoft.bave.presenter.MainPresenter;
+
+public class ActivityMain extends BaseActivity<MainPresenter> {
 
     Spinner comboAcciones;
     Button ingresar;
@@ -36,8 +44,16 @@ public class MainActivity extends AppCompatActivity {
     int PERMISSION_ALL = 100;
     String[] PERMISSIONS = {
             android.Manifest.permission.READ_PHONE_STATE,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE
     };
+
+
+    @NonNull
+    @Override
+    protected MainPresenter createPresenter(@NonNull Context context) {
+        return new MainPresenter(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +73,16 @@ public class MainActivity extends AppCompatActivity {
         comboAcciones.setAdapter(adapter);
 
         //Check permisos
+        if (!checkPermission()) {
+            requestPermission();
+        }
         if (!hasPermissions(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
 
-        EliminarTablas();
-        Consultar();
+        mPresenter.cargaArchivos();
+        //EliminarTablas();
+        //Consultar();
 
 
 
@@ -74,13 +94,13 @@ public class MainActivity extends AppCompatActivity {
                 String seleccion = comboAcciones.getSelectedItem().toString();
 
                 if (seleccion.equals("Recepcion")){
-                    Intent intent = new Intent(MainActivity.this, Recepcion.class);
+                    Intent intent = new Intent(ActivityMain.this, Recepcion.class);
                     intent.putExtra("paso", "1");
                     startActivity(intent);
                 }
 
                 if (seleccion.equals("Entrega")){
-                    Intent intent = new Intent(MainActivity.this, Entrega.class);
+                    Intent intent = new Intent(ActivityMain.this, Entrega.class);
                     intent.putExtra("paso", "2");
                     startActivity(intent);
                 }
@@ -215,5 +235,23 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private boolean checkPermission(){
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+        if (result == PackageManager.PERMISSION_GRANTED){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void requestPermission(){
+        ActivityCompat.requestPermissions(this,new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CALL_PHONE},PERMISSION_ALL
+        );
+    }
 
 }

@@ -22,6 +22,14 @@ public abstract class BaseActivity<Presenter extends BasePresenter> extends AppC
 
     @NonNull
     protected abstract Presenter createPresenter(@NonNull final Context context);
+
+    @Override
+    protected void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPresenter = createPresenter(this);
+        mPresenter.onCreate(savedInstanceState);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
