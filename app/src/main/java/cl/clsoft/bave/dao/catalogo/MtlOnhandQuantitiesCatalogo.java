@@ -20,9 +20,9 @@ public class MtlOnhandQuantitiesCatalogo {
                         COLUMN_SUBINVENTORY_CODE + " TEXT, " +
                         COLUMN_LOCATOR_ID + " INTEGER, " +
                         COLUMN_LOT_NUMBER + " TEXT, " +
-                        COLUMN_SERIAL_NUMBER + " INTEGER, " +
+                        COLUMN_SERIAL_NUMBER + " TEXT, " +
                         COLUMN_PRIMARY_TRANSACTION_QUANTITY + " INTEGER, " +
-                        COLUMN_USER_ID + " INTEGER " +
+                        COLUMN_USER_ID + " INTEGER, " +
                         COLUMN_STATUS_ID + " INTEGER " +
                         ")";
 

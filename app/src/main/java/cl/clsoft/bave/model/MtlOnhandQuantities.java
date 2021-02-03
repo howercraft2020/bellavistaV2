@@ -7,7 +7,7 @@ public class MtlOnhandQuantities {
     private String subinventoryCode;
     private Long locatorId;
     private String lotNumber;
-    private Long serialNumber;
+    private String serialNumber;
     private Long primaryTransactionQuantity;
     private Long userId;
     private Long statusId;
@@ -54,11 +54,11 @@ public class MtlOnhandQuantities {
         this.lotNumber = lotNumber;
     }
 
-    public Long getSerialNumber() {
+    public String getSerialNumber() {
         return serialNumber;
     }
 
-    public void setSerialNumber(Long serialNumber) {
+    public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
 

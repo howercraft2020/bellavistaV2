@@ -57,6 +57,10 @@ public class MainPresenter extends BasePresenter {
             //File rutaArchivo = new File(this.mView.getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "setup.txt");
             File rutaArchivo = new File(this.mView.getApplicationContext().getExternalFilesDir(null).getPath() + "/" + "setup.txt");
             this.baveService.cargarArchivoSetup(rutaArchivo);
+
+            File rutaArchivoStock = new File(this.mView.getApplicationContext().getExternalFilesDir(null).getPath() + "/" + "stock.txt");
+            this.baveService.cargarArchivoStock(rutaArchivoStock);
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }

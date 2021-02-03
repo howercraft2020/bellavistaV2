@@ -16,7 +16,7 @@ public class MtlOnHandQuantitiesRowMapper implements RowMapper<MtlOnhandQuantiti
         entity.setSubinventoryCode(cursor.getString(cursor.getColumnIndex(MtlOnhandQuantitiesCatalogo.COLUMN_SUBINVENTORY_CODE)));
         entity.setLocatorId(cursor.getLong(cursor.getColumnIndex(MtlOnhandQuantitiesCatalogo.COLUMN_LOCATOR_ID)));
         entity.setLotNumber(cursor.getString(cursor.getColumnIndex(MtlOnhandQuantitiesCatalogo.COLUMN_LOT_NUMBER)));
-        entity.setSerialNumber(cursor.getLong(cursor.getColumnIndex(MtlOnhandQuantitiesCatalogo.COLUMN_SERIAL_NUMBER)));
+        entity.setSerialNumber(cursor.getString(cursor.getColumnIndex(MtlOnhandQuantitiesCatalogo.COLUMN_SERIAL_NUMBER)));
         entity.setPrimaryTransactionQuantity(cursor.getLong(cursor.getColumnIndex(MtlOnhandQuantitiesCatalogo.COLUMN_PRIMARY_TRANSACTION_QUANTITY)));
         entity.setUserId(cursor.getLong(cursor.getColumnIndex(MtlOnhandQuantitiesCatalogo.COLUMN_USER_ID)));
         entity.setStatusId(cursor.getLong(cursor.getColumnIndex(MtlOnhandQuantitiesCatalogo.COLUMN_STATUS_ID)));

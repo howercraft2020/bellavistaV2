@@ -47,14 +47,14 @@ public class BaveServiceImpl implements IBaveService {
                 String [] extraccion = linea.split("\\|");
                 if (extraccion[0].equals("2")) {
                     Subinventario subinventario = new Subinventario();
-                    subinventario.setOrganizationId(new Long(extraccion[1]));
+                    subinventario.setOrganizationId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
                     subinventario.setCodSubinventario(extraccion[2]);
                     subinventario.setCodLocalizador(extraccion[3]);
                     subinventarioDao.insert(subinventario);
                 } else if (extraccion[0].equals("3")) {
                     Localizador localizador = new Localizador();
-                    localizador.setIdLocalizador(new Long(extraccion[1]));
-                    localizador.setOrganizationId(new Long(extraccion[2]));
+                    localizador.setIdLocalizador(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
+                    localizador.setOrganizationId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
                     localizador.setCodSubinventario(extraccion[3]);
                     localizador.setCodLocalizador(extraccion[4]);
                     localizador.setCodSeg1(extraccion[5]);
@@ -66,7 +66,7 @@ public class BaveServiceImpl implements IBaveService {
                     localizadorDao.insert(localizador);
                 } else if (extraccion[0].equals("4")) {
                     Organizacion organizacion = new Organizacion();
-                    organizacion.setIdOrganizacion(new Long(extraccion[1]));
+                    organizacion.setIdOrganizacion(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
                     organizacion.setCode(extraccion[2]);
                     organizacionDao.insert(organizacion);
                 }
@@ -97,19 +97,19 @@ public class BaveServiceImpl implements IBaveService {
                 String [] extraccion = linea.split("\\|");
                 if (extraccion[0].equals("1")) {
                     MtlOnhandQuantities mtlOnhandQuantities = new MtlOnhandQuantities();
-                    mtlOnhandQuantities.setInventoryItemId(new Long(extraccion[1]));
-                    mtlOnhandQuantities.setOrganizationId(new Long(extraccion[2]));
-                    mtlOnhandQuantities.setSubinventoryCode(extraccion[3]);
-                    mtlOnhandQuantities.setLocatorId(new Long(extraccion[4]));
-                    mtlOnhandQuantities.setLotNumber(extraccion[5]);
-                    mtlOnhandQuantities.setSerialNumber(new Long(extraccion[6]));
-                    mtlOnhandQuantities.setPrimaryTransactionQuantity(new Long(extraccion[7]));
-                    mtlOnhandQuantities.setUserId(new Long(extraccion[8]));
-                    mtlOnhandQuantities.setStatusId(new Long(extraccion[9]));
+                    mtlOnhandQuantities.setInventoryItemId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
+                    mtlOnhandQuantities.setOrganizationId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
+                    mtlOnhandQuantities.setPrimaryTransactionQuantity(extraccion[3].equalsIgnoreCase("") ? null : new Long(extraccion[3]));
+                    mtlOnhandQuantities.setSubinventoryCode(extraccion[4]);
+                    mtlOnhandQuantities.setLocatorId(extraccion[5].equalsIgnoreCase("") ? null : new Long(extraccion[5]));
+                    mtlOnhandQuantities.setLotNumber(extraccion[6]);
+                    mtlOnhandQuantities.setSerialNumber(extraccion[7]);
+                    mtlOnhandQuantities.setUserId(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
+                    //mtlOnhandQuantities.setStatusId(new Long(extraccion[9]));
                     mtlOnhandQuantitiesDao.insert(mtlOnhandQuantities);
                 } else if (extraccion[0].equals("2")) {
                     MtlSystemItems mtlSystemItems = new MtlSystemItems();
-                    mtlSystemItems.setInventoryItemId(new Long(extraccion[1]));
+                    mtlSystemItems.setInventoryItemId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
                     mtlSystemItems.setDescription(extraccion[2]);
                     mtlSystemItems.setLongDescription(extraccion[3]);
                     mtlSystemItems.setSegment1(extraccion[4]);
@@ -119,6 +119,7 @@ public class BaveServiceImpl implements IBaveService {
                     mtlSystemItems.setSerialNumberControlCode(extraccion[8]);
                     mtlSystemItemsDao.insert(mtlSystemItems);
                 }
+                linea = leerArchivo.readLine();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
