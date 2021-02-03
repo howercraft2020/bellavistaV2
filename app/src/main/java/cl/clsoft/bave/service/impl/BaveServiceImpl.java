@@ -10,14 +10,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import cl.clsoft.bave.dao.ILocalizadorDao;
+import cl.clsoft.bave.dao.IMtlOnhandQuantitiesDao;
+import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.IOrganizacionDao;
 import cl.clsoft.bave.dao.ISubinventarioDao;
 import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlOnhandQuantitiesDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.OrganizacionDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.Localizador;
+import cl.clsoft.bave.model.MtlOnhandQuantities;
+import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.Organizacion;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.service.IBaveService;
@@ -65,6 +71,54 @@ public class BaveServiceImpl implements IBaveService {
                     organizacionDao.insert(organizacion);
                 }
                 linea = leerArchivo.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void cargarArchivoStock(File archivo) throws ServiceException {
+        IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(archivo);
+            InputStreamReader abrirArchivo = new InputStreamReader(fis);
+            BufferedReader leerArchivo = new BufferedReader(abrirArchivo);
+            String linea = null;
+            linea = leerArchivo.readLine();
+            while(linea != null){
+                String [] extraccion = linea.split("\\|");
+                if (extraccion[0].equals("1")) {
+                    MtlOnhandQuantities mtlOnhandQuantities = new MtlOnhandQuantities();
+                    mtlOnhandQuantities.setInventoryItemId(new Long(extraccion[1]));
+                    mtlOnhandQuantities.setOrganizationId(new Long(extraccion[2]));
+                    mtlOnhandQuantities.setSubinventoryCode(extraccion[3]);
+                    mtlOnhandQuantities.setLocatorId(new Long(extraccion[4]));
+                    mtlOnhandQuantities.setLotNumber(extraccion[5]);
+                    mtlOnhandQuantities.setSerialNumber(new Long(extraccion[6]));
+                    mtlOnhandQuantities.setPrimaryTransactionQuantity(new Long(extraccion[7]));
+                    mtlOnhandQuantities.setUserId(new Long(extraccion[8]));
+                    mtlOnhandQuantities.setStatusId(new Long(extraccion[9]));
+                    mtlOnhandQuantitiesDao.insert(mtlOnhandQuantities);
+                } else if (extraccion[0].equals("2")) {
+                    MtlSystemItems mtlSystemItems = new MtlSystemItems();
+                    mtlSystemItems.setInventoryItemId(new Long(extraccion[1]));
+                    mtlSystemItems.setDescription(extraccion[2]);
+                    mtlSystemItems.setLongDescription(extraccion[3]);
+                    mtlSystemItems.setSegment1(extraccion[4]);
+                    mtlSystemItems.setPrimaryUomCode(extraccion[5]);
+                    mtlSystemItems.setLotControlCode(extraccion[6]);
+                    mtlSystemItems.setShelfLifeCode(extraccion[7]);
+                    mtlSystemItems.setSerialNumberControlCode(extraccion[8]);
+                    mtlSystemItemsDao.insert(mtlSystemItems);
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
