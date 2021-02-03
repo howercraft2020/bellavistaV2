@@ -16,15 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.clsoft.bave.base.BasePresenter;
+import cl.clsoft.bave.service.IBaveService;
 import cl.clsoft.bave.view.ActivityMain;
 
 public class MainPresenter extends BasePresenter {
 
     private static final String TAG = "MainPresenter";
     private ActivityMain mView;
+    private IBaveService baveService;
 
-    public MainPresenter(@NonNull final ActivityMain view) {
+    public MainPresenter(@NonNull final ActivityMain view, @NonNull final IBaveService baveService) {
         this.mView = view;
+        this.baveService = baveService;
     }
 
     public void cargaArchivos() {
@@ -53,17 +56,7 @@ public class MainPresenter extends BasePresenter {
             File Dir = new File(path);
             //File rutaArchivo = new File(this.mView.getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "setup.txt");
             File rutaArchivo = new File(this.mView.getApplicationContext().getExternalFilesDir(null).getPath() + "/" + "setup.txt");
-            FileInputStream fis = new FileInputStream(rutaArchivo);
-            InputStreamReader abrirArchivo = new InputStreamReader(fis);
-            BufferedReader leerArchivo = new BufferedReader(abrirArchivo);
-            String linea = leerArchivo.readLine();
-            while(linea != null){
-                String [] extraccion = linea.split("\\|");
-                for (int a=0; a <1; a++) {
-                    Log.d(TAG, extraccion[a]);
-                }
-                linea = leerArchivo.readLine();
-            }
+            this.baveService.cargarArchivoSetup(rutaArchivo);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
