@@ -10,11 +10,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import cl.clsoft.bave.dao.ILocalizadorDao;
+import cl.clsoft.bave.dao.IMtlCycleCountEntriesDao;
+import cl.clsoft.bave.dao.IMtlCycleCountHeadersDao;
 import cl.clsoft.bave.dao.IMtlOnhandQuantitiesDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.IOrganizacionDao;
 import cl.clsoft.bave.dao.ISubinventarioDao;
 import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlCycleCountEntriesDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlCycleCountHeadersDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlOnhandQuantitiesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.OrganizacionDaoImpl;
@@ -22,6 +26,8 @@ import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.Localizador;
+import cl.clsoft.bave.model.MtlCycleCountEntries;
+import cl.clsoft.bave.model.MtlCycleCountHeaders;
 import cl.clsoft.bave.model.MtlOnhandQuantities;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.Organizacion;
@@ -30,8 +36,12 @@ import cl.clsoft.bave.service.IBaveService;
 
 public class BaveServiceImpl implements IBaveService {
 
+    private static final String TAG = "BaveServiceImpl";
+
     @Override
     public void cargarArchivoSetup(File archivo) throws ServiceException {
+        Log.d(TAG, "cargarArchivoSetup");
+
         ISubinventarioDao subinventarioDao = new SubinventarioDaoImpl();
         ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
         IOrganizacionDao organizacionDao = new OrganizacionDaoImpl();
@@ -83,6 +93,8 @@ public class BaveServiceImpl implements IBaveService {
 
     @Override
     public void cargarArchivoStock(File archivo) throws ServiceException {
+        Log.d(TAG, "cargarArchivoStock");
+
         IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
 
@@ -131,12 +143,76 @@ public class BaveServiceImpl implements IBaveService {
     }
 
     @Override
-    public void cargarArchivoCiclico(String nombreArchivo) throws ServiceException {
+    public void cargarArchivoCiclico(File archivo) throws ServiceException {
+        Log.d(TAG, "cargarArchivoCiclico");
 
+        IMtlCycleCountHeadersDao mtlCycleCountHeadersDao = new MtlCycleCountHeadersDaoImpl();
+        IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(archivo);
+            InputStreamReader abrirArchivo = new InputStreamReader(fis);
+            BufferedReader leerArchivo = new BufferedReader(abrirArchivo);
+            String linea = null;
+            linea = leerArchivo.readLine();
+            while(linea != null){
+                String [] extraccion = linea.split("\\|");
+                if (extraccion[0].equals("1")) {
+                    boolean existe = false;
+
+                    // Valida si ya existe
+                    Long id = new Long(extraccion[1]);
+                    MtlCycleCountHeaders mtlCycleCountHeaders = mtlCycleCountHeadersDao.get(id);
+                    if (mtlCycleCountHeaders != null) {
+                        existe = true;
+                        mtlCycleCountHeadersDao.delete(id);
+                        mtlCycleCountEntriesDao.deleteByHeader(id);
+                    }
+
+                    mtlCycleCountHeaders = new MtlCycleCountHeaders();
+                    mtlCycleCountHeaders.setCycleCountHeaderId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
+                    mtlCycleCountHeaders.setOrganizationId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
+                    mtlCycleCountHeaders.setLastUpdateDate(extraccion[3]);
+                    mtlCycleCountHeaders.setLastUpdatedBy(extraccion[4].equalsIgnoreCase("") ? null : new Long(extraccion[4]));
+                    mtlCycleCountHeaders.setCreationDate(extraccion[5]);
+                    mtlCycleCountHeaders.setCreatedBy(extraccion[6].equalsIgnoreCase("") ? null : new Long(extraccion[6]));
+                    mtlCycleCountHeaders.setCycleCountHeaderName(extraccion[7]);
+                    mtlCycleCountHeaders.setUserId(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
+                    mtlCycleCountHeaders.setEmployeeId(extraccion[9].equalsIgnoreCase("") ? null : new Long(extraccion[9]));
+                    mtlCycleCountHeaders.setDescription(extraccion[10]);
+                    mtlCycleCountHeadersDao.insert(mtlCycleCountHeaders);
+                } else if (extraccion[0].equals("2")) {
+                    MtlCycleCountEntries mtlCycleCountEntries = new MtlCycleCountEntries();
+                    mtlCycleCountEntries.setCycleCountEntryId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
+                    mtlCycleCountEntries.setInventoriItemId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
+                    mtlCycleCountEntries.setSubinventory(extraccion[3]);
+                    mtlCycleCountEntries.setEntryStatusCode(extraccion[4]);
+                    mtlCycleCountEntries.setOrganizationId(extraccion[5].equalsIgnoreCase("") ? null : new Long(extraccion[5]));
+                    mtlCycleCountEntries.setCycleCountHeaderId(extraccion[6].equalsIgnoreCase("") ? null : new Long(extraccion[6]));
+                    mtlCycleCountEntries.setLocatorId(extraccion[7].equalsIgnoreCase("") ? null : new Long(extraccion[7]));
+                    mtlCycleCountEntries.setLotNumber(extraccion[8]);
+                    mtlCycleCountEntries.setSegment1(extraccion[9]);
+                    mtlCycleCountEntries.setPrimaryUomCode(extraccion[10]);
+                    Log.d(TAG, "Size: " + extraccion.length);
+                    if (extraccion.length == 12 )
+                        mtlCycleCountEntries.setSerialNumber(extraccion[11]);
+                    mtlCycleCountEntriesDao.insert(mtlCycleCountEntries);
+                }
+                linea = leerArchivo.readLine();
+            }
+            archivo.delete();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void cargarArchivoFisico(String nombreArchivo) throws ServiceException {
+    public void cargarArchivoFisico(File archivo) throws ServiceException {
+        Log.d(TAG, "cargarArchivoFisico");
 
     }
 

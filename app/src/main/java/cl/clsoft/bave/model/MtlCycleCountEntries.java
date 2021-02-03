@@ -1,19 +1,28 @@
 package cl.clsoft.bave.model;
 
 public class MtlCycleCountEntries {
+    private Long cycleCountEntryId;
     private Long inventoriItemId;
-    private Long subinventory;
+    private String subinventory;
     private String entryStatusCode;
     private Long organizationId;
-    private String cycleCountHeaderId;
+    private Long cycleCountHeaderId;
     private Long LocatorId;
     private String lotNumber;
-    private Long segment1;
-    private Long primaryUomCode;
+    private String segment1;
+    private String primaryUomCode;
     private String serialNumber;
 
     public MtlCycleCountEntries(){
 
+    }
+
+    public Long getCycleCountEntryId() {
+        return cycleCountEntryId;
+    }
+
+    public void setCycleCountEntryId(Long cycleCountEntryId) {
+        this.cycleCountEntryId = cycleCountEntryId;
     }
 
     public Long getInventoriItemId() {
@@ -24,11 +33,11 @@ public class MtlCycleCountEntries {
         this.inventoriItemId = inventoriItemId;
     }
 
-    public Long getSubinventory() {
+    public String getSubinventory() {
         return subinventory;
     }
 
-    public void setSubinventory(Long subinventory) {
+    public void setSubinventory(String subinventory) {
         this.subinventory = subinventory;
     }
 
@@ -48,11 +57,11 @@ public class MtlCycleCountEntries {
         this.organizationId = organizationId;
     }
 
-    public String getCycleCountHeaderId() {
+    public Long getCycleCountHeaderId() {
         return cycleCountHeaderId;
     }
 
-    public void setCycleCountHeaderId(String cycleCountHeaderId) {
+    public void setCycleCountHeaderId(Long cycleCountHeaderId) {
         this.cycleCountHeaderId = cycleCountHeaderId;
     }
 
@@ -72,19 +81,19 @@ public class MtlCycleCountEntries {
         this.lotNumber = lotNumber;
     }
 
-    public Long getSegment1() {
+    public String getSegment1() {
         return segment1;
     }
 
-    public void setSegment1(Long segment1) {
+    public void setSegment1(String segment1) {
         this.segment1 = segment1;
     }
 
-    public Long getPrimaryUomCode() {
+    public String getPrimaryUomCode() {
         return primaryUomCode;
     }
 
-    public void setPrimaryUomCode(Long primaryUomCode) {
+    public void setPrimaryUomCode(String primaryUomCode) {
         this.primaryUomCode = primaryUomCode;
     }
 

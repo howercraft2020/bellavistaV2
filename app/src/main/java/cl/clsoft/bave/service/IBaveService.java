@@ -8,7 +8,7 @@ public interface IBaveService {
 
     public void cargarArchivoSetup(File archivo) throws ServiceException;
     public void cargarArchivoStock(File archivo) throws ServiceException;
-    public void cargarArchivoCiclico(String nombreArchivo) throws ServiceException;
-    public void cargarArchivoFisico(String nombreArchivo) throws ServiceException;
+    public void cargarArchivoCiclico(File archivo) throws ServiceException;
+    public void cargarArchivoFisico(File archivo) throws ServiceException;
 
 }

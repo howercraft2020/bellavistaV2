@@ -28,4 +28,8 @@ public class MtlCycleCountHeadersCatalogo {
                     COLUMN_DESCRIPTION + " TEXT " +
                     ")";
 
+    public static final String UPDATE = " WHERE " + COLUMN_ID + " = ?";
+    public static final String DELETE = COLUMN_ID + " = ?";
+    public static final String SELECT = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_ID + " = ? ";
+
 }

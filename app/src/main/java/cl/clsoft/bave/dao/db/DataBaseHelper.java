@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 
 import cl.clsoft.bave.InventarioApplication;
 import cl.clsoft.bave.dao.catalogo.LocalizadorCatalogo;
+import cl.clsoft.bave.dao.catalogo.MtlCycleCountEntriesCatalogo;
+import cl.clsoft.bave.dao.catalogo.MtlCycleCountHeadersCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlOnhandQuantitiesCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlSystemItemsCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlTransactionsLotsIfaceCatalogo;
@@ -57,6 +59,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(RcvTransactionsCatalogo.CREATE_TABLE);
         db.execSQL(MtlTransactionsLotsIfaceCatalogo.CREATE_TABLE);
         db.execSQL(MtlOnhandQuantitiesCatalogo.CREATE_TABLE);
+        db.execSQL(MtlCycleCountHeadersCatalogo.CREATE_TABLE);
+        db.execSQL(MtlCycleCountEntriesCatalogo.CREATE_TABLE);
 
     }
 
