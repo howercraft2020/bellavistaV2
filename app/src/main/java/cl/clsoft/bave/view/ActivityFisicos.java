@@ -2,6 +2,7 @@ package cl.clsoft.bave.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 
@@ -25,6 +26,19 @@ public class ActivityFisicos extends BaseActivity<FisicosPresenter> {
         setContentView(R.layout.activity_fisicos);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Bind Controls
+        this.llProgressBar = findViewById(R.id.llProgressBar);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }
