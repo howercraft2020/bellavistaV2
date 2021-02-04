@@ -13,6 +13,9 @@ import cl.clsoft.bave.dao.ILocalizadorDao;
 import cl.clsoft.bave.dao.IMtlCycleCountEntriesDao;
 import cl.clsoft.bave.dao.IMtlCycleCountHeadersDao;
 import cl.clsoft.bave.dao.IMtlOnhandQuantitiesDao;
+import cl.clsoft.bave.dao.IMtlPhysicalInventoriesDao;
+import cl.clsoft.bave.dao.IMtlPhysicalInventoryTagsDao;
+import cl.clsoft.bave.dao.IMtlPhysicalSubinventoriesDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.IOrganizacionDao;
 import cl.clsoft.bave.dao.ISubinventarioDao;
@@ -20,6 +23,9 @@ import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlCycleCountEntriesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlCycleCountHeadersDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlOnhandQuantitiesDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlPhysicalInventoriesDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlPhysicalInventoryTagsDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlPhysicalSubinventoriesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.OrganizacionDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
@@ -29,6 +35,9 @@ import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
 import cl.clsoft.bave.model.MtlOnhandQuantities;
+import cl.clsoft.bave.model.MtlPhysicalInventories;
+import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
+import cl.clsoft.bave.model.MtlPhysicalSubinventories;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.Organizacion;
 import cl.clsoft.bave.model.Subinventario;
@@ -82,6 +91,7 @@ public class BaveServiceImpl implements IBaveService {
                 }
                 linea = leerArchivo.readLine();
             }
+            archivo.delete();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -133,6 +143,7 @@ public class BaveServiceImpl implements IBaveService {
                 }
                 linea = leerArchivo.readLine();
             }
+            archivo.delete();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -214,6 +225,76 @@ public class BaveServiceImpl implements IBaveService {
     public void cargarArchivoFisico(File archivo) throws ServiceException {
         Log.d(TAG, "cargarArchivoFisico");
 
+        IMtlPhysicalInventoriesDao mtlPhysicalInventoriesDao = new MtlPhysicalInventoriesDaoImpl();
+        IMtlPhysicalSubinventoriesDao mtlPhysicalSubinventoriesDao = new MtlPhysicalSubinventoriesDaoImpl();
+        IMtlPhysicalInventoryTagsDao mtlPhysicalInventoryTagsDao = new MtlPhysicalInventoryTagsDaoImpl();
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(archivo);
+            InputStreamReader abrirArchivo = new InputStreamReader(fis);
+            BufferedReader leerArchivo = new BufferedReader(abrirArchivo);
+            String linea = null;
+            linea = leerArchivo.readLine();
+            while(linea != null){
+                String [] extraccion = linea.split("\\|");
+                if (extraccion[0].equals("1")) {
+                    // Valida si ya existe
+                    Long id = new Long(extraccion[1]);
+                    MtlPhysicalInventories mtlPhysicalInventories = mtlPhysicalInventoriesDao.get(id);
+                    if (mtlPhysicalInventories != null) {
+                        mtlPhysicalInventoriesDao.delete(id);
+                        mtlPhysicalSubinventoriesDao.deleteByPhysicalInventory(id);
+                        mtlPhysicalInventoryTagsDao.deleteByPhysicalInventory(id);
+                    }
+                    mtlPhysicalInventories = new MtlPhysicalInventories();
+                    mtlPhysicalInventories.setPhysicalInventoryId(id);
+                    mtlPhysicalInventories.setOrganizationId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
+                    mtlPhysicalInventories.setLastUpdateDate(extraccion[3]);
+                    mtlPhysicalInventories.setLastUpdatedBy(extraccion[4].equalsIgnoreCase("") ? null : new Long(extraccion[4]));
+                    mtlPhysicalInventories.setCreationDate(extraccion[5]);
+                    mtlPhysicalInventories.setCreatedBy(extraccion[6].equalsIgnoreCase("") ? null : new Long(extraccion[6]));
+                    mtlPhysicalInventories.setPhysicalInventoryDate(extraccion[7]);
+                    mtlPhysicalInventories.setDescription(extraccion[8]);
+                    mtlPhysicalInventories.setFreezeDate(extraccion[9]);
+                    mtlPhysicalInventories.setPhysicalInventoryName(extraccion[10]);
+                    mtlPhysicalInventories.setUserId(extraccion[11].equalsIgnoreCase("") ? null : new Long(extraccion[11]));
+                    mtlPhysicalInventories.setEmployeeId(extraccion[12].equalsIgnoreCase("") ? null : new Long(extraccion[12]));
+                    mtlPhysicalInventories.setApprovalRequired(extraccion[13].equalsIgnoreCase("") ? null : new Long(extraccion[13]));
+                    if (extraccion.length == 15)
+                        mtlPhysicalInventories.setAllSubinventoriesFlag(extraccion[14].equalsIgnoreCase("") ? null : new Long(extraccion[14]));
+                    mtlPhysicalInventoriesDao.insert(mtlPhysicalInventories);
+                } else if (extraccion[0].equals("2")) {
+                    MtlPhysicalSubinventories mtlPhysicalSubinventories = new MtlPhysicalSubinventories();
+                    mtlPhysicalSubinventories.setOrganizationId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
+                    mtlPhysicalSubinventories.setPhyshicalInventoryId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
+                    mtlPhysicalSubinventories.setSubinventory(extraccion[3]);
+                    mtlPhysicalSubinventoriesDao.insert(mtlPhysicalSubinventories);
+                } else if (extraccion[0].equals("3")) {
+                    MtlPhysicalInventoryTags mtlPhysicalInventoryTags = new MtlPhysicalInventoryTags();
+                    mtlPhysicalInventoryTags.setTagId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
+                    mtlPhysicalInventoryTags.setPhysicalInventoryId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
+                    mtlPhysicalInventoryTags.setOrganizationId(extraccion[3].equalsIgnoreCase("") ? null : new Long(extraccion[3]));
+                    mtlPhysicalInventoryTags.setInventoryItemId(extraccion[4].equalsIgnoreCase("") ? null : new Long(extraccion[4]));
+                    mtlPhysicalInventoryTags.setSubinventory(extraccion[5]);
+                    mtlPhysicalInventoryTags.setLocatorId(extraccion[6].equalsIgnoreCase("") ? null : new Long(extraccion[6]));
+                    mtlPhysicalInventoryTags.setLotNumber(extraccion[7]);
+                    mtlPhysicalInventoryTags.setLotExpirationDate(extraccion[8]);
+                    mtlPhysicalInventoryTags.setSerialNum(extraccion[9]);
+                    mtlPhysicalInventoryTags.setSegment1(extraccion[10]);
+                    if (extraccion.length == 12)
+                        mtlPhysicalInventoryTags.setPrimaryUomCode(extraccion[11]);
+                    mtlPhysicalInventoryTagsDao.insert(mtlPhysicalInventoryTags);
+                }
+                linea = leerArchivo.readLine();
+            }
+            archivo.delete();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
 }

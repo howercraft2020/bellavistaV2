@@ -30,6 +30,9 @@ public class MtlCycleCountEntriesCatalogo {
                     COLUMN_SERIAL_NUMBER + " TEXT " +
                     ")";
 
+    public static final String UPDATE = COLUMN_ID + " = ?";
+    public static final String DELETE = COLUMN_ID + " = ?";
     public static final String DELETE_BY_HEADER_ID = COLUMN_CYCLE_COUNT_HEADER_ID + " = ?";
+    public static final String SELECT = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_ID + " = ? ";
 
 }

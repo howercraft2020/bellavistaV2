@@ -14,4 +14,6 @@ public class MtlPhysicalSubinventoriesCatalogo {
                     COLUMN_SUBINVENTORY + " TEXT " +
                     ")";
 
+    public static final String DELETE_BY_PHYSICAL_INVENTORY_ID = COLUMN_PHYSICAL_INVENTORY_ID + " = ?";
+
 }

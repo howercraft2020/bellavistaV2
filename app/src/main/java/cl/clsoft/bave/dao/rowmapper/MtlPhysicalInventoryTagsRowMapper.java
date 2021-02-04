@@ -17,7 +17,7 @@ public class MtlPhysicalInventoryTagsRowMapper implements RowMapper<MtlPhysicalI
         entity.setInventoryItemId(cursor.getLong(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_INVENTORY_ITEM_ID)));
         entity.setSubinventory(cursor.getString(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_SUBINVENTORY)));
         entity.setLocatorId(cursor.getLong(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_LOCATOR_ID)));
-        entity.setLotNumner(cursor.getString(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_LOT_NUMBER)));
+        entity.setLotNumber(cursor.getString(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_LOT_NUMBER)));
         entity.setLotExpirationDate(cursor.getString(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_LOT_EXPIRATION_DATE)));
         entity.setSerialNum(cursor.getString(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_SERIAL_NUM)));
         entity.setSegment1(cursor.getString(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_SEGMENT1)));

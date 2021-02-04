@@ -1,6 +1,7 @@
 package cl.clsoft.bave.model;
 
 public class MtlPhysicalSubinventories {
+
     private Long organizationId;
     private Long physhicalInventoryId;
     private String subinventory;

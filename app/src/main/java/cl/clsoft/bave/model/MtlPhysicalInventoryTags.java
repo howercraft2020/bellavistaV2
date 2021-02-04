@@ -7,7 +7,7 @@ public class MtlPhysicalInventoryTags {
     private Long inventoryItemId;
     private String subinventory;
     private Long locatorId;
-    private String lotNumner;
+    private String lotNumber;
     private String lotExpirationDate;
     private String serialNum;
     private String segment1;
@@ -65,12 +65,12 @@ public class MtlPhysicalInventoryTags {
         this.locatorId = locatorId;
     }
 
-    public String getLotNumner() {
-        return lotNumner;
+    public String getLotNumber() {
+        return lotNumber;
     }
 
-    public void setLotNumner(String lotNumner) {
-        this.lotNumner = lotNumner;
+    public void setLotNumber(String lotNumber) {
+        this.lotNumber = lotNumber;
     }
 
     public String getLotExpirationDate() {

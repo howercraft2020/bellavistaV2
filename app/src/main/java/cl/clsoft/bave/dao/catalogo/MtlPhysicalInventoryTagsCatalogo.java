@@ -30,4 +30,6 @@ public class MtlPhysicalInventoryTagsCatalogo {
                     COLUMN_PRIMARY_UOM_CODE + " TEXT " +
                     ")";
 
+    public static final String DELETE_BY_PHYSICAL_INVENTORY_ID = COLUMN_PHYSICAL_INVENTORY_ID + " = ?";
+
 }
