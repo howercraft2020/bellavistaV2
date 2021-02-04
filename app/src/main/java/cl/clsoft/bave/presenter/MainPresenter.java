@@ -5,15 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.service.IBaveService;
@@ -33,7 +25,7 @@ public class MainPresenter extends BasePresenter {
     public void cargaArchivos() {
 
         try {
-
+            mView.showProgres("Cargando Archivos...");
             // Carga archivo Setup
             File tarjetaSD = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             String path = tarjetaSD.getPath();
@@ -70,17 +62,7 @@ public class MainPresenter extends BasePresenter {
                     this.baveService.cargarArchivoFisico(archivoFisico);
                 }
             }
-
-            //File rutaArchivo = new File(this.mView.getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "setup.txt");
-           // File rutaArchivo = new File(this.mView.getApplicationContext().getExternalFilesDir(null).getPath() + "/" + "setup.txt");
-            //this.baveService.cargarArchivoSetup(rutaArchivo);
-
-            //File rutaArchivoStock = new File(this.mView.getApplicationContext().getExternalFilesDir(null).getPath() + "/" + "stock.txt");
-            //this.baveService.cargarArchivoStock(rutaArchivoStock);
-
-            //File rutaArchivoCiclico = new File(this.mView.getApplicationContext().getExternalFilesDir(null).getPath() + "/" + "O_C_CICLO_RA01.txt");
-            //this.baveService.cargarArchivoCiclico(rutaArchivoCiclico);
-
+            mView.hideProgres();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

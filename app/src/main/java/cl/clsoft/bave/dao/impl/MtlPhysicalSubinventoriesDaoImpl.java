@@ -20,7 +20,7 @@ public class MtlPhysicalSubinventoriesDaoImpl extends GenericDao<MtlPhysicalSubi
 
     @Override
     public void deleteByPhysicalInventory(Long physicalInventoryId) throws DaoException {
-        super.delete(MtlPhysicalSubinventoriesCatalogo.DELETE_BY_PHYSICAL_INVENTORY_ID, MtlPhysicalSubinventoriesCatalogo.DELETE_BY_PHYSICAL_INVENTORY_ID, physicalInventoryId);
+        super.delete(MtlPhysicalSubinventoriesCatalogo.TABLE, MtlPhysicalSubinventoriesCatalogo.DELETE_BY_PHYSICAL_INVENTORY_ID, physicalInventoryId);
     }
 
 }

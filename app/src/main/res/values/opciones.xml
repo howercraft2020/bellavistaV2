@@ -5,6 +5,8 @@
         <item>Recepcion</item>
         <item>Entrega</item>
         <item>Mantención</item>
+        <item>Conteo Cíclico</item>
+        <item>Inventario Físico</item>
     </string-array>
 
     

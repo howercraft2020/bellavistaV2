@@ -61,8 +61,8 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
+        // Bind Controls
+        this.llProgressBar = findViewById(R.id.llProgressBar);
         comboAcciones = (Spinner) findViewById(R.id.idSpinnerAcciones);
         ingresar = (Button) findViewById(R.id.btnIngresar);
         txtCargaDatos = (TextView) findViewById(R.id.txtCargaDatos);
@@ -72,6 +72,30 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
                 R.layout.estilo_spinner);
 
         comboAcciones.setAdapter(adapter);
+        ingresar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String seleccion = comboAcciones.getSelectedItem().toString();
+                if (seleccion.equals("Recepcion")){
+                    Intent intent = new Intent(ActivityMain.this, Recepcion.class);
+                    intent.putExtra("paso", "1");
+                    startActivity(intent);
+                }
+                if (seleccion.equals("Entrega")){
+                    Intent intent = new Intent(ActivityMain.this, Entrega.class);
+                    intent.putExtra("paso", "2");
+                    startActivity(intent);
+                }
+                if (seleccion.equals("Conteo Cíclico")){
+                    Intent intent = new Intent(ActivityMain.this, ActivityCiclicos.class);
+                    startActivity(intent);
+                }
+                if (seleccion.equals("Inventario Físico")){
+                    Intent intent = new Intent(ActivityMain.this, ActivityFisicos.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
         //Check permisos
         if (!checkPermission()) {
@@ -80,38 +104,7 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
         if (!hasPermissions(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
-
         mPresenter.cargaArchivos();
-        //EliminarTablas();
-        //Consultar();
-
-
-
-
-        ingresar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String seleccion = comboAcciones.getSelectedItem().toString();
-
-                if (seleccion.equals("Recepcion")){
-                    Intent intent = new Intent(ActivityMain.this, Recepcion.class);
-                    intent.putExtra("paso", "1");
-                    startActivity(intent);
-                }
-
-                if (seleccion.equals("Entrega")){
-                    Intent intent = new Intent(ActivityMain.this, Entrega.class);
-                    intent.putExtra("paso", "2");
-                    startActivity(intent);
-                }
-
-
-            }
-        });
-
-
-
     }
 
     @Override
@@ -121,7 +114,7 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
         if(requestCode==100){
             if(grantResults.length==2 && grantResults[0]==PackageManager.PERMISSION_GRANTED && grantResults[1]==PackageManager.PERMISSION_GRANTED){
                 EliminarTablas();
-                Consultar();
+                //Consultar();
             }
         }
     }
@@ -138,91 +131,6 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
 
     }
 
-
-    //Metodo Consultar
-    public void Consultar(){
-
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this,"bd",null,1);
-
-        try{
-
-            File tarjetaSD = Environment.getExternalStorageDirectory();
-            File Dir = new File(tarjetaSD.getAbsolutePath());
-            File rutaArchivo = new File(Dir, "setup.txt");
-            FileInputStream fis = new FileInputStream(rutaArchivo);
-            Long idRespuesta = 0L;
-
-            InputStreamReader abrirArchivo = new InputStreamReader(fis);
-
-            BufferedReader leerArchivo = new BufferedReader(abrirArchivo);
-            String linea = leerArchivo.readLine();
-
-            while(linea != null){
-                linea = leerArchivo.readLine();
-                if (linea != null){
-                    String [] extraccion = linea.split("\\|");
-
-                    for (int a=0; a <1; a++) {
-                        SQLiteDatabase db = conn.getWritableDatabase();
-                        ContentValues values = new ContentValues();
-
-                        if (extraccion[0].equals("2")) {
-                            values.put(Utilidades.CAMPO_ORG_ID_SUB,extraccion[1]);
-                            values.put(Utilidades.CAMPO_COD_SUB,extraccion[2]);
-                            values.put(Utilidades.CAMPO_COD_LOC,extraccion[3]);
-
-                            idRespuesta = db.insert(Utilidades.TABLA_SUBINVENTARIO, Utilidades.CAMPO_ORG_ID_SUB, values);
-                            db.close();
-                        }
-
-                        if (idRespuesta > 1) {
-
-                            if (extraccion[0].equals("3")) {
-                                values.put(Utilidades.CAMPO_ID_LOC, extraccion[1]);
-                                values.put(Utilidades.CAMPO_ORG_ID_LOC, extraccion[2]);
-                                values.put(Utilidades.CAMPO_COD_SUBINV_LOC, extraccion[3]);
-                                values.put(Utilidades.CAMPO_COD_LOC_LOC, extraccion[4]);
-                                values.put(Utilidades.CAMPO_COD_SEG1_LOC, extraccion[5]);
-                                values.put(Utilidades.CAMPO_COD_SEG2_LOC, extraccion[6]);
-                                values.put(Utilidades.CAMPO_COD_SEG3_LOC, extraccion[7]);
-                                values.put(Utilidades.CAMPO_COD_SEG4_LOC, extraccion[8]);
-                                values.put(Utilidades.CAMPO_COD_SEG5_LOC, extraccion[9]);
-                                values.put(Utilidades.CAMPO_COD_SEG6_LOC, extraccion[10]);
-
-                                idRespuesta = db.insert(Utilidades.TABLA_LOCALIZADOR, Utilidades.CAMPO_ID_LOC, values);
-                                db.close();
-                            }
-                        }
-
-                        //if (idRespuesta > 1) {
-
-                            if (extraccion[0].equals("4")) {
-                                values.put(Utilidades.CAMPO_ID, extraccion[1]);
-                                values.put(Utilidades.CAMPO_CODE, extraccion[2]);
-
-                                idRespuesta = db.insert(Utilidades.TABLA_ORGANIZACION, Utilidades.CAMPO_ID, values);
-                                db.close();
-                            }
-                        //}
-
-                    }
-                    if (idRespuesta > 1) {
-                        txtCargaDatos.setText("Datos de configuración Cargados Correctamente");
-                        ingresar.setEnabled(true);
-                    }
-                }
-            }
-            leerArchivo.close();
-            abrirArchivo.close();
-
-
-
-
-        }catch (IOException e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-    }
 
     public static boolean hasPermissions(Context context, String... permissions) {
         if (context != null && permissions != null) {
