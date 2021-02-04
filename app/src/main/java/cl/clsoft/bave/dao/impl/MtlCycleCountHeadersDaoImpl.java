@@ -2,6 +2,8 @@ package cl.clsoft.bave.dao.impl;
 
 import android.content.ContentValues;
 
+import java.util.List;
+
 import cl.clsoft.bave.dao.IMtlCycleCountHeadersDao;
 import cl.clsoft.bave.dao.catalogo.MtlCycleCountHeadersCatalogo;
 import cl.clsoft.bave.dao.rowmapper.MtlCycleCountHeadersRowMapper;
@@ -49,5 +51,10 @@ public class MtlCycleCountHeadersDaoImpl extends GenericDao<MtlCycleCountHeaders
     @Override
     public MtlCycleCountHeaders get(Long id) throws DaoException {
         return super.selectOne(MtlCycleCountHeadersCatalogo.SELECT, new MtlCycleCountHeadersRowMapper(), id);
+    }
+
+    @Override
+    public List<MtlCycleCountHeaders> getAll() throws DaoException {
+        return super.selectMany(MtlCycleCountHeadersCatalogo.SELECT_ALL, new MtlCycleCountHeadersRowMapper());
     }
 }

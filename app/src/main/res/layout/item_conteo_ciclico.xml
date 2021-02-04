@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dip" >
+
+    <TextView
+        android:id="@+id/cycleCountHeaderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingStart="3dp"
+        android:paddingLeft="3dp" />
+
+    <TextView
+        android:id="@+id/cycleCountHeaderName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cycleCountHeaderId"
+        android:text="Trans: "
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:paddingBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/creationDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cycleCountHeaderName"
+        android:text="Trans: "
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:paddingBottom="4dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_alignBottom="@id/creationDate" />
+
+</RelativeLayout>
