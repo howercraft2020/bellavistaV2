@@ -14,6 +14,7 @@ public class MtlPhysicalInventoryTagsCatalogo {
     public static final String COLUMN_SERIAL_NUM = "serial_num";
     public static final String COLUMN_SEGMENT1 = "segment1";
     public static final String COLUMN_PRIMARY_UOM_CODE = "primary_uom_code";
+    public static final String COLUMN_COUNT = "primary_count";
 
     public static final String CREATE_TABLE =
             "CREATE TABLE "+ TABLE + "(" +
@@ -27,9 +28,16 @@ public class MtlPhysicalInventoryTagsCatalogo {
                     COLUMN_LOT_EXPIRATION_DATE + " TEXT, " +
                     COLUMN_SERIAL_NUM + " TEXT, " +
                     COLUMN_SEGMENT1 + " TEXT, " +
-                    COLUMN_PRIMARY_UOM_CODE + " TEXT " +
+                    COLUMN_PRIMARY_UOM_CODE + " TEXT, " +
+                    COLUMN_COUNT + " TEXT " +
                     ")";
 
     public static final String DELETE_BY_PHYSICAL_INVENTORY_ID = COLUMN_PHYSICAL_INVENTORY_ID + " = ?";
+
+    public static final String SELECT_ALL_BY_PHYSICAL_INVENTORY_ID =
+            " SELECT * FROM " + TABLE + " WHERE " + COLUMN_PHYSICAL_INVENTORY_ID + " = ?";
+
+    public static final String SELECT_ALL_BY_PHYSICAL_INVENTORY_ID_SUBINVENTORY =
+            " SELECT * FROM " + TABLE + " WHERE " + COLUMN_PHYSICAL_INVENTORY_ID + " = ? AND " + COLUMN_SUBINVENTORY + " = ?";
 
 }

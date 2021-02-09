@@ -12,6 +12,7 @@ public class MtlPhysicalInventoryTags {
     private String serialNum;
     private String segment1;
     private String primaryUomCode;
+    private Long count;
 
     public MtlPhysicalInventoryTags(){
 
@@ -103,5 +104,13 @@ public class MtlPhysicalInventoryTags {
 
     public void setPrimaryUomCode(String primaryUomCode) {
         this.primaryUomCode = primaryUomCode;
+    }
+
+    public Long getCount() {
+        return count;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
     }
 }
