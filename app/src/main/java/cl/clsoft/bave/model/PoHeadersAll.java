@@ -16,7 +16,7 @@ public class PoHeadersAll {
     private String currencyCode;
     private String rateType;
     private String rateDate;
-    private String rate;
+    private Long rate;
     private Long userId;
     private String receiptNum;
 
@@ -144,11 +144,11 @@ public class PoHeadersAll {
         this.rateDate = rateDate;
     }
 
-    public String getRate() {
+    public Long getRate() {
         return rate;
     }
 
-    public void setRate(String rate) {
+    public void setRate(Long rate) {
         this.rate = rate;
     }
 

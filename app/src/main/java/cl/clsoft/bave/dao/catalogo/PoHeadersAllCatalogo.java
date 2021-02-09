@@ -44,4 +44,6 @@ public class PoHeadersAllCatalogo {
                     COLUMN_RECEIPT_NUM +" TEXT " +
             ")";
 
+    public static final String SELECT_ALL = " SELECT * FROM " + TABLE;
+
 }

@@ -27,16 +27,25 @@ public class MainPresenter extends BasePresenter {
         try {
             mView.showProgres("Cargando Archivos...");
             // Carga archivo Setup
-            File tarjetaSD = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            String path = tarjetaSD.getPath();
-            String path2 = this.mView.getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath();
-            Log.d(TAG, path2);
-            File Dir = new File(path);
+            //File tarjetaSD = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            //String path = tarjetaSD.getPath();
+            //String path2 = this.mView.getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath();
+            //Log.d(TAG, path2);
+            //File Dir = new File(path);
 
-            File ruta = new File(this.mView.getApplicationContext().getExternalFilesDir(null).getPath());
-            File listFile[] = ruta.listFiles();
+            //File ruta = new File(this.mView.getApplicationContext().getExternalFilesDir(null).getPath());
+
+            //Log.d(TAG, ruta.toString());
+            //File listFile[] = ruta.listFiles();
+
+            File tarjetaSD = Environment.getExternalStorageDirectory();
+            File ruta = new File(tarjetaSD.getAbsolutePath(), "outbound");
+            File[] listFile = ruta.listFiles();
+
+
             for (int i = 0; i < listFile.length; i++) {
                 Log.d(TAG, listFile[i].getName());
+
 
                 // Archivo setup
                 if (listFile[i].getName().startsWith("setup") || listFile[i].getName().startsWith("SETUP")) {
@@ -61,6 +70,12 @@ public class MainPresenter extends BasePresenter {
                     File archivoFisico = new File(ruta.getPath() + "/" + listFile[i].getName());
                     this.baveService.cargarArchivoFisico(archivoFisico);
                 }
+                // Archivo Recepción
+                if (listFile[i].getName().startsWith("O_1_") || listFile[i].getName().startsWith("o_1_")) {
+                    File archivoRecepcion = new File(ruta.getPath() + "/" + listFile[i].getName());
+                    this.baveService.cargarArchivoRecepcion(archivoRecepcion);
+                }
+
             }
             mView.hideProgres();
         } catch (Exception ex) {

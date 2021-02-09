@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.bave.ConexionSQLiteHelper;
+import com.example.bave.entidades.MtlSerialNumberInterfaceDTO;
 import com.example.bave.entidades.MtlTransactionLotsIfaceDto;
 import com.example.bave.entidades.RcvHeadersInterfaceDTO;
 import com.example.bave.entidades.RcvTransactionsInterfaceDTO;
@@ -103,8 +104,28 @@ public class Modelo {
 
     }
 
+    public int insertSerie(Context context, MtlSerialNumberInterfaceDTO dto){
+        int res = 0;
+
+        String sql = "INSERT INTO "+Utilidades.TABLA_MTL_SERIAL_NUMBERS_INTERFACE+"(transaction_interface_id, last_update_date,"+
+                "last_updated_by, creation_date, created_by, po_header_id, po_line_id, inventory_item_id, last_update_login,"+
+                "fm_serial_number, to_serial_number, product_code, product_transaction_id) VALUES ('"+dto.getTransactionInterfaceId()+"'," +
+                "'"+dto.getLastUpdateDate()+"','"+dto.getLastUpdatedBy()+"','"+dto.getCreationDate()+"','"+dto.getCreatedBy()+"'," +
+                "'"+dto.getPoHeaderId()+"','"+dto.getPoLineId()+"','"+dto.getInventoryItemId()+"','"+dto.getLastUpdateLogin()+"', " +
+                "'"+dto.getFmSerialNumber()+"','"+dto.getToSerialNumber()+"','"+dto.getProductCode()+"','"+dto.getProductTransactionId()+"')";
 
 
+        SQLiteDatabase db = this.getConn(context);
+        try {
+            db.execSQL(sql);
+            res = 1;
+            db.close();
+        }catch (Exception e){
+            Log.d("Error Base",e.getMessage());
+        }
 
+        return res;
+
+    }
 
 }

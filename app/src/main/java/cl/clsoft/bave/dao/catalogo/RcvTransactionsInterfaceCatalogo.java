@@ -92,4 +92,6 @@ public class RcvTransactionsInterfaceCatalogo {
                     COLUMN_AUTO_TRANSACT_CODE + " TEXT " +
                     " ) ";
 
+    public static final String SELECT = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_INTERFACE_TRANSACTION_ID + " = ? ";
+
 }
