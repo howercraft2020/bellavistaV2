@@ -62,7 +62,7 @@ public class ActivityRecepcionOc extends BaseActivity<RecepcionOcPresenter> {
             public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent motionEvent) {
                 try {
                     View child = rv.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-                    if(child != null){
+                    if(child != null ){
                         int position = rv.getChildAdapterPosition(child);
                         Intent i = null;
                         i = new Intent(ActivityRecepcionOc.this, ActivityArticulosRecepcion.class);
