@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.ActivityCiclicoDetalle">
+
+    <include
+        android:id="@+id/llProgressBar"
+        android:visibility="gone"
+        layout="@layout/progress_bar"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="201dp">
+
+
+        <TextView
+            android:id="@+id/creationDateDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cycleCountHeaderNameDetalle"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@+id/fechaCicloTextDetalle"
+            android:layout_toRightOf="@+id/fechaCicloTextDetalle"
+            android:paddingBottom="4dp"
+            android:text="Fecha creación: "
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/cycleCountHeaderNameDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cycleCountHeaderIdDetalle"
+            android:layout_marginStart="9dp"
+            android:layout_marginLeft="9dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@+id/nombreCicloTextDetalle"
+            android:layout_toRightOf="@+id/nombreCicloTextDetalle"
+            android:paddingBottom="4dp"
+            android:text="Nombre: "
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/cycleCountHeaderIdDetalle"
+            android:layout_width="161dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/idCicloTextDetalle"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="211dp"
+            android:layout_marginRight="211dp"
+            android:paddingStart="3dp"
+            android:paddingLeft="3dp"
+            android:text="ID:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/idCicloTextDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="383dp"
+            android:layout_marginRight="383dp"
+            android:text="ID:" />
+
+        <TextView
+            android:id="@+id/fechaCicloTextDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nombreCicloTextDetalle"
+            android:layout_marginTop="6dp"
+            android:hint="dia-mes-año"
+            android:text="Fecha de creación:" />
+
+        <TextView
+            android:id="@+id/nombreCicloTextDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/idCicloTextDetalle"
+            android:layout_marginTop="10dp"
+            android:hint="Nombre de ciclo"
+            android:text="Nombre de ciclo:" />
+
+        <SearchView
+            android:id="@+id/busquedaSigle"
+            android:layout_width="378dp"
+            android:layout_height="28dp"
+            android:layout_below="@+id/divider"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="9dp"
+            android:layout_marginLeft="9dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="591dp"
+            android:background="#A3FDEAEA"
+            android:visibility="visible" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_below="@id/fechaCicloTextDetalle"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="-7dp"
+            android:layout_marginLeft="-7dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="10dp"
+            android:background="?android:attr/listDivider" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/divider"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="-6dp"
+            android:layout_marginLeft="-6dp"
+            android:layout_marginTop="61dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="-45dp"
+            android:background="?android:attr/listDivider" />
+
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/itemCiclicoDetalleRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

@@ -19,9 +19,11 @@ public class AdapterItemConteoCiclico extends RecyclerView.Adapter<AdapterItemCo
 
     private static final String TAG = "AdapterConteoCiclico";
     private List<MtlCycleCountHeaders> conteos;
+    private RecyclerViewClickListener listener;
 
-    public AdapterItemConteoCiclico(List<MtlCycleCountHeaders> conteos) {
+    public AdapterItemConteoCiclico(List<MtlCycleCountHeaders> conteos, RecyclerViewClickListener listener) {
         this.conteos = conteos;
+        this.listener = listener;
     }
 
     @NonNull
@@ -57,9 +59,13 @@ public class AdapterItemConteoCiclico extends RecyclerView.Adapter<AdapterItemCo
         }
     }
 
-    public class ConteoCiclicoViewHolder extends ViewHolder {
+    public interface RecyclerViewClickListener{
+        void onClick(View v, int position);
+    }
 
-        private static final String TAG = "ConteoCiclicoVoewHolder";
+    public class ConteoCiclicoViewHolder extends ViewHolder{
+
+        private static final String TAG = "ConteoCiclicoViewHolder";
         private TextView cycleCountHeaderId;
         private TextView cycleCountHeaderName;
         private TextView creationDate;
@@ -69,6 +75,8 @@ public class AdapterItemConteoCiclico extends RecyclerView.Adapter<AdapterItemCo
             this.cycleCountHeaderId = itemView.findViewById(R.id.cycleCountHeaderId);
             this.cycleCountHeaderName = itemView.findViewById(R.id.cycleCountHeaderName);
             this.creationDate = itemView.findViewById(R.id.creationDate);
+
+            //itemView.setOnClickListener(this);
         }
 
         public void onBind(MtlCycleCountHeaders mtlCycleCountHeaders) {
@@ -76,6 +84,9 @@ public class AdapterItemConteoCiclico extends RecyclerView.Adapter<AdapterItemCo
             this.cycleCountHeaderName.setText(mtlCycleCountHeaders.getCycleCountHeaderName());
             this.creationDate.setText(mtlCycleCountHeaders.getCreationDate());
         }
+
+
     }
+
 
 }

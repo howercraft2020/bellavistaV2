@@ -9,30 +9,30 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".InventarioApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/BaveTheme"
-        android:name="cl.clsoft.bave.InventarioApplication"
-        android:requestLegacyExternalStorage="true">
+        android:theme="@style/BaveTheme">
+        <activity android:name=".view.ActivityCiclicoDetalle"></activity>
         <activity android:name=".view.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Entrega"></activity>
+        <activity android:name=".Entrega" />
         <activity android:name=".Recepcion" />
         <activity
-            android:name="cl.clsoft.bave.view.ActivityCiclicos"
-            android:label="Conteos Cíclicos">
-        </activity>
+            android:name=".view.ActivityCiclicos"
+            android:label="Conteos Cíclicos"></activity>
         <activity
-            android:name="cl.clsoft.bave.view.ActivityFisicos"
-            android:label="Inventarios Físicos">
-        </activity>
+            android:name=".view.ActivityFisicos"
+            android:label="Inventarios Físicos"></activity>
     </application>
 
 </manifest>

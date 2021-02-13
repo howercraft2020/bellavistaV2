@@ -195,7 +195,7 @@ public class BaveServiceImpl implements IBaveService {
                 } else if (extraccion[0].equals("2")) {
                     MtlCycleCountEntries mtlCycleCountEntries = new MtlCycleCountEntries();
                     mtlCycleCountEntries.setCycleCountEntryId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
-                    mtlCycleCountEntries.setInventoriItemId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
+                    mtlCycleCountEntries.setInventoryItemId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
                     mtlCycleCountEntries.setSubinventory(extraccion[3]);
                     mtlCycleCountEntries.setEntryStatusCode(extraccion[4]);
                     mtlCycleCountEntries.setOrganizationId(extraccion[5].equalsIgnoreCase("") ? null : new Long(extraccion[5]));
