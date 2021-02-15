@@ -28,7 +28,7 @@ public class PoHeadersAllRowMapper implements RowMapper<PoHeadersAll>{
         entity.setRateDate(cursor.getString(cursor.getColumnIndex(PoHeadersAllCatalogo.COLUMN_RATE_DATE)));
         entity.setRate(cursor.getLong(cursor.getColumnIndex(PoHeadersAllCatalogo.COLUMN_RATE)));
         entity.setUserId(cursor.getLong(cursor.getColumnIndex(PoHeadersAllCatalogo.COLUMN_USER_ID)));
-        entity.setReceiptNum(cursor.getString(cursor.getColumnIndex(PoHeadersAllCatalogo.COLUMN_RECEIPT_NUM)));
+        entity.setReceiptNum(cursor.getLong(cursor.getColumnIndex(PoHeadersAllCatalogo.COLUMN_RECEIPT_NUM)));
 
         return entity;
     }

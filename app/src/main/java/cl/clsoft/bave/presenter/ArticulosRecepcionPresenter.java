@@ -1,6 +1,10 @@
 package cl.clsoft.bave.presenter;
 
+import java.util.List;
+
 import cl.clsoft.bave.base.BasePresenter;
+import cl.clsoft.bave.exception.ServiceException;
+import cl.clsoft.bave.model.RcvTransactionsInterface;
 import cl.clsoft.bave.service.IRecepcionOcService;
 import cl.clsoft.bave.view.ActivityArticulosRecepcion;
 
@@ -13,5 +17,14 @@ public class ArticulosRecepcionPresenter extends BasePresenter {
     public ArticulosRecepcionPresenter(ActivityArticulosRecepcion mview, IRecepcionOcService mService) {
         this.mview = mview;
         this.mService = mService;
+    }
+
+    public List<RcvTransactionsInterface> getAllArticulos(Long headerInterfaceId){
+        try{
+            return this.mService.getAllArticulos(headerInterfaceId);
+        }catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

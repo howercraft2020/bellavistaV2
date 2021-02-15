@@ -8,4 +8,5 @@ import cl.clsoft.bave.model.RcvTransactionsInterface;
 public interface IRcvTransactionsInterfaceDao {
 
     public List<RcvTransactionsInterface> getArticulos(Long id) throws DaoException;
+    public void insert(RcvTransactionsInterface rcvTransactionsInterface) throws DaoException;
 }

@@ -2,9 +2,18 @@ package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,29 +33,85 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
     private TextView segment1;
     private TextView receiptNum;
     private TextView creationDate;
+    private Long interfaceHeaderId;
+    String numeroOc;
+    Long numeroRecep;
+    String fechaCreacion;
+
+    //Controls
+    private RecyclerView recyclerViewArticulosRecepcion;
+    private AdapterItemArticulosRecepcion adapter;
 
     @NonNull
     @Override
     protected ArticulosRecepcionPresenter createPresenter(@NonNull Context context) {
-        return new  ArticulosRecepcionPresenter(this, new RecepcionOcService());
+        return new ArticulosRecepcionPresenter(this, new RecepcionOcService());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+
+        inflater.inflate(R.menu.menu_articulos_recepcion, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_more:
+                //Log.d(TAG, "Agregar Recepcion");
+                Intent i = new Intent(this, ActivityAgregarRecepcion.class);
+                i.putExtra("numeroOc", numeroOc);
+                i.putExtra("NumeroRecep", numeroRecep);
+                i.putExtra("fechaCreacion", fechaCreacion);
+
+                startActivity(i);
+                this.finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_articulos_recepcion);
+        setContentView(R.layout.activity_articulos_recepcion);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         segment1 = (TextView) findViewById(R.id.segment1);
         receiptNum = (TextView) findViewById(R.id.receiptNum);
         creationDate = (TextView) findViewById(R.id.creationDate);
 
-        String numeroOc = getIntent().getStringExtra("numeroOc");
-        String numeroRecep = getIntent().getStringExtra("NumeroRecep");
-        String fechaCreacion = getIntent().getStringExtra("fechaCreacion");
+        numeroOc = getIntent().getStringExtra("numeroOc");
+        numeroRecep = getIntent().getLongExtra("NumeroRecep",0);
+        fechaCreacion = getIntent().getStringExtra("fechaCreacion");
+
+        interfaceHeaderId = Long.parseLong(numeroOc+numeroRecep);
 
         segment1.setText(numeroOc);
-        receiptNum.setText(numeroRecep);
+        receiptNum.setText(numeroRecep.toString());
         creationDate.setText(fechaCreacion);
+
+        //Bind Controls
+        this.llProgressBar = findViewById(R.id.llProgressBar);
+        this.recyclerViewArticulosRecepcion = findViewById(R.id.recyclerViewArticulosRecepcion);
+
+        final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+        });
+
+        // Set Controls
+        this.recyclerViewArticulosRecepcion.setHasFixedSize(true);
+        this.recyclerViewArticulosRecepcion.setLayoutManager(new LinearLayoutManager(this));
+
+         this.articulos = mPresenter.getAllArticulos(interfaceHeaderId);
+        this.adapter = new AdapterItemArticulosRecepcion(articulos);
+        this.recyclerViewArticulosRecepcion.setAdapter(this.adapter);
 
     }
 }

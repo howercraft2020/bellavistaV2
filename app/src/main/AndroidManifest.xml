@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/BaveTheme">
-        <activity android:name=".view.ActivityArticulosRecepcion"></activity>
+        <activity android:name=".view.ActivityAgregarRecepcion"></activity>
+        <activity android:name=".view.ActivityArticulosRecepcion" />
         <activity android:name=".view.ActivityRecepcionOc" />
         <activity android:name=".view.ActivityMain">
             <intent-filter>

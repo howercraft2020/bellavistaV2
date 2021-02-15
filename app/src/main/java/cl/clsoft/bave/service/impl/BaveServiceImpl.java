@@ -346,7 +346,7 @@ public class BaveServiceImpl implements IBaveService {
                     poHeadersAll.setRateDate(extraccion[18]);
                     poHeadersAll.setRate(extraccion[19].equalsIgnoreCase("") ? null : new Long(extraccion[19]));
                     poHeadersAll.setUserId(extraccion[20].equalsIgnoreCase("") ? null : new Long(extraccion[20]));
-                    poHeadersAll.setReceiptNum(extraccion[21]);
+                    poHeadersAll.setReceiptNum(extraccion[21].equalsIgnoreCase("") ? null : new Long(extraccion[21]));
                     poHeadersAllDao.insert(poHeadersAll);
 
                 } else if (extraccion[0].equals("LIN")) {

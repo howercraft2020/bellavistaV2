@@ -36,6 +36,7 @@ public class RcvTransactionsInterface {
     private Long headerInterfaceId;
     private String vendorSiteCode;
     private String processingStatusCode;
+    private String comments;
     private Long useMtlLot;
     private Long UseMtlSerial;
     private String transactionStatusCode;
@@ -43,6 +44,23 @@ public class RcvTransactionsInterface {
     private Long orgId;
     private Long groupId;
     private String autoTransactCode;
+    private String segment1;
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getSegment1() {
+        return segment1;
+    }
+
+    public void setSegment1(String segment1) {
+        this.segment1 = segment1;
+    }
 
     public Long getInterfaceTransactionId() {
         return interfaceTransactionId;
@@ -220,7 +238,7 @@ public class RcvTransactionsInterface {
         this.poUnitPrice = poUnitPrice;
     }
 
-    public String getCurrencyCod() {
+    public String getCurrencyCode() {
         return currencyCode;
     }
 

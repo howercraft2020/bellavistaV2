@@ -5,30 +5,30 @@
     android:padding="6dip" >
 
     <TextView
-        android:id="@+id/segment1"
+        android:id="@+id/codigoSigle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="3dp"
+        android:paddingLeft="3dp"
         android:text="ID"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:paddingStart="3dp"
-        android:paddingLeft="3dp" />
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/receiptNum"
+        android:id="@+id/cantidad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/segment1"
+        android:layout_below="@id/codigoSigle"
         android:text="Trans: "
         android:textSize="12sp"
         android:textStyle="bold"
         android:paddingBottom="4dp"/>
 
     <TextView
-        android:id="@+id/creationDate"
+        android:id="@+id/udm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/receiptNum"
+        android:layout_below="@id/cantidad"
         android:text="Trans: "
         android:textSize="12sp"
         android:textStyle="bold"
@@ -38,6 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?attr/colorPrimaryDark"
-        android:layout_alignBottom="@id/creationDate" />
+        android:layout_alignBottom="@id/udm" />
 
 </RelativeLayout>

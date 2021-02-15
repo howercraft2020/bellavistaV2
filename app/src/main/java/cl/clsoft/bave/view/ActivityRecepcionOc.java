@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,12 +49,17 @@ public class ActivityRecepcionOc extends BaseActivity<RecepcionOcPresenter> {
         this.llProgressBar = findViewById(R.id.llProgressBar);
         this.recyclerViewRecepciones = findViewById(R.id.recyclerViewRecepciones);
 
+        final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+        });
+
         // Set Controls
         this.recyclerViewRecepciones.setHasFixedSize(true);
         this.recyclerViewRecepciones.setLayoutManager(new LinearLayoutManager(this));
 
         recepciones = mPresenter.getRecepcionesOc();
-        //this.adapter = new AdapterItemRecepcionOc(mPresenter.getRecepcionesOc());
         this.adapter = new AdapterItemRecepcionOc(recepciones);
         this.recyclerViewRecepciones.setAdapter(this.adapter);
 
@@ -62,7 +68,7 @@ public class ActivityRecepcionOc extends BaseActivity<RecepcionOcPresenter> {
             public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent motionEvent) {
                 try {
                     View child = rv.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-                    if(child != null ){
+                    if(child != null && mGestureDetector.onTouchEvent(motionEvent) ){
                         int position = rv.getChildAdapterPosition(child);
                         Intent i = null;
                         i = new Intent(ActivityRecepcionOc.this, ActivityArticulosRecepcion.class);

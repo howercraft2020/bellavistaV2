@@ -18,7 +18,7 @@ public class PoHeadersAll {
     private String rateDate;
     private Long rate;
     private Long userId;
-    private String receiptNum;
+    private Long receiptNum;
 
     public PoHeadersAll(){
 
@@ -160,11 +160,11 @@ public class PoHeadersAll {
         this.userId = userId;
     }
 
-    public String getReceiptNum() {
+    public Long getReceiptNum() {
         return receiptNum;
     }
 
-    public void setReceiptNum(String receiptNum) {
+    public void setReceiptNum(Long receiptNum) {
         this.receiptNum = receiptNum;
     }
 }
