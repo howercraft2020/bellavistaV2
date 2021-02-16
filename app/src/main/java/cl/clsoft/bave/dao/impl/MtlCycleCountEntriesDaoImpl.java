@@ -2,6 +2,8 @@ package cl.clsoft.bave.dao.impl;
 
 import android.content.ContentValues;
 
+import java.util.List;
+
 import cl.clsoft.bave.dao.IMtlCycleCountEntriesDao;
 import cl.clsoft.bave.dao.catalogo.MtlCycleCountEntriesCatalogo;
 import cl.clsoft.bave.dao.rowmapper.MtlCycleCountEntriesRowMapper;
@@ -14,7 +16,7 @@ public class MtlCycleCountEntriesDaoImpl extends GenericDao<MtlCycleCountEntries
     public void insert(MtlCycleCountEntries mtlCycleCountEntries) throws DaoException {
         ContentValues values = new ContentValues();
         values.put(MtlCycleCountEntriesCatalogo.COLUMN_ID, mtlCycleCountEntries.getCycleCountEntryId());
-        values.put(MtlCycleCountEntriesCatalogo.COLUMN_INVENTORY_ITEM_ID, mtlCycleCountEntries.getInventoriItemId());
+        values.put(MtlCycleCountEntriesCatalogo.COLUMN_INVENTORY_ITEM_ID, mtlCycleCountEntries.getInventoryItemId());
         values.put(MtlCycleCountEntriesCatalogo.COLUMN_SUBINVENTORY, mtlCycleCountEntries.getSubinventory());
         values.put(MtlCycleCountEntriesCatalogo.COLUMN_ENTRY_STATUS_CODE, mtlCycleCountEntries.getEntryStatusCode());
         values.put(MtlCycleCountEntriesCatalogo.COLUMN_ORGANIZATION_ID, mtlCycleCountEntries.getOrganizationId());
@@ -30,7 +32,7 @@ public class MtlCycleCountEntriesDaoImpl extends GenericDao<MtlCycleCountEntries
     @Override
     public void update(MtlCycleCountEntries mtlCycleCountEntries) throws DaoException {
         ContentValues values = new ContentValues();
-        values.put(MtlCycleCountEntriesCatalogo.COLUMN_INVENTORY_ITEM_ID, mtlCycleCountEntries.getInventoriItemId());
+        values.put(MtlCycleCountEntriesCatalogo.COLUMN_INVENTORY_ITEM_ID, mtlCycleCountEntries.getInventoryItemId());
         values.put(MtlCycleCountEntriesCatalogo.COLUMN_SUBINVENTORY, mtlCycleCountEntries.getSubinventory());
         values.put(MtlCycleCountEntriesCatalogo.COLUMN_ENTRY_STATUS_CODE, mtlCycleCountEntries.getEntryStatusCode());
         values.put(MtlCycleCountEntriesCatalogo.COLUMN_ORGANIZATION_ID, mtlCycleCountEntries.getOrganizationId());
@@ -56,6 +58,11 @@ public class MtlCycleCountEntriesDaoImpl extends GenericDao<MtlCycleCountEntries
     @Override
     public MtlCycleCountEntries get(Long id) throws DaoException {
         return super.selectOne(MtlCycleCountEntriesCatalogo.SELECT, new MtlCycleCountEntriesRowMapper(), id);
+    }
+
+    @Override
+    public List<MtlCycleCountEntries> getSigle(Long idSigle) throws DaoException {
+        return super.selectMany(MtlCycleCountEntriesCatalogo.SELECT_BY_HEADER_COUNT_HEADER_ID,new MtlCycleCountEntriesRowMapper(), idSigle);
     }
 
 }

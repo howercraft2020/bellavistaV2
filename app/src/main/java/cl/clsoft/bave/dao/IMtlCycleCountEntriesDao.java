@@ -1,5 +1,7 @@
 package cl.clsoft.bave.dao;
 
+import java.util.List;
+
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
 
@@ -10,4 +12,5 @@ public interface IMtlCycleCountEntriesDao {
     public void delete(Long id) throws DaoException;
     public void deleteByHeader(Long headerId) throws DaoException;
     public MtlCycleCountEntries get(Long id) throws DaoException;
+    public List<MtlCycleCountEntries> getSigle(Long idSigle) throws DaoException;
 }
