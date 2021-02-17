@@ -62,21 +62,22 @@ public class AdapterItemRecepcionOc extends RecyclerView.Adapter<AdapterItemRece
 
         private static final String TAG = "RecepcionOcViewHolder";
         private TextView segment1;
+        private TextView poHeaderId;
         private TextView receiptNum;
-        private TextView creationDate;
+
 
 
         public RecepcionOcViewHolder(@NonNull View itemView) {
             super(itemView);
             this.segment1 = itemView.findViewById(R.id.segment1);
             this.receiptNum = itemView.findViewById(R.id.receiptNum);
-            this.creationDate = itemView.findViewById(R.id.creationDate);
+            this.poHeaderId = itemView.findViewById(R.id.poHeaderId);
         }
 
         public void onBind(PoHeadersAll poHeadersAll){
             this.segment1.setText(poHeadersAll.getSegment1().toString());
             this.receiptNum.setText(poHeadersAll.getReceiptNum().toString());
-            this.creationDate.setText(poHeadersAll.getCreationDate());
+            this.poHeaderId.setText(poHeadersAll.getPoHeaderId().toString());
         }
 
     }

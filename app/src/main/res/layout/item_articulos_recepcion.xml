@@ -5,9 +5,21 @@
     android:padding="6dip" >
 
     <TextView
+        android:id="@+id/TagcodigoSigle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="3dp"
+        android:paddingLeft="3dp"
+        android:text="Codigo Sigle : "
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/codigoSigle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@id/TagcodigoSigle"
         android:paddingStart="3dp"
         android:paddingLeft="3dp"
         android:text="ID"
@@ -15,24 +27,50 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/Tagcantidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/codigoSigle"
+        android:text="Cantidad : "
+        android:paddingStart="3dp"
+        android:paddingLeft="3dp"
+        android:textSize="12sp"
+        android:textStyle="bold"/>
+
+    <TextView
         android:id="@+id/cantidad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/codigoSigle"
-        android:text="Trans: "
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="0dp"
+        android:layout_toRightOf="@id/Tagcantidad"
+        android:text="Cantidad"
         android:textSize="12sp"
-        android:textStyle="bold"
-        android:paddingBottom="4dp"/>
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/Tagudm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cantidad"
+        android:paddingStart="3dp"
+        android:paddingLeft="3dp"
+        android:text="UDM : "
+        android:textSize="12sp"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/udm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/cantidad"
-        android:text="Trans: "
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="0dp"
+        android:layout_toRightOf="@id/Tagudm"
+        android:text="UDM"
         android:textSize="12sp"
-        android:textStyle="bold"
-        android:paddingBottom="4dp"/>
+        android:textStyle="bold" />
 
     <View
         android:layout_width="match_parent"

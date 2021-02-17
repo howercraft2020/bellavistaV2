@@ -5,39 +5,77 @@
     android:padding="6dip" >
 
     <TextView
-        android:id="@+id/segment1"
+        android:id="@+id/TagSegment1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ID"
+        android:text="Nº OC : "
         android:textSize="16sp"
         android:textStyle="bold"
         android:paddingStart="3dp"
         android:paddingLeft="3dp" />
 
     <TextView
-        android:id="@+id/receiptNum"
+        android:id="@+id/segment1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID"
+        android:layout_toRightOf="@id/TagSegment1"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingStart="3dp"
+        android:paddingLeft="3dp" />
+
+    <TextView
+        android:id="@+id/TagPoHeaderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID : "
+        android:layout_below="@id/TagSegment1"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:paddingStart="3dp"
+        android:paddingLeft="3dp" />
+
+    <TextView
+        android:id="@+id/poHeaderId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/segment1"
-        android:text="Trans: "
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="1dp"
+        android:layout_toRightOf="@id/TagPoHeaderId"
+        android:text="poHeaderId "
         android:textSize="12sp"
-        android:textStyle="bold"
-        android:paddingBottom="4dp"/>
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/creationDate"
+        android:id="@+id/TagReceiptNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/receiptNum"
-        android:text="Trans: "
+        android:layout_below="@id/TagPoHeaderId"
+        android:paddingStart="3dp"
+        android:paddingLeft="3dp"
+        android:paddingBottom="4dp"
+        android:text="Nº Recepcion : "
         android:textSize="12sp"
-        android:textStyle="bold"
-        android:paddingBottom="4dp"/>
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/receiptNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/poHeaderId"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="1dp"
+        android:layout_toRightOf="@id/TagReceiptNum"
+        android:text="ReceiptNum "
+        android:textSize="12sp"
+        android:textStyle="bold" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?attr/colorPrimaryDark"
-        android:layout_alignBottom="@id/creationDate" />
+        android:layout_alignBottom="@id/TagReceiptNum" />
 
 </RelativeLayout>

@@ -1,5 +1,7 @@
 package cl.clsoft.bave.dao.impl;
 
+import cl.clsoft.bave.dao.catalogo.MtlCycleCountHeadersCatalogo;
+import cl.clsoft.bave.dao.rowmapper.MtlCycleCountHeadersRowMapper;
 import cl.clsoft.bave.dao.rowmapper.RowMapper;
 import cl.clsoft.bave.dao.rowmapper.RcvHeadersInterfaceRowMapper;
 import cl.clsoft.bave.exception.DaoException;
@@ -9,7 +11,7 @@ import cl.clsoft.bave.model.RcvHeadersInterface;
 
 public class RcvHeadersInterfaceDaoImpl extends GenericDao<RcvHeadersInterface> implements IRcvHeadersInterfaceDao
 {
-    public void insert(final RcvHeadersInterface rcvHeadersInterface) throws DaoException {
+    public void insert(RcvHeadersInterface rcvHeadersInterface) throws DaoException {
         final ContentValues values = new ContentValues();
         values.put("header_interface_id", rcvHeadersInterface.getHeaderInterfaceId());
         values.put("receipt_source_code", rcvHeadersInterface.getReciptSourceCode());
@@ -38,7 +40,7 @@ public class RcvHeadersInterfaceDaoImpl extends GenericDao<RcvHeadersInterface> 
         super.insert("rcv_headers_interface", values);
     }
 
-    public RcvHeadersInterface get(final Long interfaceHeaderId) throws DaoException {
-        return (RcvHeadersInterface)super.selectOne(" SELECT * FROM rcv_headers_interface WHERE header_interface_id = ? ", (RowMapper)new RcvHeadersInterfaceRowMapper(), new Object[] { interfaceHeaderId });
+    public RcvHeadersInterface get(Long interfaceHeaderId) throws DaoException {
+        return super.selectOne(" SELECT * FROM rcv_headers_interface WHERE header_interface_id = ? ", new RcvHeadersInterfaceRowMapper());
     }
 }

@@ -26,7 +26,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".Entrega" />
-        <activity android:name=".Recepcion" />
+        <activity
+            android:name=".view.ActivityRecepcionOc"
+            android:label="Recepcion"/>
+        <activity
+            android:name=".view.ActivityArticulosRecepcion"></activity>
+        <activity
+            android:name=".view.ActivityAgregarRecepcion"></activity>
         <activity
             android:name=".view.ActivityCiclicos"
             android:label="Conteos Cíclicos"></activity>

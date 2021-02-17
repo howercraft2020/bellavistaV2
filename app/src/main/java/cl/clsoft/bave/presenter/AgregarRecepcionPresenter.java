@@ -17,13 +17,18 @@ public class AgregarRecepcionPresenter extends BasePresenter {
         this.mService = mService;
     }
 
-    public void cargaRecepcion(String segment1, String oc, Long receiptNum, Long cantidad) {
+    public void cargaRecepcion(String segment1, Long poHeaderId, String oc, Long receiptNum, Long cantidad) {
+
         try{
 
-            if(segment1.equals("")){
+            if(segment1.equals("")) {
                 mview.showError("Debe Ingresar un Codigo Sigle");
-            }else {
-                this.mService.cargaRecepcion(segment1, oc, receiptNum, cantidad);
+            }
+            else if(cantidad == 0){
+                mview.showError("Debe Ingresar una cantidad mayor que 0");
+            }
+            else {
+                this.mService.cargaRecepcion(segment1, poHeaderId, oc, receiptNum, cantidad);
                 mview.showSuccess("Registro ingresado correctamente");
             }
         }catch (ServiceException e){

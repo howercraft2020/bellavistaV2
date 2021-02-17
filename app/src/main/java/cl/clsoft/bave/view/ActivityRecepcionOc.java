@@ -73,8 +73,8 @@ public class ActivityRecepcionOc extends BaseActivity<RecepcionOcPresenter> {
                         Intent i = null;
                         i = new Intent(ActivityRecepcionOc.this, ActivityArticulosRecepcion.class);
                         i.putExtra("numeroOc", recepciones.get(position).getSegment1().toString());
+                        i.putExtra("poHeaderId", recepciones.get(position).getPoHeaderId().toString());
                         i.putExtra("NumeroRecep", recepciones.get(position).getReceiptNum());
-                        i.putExtra("fechaCreacion", recepciones.get(position).getCreationDate());
                         startActivity(i);
                         finish();
                         return true;

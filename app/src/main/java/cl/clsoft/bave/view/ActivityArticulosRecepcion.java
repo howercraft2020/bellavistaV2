@@ -32,11 +32,11 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
     private List<RcvTransactionsInterface> articulos;
     private TextView segment1;
     private TextView receiptNum;
-    private TextView creationDate;
+    private TextView poHeaderId;
     private Long interfaceHeaderId;
     String numeroOc;
     Long numeroRecep;
-    String fechaCreacion;
+    String id;
 
     //Controls
     private RecyclerView recyclerViewArticulosRecepcion;
@@ -64,12 +64,16 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
                 Intent i = new Intent(this, ActivityAgregarRecepcion.class);
                 i.putExtra("numeroOc", numeroOc);
                 i.putExtra("NumeroRecep", numeroRecep);
-                i.putExtra("fechaCreacion", fechaCreacion);
+                i.putExtra("poHeaderId", id);
 
                 startActivity(i);
                 this.finish();
                 return true;
-
+            case android.R.id.home:
+                Intent imain = new Intent(this, ActivityRecepcionOc.class);
+                startActivity(imain);
+                this.finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -83,17 +87,17 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
 
         segment1 = (TextView) findViewById(R.id.segment1);
         receiptNum = (TextView) findViewById(R.id.receiptNum);
-        creationDate = (TextView) findViewById(R.id.creationDate);
+        poHeaderId = (TextView) findViewById(R.id.poHeaderId);
 
         numeroOc = getIntent().getStringExtra("numeroOc");
         numeroRecep = getIntent().getLongExtra("NumeroRecep",0);
-        fechaCreacion = getIntent().getStringExtra("fechaCreacion");
+        id = getIntent().getStringExtra("poHeaderId");
 
-        interfaceHeaderId = Long.parseLong(numeroOc+numeroRecep);
+        interfaceHeaderId = Long.parseLong(id+numeroRecep);
 
         segment1.setText(numeroOc);
         receiptNum.setText(numeroRecep.toString());
-        creationDate.setText(fechaCreacion);
+        poHeaderId.setText(id);
 
         //Bind Controls
         this.llProgressBar = findViewById(R.id.llProgressBar);

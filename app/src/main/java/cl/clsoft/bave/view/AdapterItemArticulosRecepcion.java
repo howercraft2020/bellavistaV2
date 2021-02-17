@@ -77,7 +77,7 @@ public class AdapterItemArticulosRecepcion extends RecyclerView.Adapter<AdapterI
         public void onBind(RcvTransactionsInterface rcvTransactionsInterface){
             this.codigoSigle.setText(rcvTransactionsInterface.getSegment1());
             this.cantidad.setText(rcvTransactionsInterface.getQuantity().toString());
-            this.udm.setText(rcvTransactionsInterface.getUnitOfMeasure());
+            this.udm.setText(rcvTransactionsInterface.getUomCode());
         }
     }
 }

@@ -23,8 +23,9 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
     private EditText cantidad;
     private EditText udm;
     String numeroOc;
+    String poHeaderId;
     Long numeroRecep;
-    String fechaCreacion;
+
 
 
 
@@ -46,6 +47,7 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_recepcion);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         numeroParte = (EditText) findViewById(R.id.numeroParte);
         codigoSigle = (EditText) findViewById(R.id.codigoSigle);
@@ -54,24 +56,35 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
 
         numeroOc = getIntent().getStringExtra("numeroOc");
         numeroRecep = getIntent().getLongExtra("NumeroRecep",0);
-        fechaCreacion = getIntent().getStringExtra("fechaCreacion");
+        poHeaderId = getIntent().getStringExtra("poHeaderId");
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String numeroParte;
         String codigoSigle;
-        Long cantidad;
+        Long cantidad = 0L;
         String udm;
 
         numeroParte = this.numeroParte.getText().toString();
         codigoSigle = this.codigoSigle.getText().toString();
-        cantidad = Long.parseLong(this.cantidad.getText().toString());
+
+        if(this.cantidad.getText().toString().trim().length() != 0) {
+            cantidad = Long.parseLong(this.cantidad.getText().toString());
+        }
         udm = this.udm.getText().toString();
 
         switch (item.getItemId()){
             case R.id.action_save:
-                mPresenter.cargaRecepcion(codigoSigle,numeroOc,numeroRecep, cantidad);
+                mPresenter.cargaRecepcion(codigoSigle,Long.parseLong(poHeaderId),numeroOc,numeroRecep, cantidad);
+                return true;
+            case android.R.id.home:
+                Intent i = new Intent(this, ActivityArticulosRecepcion.class);
+                i.putExtra("numeroOc", numeroOc);
+                i.putExtra("NumeroRecep", numeroRecep);
+                i.putExtra("poHeaderId", poHeaderId);
+                startActivity(i);
+                this.finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
