@@ -74,13 +74,21 @@ public class BaveServiceImpl implements IBaveService {
                     Localizador localizador = new Localizador();
                     localizador.setIdLocalizador(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
                     localizador.setOrganizationId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
-                    localizador.setCodSubinventario(extraccion[3]);
-                    localizador.setCodLocalizador(extraccion[4]);
-                    localizador.setCodSeg1(extraccion[5]);
-                    localizador.setCodSeg2(extraccion[6]);
-                    localizador.setCodSeg3(extraccion[7]);
-                    localizador.setCodSeg4(extraccion[8]);
+                    if (extraccion.length >= 4)
+                        localizador.setCodSubinventario(extraccion[3]);
+                    if (extraccion.length >= 5)
+                        localizador.setCodLocalizador(extraccion[4]);
+                    if (extraccion.length >= 6)
+                        localizador.setCodSeg1(extraccion[5]);
+                    if (extraccion.length >= 7)
+                        localizador.setCodSeg2(extraccion[6]);
+                    if (extraccion.length >= 8)
+                        localizador.setCodSeg3(extraccion[7]);
+                    if (extraccion.length >= 9)
+                        localizador.setCodSeg4(extraccion[8]);
+                    if (extraccion.length >= 10)
                     localizador.setCodSeg5(extraccion[9]);
+                    if (extraccion.length >= 11)
                     localizador.setCodSeg6(extraccion[10]);
                     localizadorDao.insert(localizador);
                 } else if (extraccion[0].equals("4")) {
