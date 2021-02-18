@@ -39,9 +39,6 @@
         <activity
             android:name=".view.ActivityFisicos"
             android:label="Inventarios Físicos" />
-            android:name="cl.clsoft.bave.view.ActivityFisicos"
-            android:label="Inventarios Fisicos">
-        </activity>
         <activity android:name=".view.ActivityFisicoSub"
             android:label="Detalles de inventario"></activity>
         <activity android:name=".view.ActivityAgregarFisicoInventario"
