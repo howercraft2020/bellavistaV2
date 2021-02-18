@@ -15,5 +15,7 @@ public class MtlPhysicalSubinventoriesCatalogo {
                     ")";
 
     public static final String DELETE_BY_PHYSICAL_INVENTORY_ID = COLUMN_PHYSICAL_INVENTORY_ID + " = ?";
+    public static final String SELECT = "SELECT * FROM " + TABLE + " WHERE " + COLUMN_PHYSICAL_INVENTORY_ID + " = ?";
+
 
 }

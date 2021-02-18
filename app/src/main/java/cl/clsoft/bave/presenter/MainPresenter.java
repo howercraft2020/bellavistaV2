@@ -48,7 +48,7 @@ public class MainPresenter extends BasePresenter {
 
 
                 // Archivo setup
-                if (listFile[i].getName().startsWith("setup") || listFile[i].getName().startsWith("SETUP")) {
+                if (listFile[i].getName().startsWith("XXEJE_INI_Setup") || listFile[i].getName().startsWith("XXEJE_INI_SETUP")) {
                     File archivoSetup = new File(ruta.getPath() + "/" + listFile[i].getName());
                     this.baveService.cargarArchivoSetup(archivoSetup);
                 }

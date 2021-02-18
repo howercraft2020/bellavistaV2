@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dip">
+
+    <TextView
+        android:id="@+id/fechaCreacionEtiqueta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/localizadorTextView"
+        android:text="FECHA CREACION:" />
+
+    <TextView
+        android:id="@+id/nombreEtiqueta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idEtiquetaDetalle"
+        android:layout_marginTop="2dp"
+        android:text="NOMBRE:" />
+
+    <TextView
+        android:id="@+id/idEtiquetaDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID:" />
+
+    <TextView
+        android:id="@+id/localizadorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subinventarioTextView"
+        android:text="LOCALIZADOR:" />
+
+    <TextView
+        android:id="@+id/idTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/idEtiquetaDetalle"
+        android:layout_marginLeft="25dp"
+        android:text="idText" />
+
+    <TextView
+        android:id="@+id/nombreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idTextView"
+        android:layout_alignLeft="@id/nombreEtiqueta"
+        android:layout_marginLeft="71dp"
+        android:layout_marginTop="1dp"
+        android:text="nombreText" />
+
+    <TextView
+        android:id="@+id/subinventarioTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nombreTextView"
+        android:text="SUBINVENTARIO:" />
+
+    <TextView
+        android:id="@+id/fechaCreacionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/localizadorTextView"
+        android:layout_alignLeft="@id/fechaCreacionEtiqueta"
+        android:layout_marginLeft="127dp"
+        android:layout_marginTop="0dp"
+        android:text="fechaCreacionText" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_alignBottom="@id/fechaCreacionTextView" />
+
+</RelativeLayout>

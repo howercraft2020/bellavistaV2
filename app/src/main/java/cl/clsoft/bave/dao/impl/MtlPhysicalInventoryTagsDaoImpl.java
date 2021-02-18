@@ -2,9 +2,14 @@ package cl.clsoft.bave.dao.impl;
 
 import android.content.ContentValues;
 
+import java.util.List;
+
 import cl.clsoft.bave.dao.IMtlPhysicalInventoryTagsDao;
+import cl.clsoft.bave.dao.catalogo.MtlPhysicalInventoriesCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlPhysicalInventoryTagsCatalogo;
+import cl.clsoft.bave.dao.rowmapper.MtlPhysicalInventoryTagsRowMapper;
 import cl.clsoft.bave.exception.DaoException;
+import cl.clsoft.bave.model.MtlPhysicalInventories;
 import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 
 public class MtlPhysicalInventoryTagsDaoImpl extends GenericDao<MtlPhysicalInventoryTags> implements IMtlPhysicalInventoryTagsDao {
@@ -29,6 +34,11 @@ public class MtlPhysicalInventoryTagsDaoImpl extends GenericDao<MtlPhysicalInven
     @Override
     public void deleteByPhysicalInventory(Long physicalInventoryId) throws DaoException {
         super.delete(MtlPhysicalInventoryTagsCatalogo.TABLE, MtlPhysicalInventoryTagsCatalogo.DELETE_BY_PHYSICAL_INVENTORY_ID, physicalInventoryId);
+    }
+
+    @Override
+    public List<MtlPhysicalInventoryTags> getAllTags(Long physicalInventoryId) throws DaoException {
+        return super.selectMany(MtlPhysicalInventoryTagsCatalogo.SELECT_ALL, new MtlPhysicalInventoryTagsRowMapper(), physicalInventoryId);
     }
 
 }
