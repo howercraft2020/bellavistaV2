@@ -53,6 +53,23 @@ public class RcvTransactionsInterfaceRowMapper implements RowMapper<RcvTransacti
         entity.setOrgId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_ORG_ID)));
         entity.setGroupId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_GROUP_ID)));
         entity.setAutoTransactCode(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_AUTO_TRANSACT_CODE)));
+        entity.setSegment1(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_SEGMENT1)));
+        entity.setProcessFlag(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_PROCESS_FLAG)));
+        entity.setTransactionMode(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_MODE)));
+        entity.setTransactionUom(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_UOM)));
+        entity.setSubinventoryCode(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_SUBINVENTORY_CODE)));
+        entity.setLocatorId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_LOCATOR_ID)));
+        entity.setTransactionSourceName(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_SOURCE_NAME)));
+        entity.setTransactionSourceTypeId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_SOURCE_TYPE_ID)));
+        entity.setTransactionActionId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_ACTION_ID)));
+        entity.setTransactionTypeId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_TYPE_ID)));
+        entity.setTransactionReference(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_REFERENCE)));
+        entity.setTransferSubinventory(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_TRANSFER_SUBINVENTORY)));
+        entity.setTransferOrganization(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_TRANSFER_ORGANIZATION)));
+        entity.setTransferLocator(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_TRANSFER_LOCATOR)));
+        entity.setSourceCode(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_SOURCE_CODE)));
+        entity.setSourceLineId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_SOURCE_LINE_ID)));
+        entity.setSourceHeaderId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_SOURCE_HEADER_ID)));
 
         return entity;
     }

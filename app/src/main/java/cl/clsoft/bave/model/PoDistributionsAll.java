@@ -7,10 +7,10 @@ public class PoDistributionsAll {
     private Long poHeaderId;
     private Long distributionNum;
     private String rateDate;
-    private String rate;
+    private Long rate;
     private String destinationSubinventory;
     private Long deliverToLocationId;
-    private Long quantityOrder;
+    private Long quantityOrdered;
     private Long quantityDelivered;
     private Long quantityBilled;
     private Long quantityCancelled;
@@ -67,11 +67,11 @@ public class PoDistributionsAll {
         this.rateDate = rateDate;
     }
 
-    public String getRate() {
+    public Long getRate() {
         return rate;
     }
 
-    public void setRate(String rate) {
+    public void setRate(Long rate) {
         this.rate = rate;
     }
 
@@ -91,12 +91,12 @@ public class PoDistributionsAll {
         this.deliverToLocationId = deliverToLocationId;
     }
 
-    public Long getQuantityOrder() {
-        return quantityOrder;
+    public Long getQuantityOrdered() {
+        return quantityOrdered;
     }
 
-    public void setQuantityOrder(Long quantityOrder) {
-        this.quantityOrder = quantityOrder;
+    public void setQuantityOrdered(Long quantityOrder) {
+        this.quantityOrdered = quantityOrder;
     }
 
     public Long getQuantityDelivered() {

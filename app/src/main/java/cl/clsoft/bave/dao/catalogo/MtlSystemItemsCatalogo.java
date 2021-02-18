@@ -26,5 +26,7 @@ public class MtlSystemItemsCatalogo {
     public static final String UPDATE = " WHERE " + COLUMN_ID + " = ?";
     public static final String DELETE = " WHERE " + COLUMN_ID + " = ?";
     public static final String SELECT = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_ID + " = ? ";
+    public static final String SELECT_ALL = "SELECT * FROM " + TABLE;
+
 
 }

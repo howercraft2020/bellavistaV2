@@ -30,6 +30,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(Utilidades.CREAR_TABLA_RCV_SHIPMENT_HEADERS);
         db.execSQL(Utilidades.CREAR_TABLA_RCV_TRANSACTIONS);
         db.execSQL(Utilidades.CREAR_TABLA_MTL_TRANSACTIONS_LOTS_IFACE);
+        db.execSQL(Utilidades.CREAR_TABLA_TABLA_MTL_SERIAL_NUMBERS_INTERFACE);
 
     }
 

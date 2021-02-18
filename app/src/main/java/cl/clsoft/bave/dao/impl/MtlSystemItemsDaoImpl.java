@@ -2,8 +2,11 @@ package cl.clsoft.bave.dao.impl;
 
 import android.content.ContentValues;
 
+import java.util.List;
+
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.catalogo.MtlSystemItemsCatalogo;
+import cl.clsoft.bave.dao.rowmapper.MtlSystemItemsRowMapper;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.MtlSystemItems;
 
@@ -25,5 +28,11 @@ public class MtlSystemItemsDaoImpl extends GenericDao<MtlSystemItems> implements
         } catch (Exception ex) {
             throw new DaoException(1, ex.getMessage());
         }
+    }
+
+    @Override
+    public List<MtlSystemItems> getAll() throws DaoException {
+
+        return super.selectMany(MtlSystemItemsCatalogo.SELECT_ALL, new MtlSystemItemsRowMapper());
     }
 }

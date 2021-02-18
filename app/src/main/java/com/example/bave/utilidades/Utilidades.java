@@ -16,6 +16,7 @@ public class Utilidades {
     public static final String TABLA_RCV_SHIPMENT_HEADERS = "rcv_shipment_headers";
     public static final String TABLA_RCV_TRANSACTIONS = "rcv_transactions";
     public static final String TABLA_MTL_TRANSACTIONS_LOTS_IFACE = "mtl_transactions_lots_iface";
+    public static final String TABLA_MTL_SERIAL_NUMBERS_INTERFACE = "mtl_serial_numbers_interface";
 
 
     //Campos Organizacion
@@ -252,6 +253,21 @@ public class Utilidades {
     public static final String CAMPO_ATTRIBUTE_2_MTL = "attribute2";
     public static final String CAMPO_ATTRIBUTE_3_MTL = "attribute3";
 
+    //Campos Mtl_Serial_Numbers_Interface
+    public static final String CAMPO_TRANSACTION_INTERFACE_ID_SNI = "transaction_interface_id";
+    public static final String CAMPO_LAST_UPDATE_DATE_SNI = "last_update_date";
+    public static final String CAMPO_LAST_UPDATED_BY_SNI = "last_updated_by";
+    public static final String CAMPO_CREATION_DATE_SNI = "creation_date";
+    public static final String CAMPO_CREATED_BY_SNI = "created_by";
+    public static final String CAMPO_PO_HEADER_ID_SNI = "po_header_id";
+    public static final String CAMPO_PO_LINE_ID_SNI = "po_line_id";
+    public static final String CAMPO_INVENTORY_ITEM_ID_SNI = "inventory_item_id";
+    public static final String CAMPO_LAST_UPDATE_LOGIN_SNI = "last_update_login";
+    public static final String CAMPO_FM_SERIAL_NUMBER_SNI = "fm_serial_number";
+    public static final String CAMPO_TO_SERIAL_NUMBER_SNI = "to_serial_number";
+    public static final String CAMPO_PRODUCT_CODE_SNI = "product_code";
+    public static final String CAMPO_PRODUCT_TRANSACTION_ID_SNI = "product_transaction_id";
+
 
     //Creación Tabla Organizacion
     public static final String CREAR_TABLA_ORGANIZACION="CREATE TABLE "+ TABLA_ORGANIZACION +" ("+CAMPO_ID+" INTEGER, "+CAMPO_CODE+" TEXT) ";
@@ -291,5 +307,8 @@ public class Utilidades {
 
     //Creación Tabla Mtl_Transactions_Lots_Iface
     public static final String CREAR_TABLA_MTL_TRANSACTIONS_LOTS_IFACE="CREATE TABLE "+TABLA_MTL_TRANSACTIONS_LOTS_IFACE +"("+CAMPO_MTL_TRANSACTION_LOTS_IFACE_MTL+" INTEGER, "+CAMPO_LAST_UPDATE_DATE_MTL+" TEXT, "+CAMPO_LAST_UPDATE_BY_MTL+" INTEGER, "+CAMPO_CREATION_DATE_MTL+" TEXT, "+CAMPO_CREATED_BY_MTL+" INTEGER, "+CAMPO_PO_HEADER_ID_MTL+" INTEGER, "+CAMPO_PO_LINE_ID_MTL+" INTEGER, "+CAMPO_INVENTORY_ITEM_ID_MTL+" INTEGER, "+CAMPO_LAST_UPDATE_LOGIN_MTL+" INTEGER, "+CAMPO_LOT_NUMBER_MTL+" TEXT, "+CAMPO_TRANSACTION_QUANTITY_MTL+" INTEGER, "+CAMPO_PRIMARY_QUANTITY_MTL+" INTEGER, "+CAMPO_SERIAL_TRANSACTION_TEMP_ID_MTL+" INTEGER, "+CAMPO_PRODUCT_CODE_MTL+" TEXT, "+CAMPO_PRODUCT_TRANSACTION_ID_MTL+" INTEGER, "+CAMPO_SUPPLIER_LOT_NUMBER_MTL+" TEXT, "+CAMPO_LOT_EXPIRATION_DATE_MTL+" TEXT, "+CAMPO_ATTRIBUTE_CATEGORY_MTL+" TEXT, "+CAMPO_ATTRIBUTE_1_MTL+" TEXT, "+CAMPO_ATTRIBUTE_2_MTL+" TEXT, "+CAMPO_ATTRIBUTE_3_MTL+" TEXT) ";
+
+    //Creación Tabla Mtl_Serial_Number_Interface
+    public static final String CREAR_TABLA_TABLA_MTL_SERIAL_NUMBERS_INTERFACE="CREATE TABLE "+TABLA_MTL_SERIAL_NUMBERS_INTERFACE +"("+CAMPO_TRANSACTION_INTERFACE_ID_SNI+" INTEGER, "+CAMPO_LAST_UPDATE_DATE_SNI+" TEXT, "+CAMPO_LAST_UPDATED_BY_SNI+" INTEGER, "+CAMPO_CREATION_DATE_SNI+" TEXT, "+CAMPO_CREATED_BY_SNI+" INTEGER, "+CAMPO_PO_HEADER_ID_SNI+" INTEGER, "+CAMPO_PO_LINE_ID_SNI+" INTEGER, "+CAMPO_INVENTORY_ITEM_ID_SNI+" TEXT, "+CAMPO_LAST_UPDATE_LOGIN_SNI+" INTEGER, "+CAMPO_FM_SERIAL_NUMBER_SNI+" TEXT, "+CAMPO_TO_SERIAL_NUMBER_SNI+" TEXT, "+CAMPO_PRODUCT_CODE_SNI+" TEXT, "+CAMPO_PRODUCT_TRANSACTION_ID_SNI+" INTEGER) ";
 
 }

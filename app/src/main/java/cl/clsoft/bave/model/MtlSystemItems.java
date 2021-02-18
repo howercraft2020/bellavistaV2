@@ -2,8 +2,8 @@ package cl.clsoft.bave.model;
 
 public class MtlSystemItems {
     private Long inventoryItemId;
-    private String description;
-    private String longDescription;
+    private String description;                 //numero parte
+    private String longDescription;             //numero parte
     private String segment1;
     private String primaryUomCode;
     private String lotControlCode;

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/sigleEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/parteEditText"
+        android:layout_marginBottom="28dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="Codigo sigle"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/serieEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sigleEditText"
+        android:layout_marginBottom="28dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="N° serie"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/parteEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="N° parte"
+        android:inputType="textPersonName"
+        android:padding="6dp" />
+
+    <EditText
+        android:id="@+id/loteEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/serieEditText"
+        android:layout_marginBottom="28dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="N° lote"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/cantidadEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loteEditText"
+        android:layout_marginBottom="28dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="Cantidad"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/stockEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cantidadEditText"
+        android:layout_marginBottom="28dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="UMD stock"
+        android:inputType="textPersonName" />
+</RelativeLayout>

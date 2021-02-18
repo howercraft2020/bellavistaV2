@@ -3,7 +3,7 @@ package cl.clsoft.bave.dao.catalogo;
 public class PoDistributionsAllCatalogo {
 
     public static final String TABLE = "po_distributions_all";
-    public static final String COLUMN_ID = "po_distribution_id";
+    public static final String COLUMN_PO_DISTRIBUTION_ID = "po_distribution_id";
     public static final String COLUMN_LINE_LOCATION_ID = "line_location_id";
     public static final String COLUMN_PO_LINE_ID = "po_line_id";
     public static final String COLUMN_PO_HEADER_ID = "po_header_id";
@@ -19,7 +19,7 @@ public class PoDistributionsAllCatalogo {
 
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE + "( " +
-                    COLUMN_ID +" INTEGER, " +
+                    COLUMN_PO_DISTRIBUTION_ID +" INTEGER, " +
                     COLUMN_LINE_LOCATION_ID + " INTEGER, " +
                     COLUMN_PO_LINE_ID + " INTEGER, " +
                     COLUMN_PO_HEADER_ID + " INTEGER, " +

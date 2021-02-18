@@ -36,6 +36,7 @@ public class RcvTransactionsInterface {
     private Long headerInterfaceId;
     private String vendorSiteCode;
     private String processingStatusCode;
+    private String comments;
     private Long useMtlLot;
     private Long UseMtlSerial;
     private String transactionStatusCode;
@@ -43,6 +44,167 @@ public class RcvTransactionsInterface {
     private Long orgId;
     private Long groupId;
     private String autoTransactCode;
+    private String segment1;
+    private Long processFlag;
+    private Long transactionMode;
+    private String transactionUom;
+    private String subinventoryCode;
+    private Long locatorId;
+    private String transactionSourceName;
+    private Long transactionSourceTypeId;
+    private Long transactionActionId;
+    private Long transactionTypeId;
+    private String transactionReference;
+    private String transferSubinventory;
+    private Long transferOrganization;
+    private Long transferLocator;
+    private String sourceCode;
+    private Long sourceLineId;
+    private Long sourceHeaderId;
+
+    public Long getProcessFlag() {
+        return processFlag;
+    }
+
+    public void setProcessFlag(Long processFlag) {
+        this.processFlag = processFlag;
+    }
+
+    public Long getTransactionMode() {
+        return transactionMode;
+    }
+
+    public void setTransactionMode(Long transactionMode) {
+        this.transactionMode = transactionMode;
+    }
+
+    public String getTransactionUom() {
+        return transactionUom;
+    }
+
+    public void setTransactionUom(String transactionUom) {
+        this.transactionUom = transactionUom;
+    }
+
+    public String getSubinventoryCode() {
+        return subinventoryCode;
+    }
+
+    public void setSubinventoryCode(String subinventoryCode) {
+        this.subinventoryCode = subinventoryCode;
+    }
+
+    public Long getLocatorId() {
+        return locatorId;
+    }
+
+    public void setLocatorId(Long locatorId) {
+        this.locatorId = locatorId;
+    }
+
+    public String getTransactionSourceName() {
+        return transactionSourceName;
+    }
+
+    public void setTransactionSourceName(String transactionSourceName) {
+        this.transactionSourceName = transactionSourceName;
+    }
+
+    public Long getTransactionSourceTypeId() {
+        return transactionSourceTypeId;
+    }
+
+    public void setTransactionSourceTypeId(Long transactionSourceTypeId) {
+        this.transactionSourceTypeId = transactionSourceTypeId;
+    }
+
+    public Long getTransactionActionId() {
+        return transactionActionId;
+    }
+
+    public void setTransactionActionId(Long transactionActionId) {
+        this.transactionActionId = transactionActionId;
+    }
+
+    public Long getTransactionTypeId() {
+        return transactionTypeId;
+    }
+
+    public void setTransactionTypeId(Long transactionTypeId) {
+        this.transactionTypeId = transactionTypeId;
+    }
+
+    public String getTransactionReference() {
+        return transactionReference;
+    }
+
+    public void setTransactionReference(String transactionReference) {
+        this.transactionReference = transactionReference;
+    }
+
+    public String getTransferSubinventory() {
+        return transferSubinventory;
+    }
+
+    public void setTransferSubinventory(String transferSubinventory) {
+        this.transferSubinventory = transferSubinventory;
+    }
+
+    public Long getTransferOrganization() {
+        return transferOrganization;
+    }
+
+    public void setTransferOrganization(Long transferOrganization) {
+        this.transferOrganization = transferOrganization;
+    }
+
+    public Long getTransferLocator() {
+        return transferLocator;
+    }
+
+    public void setTransferLocator(Long transferLocator) {
+        this.transferLocator = transferLocator;
+    }
+
+    public String getSourceCode() {
+        return sourceCode;
+    }
+
+    public void setSourceCode(String sourceCode) {
+        this.sourceCode = sourceCode;
+    }
+
+    public Long getSourceLineId() {
+        return sourceLineId;
+    }
+
+    public void setSourceLineId(Long sourceLineId) {
+        this.sourceLineId = sourceLineId;
+    }
+
+    public Long getSourceHeaderId() {
+        return sourceHeaderId;
+    }
+
+    public void setSourceHeaderId(Long sourceHeaderId) {
+        this.sourceHeaderId = sourceHeaderId;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getSegment1() {
+        return segment1;
+    }
+
+    public void setSegment1(String segment1) {
+        this.segment1 = segment1;
+    }
 
     public Long getInterfaceTransactionId() {
         return interfaceTransactionId;
@@ -220,7 +382,7 @@ public class RcvTransactionsInterface {
         this.poUnitPrice = poUnitPrice;
     }
 
-    public String getCurrencyCod() {
+    public String getCurrencyCode() {
         return currencyCode;
     }
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/inventarioIdText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="InventarioId" />
+
+    <TextView
+        android:id="@+id/nombreInventarioText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="nombreInventarioText" />
+
+    <TextView
+        android:id="@+id/descriptionInventarioText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="descriptionText" />
+
+    <TextView
+        android:id="@+id/subinventarioDetalleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="subinventarioTExt" />
+
+    <TextView
+        android:id="@+id/fechacreacionDetalleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="fechacreacionText" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignBottom="@id/stockEtiquetaItemDetalle"
+        android:background="?attr/colorPrimaryDark" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/itemFisicoDetalle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
