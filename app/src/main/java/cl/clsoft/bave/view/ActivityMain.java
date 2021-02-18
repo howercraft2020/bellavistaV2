@@ -77,7 +77,7 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
             public void onClick(View v) {
                 String seleccion = comboAcciones.getSelectedItem().toString();
                 if (seleccion.equals("Recepcion")){
-                    Intent intent = new Intent(ActivityMain.this, Recepcion.class);
+                    Intent intent = new Intent(ActivityMain.this, ActivityRecepcionOc.class);
                     intent.putExtra("paso", "1");
                     startActivity(intent);
                 }

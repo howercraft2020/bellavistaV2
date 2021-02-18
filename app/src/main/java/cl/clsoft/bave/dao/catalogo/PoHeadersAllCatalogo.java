@@ -41,7 +41,9 @@ public class PoHeadersAllCatalogo {
                     COLUMN_RATE_DATE + " TEXT, " +
                     COLUMN_RATE + " TEXT, " +
                     COLUMN_USER_ID + " INTEGER, " +
-                    COLUMN_RECEIPT_NUM +" TEXT " +
+                    COLUMN_RECEIPT_NUM +" INTEGER " +
             ")";
+
+    public static final String SELECT_ALL = " SELECT * FROM " + TABLE;
 
 }

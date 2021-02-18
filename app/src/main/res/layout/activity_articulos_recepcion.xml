@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="6dip">
+
+    <include
+        android:id="@+id/llProgressBar"
+        android:visibility="gone"
+        layout="@layout/progress_bar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/TagId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nº Oc :"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingStart="3dp"
+            android:paddingLeft="3dp" />
+
+        <TextView
+            android:id="@+id/segment1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@id/TagId"
+            android:paddingStart="3dp"
+            android:paddingLeft="3dp"
+            android:text="ID"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TagPoHeaderId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TagId"
+            android:text="ID : "
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:paddingStart="3dp"
+            android:paddingLeft="3dp" />
+
+        <TextView
+            android:id="@+id/poHeaderId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/segment1"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="0dp"
+            android:layout_toRightOf="@id/TagPoHeaderId"
+            android:text="poheaderId"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TagReceiptNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TagPoHeaderId"
+            android:paddingStart="3dp"
+            android:paddingLeft="3dp"
+            android:text="Nº Recepcion : "
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/receiptNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/poHeaderId"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="0dp"
+            android:layout_toRightOf="@id/TagReceiptNum"
+            android:text="NumeroRecep "
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_alignBottom="@id/creationDate" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewArticulosRecepcion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+</LinearLayout>
