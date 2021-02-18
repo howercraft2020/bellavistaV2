@@ -94,6 +94,11 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
                     Intent intent = new Intent(ActivityMain.this, ActivityFisicos.class);
                     startActivity(intent);
                 }
+
+                if (seleccion.equals("Transferencia Subinventario")){
+                    Intent intent = new Intent(ActivityMain.this, ActivityTransSubinv.class);
+                    startActivity(intent);
+                }
             }
         });
 
