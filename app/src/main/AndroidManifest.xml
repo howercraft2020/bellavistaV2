@@ -17,14 +17,39 @@
         android:supportsRtl="true"
         android:theme="@style/BaveTheme"
         android:name="cl.clsoft.bave.InventarioApplication">
-        <activity android:name=".view.ActivityTransSubinv"></activity>
-        <activity android:name=".view.ActivityCiclicoDetalle" />
+
         <activity android:name=".view.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- INVENTARIO CICLICO -->
+        <activity
+            android:name=".view.ActivityCiclicos"
+            android:label="Conteos Cíclicos" >
+        </activity>
+        <activity android:name=".view.ActivityCiclicoDetalle" >
+        </activity>
+
+        <!-- INVENTARIO FISICO -->
+        <activity
+            android:name=".view.ActivityFisicos"
+            android:label="Inventarios Físicos">
+        </activity>
+        <activity android:name=".view.ActivityFisicoSub"
+            android:label="Detalles de inventario">
+        </activity>
+        <activity android:name=".view.ActivityAgregarFisicoInventario"
+            android:label="Agregar inventario">
+        </activity>
+        <activity android:name=".view.ActivityFisicoDetalle"
+            android:label="Tags inventario">
+        </activity>
+
+        <!-- RECEPCION OC -->
+        <activity android:name=".view.ActivityTransSubinv"></activity>
         <activity android:name=".Entrega" />
         <activity
             android:name=".view.ActivityRecepcionOc"
@@ -33,18 +58,7 @@
             android:name=".view.ActivityArticulosRecepcion"></activity>
         <activity
             android:name=".view.ActivityAgregarRecepcion"></activity>
-        <activity
-            android:name=".view.ActivityCiclicos"
-            android:label="Conteos Cíclicos" />
-        <activity
-            android:name=".view.ActivityFisicos"
-            android:label="Inventarios Físicos" />
-        <activity android:name=".view.ActivityFisicoSub"
-            android:label="Detalles de inventario"></activity>
-        <activity android:name=".view.ActivityAgregarFisicoInventario"
-            android:label="Agregar inventario"></activity>
-        <activity android:name=".view.ActivityFisicoDetalle"
-            android:label="Tags inventario"></activity>
+
     </application>
 
 </manifest>
