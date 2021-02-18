@@ -8,11 +8,11 @@
         android:id="@+id/cycleCountHeaderId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="3dp"
+        android:paddingLeft="3dp"
         android:text="ID"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:paddingStart="3dp"
-        android:paddingLeft="3dp" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/cycleCountHeaderName"

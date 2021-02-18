@@ -7,15 +7,33 @@ public class MtlPhysicalInventoryTags {
     private Long inventoryItemId;
     private String subinventory;
     private Long locatorId;
-    private String lotNumber;
+    private String lotNumber;           //numero de lote
     private String lotExpirationDate;
-    private String serialNum;
-    private String segment1;
-    private String primaryUomCode;
-    private Long count;
+    private String serialNum;           //numero de serie
+    private String segment1;            //sigle
+    private String primaryUomCode;      //UMD STOCK
+    private Long count;                 //cantidad
+    private String description;
+    private String longDescription;
 
     public MtlPhysicalInventoryTags(){
 
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLongDescription() {
+        return longDescription;
+    }
+
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
     }
 
     public Long getTagId() {

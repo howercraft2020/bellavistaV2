@@ -2,11 +2,14 @@ package cl.clsoft.bave.dao.impl;
 
 import android.content.ContentValues;
 
+import java.util.List;
+
 import cl.clsoft.bave.dao.IMtlPhysicalInventoriesDao;
 import cl.clsoft.bave.dao.catalogo.MtlPhysicalInventoriesCatalogo;
 import cl.clsoft.bave.dao.rowmapper.MtlPhysicalInventoriesRowMapper;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.MtlPhysicalInventories;
+import cl.clsoft.bave.model.MtlSystemItems;
 
 public class MtlPhysicalInventoriesDaoImpl extends GenericDao<MtlPhysicalInventories> implements IMtlPhysicalInventoriesDao {
 
@@ -58,5 +61,13 @@ public class MtlPhysicalInventoriesDaoImpl extends GenericDao<MtlPhysicalInvento
     public MtlPhysicalInventories get(Long id) throws DaoException {
         return super.selectOne(MtlPhysicalInventoriesCatalogo.SELECT, new MtlPhysicalInventoriesRowMapper(), id);
     }
+
+    @Override
+    public List<MtlPhysicalInventories> getAll() throws DaoException {
+        return super.selectMany(MtlPhysicalInventoriesCatalogo.SELECT_ALL, new MtlPhysicalInventoriesRowMapper());
+    }
+
+
+
 
 }

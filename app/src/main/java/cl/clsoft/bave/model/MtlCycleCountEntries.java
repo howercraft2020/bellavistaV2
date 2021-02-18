@@ -9,7 +9,7 @@ public class MtlCycleCountEntries {
     private Long cycleCountHeaderId;
     private Long LocatorId;
     private String lotNumber;
-    private String segment1;
+    private String segment1;        //sigle
     private String primaryUomCode;
     private String serialNumber;
 

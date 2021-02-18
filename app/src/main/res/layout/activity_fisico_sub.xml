@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutDetalle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="6dip">
+
+
+    <TextView
+        android:id="@+id/idEtiquetaDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID:" />
+
+    <TextView
+        android:id="@+id/nombreEtiquetaDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NOMBRE:" />
+
+    <TextView
+        android:id="@+id/descriptionEtiquetaDetalle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DESCRIPTION" />
+
+    <TextView
+        android:id="@+id/fechaCreacionEtiquetaDetalle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="FECHA CREACION:" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_alignBottom="@+id/fechaCreacionEtiquetaDetalle" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="621dp" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/itemsFisicoSub"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+</LinearLayout>

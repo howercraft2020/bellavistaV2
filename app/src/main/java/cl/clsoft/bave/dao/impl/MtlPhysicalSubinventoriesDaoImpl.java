@@ -2,8 +2,11 @@ package cl.clsoft.bave.dao.impl;
 
 import android.content.ContentValues;
 
+import java.util.List;
+
 import cl.clsoft.bave.dao.IMtlPhysicalSubinventoriesDao;
 import cl.clsoft.bave.dao.catalogo.MtlPhysicalSubinventoriesCatalogo;
+import cl.clsoft.bave.dao.rowmapper.MtlPhysicalSubinventoriesRowMapper;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.MtlPhysicalSubinventories;
 
@@ -21,6 +24,11 @@ public class MtlPhysicalSubinventoriesDaoImpl extends GenericDao<MtlPhysicalSubi
     @Override
     public void deleteByPhysicalInventory(Long physicalInventoryId) throws DaoException {
         super.delete(MtlPhysicalSubinventoriesCatalogo.TABLE, MtlPhysicalSubinventoriesCatalogo.DELETE_BY_PHYSICAL_INVENTORY_ID, physicalInventoryId);
+    }
+
+    @Override
+    public List<MtlPhysicalSubinventories> getSubinventories(Long physicalInventoryId) throws DaoException {
+        return super.selectMany(MtlPhysicalSubinventoriesCatalogo.SELECT, new MtlPhysicalSubinventoriesRowMapper(), physicalInventoryId);
     }
 
 }
