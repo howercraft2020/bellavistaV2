@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/BaveTheme">
-        <activity android:name=".view.ActivityCiclicoDetalle"></activity>
+        <activity android:name=".view.ActivityTransSubinv"></activity>
+        <activity android:name=".view.ActivityCiclicoDetalle" />
         <activity android:name=".view.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,17 +29,15 @@
         <activity android:name=".Entrega" />
         <activity
             android:name=".view.ActivityRecepcionOc"
-            android:label="Recepcion"/>
-        <activity
-            android:name=".view.ActivityArticulosRecepcion"></activity>
-        <activity
-            android:name=".view.ActivityAgregarRecepcion"></activity>
+            android:label="Recepcion" />
+        <activity android:name=".view.ActivityArticulosRecepcion" />
+        <activity android:name=".view.ActivityAgregarRecepcion" />
         <activity
             android:name=".view.ActivityCiclicos"
-            android:label="Conteos Cíclicos"></activity>
+            android:label="Conteos Cíclicos" />
         <activity
             android:name=".view.ActivityFisicos"
-            android:label="Inventarios Físicos"></activity>
+            android:label="Inventarios Físicos" />
     </application>
 
 </manifest>
