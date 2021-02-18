@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.bave.ConexionSQLiteHelper;
 import com.example.bave.Model.Modelo;
+import com.example.bave.entidades.MtlSerialNumberInterfaceDTO;
 import com.example.bave.entidades.MtlTransactionLotsIfaceDto;
 import com.example.bave.utilidades.Utilidades;
 
@@ -44,7 +45,7 @@ public class Entrega extends AppCompatActivity {
 
     TextView nombreArchivopath, subinventario, localizador, numeroParte;
     EditText cantidad, numeroOc, numeroRecepcion, codigoSigle,udm;
-    Button btnBuscarOc, btnControlLote;
+    Button btnBuscarOc, btnControlLote, btnControlSerie, btnConfirmarLinea;
     Spinner comboCategoriaLote;
     String IdcExtract, numeroRecepcionExtract;
     int errorCarga = 0;
@@ -68,6 +69,8 @@ public class Entrega extends AppCompatActivity {
         localizador = (TextView) findViewById(R.id.txtLocalizador);
         btnBuscarOc = (Button) findViewById(R.id.btnBuscarE);
         btnControlLote = (Button) findViewById(R.id.btnControlLote);
+        btnControlSerie = (Button) findViewById(R.id.btnControlSerie);
+        btnConfirmarLinea = (Button) findViewById(R.id.btnConfirmarLineaE);
         cantidad = (EditText) findViewById(R.id.txtCantidadE);
         numeroOc = (EditText) findViewById(R.id.txtNumeroOcE);
         numeroRecepcion = (EditText) findViewById(R.id.txtNumeroRecepcionE);
@@ -86,6 +89,148 @@ public class Entrega extends AppCompatActivity {
                     llenarSpinnerNumeroParte();
                 }
 
+            }
+        });
+
+        btnConfirmarLinea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String numeroShipmentHeaderIdEx = "";
+                String mumeroRecepcionEx = "";
+                String codigoSigleEx = "";
+                int cantidadEx = 0;
+                boolean btnClIsenabled = false;
+                boolean btnCSIsenabled = false;
+
+
+
+                btnClIsenabled = btnControlLote.isEnabled();
+                btnCSIsenabled = btnControlSerie.isEnabled();
+
+
+                numeroShipmentHeaderIdEx = numeroOc.getText().toString();
+                mumeroRecepcionEx = numeroRecepcion.getText().toString();
+                codigoSigleEx = codigoSigle.getText().toString();
+                cantidadEx = Integer.parseInt(cantidad.getText().toString());
+
+                if(numeroOc.getText().toString().equals("") && numeroRecepcion.getText().toString().equals("")){
+                    Toast.makeText(Entrega.this, "Error : Debe cargar un documento", Toast.LENGTH_SHORT).show();
+                }
+                if (codigoSigle.getText().toString().equals("")){
+                    Toast.makeText(Entrega.this,"Error : Debe ingresar Codigo Sigle", Toast.LENGTH_SHORT).show();
+                    codigoSigle.setError("Error : Debe ingresar Codigo Sigle");
+                }
+                if (btnClIsenabled && validalote(numeroShipmentHeaderIdEx,mumeroRecepcionEx,codigoSigleEx))
+                {
+                    Toast.makeText(Entrega.this,"Debe Ingresar un Lote Para Este Articulo", Toast.LENGTH_SHORT).show();
+                }
+                if (btnCSIsenabled && validaSerie(cantidadEx,numeroShipmentHeaderIdEx,mumeroRecepcionEx,codigoSigleEx))
+                {
+                    Toast.makeText(Entrega.this, "Falta ingresar series", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        btnControlSerie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mbuilder = new AlertDialog.Builder(Entrega.this);
+                View mview = getLayoutInflater().inflate(R.layout.dialog_form_serie,null);
+                Button ingresar = (Button) mview.findViewById(R.id.btnIngresarSerie);
+                Button cancelar = (Button) mview.findViewById(R.id.btnCancelarDialogSerie);
+                EditText serie = (EditText) mview.findViewById(R.id.serie);
+
+                if(cantidad.getText().toString().equals("")){
+                    cantidad.setError("Ingrese Cantidad");
+
+                }else if(codigoSigle.getText().toString().equals("")){
+                    codigoSigle.setError("Ingrese Codigo Sigle");
+                }
+                else {
+
+                    mbuilder.setView(mview);
+                    AlertDialog dialog = mbuilder.create();
+                    dialog.show();
+
+                    ingresar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            String serieCap = serie.getText().toString();
+
+                            if (serieCap.equals("")) {
+                                serie.setError("Ingrese Numero de Serie");
+                            }
+                            else{
+                                String fecha = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                                String numeroShipmentHeaderIdEx = "";
+                                String mumeroRecepcionEx = "";
+                                String codigoSigleEx = "";
+                                int cantidadEx;
+
+                                MtlSerialNumberInterfaceDTO msi = new MtlSerialNumberInterfaceDTO();
+                                ConexionSQLiteHelper conn = new ConexionSQLiteHelper(Entrega.this, "bd", null, 1);
+                                SQLiteDatabase db = conn.getReadableDatabase();
+                                int resInsert = 0;
+
+                                numeroShipmentHeaderIdEx = numeroOc.getText().toString();
+                                mumeroRecepcionEx = numeroRecepcion.getText().toString();
+                                codigoSigleEx = codigoSigle.getText().toString();
+                                cantidadEx = Integer.parseInt(cantidad.getText().toString());
+
+                                if (validaSerie(cantidadEx,numeroShipmentHeaderIdEx, mumeroRecepcionEx, codigoSigleEx)) {
+
+                                    Modelo obj = new Modelo();
+
+                                    Cursor b = db.rawQuery("SELECT rhi.CREATED_BY, rt.PO_HEADER_ID, rt.PO_LINE_ID, msi.INVENTORY_ITEM_ID, rt.PO_LINE_LOCATION_ID, rhi.RECEIPT_NUM FROM RCV_SHIPMENT_HEADERS rhi, RCV_TRANSACTIONS rt, MTL_SYSTEM_ITEMS msi WHERE rhi.SHIPMENT_HEADER_ID = rt.SHIPMENT_HEADER_ID AND rt.ITEM_ID = msi.INVENTORY_ITEM_ID AND rhi.SHIPMENT_HEADER_ID='" + numeroShipmentHeaderIdEx + "' AND rhi.RECEIPT_NUM='" + mumeroRecepcionEx + "' AND msi.SEGMENT1='" + codigoSigleEx + "'", null);
+                                    if (b.moveToFirst()) {
+                                        do {
+
+                                            msi.setTransactionInterfaceId("4444");
+                                            msi.setLastUpdateDate(fecha);
+                                            msi.setLastUpdatedBy(b.getString(0));
+                                            msi.setCreationDate(fecha);
+                                            msi.setCreatedBy(b.getString(0));
+                                            msi.setPoHeaderId(b.getString(1));
+                                            msi.setPoLineId(b.getString(2));
+                                            msi.setInventoryItemId(b.getString(3));
+                                            msi.setLastUpdateLogin("-1");
+                                            msi.setFmSerialNumber(serieCap);
+                                            msi.setToSerialNumber(serieCap);
+                                            msi.setProductCode("RCV");
+                                            msi.setProductTransactionId(b.getString(4)+b.getString(5));
+
+                                            resInsert = obj.insertSerie(Entrega.this, msi);
+
+                                            if (resInsert == 1) {
+                                                Toast.makeText(Entrega.this, "Lote : " + serie.getText().toString() + " ingresado correctamente", Toast.LENGTH_LONG).show();
+                                            } else {
+                                                Toast.makeText(Entrega.this, "Error : No se ha podido ingresar el registro", Toast.LENGTH_LONG).show();
+                                            }
+
+                                        } while (b.moveToNext());
+                                    }
+
+                                }
+                                else{
+                                    Toast.makeText(Entrega.this, "No puede ingresar mas series", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        }
+                    });
+
+                    cancelar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                }
             }
         });
 
@@ -702,6 +847,7 @@ public class Entrega extends AppCompatActivity {
 
                                 codigoSigle.setText(b.getString(0));
                                 udm.setText(b.getString(1));
+                                controlLoteSerie(b.getString(0));
                             } while (b.moveToNext());
                         }
 
@@ -742,7 +888,7 @@ public class Entrega extends AppCompatActivity {
         SQLiteDatabase db = conn.getReadableDatabase();
 
 
-        Cursor c = db.rawQuery("select mtl_transaction_lots_iface from mtl_transactions_lots_iface mtl, mtl_system_items msi, rcv_transactions rt, rcv_shipment_headers rsh WHERE rsh.shipment_header_id = rt.shipment_header_id AND rt.item_id = msi.inventory_item_id AND rsh.shipment_header_id = '"+shipmentHId+"' AND rsh.receipt_num ='"+receiptNum+"' AND msi.SEGMENT1='"+articulo+"'", null);
+        Cursor c = db.rawQuery("select mtl_transaction_lots_iface from mtl_transactions_lots_iface mtl, mtl_system_items msi, rcv_transactions rt, rcv_shipment_headers rsh WHERE rsh.shipment_header_id = rt.shipment_header_id AND rt.item_id = msi.inventory_item_id AND mtl.po_line_id = rt.po_line_id AND mtl.po_header_id = rt.po_header_id AND mtl.inventory_item_id = msi.inventory_item_id AND rsh.shipment_header_id = '"+shipmentHId+"' AND rsh.receipt_num ='"+receiptNum+"' AND msi.SEGMENT1='"+articulo+"'", null);
 
         if(c.getCount() <= 0 ) {
             c.close();
@@ -755,6 +901,7 @@ public class Entrega extends AppCompatActivity {
         return true;
 
     }
+
 
     public int validaFechaExpiración(){
         ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this,"bd",null,1);
@@ -782,6 +929,70 @@ public class Entrega extends AppCompatActivity {
 
         return seleccion;
 
+    }
+
+    public boolean validaSerie(int cantidadRecibida, String shipmentHId, String receiptNum, String articulo) {
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this,"bd",null,1);
+        SQLiteDatabase db = conn.getReadableDatabase();
+        int cantidad = 0;
+
+        Cursor c = db.rawQuery("select count(*) from mtl_serial_numbers_interface msn, mtl_system_items msi, rcv_transactions rt, rcv_shipment_headers rsh WHERE rsh.shipment_header_id = rt.shipment_header_id AND rt.item_id = msi.inventory_item_id AND msn.po_header_id = rt.po_header_id AND msn.po_line_id = rt.po_line_id AND msn.inventory_item_id = rt.item_id AND rsh.shipment_header_id = '"+shipmentHId+"' AND rsh.receipt_num ='"+receiptNum+"' AND msi.SEGMENT1='"+articulo+"'", null);
+
+        if (c.moveToFirst()) {
+            do {
+                cantidad = Integer.parseInt(c.getString(0));
+            } while (c.moveToNext());
+        }
+
+        c.close();
+        db.close();
+
+        if (cantidad < cantidadRecibida){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    public void controlLoteSerie(String articulo){
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this,"bd",null,1);
+        SQLiteDatabase db = conn.getReadableDatabase();
+        String numeroOcEx = "";
+        String mumeroRecepcionEx = "";
+        String controlLoteEx = "";
+        String controlSerieEx = "";
+
+        numeroOcEx = numeroOc.getText().toString();
+        mumeroRecepcionEx = numeroRecepcion.getText().toString();
+
+
+        Cursor a = db.rawQuery("select msi.serial_number_control_code, msi.lot_control_code from mtl_system_items msi, rcv_transactions rt, rcv_shipment_headers rsh WHERE rsh.shipment_header_id = rt.shipment_header_id AND rt.item_id = msi.inventory_item_id AND rsh.shipment_header_id = '"+numeroOcEx+"' AND rsh.receipt_num ='"+mumeroRecepcionEx+"' AND msi.SEGMENT1='"+articulo+"'" , null);
+
+        if (a.moveToFirst()) {
+            do {
+                controlSerieEx = a.getString(0);
+                controlLoteEx = a.getString(1);
+
+                if (controlLoteEx.equals("2")){
+                    btnControlLote.setEnabled(true);
+                }
+                else{
+                    btnControlLote.setEnabled(false);
+                }
+
+                if (controlSerieEx.equals("2") || controlSerieEx.equals("5")){
+                    btnControlSerie.setEnabled(true);
+                }else{
+                    btnControlSerie.setEnabled(false);
+                }
+
+            } while (a.moveToNext());
+        }
+
+        a.close();
+        db.close();
     }
 
 

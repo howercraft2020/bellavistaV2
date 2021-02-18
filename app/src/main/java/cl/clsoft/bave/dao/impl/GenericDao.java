@@ -58,6 +58,7 @@ public class GenericDao<T> {
             int index = 0;
             for (Object parameter : parameters) {
                 args[index] = parameter.toString();
+                index = index + 1;
             }
             cursor = db.rawQuery(sql, args);
         } else {

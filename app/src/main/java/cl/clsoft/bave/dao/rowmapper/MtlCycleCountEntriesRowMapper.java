@@ -12,7 +12,7 @@ public class MtlCycleCountEntriesRowMapper implements RowMapper<MtlCycleCountEnt
     public MtlCycleCountEntries mapRow(Cursor cursor, int position) throws SQLException {
         MtlCycleCountEntries entity = new MtlCycleCountEntries();
         entity.setCycleCountEntryId(cursor.getLong(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_ID)));
-        entity.setInventoriItemId(cursor.getLong(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_INVENTORY_ITEM_ID)));
+        entity.setInventoryItemId(cursor.getLong(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_INVENTORY_ITEM_ID)));
         entity.setSubinventory(cursor.getString(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_SUBINVENTORY)));
         entity.setEntryStatusCode(cursor.getString(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_ENTRY_STATUS_CODE)));
         entity.setOrganizationId(cursor.getLong(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_ORGANIZATION_ID)));
@@ -22,7 +22,6 @@ public class MtlCycleCountEntriesRowMapper implements RowMapper<MtlCycleCountEnt
         entity.setSegment1(cursor.getString(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_SEGMENT1)));
         entity.setPrimaryUomCode(cursor.getString(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_PRIMARY_UOM_CODE)));
         entity.setSerialNumber(cursor.getString(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_SERIAL_NUMBER)));
-
         return entity;
     }
 }

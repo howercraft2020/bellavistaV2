@@ -7,7 +7,7 @@ public class PoLinesAll {
     private Long itemId;
     private String itemDescripcion;
     private Long unitPrice;
-    private Long quantityPla;
+    private Long quantity;
     private String unitMeasLookupCode;
     private String baseUom;
 
@@ -63,12 +63,12 @@ public class PoLinesAll {
         this.unitPrice = unitPrice;
     }
 
-    public Long getQuantityPla() {
-        return quantityPla;
+    public Long getQuantity() {
+        return quantity;
     }
 
-    public void setQuantityPla(Long quantityPla) {
-        this.quantityPla = quantityPla;
+    public void setQuantity(Long quantityPla) {
+        this.quantity = quantityPla;
     }
 
     public String getUnitMeasLookupCode() {

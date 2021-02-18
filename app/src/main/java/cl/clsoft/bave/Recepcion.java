@@ -63,17 +63,17 @@ public class Recepcion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recepcion);
 
-        btnBuscarOc = (Button) findViewById(R.id.btnBuscar);
-        btnConfirmarLinea = (Button) findViewById(R.id.btnConfirmarLinea);
-        btnConfirmarRecepcion = (Button) findViewById(R.id.btnConfirmarRecepcion);
-        comentario = (EditText) findViewById(R.id.txtComentario);
-        cantidad = (EditText) findViewById(R.id.txtCantidad);
-        numeroParte = (TextView) findViewById(R.id.txtNumeroParte);
-        codigoSigle = (EditText) findViewById(R.id.txtCodigoSigle);
-        udm = (EditText) findViewById(R.id.txtUDM);
-        nombreArchivopath = (TextView) findViewById(R.id.txtNombreArchivo);
-        numeroRecepcion = (EditText) findViewById(R.id.txtNumeroRecepcion);
-        numeroOc = (EditText) findViewById(R.id.txtNumeroOc);
+        //btnBuscarOc = (Button) findViewById(R.id.btnBuscar);
+        //btnConfirmarLinea = (Button) findViewById(R.id.btnConfirmarLinea);
+        //btnConfirmarRecepcion = (Button) findViewById(R.id.btnConfirmarRecepcion);
+        //comentario = (EditText) findViewById(R.id.txtComentario);
+        //cantidad = (EditText) findViewById(R.id.txtCantidad);
+        //numeroParte = (TextView) findViewById(R.id.txtNumeroParte);
+        //codigoSigle = (EditText) findViewById(R.id.txtCodigoSigle);
+        //udm = (EditText) findViewById(R.id.txtUDM);
+        //nombreArchivopath = (TextView) findViewById(R.id.txtNombreArchivo);
+        //numeroRecepcion = (EditText) findViewById(R.id.txtNumeroRecepcion);
+        ///numeroOc = (EditText) findViewById(R.id.txtNumeroOc);
 
         String paso = getIntent().getStringExtra("paso");
 

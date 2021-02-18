@@ -13,13 +13,13 @@ public class RcvHeadersInterfaceRowMapper implements RowMapper<RcvHeadersInterfa
     @Override
     public RcvHeadersInterface mapRow(Cursor cursor, int position) throws SQLException {
         RcvHeadersInterface entity = new RcvHeadersInterface();
-        entity.setHeaderInterfaceId(cursor.getString(cursor.getColumnIndex(RcvHeadersInterfaceCatalogo.COLUMN_HEADER_INTERFACE_ID)));
+        entity.setHeaderInterfaceId(cursor.getLong(cursor.getColumnIndex(RcvHeadersInterfaceCatalogo.COLUMN_HEADER_INTERFACE_ID)));
         entity.setReciptSourceCode(cursor.getString(cursor.getColumnIndex(RcvHeadersInterfaceCatalogo.COLUMN_RECEIPT_SOURCE_CODE)));
         entity.setTransactionType(cursor.getString(cursor.getColumnIndex(RcvHeadersInterfaceCatalogo.COLUMN_TRANSACTION_TYPE)));
         entity.setLastUpdateDate(cursor.getString(cursor.getColumnIndex(RcvHeadersInterfaceCatalogo.COLUMN_LAST_UPDATE_DATE)));
         entity.setLastUpdateBy(cursor.getLong(cursor.getColumnIndex(RcvHeadersInterfaceCatalogo.COLUMN_LAST_UPDATED_BY)));
         entity.setCreatedBy(cursor.getLong(cursor.getColumnIndex(RcvHeadersInterfaceCatalogo.COLUMN_CREATED_BY)));
-        entity.setReciptNum(cursor.getString(cursor.getColumnIndex(RcvHeadersInterfaceCatalogo.COLUMN_RECEIPT_NUM)));
+        entity.setReciptNum(cursor.getLong(cursor.getColumnIndex(RcvHeadersInterfaceCatalogo.COLUMN_RECEIPT_NUM)));
         entity.setVendorId(cursor.getLong(cursor.getColumnIndex(RcvHeadersInterfaceCatalogo.COLUMN_VENDOR_ID)));
         entity.setVendorSiteCode(cursor.getString(cursor.getColumnIndex(RcvHeadersInterfaceCatalogo.COLUMN_VENDOR_SITE_CODE)));
         entity.setVendorSiteId(cursor.getLong(cursor.getColumnIndex(RcvHeadersInterfaceCatalogo.COLUMN_VENDOR_SITE_ID)));

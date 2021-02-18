@@ -2,7 +2,7 @@ package cl.clsoft.bave.model;
 
 public class MtlCycleCountEntries {
     private Long cycleCountEntryId;
-    private Long inventoriItemId;
+    private Long inventoryItemId;
     private String subinventory;
     private String entryStatusCode;
     private Long organizationId;
@@ -25,12 +25,12 @@ public class MtlCycleCountEntries {
         this.cycleCountEntryId = cycleCountEntryId;
     }
 
-    public Long getInventoriItemId() {
-        return inventoriItemId;
+    public Long getInventoryItemId() {
+        return inventoryItemId;
     }
 
-    public void setInventoriItemId(Long inventoriItemId) {
-        this.inventoriItemId = inventoriItemId;
+    public void setInventoryItemId(Long inventoryItemId) {
+        this.inventoryItemId = inventoryItemId;
     }
 
     public String getSubinventory() {

@@ -53,6 +53,7 @@ public class RcvTransactionsInterfaceRowMapper implements RowMapper<RcvTransacti
         entity.setOrgId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_ORG_ID)));
         entity.setGroupId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_GROUP_ID)));
         entity.setAutoTransactCode(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_AUTO_TRANSACT_CODE)));
+        entity.setSegment1(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_SEGMENT1)));
 
         return entity;
     }

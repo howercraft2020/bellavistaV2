@@ -7,18 +7,6 @@
     tools:context=".Entrega">
 
     <Button
-        android:id="@+id/btnConfirmarLineaE"
-        android:layout_width="177dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="472dp"
-        android:enabled="false"
-        android:text="Confirma Linea"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.435"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/btnControlLote"
         android:layout_width="144dp"
         android:layout_height="41dp"
@@ -28,6 +16,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.086"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSubinventario"
+        app:layout_constraintVertical_bias="0.318" />
+
+    <Button
+        android:id="@+id/btnConfirmarLineaE"
+        android:layout_width="177dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="472dp"
+        android:enabled="true"
+        android:text="Confirma Linea"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.435"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnControlSerie"
+        android:layout_width="144dp"
+        android:layout_height="41dp"
+        android:enabled="true"
+        android:text="Control Serie"
+        app:layout_constraintBottom_toTopOf="@+id/btnConfirmarLineaE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.23"
+        app:layout_constraintStart_toEndOf="@+id/btnControlLote"
         app:layout_constraintTop_toBottomOf="@+id/txtSubinventario"
         app:layout_constraintVertical_bias="0.318" />
 

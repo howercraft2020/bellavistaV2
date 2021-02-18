@@ -1,13 +1,13 @@
 package cl.clsoft.bave.model;
 
 public class RcvHeadersInterface {
-    private String headerInterfaceId;
+    private Long headerInterfaceId;
     private String reciptSourceCode;
     private String transactionType;
     private String lastUpdateDate;
     private Long lastUpdateBy;
     private Long createdBy;
-    private String reciptNum;
+    private Long reciptNum;
     private Long vendorId;
     private String vendorSiteCode;
     private Long vendorSiteId;
@@ -26,11 +26,11 @@ public class RcvHeadersInterface {
     private String validationFlag;
     private Long groupId;
 
-    public String getHeaderInterfaceId() {
+    public Long getHeaderInterfaceId() {
         return headerInterfaceId;
     }
 
-    public void setHeaderInterfaceId(String headerInterfaceId) {
+    public void setHeaderInterfaceId(Long headerInterfaceId) {
         this.headerInterfaceId = headerInterfaceId;
     }
 
@@ -74,11 +74,11 @@ public class RcvHeadersInterface {
         this.createdBy = createdBy;
     }
 
-    public String getReciptNum() {
+    public Long getReciptNum() {
         return reciptNum;
     }
 
-    public void setReciptNum(String reciptNum) {
+    public void setReciptNum(Long reciptNum) {
         this.reciptNum = reciptNum;
     }
 

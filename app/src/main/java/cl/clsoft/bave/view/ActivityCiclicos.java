@@ -1,8 +1,13 @@
 package cl.clsoft.bave.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,6 +30,8 @@ public class ActivityCiclicos extends BaseActivity<CiclicosPresenter> {
     // Controls
     private RecyclerView recyclerViewCiclicos;
     private AdapterItemConteoCiclico adapter;
+    private AdapterItemConteoCiclico.RecyclerViewClickListener listener;
+
 
     @NonNull
     @Override
@@ -34,6 +41,7 @@ public class ActivityCiclicos extends BaseActivity<CiclicosPresenter> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         // Instance Layout.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ciclicos);
@@ -47,9 +55,45 @@ public class ActivityCiclicos extends BaseActivity<CiclicosPresenter> {
         this.recyclerViewCiclicos.setHasFixedSize(true);
         this.recyclerViewCiclicos.setLayoutManager(new LinearLayoutManager(this));
 
-        this.adapter = new AdapterItemConteoCiclico(mPresenter.getConteosCiclicos());
+        this.ciclicos = mPresenter.getConteosCiclicos();
+        this.adapter = new AdapterItemConteoCiclico(ciclicos, listener);
         this.recyclerViewCiclicos.setAdapter(this.adapter);
+        final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+        });
+
+        this.recyclerViewCiclicos.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean b) {
+            }
+
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+                try {
+                    View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+                    if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+                        int position = recyclerView.getChildAdapterPosition(child);
+                        Intent i = null;
+                        i = new Intent(getApplicationContext(), ActivityCiclicoDetalle.class);
+                        i.putExtra("ciclicosId", ciclicos.get(position).getCycleCountHeaderId());
+                        startActivity(i);
+                        finish();
+                        return true;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+            }
+        });
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
