@@ -40,11 +40,14 @@
             android:label="Inventarios Fisicos">
         </activity>
         <activity android:name=".view.ActivityFisicoSub"
-            android:label="Detalles de inventario"></activity>
+            android:label="Detalles de inventario">
+        </activity>
         <activity android:name=".view.ActivityAgregarFisicoInventario"
-            android:label="Agregar inventario"></activity>
+            android:label="Agregar inventario">
+        </activity>
         <activity android:name=".view.ActivityFisicoDetalle"
-            android:label="Tags inventario"></activity>
+            android:label="Tags inventario">
+        </activity>
     </application>
 
 </manifest>
