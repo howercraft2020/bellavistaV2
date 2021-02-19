@@ -15,6 +15,7 @@ import cl.clsoft.bave.dao.catalogo.MtlPhysicalInventoriesCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlPhysicalInventoryTagsCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlPhysicalSubinventoriesCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlSystemItemsCatalogo;
+import cl.clsoft.bave.dao.catalogo.MtlTransactionsInterfaceCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlTransactionsLotsIfaceCatalogo;
 import cl.clsoft.bave.dao.catalogo.OrganizacionCatalogo;
 import cl.clsoft.bave.dao.catalogo.PoDistributionsAllCatalogo;
@@ -67,6 +68,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(MtlPhysicalInventoriesCatalogo.CREATE_TABLE);
         db.execSQL(MtlPhysicalSubinventoriesCatalogo.CREATE_TABLE);
         db.execSQL(MtlPhysicalInventoryTagsCatalogo.CREATE_TABLE);
+        db.execSQL(MtlTransactionsInterfaceCatalogo.CREATE_TABLE);
 
     }
 

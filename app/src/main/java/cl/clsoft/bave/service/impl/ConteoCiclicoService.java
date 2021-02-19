@@ -42,4 +42,24 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
             throw new ServiceException(2, e.getDescripcion());
         }
     }
+
+    @Override
+    public List<MtlCycleCountEntries> getAllSigleDetalle() throws ServiceException {
+        IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
+        try{
+            return mtlCycleCountEntriesDao.getAll();
+        }catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public MtlCycleCountEntries getCiclicoSigleDetalle(Long cycleCountEntrieId) throws ServiceException {
+        IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
+        try{
+            return mtlCycleCountEntriesDao.get(cycleCountEntrieId);
+        }catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
 }

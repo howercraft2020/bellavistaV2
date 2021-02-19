@@ -65,4 +65,9 @@ public class MtlCycleCountEntriesDaoImpl extends GenericDao<MtlCycleCountEntries
         return super.selectMany(MtlCycleCountEntriesCatalogo.SELECT_BY_HEADER_COUNT_HEADER_ID,new MtlCycleCountEntriesRowMapper(), idSigle);
     }
 
+    @Override
+    public List<MtlCycleCountEntries> getAll() throws DaoException {
+        return super.selectMany(MtlCycleCountEntriesCatalogo.SELECT_ALL, new MtlCycleCountEntriesRowMapper());
+    }
+
 }
