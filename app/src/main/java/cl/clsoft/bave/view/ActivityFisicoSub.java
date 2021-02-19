@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -122,11 +124,24 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_inventario, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent i = new Intent(this, ActivityFisicos.class);
+            case R.id.agregarInventarioButton:
+                Log.d(TAG, "Agregar inventario");
+                Intent i = new Intent(this, ActivityAgregarFisicoInventario.class);
                 startActivity(i);
+                this.finish();
+                return true;
+            case android.R.id.home:
+                Intent o = new Intent(this, ActivityFisicos.class);
+                startActivity(o);
                 this.finish();
                 return true;
             default:

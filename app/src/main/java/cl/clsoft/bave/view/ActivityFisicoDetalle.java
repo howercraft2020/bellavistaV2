@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -86,8 +88,21 @@ public class ActivityFisicoDetalle extends BaseActivity<DetalleFisicoPresenter> 
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_inventario, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.agregarInventarioButton:
+                Log.d(TAG, "Agregar inventario");
+                Intent o = new Intent(this, ActivityAgregarFisicoInventario.class);
+                startActivity(o);
+                this.finish();
+                return true;
             case android.R.id.home:
                 Intent i = new Intent(this, ActivityFisicoSub.class);
                 i.putExtra("InventarioId", inventarioId);

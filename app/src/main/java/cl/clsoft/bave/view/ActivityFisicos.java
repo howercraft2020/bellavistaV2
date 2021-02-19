@@ -98,22 +98,11 @@ public class ActivityFisicos extends BaseActivity<FisicosPresenter> {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_inventario, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.agregarInventarioButton:
-                Log.d(TAG, "Agregar inventario");
-                Intent i = new Intent(this, ActivityAgregarFisicoInventario.class);
-                startActivity(i);
-                this.finish();
-                return true;
             case android.R.id.home:
                 this.finish();
                 return true;
