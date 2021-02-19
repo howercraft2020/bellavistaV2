@@ -24,7 +24,7 @@ public class AdapterInventarioFisicoDetalle extends RecyclerView.Adapter<Adapter
     @NonNull
     @Override
     public InventarioFisicoDetalleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_activity_inventario_detalle, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tag, parent, false);
         InventarioFisicoDetalleViewHolder Ifdvh = new InventarioFisicoDetalleViewHolder(v);
 
         return Ifdvh;
@@ -44,35 +44,35 @@ public class AdapterInventarioFisicoDetalle extends RecyclerView.Adapter<Adapter
     }
 
     public class InventarioFisicoDetalleViewHolder extends RecyclerView.ViewHolder{
-        private TextView itemNumeroParte;
-        private TextView itemSigle;
-        private TextView itemSerie;
-        private TextView itemLote;
-        private TextView itemCantidad;
-        private TextView itemStock;
-        private TextView localizador;
+
+        private TextView textLocalizador;
+        private TextView textNumeroParte;
+        private TextView textCodigoSigle;
+        private TextView textNumeroSerie;
+        private TextView textNumeroLote;
+        private TextView textCantidad;
+        private TextView textUdm;
 
         public InventarioFisicoDetalleViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            this.localizador = itemView.findViewById(R.id.localizadorEtiquetaItemDetalle);
-            this.itemNumeroParte = itemView.findViewById(R.id.numeroParteEtiquetaItemDetalle);
-            this.itemSigle = itemView.findViewById(R.id.sigleEtiquetaItemDetalle);
-            this.itemSerie = itemView.findViewById(R.id.serieEtiquetaItemDetalle);
-            this.itemLote = itemView.findViewById(R.id.loteEtiquetaItemDetalle);
-            this.itemCantidad = itemView.findViewById(R.id.cantidadEtiquetaItemDetalle);
-            this.itemStock = itemView.findViewById(R.id.stockEtiquetaItemDetalle);
+            this.textLocalizador = itemView.findViewById(R.id.textLocalizador);
+            this.textNumeroParte = itemView.findViewById(R.id.textNumeroParte);
+            this.textCodigoSigle = itemView.findViewById(R.id.textCodigoSigle);
+            this.textNumeroSerie = itemView.findViewById(R.id.textNumeroSerie);
+            this.textNumeroLote = itemView.findViewById(R.id.textNumeroLote);
+            this.textCantidad = itemView.findViewById(R.id.textCantidad);
+            this.textUdm = itemView.findViewById(R.id.textUdm);
         }
 
         public void onBind(MtlPhysicalInventoryTags mtlPhysicalInventoryTags) {
 
-            this.localizador.setText(mtlPhysicalInventoryTags.getLocatorId().toString());
-            this.itemNumeroParte.setText(mtlPhysicalInventoryTags.getDescription());
-            this.itemSigle.setText(mtlPhysicalInventoryTags.getSegment1());
-            this.itemSerie.setText(mtlPhysicalInventoryTags.getSerialNum());
-            this.itemLote.setText(mtlPhysicalInventoryTags.getLotNumber());
-            this.itemCantidad.setText(mtlPhysicalInventoryTags.getCount().toString());
-            this.itemStock.setText(mtlPhysicalInventoryTags.getPrimaryUomCode());
+            this.textLocalizador.setText(mtlPhysicalInventoryTags.getLocatorId().toString());
+            this.textNumeroParte.setText(mtlPhysicalInventoryTags.getDescription());
+            this.textCodigoSigle.setText(mtlPhysicalInventoryTags.getSegment1());
+            this.textNumeroSerie.setText(mtlPhysicalInventoryTags.getSerialNum());
+            this.textNumeroLote.setText(mtlPhysicalInventoryTags.getLotNumber());
+            this.textCantidad.setText(mtlPhysicalInventoryTags.getCount().toString());
+            this.textUdm.setText(mtlPhysicalInventoryTags.getPrimaryUomCode());
         }
     }
 }

@@ -40,8 +40,14 @@ public class MainPresenter extends BasePresenter {
 
             File tarjetaSD = Environment.getExternalStorageDirectory();
             File ruta = new File(tarjetaSD.getAbsolutePath(), "outbound");
+            Log.d(TAG, ruta.getAbsolutePath());
             File[] listFile = ruta.listFiles();
 
+            if (listFile == null) {
+                mView.hideProgres();
+                this.mView.showWarning("Directorio outbound no encontrado");
+                return;
+            }
 
             for (int i = 0; i < listFile.length; i++) {
                 Log.d(TAG, listFile[i].getName());

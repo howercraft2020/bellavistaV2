@@ -91,6 +91,7 @@ public class GenericDao<T> {
             int index = 0;
             for (Object parameter : parameters) {
                 args[index] = parameter.toString();
+                index++;
             }
             cursor = db.rawQuery(sql, args);
         } else {
@@ -106,6 +107,7 @@ public class GenericDao<T> {
                     } while(cursor.moveToNext());
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.d(TAG, e.getMessage());
             } finally {
                 if (cursor != null && !cursor.isClosed()) {

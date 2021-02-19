@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dip">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dip"
+        android:paddingTop="2dp"
+        android:paddingLeft="10dp"
+        android:src="@drawable/inventario02_48dp" />
+
+    <TextView
+        android:id="@+id/labelSubinventario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:textStyle="bold"
+        android:text="SUBINVENTARIO:" />
+
+    <TextView
+        android:id="@+id/textSubinventario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/labelSubinventario"
+        android:paddingLeft="10dp"
+        android:text="subinventarioText" />
+
+    <TextView
+        android:id="@+id/descriptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/labelSubinventario"
+        android:text="descripcion"
+        android:paddingBottom="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignBottom="@id/descriptionText"
+        android:background="?attr/colorPrimaryDark" />
+
+</RelativeLayout>

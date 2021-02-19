@@ -37,8 +37,13 @@ public class MtlPhysicalInventoryTagsDaoImpl extends GenericDao<MtlPhysicalInven
     }
 
     @Override
-    public List<MtlPhysicalInventoryTags> getAllTags(Long physicalInventoryId) throws DaoException {
-        return super.selectMany(MtlPhysicalInventoryTagsCatalogo.SELECT_ALL, new MtlPhysicalInventoryTagsRowMapper(), physicalInventoryId);
+    public List<MtlPhysicalInventoryTags> getAllByInventory(Long physicalInventoryId) throws DaoException {
+        return super.selectMany(MtlPhysicalInventoryTagsCatalogo.SELECT_ALL_BY_PHYSICAL_INVENTORY_ID, new MtlPhysicalInventoryTagsRowMapper(), physicalInventoryId);
+    }
+
+    @Override
+    public List<MtlPhysicalInventoryTags> getAllByInventorySubinventory(Long physicalInventoryId, String subinventory) throws DaoException {
+        return super.selectMany(MtlPhysicalInventoryTagsCatalogo.SELECT_ALL_BY_PHYSICAL_INVENTORY_ID_SUBINVENTORY, new MtlPhysicalInventoryTagsRowMapper(), physicalInventoryId, subinventory);
     }
 
 }
