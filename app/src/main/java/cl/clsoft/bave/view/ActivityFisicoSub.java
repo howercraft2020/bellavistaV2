@@ -136,6 +136,7 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> {
             case R.id.agregarInventarioButton:
                 Log.d(TAG, "Agregar inventario");
                 Intent i = new Intent(this, ActivityAgregarFisicoInventario.class);
+                i.putExtra("InventarioId", inventarioId);
                 startActivity(i);
                 this.finish();
                 return true;

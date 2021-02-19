@@ -68,7 +68,6 @@ public class ActivityFisicoDetalle extends BaseActivity<DetalleFisicoPresenter> 
         this.recyclerViewFisicoDetalle.setHasFixedSize(true);
         this.recyclerViewFisicoDetalle.setLayoutManager(new LinearLayoutManager(this));
 
-        Log.d("+++++++++++++++++++++", inventario.getPhysicalInventoryId().toString());
         if(inventario != null){
             this.inventarioIdText.setText("ID: " + inventario.getPhysicalInventoryId().toString());
             this.nombreInventarioText.setText("NOMBRE: " + inventario.getPhysicalInventoryName());
@@ -100,6 +99,8 @@ public class ActivityFisicoDetalle extends BaseActivity<DetalleFisicoPresenter> 
             case R.id.agregarInventarioButton:
                 Log.d(TAG, "Agregar inventario");
                 Intent o = new Intent(this, ActivityAgregarFisicoInventario.class);
+                o.putExtra("InventarioId", inventarioId);
+                o.putExtra("SubinventarioId", subinventarioId);
                 startActivity(o);
                 this.finish();
                 return true;
