@@ -13,4 +13,8 @@ public interface IConteoCiclicoService {
     public MtlCycleCountHeaders getConteoCiclico(Long cycleCountHeaderId) throws ServiceException;
 
     public List<MtlCycleCountEntries> getAllSigleInformation(Long idSigle) throws ServiceException;
+
+    public List<MtlCycleCountEntries> getAllSigleDetalle() throws ServiceException;
+
+    public MtlCycleCountEntries getCiclicoSigleDetalle(Long cycleCountEntrieId) throws ServiceException;
 }

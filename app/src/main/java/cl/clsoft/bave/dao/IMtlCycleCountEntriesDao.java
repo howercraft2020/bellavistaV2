@@ -13,4 +13,5 @@ public interface IMtlCycleCountEntriesDao {
     public void deleteByHeader(Long headerId) throws DaoException;
     public MtlCycleCountEntries get(Long id) throws DaoException;
     public List<MtlCycleCountEntries> getSigle(Long idSigle) throws DaoException;
+    public List<MtlCycleCountEntries> getAll() throws DaoException;
 }
