@@ -8,7 +8,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="139dp">
+        android:layout_height="139dp"
+        android:padding="6dip">
+
 
         <include
             android:id="@+id/llProgressBar"

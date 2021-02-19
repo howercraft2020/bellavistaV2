@@ -61,16 +61,28 @@ public class InventarioFisicoService implements IInventarioFisicoService {
     }
 
     @Override
-    public List<MtlPhysicalInventoryTags> getAllTags(Long physicalInventoryId) throws ServiceException {
+    public List<MtlPhysicalInventoryTags> getAllTagsByInventory(Long physicalInventoryId) throws ServiceException {
         IMtlPhysicalInventoryTagsDao mtlPhysicalInventoryTagsDao = new MtlPhysicalInventoryTagsDaoImpl();
         try {
-            List<MtlPhysicalInventoryTags> tags = mtlPhysicalInventoryTagsDao.getAllTags(physicalInventoryId );
+            List<MtlPhysicalInventoryTags> tags = mtlPhysicalInventoryTagsDao.getAllByInventory(physicalInventoryId );
             Log.d(TAG, "size" + tags.size());
             return tags;
         } catch(DaoException e){
             throw new ServiceException(2, e.getDescripcion());
         }
 
+    }
+
+    @Override
+    public List<MtlPhysicalInventoryTags> getAllTagsByInventorySubinventory(Long physicalInventoryId, String subinventory) throws ServiceException {
+        IMtlPhysicalInventoryTagsDao mtlPhysicalInventoryTagsDao = new MtlPhysicalInventoryTagsDaoImpl();
+        try {
+            List<MtlPhysicalInventoryTags> tags = mtlPhysicalInventoryTagsDao.getAllByInventorySubinventory(physicalInventoryId, subinventory);
+            Log.d(TAG, "size" + tags.size());
+            return tags;
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
     }
 
     @Override

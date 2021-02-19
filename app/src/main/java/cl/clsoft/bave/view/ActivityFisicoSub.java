@@ -26,20 +26,19 @@ import cl.clsoft.bave.presenter.FisicoSubPresenter;
 import cl.clsoft.bave.service.impl.InventarioFisicoService;
 
 public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> {
+
+    // Variables
+    private String TAG = "ActivityFisicoSub";
     private Long inventarioId;
-    private TextView inventarioIdEtiqueta;
-    private TextView nombreEtiqueta;
-    private TextView fechaCreacionEtiqueta;
-
-
-
-    //Controls
-    private RecyclerView recyclerViewFisicoSub;
-    private AdapterInventarioFisicoSub adapter;
-
     private List<MtlPhysicalSubinventories> subinventories;
 
-
+    //Controls
+    private TextView textId;
+    private TextView textNombre;
+    private TextView textDescription;
+    private TextView textFechaCreacion;
+    private RecyclerView recyclerViewFisicoSub;
+    private AdapterInventarioFisicoSub adapter;
 
     @Override
     protected FisicoSubPresenter createPresenter(@NonNull Context context){
@@ -48,13 +47,18 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        // Instance Layout.
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fisico_sub);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //bind controls
         this.recyclerViewFisicoSub = findViewById(R.id.itemsFisicoSub);
+        this.textId = findViewById(R.id.textId);
+        this.textNombre = findViewById(R.id.textNombre);
+        this.textDescription = findViewById(R.id.textDescription);
+        this.textFechaCreacion = findViewById(R.id.textFechaCreacion);
 
         //Set controls
         inventarioId = this.getIntent().getLongExtra("InventarioId", 0);
@@ -68,16 +72,12 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> {
         this.adapter = new AdapterInventarioFisicoSub(subinventories);
         this.recyclerViewFisicoSub.setAdapter(this.adapter);
 
-        this.inventarioIdEtiqueta = findViewById(R.id.idEtiquetaDetalle);
-        this.nombreEtiqueta = findViewById(R.id.nombreEtiquetaDetalle);
-        this.fechaCreacionEtiqueta = findViewById(R.id.fechaCreacionEtiquetaDetalle);
 
         if(inventario != null) {
-            this.inventarioIdEtiqueta.setText("ID: " + inventario.getPhysicalInventoryId());
-            this.nombreEtiqueta.setText("NOMBRE: " + inventario.getPhysicalInventoryName());
-            //this.subinventarioEtiqueta.setText("SUBINVENTARIO: ");
-            //this.localizadorEtiqueta,setText("LOCALIZADOR: ");
-            this.fechaCreacionEtiqueta.setText("FECHA CREACION: " + inventario.getCreationDate());
+            this.textId.setText(inventario.getPhysicalInventoryId().toString());
+            this.textNombre.setText(inventario.getPhysicalInventoryName());
+            this.textDescription.setText(inventario.getDescription());
+            this.textFechaCreacion.setText(inventario.getCreationDate());
         }
 
         final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {

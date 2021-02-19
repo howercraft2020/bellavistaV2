@@ -13,6 +13,7 @@ public interface IInventarioFisicoService {
     public List<MtlPhysicalInventories> getAllInventariosFisicos() throws ServiceException;
     public MtlPhysicalInventories getInventarioFisico(Long physicalInventoryId) throws ServiceException;
     public List<MtlSystemItems> getAllItems() throws ServiceException;
-    public List<MtlPhysicalInventoryTags> getAllTags(Long physicalInventoryId) throws ServiceException;
+    public List<MtlPhysicalInventoryTags> getAllTagsByInventory(Long physicalInventoryId) throws ServiceException;
+    public List<MtlPhysicalInventoryTags> getAllTagsByInventorySubinventory(Long physicalInventoryId, String subinventory) throws ServiceException;
     public List<MtlPhysicalSubinventories> getSubinventories(Long physicalInventoryId) throws ServiceException;
 }

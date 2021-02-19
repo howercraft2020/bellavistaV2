@@ -37,12 +37,23 @@ public class MtlPhysicalInventoryTagsCatalogo {
     public static final String DELETE_BY_PHYSICAL_INVENTORY_ID = COLUMN_PHYSICAL_INVENTORY_ID + " = ?";
 
     public static final String SELECT_ALL_BY_PHYSICAL_INVENTORY_ID =
-            " SELECT * FROM " + TABLE + " WHERE " + COLUMN_PHYSICAL_INVENTORY_ID + " = ?";
+            " SELECT " +
+                    "     a.*, " +
+                    "     b.description, " +
+                    "     b.long_description " +
+                    " FROM " +
+                    "     mtl_physical_inventory_tags a LEFT JOIN mtl_system_items b  ON a.inventory_item_id = b.inventory_item_id " +
+                    " WHERE " +
+                    "     a.physical_inventory_id = ?";
 
     public static final String SELECT_ALL_BY_PHYSICAL_INVENTORY_ID_SUBINVENTORY =
-            " SELECT * FROM " + TABLE + " WHERE " + COLUMN_PHYSICAL_INVENTORY_ID + " = ? AND " + COLUMN_SUBINVENTORY + " = ?";
-
-    public static final String SELECT_ALL = "SELECT a.*, b."+ COLUMN_DESCRIPTION +", b."+ COLUMN_LONG_DESCRIPTION +
-            " FROM mtl_physical_inventory_tags a, mtl_system_items b WHERE a."+ COLUMN_INVENTORY_ITEM_ID +" = b."+ COLUMN_INVENTORY_ITEM_ID +
-            " and a."+ COLUMN_PHYSICAL_INVENTORY_ID +" = ?";
+            " SELECT " +
+                    "     a.*, " +
+                    "     b.description, " +
+                    "     b.long_description " +
+                    " FROM " +
+                    "     mtl_physical_inventory_tags a LEFT JOIN mtl_system_items b  ON a.inventory_item_id = b.inventory_item_id " +
+                    " WHERE " +
+                    "     a.physical_inventory_id = ?" +
+                    "     AND a.subinventory = ?";
 }

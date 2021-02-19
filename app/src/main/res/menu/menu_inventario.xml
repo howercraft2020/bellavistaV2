@@ -6,5 +6,5 @@
         android:id="@+id/agregarInventarioButton"
         android:title="Agregar Inventario"
         app:showAsAction="ifRoom"
-        android:icon="@mipmap/ic_add_circle_outline_black_24dp" />
+        android:icon="@mipmap/ic_add_circle_outline_white_24dp" />
 </menu>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.AdapterItemSigleDetalle">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="184dp">
+
+        <TextView
+            android:id="@+id/subinvTextView"
+            android:layout_width="119dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="9dp"
+            android:text="SUBINVENTARIO:" />
+
+        <TextView
+            android:id="@+id/subinventarioSigle"
+            android:layout_width="103dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="148dp"
+            android:layout_marginRight="148dp"
+            android:layout_toEndOf="@+id/subinvTextView"
+            android:layout_toRightOf="@+id/subinvTextView"
+            android:hint="00" />
+
+        <TextView
+            android:id="@+id/localizadorTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/subinvTextView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="LOCALIZADOR:" />
+
+        <TextView
+            android:id="@+id/localizadorSigle"
+            android:layout_width="51dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/subinventarioSigle"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="6dp"
+            android:layout_toEndOf="@+id/localizadorTextView"
+            android:layout_toRightOf="@+id/localizadorTextView"
+            android:hint="00" />
+
+        <TextView
+            android:id="@+id/loteTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/localizadorTextView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="9dp"
+            android:layout_marginLeft="9dp"
+            android:layout_marginTop="8dp"
+            android:text="LOTE:" />
+
+        <TextView
+            android:id="@+id/loteSigle"
+            android:layout_width="41dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/localizadorSigle"
+            android:layout_alignLeft="@id/loteTextView"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="13dp"
+            android:hint="00" />
+
+        <TextView
+            android:id="@+id/numSerieTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/loteTextView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="9dp"
+            android:text="No.Serie:" />
+
+        <TextView
+            android:id="@+id/numSerieSigle"
+            android:layout_width="33dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/loteSigle"
+            android:layout_alignLeft="@id/numSerieTextView"
+            android:layout_marginLeft="63dp"
+            android:layout_marginTop="6dp" />
+
+        <TextView
+            android:id="@+id/cantidadTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/numSerieTextView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="6dp"
+            android:text="CANTIDAD:" />
+
+        <TextView
+            android:id="@+id/cantidadSigle"
+            android:layout_width="39dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/numSerieSigle"
+            android:layout_alignLeft="@id/cantidadTextView"
+            android:layout_marginLeft="77dp"
+            android:layout_marginTop="6dp"
+            android:hint="00" />
+
+        <TextView
+            android:id="@+id/UDMtextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cantidadTextView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="11dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="10dp"
+            android:text="UDM:" />
+
+        <TextView
+            android:id="@+id/UDMSigle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cantidadSigle"
+            android:layout_alignLeft="@id/UDMtextView"
+            android:layout_marginLeft="38dp"
+            android:layout_marginTop="11dp"
+            android:hint="Alcachofas" />
+
+        <View
+            android:id="@+id/divider5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/UDMSigle"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:background="?android:attr/listDivider" />
+
+    </RelativeLayout>
+
+</LinearLayout>

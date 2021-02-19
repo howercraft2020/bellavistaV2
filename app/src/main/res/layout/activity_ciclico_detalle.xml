@@ -23,13 +23,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/cycleCountHeaderNameDetalle"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/fechaCicloTextDetalle"
             android:layout_toRightOf="@+id/fechaCicloTextDetalle"
             android:paddingBottom="4dp"
-            android:text="Fecha creación: "
+            android:text="Fecha creación "
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -38,13 +38,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/cycleCountHeaderIdDetalle"
-            android:layout_marginStart="9dp"
-            android:layout_marginLeft="9dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="11dp"
             android:layout_toEndOf="@+id/nombreCicloTextDetalle"
             android:layout_toRightOf="@+id/nombreCicloTextDetalle"
             android:paddingBottom="4dp"
-            android:text="Nombre: "
+            android:text="Nombre "
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -63,7 +63,7 @@
             android:layout_marginRight="211dp"
             android:paddingStart="3dp"
             android:paddingLeft="3dp"
-            android:text="ID:"
+            android:text="ID"
             android:textSize="16sp"
             android:textStyle="bold" />
 

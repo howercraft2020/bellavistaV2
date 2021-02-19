@@ -47,24 +47,9 @@ public class RcvTransactionsInterfaceCatalogo {
     public static final String COLUMN_VALIDATION_FLAG = "validation_flag";
     public static final String COLUMN_ORG_ID = "org_id";
     public static final String COLUMN_GROUP_ID = "group_id";
-    public static final String COLUMN_SEGMENT1 = "segment1";
     public static final String COLUMN_AUTO_TRANSACT_CODE = "auto_transact_code";
-    public static final String COLUMN_PROCESS_FLAG = "process_flag";
-    public static final String COLUMN_TRANSACTION_MODE = "transaction_mode";
-    public static final String COLUMN_TRANSACTION_UOM = "transaction_uom";
-    public static final String COLUMN_SUBINVENTORY_CODE = "subinventory_code";
-    public static final String COLUMN_LOCATOR_ID = "locator_id";
-    public static final String COLUMN_TRANSACTION_SOURCE_NAME = "transaction_source_name";
-    public static final String COLUMN_TRANSACTION_SOURCE_TYPE_ID = "transaction_source_type_id";
-    public static final String COLUMN_TRANSACTION_ACTION_ID = "transaction_action_id";
-    public static final String COLUMN_TRANSACTION_TYPE_ID = "transaction_type_id";
-    public static final String COLUMN_TRANSACTION_REFERENCE = "transaction_reference";
-    public static final String COLUMN_TRANSFER_SUBINVENTORY = "transfer_subinventory";
-    public static final String COLUMN_TRANSFER_ORGANIZATION = "transfer_organization";
-    public static final String COLUMN_TRANSFER_LOCATOR = "transfer_locator";
-    public static final String COLUMN_SOURCE_CODE = "source_code";
-    public static final String COLUMN_SOURCE_LINE_ID = "source_line_id";
-    public static final String COLUMN_SOURCE_HEADER_ID = "source_header_id";
+    public static final String COLUMN_SEGMENT1 = "segment1";
+
 
 
     public static final String CREATE_TABLE =
@@ -111,23 +96,7 @@ public class RcvTransactionsInterfaceCatalogo {
                     COLUMN_VALIDATION_FLAG + " TEXT, " +
                     COLUMN_ORG_ID + " INTEGER, " +
                     COLUMN_GROUP_ID + " INTEGER, " +
-                    COLUMN_AUTO_TRANSACT_CODE + " TEXT, " +
-                    COLUMN_PROCESS_FLAG + " INTEGER, " +
-                    COLUMN_TRANSACTION_MODE + " INTEGER, " +
-                    COLUMN_TRANSACTION_UOM + " TEXT, " +
-                    COLUMN_SUBINVENTORY_CODE + " TEXT, " +
-                    COLUMN_LOCATOR_ID + " INTEGER, " +
-                    COLUMN_TRANSACTION_SOURCE_NAME + " TEXT, " +
-                    COLUMN_TRANSACTION_SOURCE_TYPE_ID + " INTEGER, " +
-                    COLUMN_TRANSACTION_ACTION_ID + " INTEGER, " +
-                    COLUMN_TRANSACTION_TYPE_ID + " INTEGER, " +
-                    COLUMN_TRANSACTION_REFERENCE + " TEXT, " +
-                    COLUMN_TRANSFER_SUBINVENTORY + " TEXT, " +
-                    COLUMN_TRANSFER_ORGANIZATION + " INTEGER, " +
-                    COLUMN_TRANSFER_LOCATOR + " INTEGER, " +
-                    COLUMN_SOURCE_CODE + " TEXT, " +
-                    COLUMN_SOURCE_LINE_ID + " INTEGER, " +
-                    COLUMN_SOURCE_HEADER_ID + "INTEGER " +
+                    COLUMN_AUTO_TRANSACT_CODE + " TEXT " +
                     " ) ";
 
     public static final String SELECT = " SELECT * FROM rcv_transactions_interface rti, mtl_system_items msi where rti.item_id = msi.inventory_item_id AND rti.header_interface_id = ? ";
