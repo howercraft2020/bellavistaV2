@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dip" >
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dip"
+        android:paddingTop="8dp"
+        android:paddingLeft="10dp"
+        android:src="@drawable/ciclico01_48dp" />
+
+    <TextView
+        android:id="@+id/labelId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:textStyle="bold"
+        android:text="ID:" />
+
+    <TextView
+        android:id="@+id/cycleCountHeaderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/labelId"
+        android:paddingLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/labelNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@+id/labelId"
+        android:textStyle="bold"
+        android:text="Nombre:" />
+
+    <TextView
+        android:id="@+id/cycleCountHeaderName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/labelNombre"
+        android:layout_below="@+id/cycleCountHeaderId"
+        android:paddingLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/labelFechaCreacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@+id/labelNombre"
+        android:textStyle="bold"
+        android:text="Fecha de creación:" />
+
+    <TextView
+        android:id="@+id/creationDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cycleCountHeaderName"
+        android:layout_toRightOf="@+id/labelFechaCreacion"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_alignBottom="@id/creationDate" />
+
+</RelativeLayout>
