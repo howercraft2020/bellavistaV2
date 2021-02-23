@@ -35,4 +35,9 @@ public class MtlSystemItemsDaoImpl extends GenericDao<MtlSystemItems> implements
 
         return super.selectMany(MtlSystemItemsCatalogo.SELECT_ALL, new MtlSystemItemsRowMapper());
     }
+
+    @Override
+    public MtlSystemItems getBySegment(String segment) throws DaoException {
+        return super.selectOne(MtlSystemItemsCatalogo.SELECT_BY_SEGMENT, new MtlSystemItemsRowMapper(), segment);
+    }
 }

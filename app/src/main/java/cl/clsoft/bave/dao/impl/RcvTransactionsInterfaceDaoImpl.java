@@ -18,7 +18,7 @@ public class RcvTransactionsInterfaceDaoImpl extends GenericDao<RcvTransactionsI
     }
 
     @Override
-    public void insert(RcvTransactionsInterface rcvTransactionsInterface) {
+    public void insert(RcvTransactionsInterface rcvTransactionsInterface) throws DaoException {
         ContentValues values = new ContentValues();
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_INTERFACE_TRANSACTION_ID, rcvTransactionsInterface.getInterfaceTransactionId());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_LAST_UPDATE_DATE, rcvTransactionsInterface.getLastUpdatedDate());

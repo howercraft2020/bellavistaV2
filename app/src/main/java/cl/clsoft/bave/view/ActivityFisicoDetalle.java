@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,11 +21,11 @@ import java.util.List;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlPhysicalInventories;
 import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
-import cl.clsoft.bave.presenter.DetalleFisicoPresenter;
+import cl.clsoft.bave.presenter.FisicoDetallePresenter;
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.service.impl.InventarioFisicoService;
 
-public class ActivityFisicoDetalle extends BaseActivity<DetalleFisicoPresenter> {
+public class ActivityFisicoDetalle extends BaseActivity<FisicoDetallePresenter> {
 
     // Variables
     private String TAG = "ActivityFisicoDetalle";
@@ -32,17 +35,17 @@ public class ActivityFisicoDetalle extends BaseActivity<DetalleFisicoPresenter> 
     private List<MtlPhysicalInventoryTags> tags;
 
     //Controls
-    private TextView inventarioIdText;
-    private TextView nombreInventarioText;
-    private TextView descriptionInventarioText;
-    private TextView subinventarioIdText;
-    private TextView fechaCreacionText;
+    private TextView textId;
+    private TextView textNombre;
+    private TextView textDescription;
+    private TextView textSubinventario;
+    private TextView textFechaCreacion;
     private RecyclerView recyclerViewFisicoDetalle;
     private AdapterInventarioFisicoDetalle adapter;
 
     @Override
-    protected DetalleFisicoPresenter createPresenter(@NonNull Context context) {
-        return new DetalleFisicoPresenter(this, new InventarioFisicoService());
+    protected FisicoDetallePresenter createPresenter(@NonNull Context context) {
+        return new FisicoDetallePresenter(this, new InventarioFisicoService());
     }
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,36 +55,72 @@ public class ActivityFisicoDetalle extends BaseActivity<DetalleFisicoPresenter> 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //bind controlls
-        this.inventarioIdText = findViewById(R.id.inventarioIdText);
-        this.nombreInventarioText = findViewById(R.id.nombreInventarioText);
-        this.descriptionInventarioText = findViewById(R.id.descriptionInventarioText);
-        this.subinventarioIdText = findViewById(R.id.subinventarioDetalleText);
-        this.fechaCreacionText = findViewById(R.id.fechacreacionDetalleText);
+        this.textId = findViewById(R.id.textId);
+        this.textNombre = findViewById(R.id.textNombre);
+        this.textDescription = findViewById(R.id.textDescription);
+        this.textSubinventario = findViewById(R.id.textSubinventario);
+        this.textFechaCreacion = findViewById(R.id.textFechaCreacion);
         this.recyclerViewFisicoDetalle = findViewById(R.id.itemFisicoDetalle);
 
         //set controls
         inventarioId = this.getIntent().getLongExtra("InventarioId", 0);
         subinventarioId = this.getIntent().getStringExtra("SubinventarioId");
         inventario = mPresenter.getPreviousInventarioFisicos(inventarioId);
-        //Log.d(TAG, "tags: " + tags.size());
 
         this.recyclerViewFisicoDetalle.setHasFixedSize(true);
         this.recyclerViewFisicoDetalle.setLayoutManager(new LinearLayoutManager(this));
 
         if(inventario != null){
-            this.inventarioIdText.setText("ID: " + inventario.getPhysicalInventoryId().toString());
-            this.nombreInventarioText.setText("NOMBRE: " + inventario.getPhysicalInventoryName());
-            this.descriptionInventarioText.setText("DESCRIPTION: " + inventario.getDescription());
-            this.subinventarioIdText.setText("SUBINVENTARIO: " + subinventarioId);
-            this.fechaCreacionText.setText("FECHA CREACION: " + inventario.getCreationDate());
+            this.textId.setText(inventario.getPhysicalInventoryId().toString());
+            this.textNombre.setText(inventario.getPhysicalInventoryName());
+            this.textDescription.setText(inventario.getDescription());
+            this.textSubinventario.setText(subinventarioId);
+            this.textFechaCreacion.setText(inventario.getCreationDate());
         }
 
+        final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+        });
+
+        this.recyclerViewFisicoDetalle.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean b) {
+            }
+
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+                try {
+                    View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+                    if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+                        int position = recyclerView.getChildAdapterPosition(child);
+                        Intent i = null;
+                        i = new Intent(getApplicationContext(), ActivityFisicoEditar.class);
+                        i.putExtra("tagId", tags.get(position).getTagId());
+                        startActivity(i);
+                        finish();
+                        return true;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+
+            }
+
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        tags = mPresenter.getTagsByInventorySubinventory(inventarioId, subinventarioId);
+        tags = mPresenter.getTagsInventariados(inventarioId, subinventarioId);
         this.adapter = new AdapterInventarioFisicoDetalle(tags);
         this.recyclerViewFisicoDetalle.setAdapter(this.adapter);
     }
@@ -98,7 +137,7 @@ public class ActivityFisicoDetalle extends BaseActivity<DetalleFisicoPresenter> 
         switch (item.getItemId()) {
             case R.id.agregarInventarioButton:
                 Log.d(TAG, "Agregar inventario");
-                Intent o = new Intent(this, ActivityAgregarFisicoInventario.class);
+                Intent o = new Intent(this, ActivityFisicoAgregar.class);
                 o.putExtra("InventarioId", inventarioId);
                 o.putExtra("SubinventarioId", subinventarioId);
                 startActivity(o);

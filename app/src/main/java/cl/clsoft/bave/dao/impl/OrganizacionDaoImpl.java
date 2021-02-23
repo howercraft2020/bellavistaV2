@@ -5,12 +5,13 @@ import android.content.ContentValues;
 import cl.clsoft.bave.dao.IOrganizacionDao;
 import cl.clsoft.bave.dao.catalogo.OrganizacionCatalogo;
 import cl.clsoft.bave.dao.rowmapper.OrganizacionRowMapper;
+import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.Organizacion;
 
 public class OrganizacionDaoImpl extends GenericDao<Organizacion> implements IOrganizacionDao {
 
     @Override
-    public void insert(Organizacion organizacion) {
+    public void insert(Organizacion organizacion) throws DaoException {
         ContentValues values = new ContentValues();
         values.put(OrganizacionCatalogo.COLUMN_ID, organizacion.getIdOrganizacion());
         values.put(OrganizacionCatalogo.COLUMN_CODE, organizacion.getCode());
@@ -18,19 +19,19 @@ public class OrganizacionDaoImpl extends GenericDao<Organizacion> implements IOr
     }
 
     @Override
-    public void update(Organizacion organizacion) {
+    public void update(Organizacion organizacion) throws DaoException {
         ContentValues values = new ContentValues();
         values.put(OrganizacionCatalogo.COLUMN_CODE, organizacion.getCode());
         super.update(OrganizacionCatalogo.TABLE, values, OrganizacionCatalogo.UPDATE, organizacion.getIdOrganizacion());
     }
 
     @Override
-    public void delete(Long idOrganizacion) {
+    public void delete(Long idOrganizacion) throws DaoException {
         super.delete(OrganizacionCatalogo.TABLE, OrganizacionCatalogo.DELETE, idOrganizacion);
     }
 
     @Override
-    public Organizacion get(Long idOrganizacion) {
+    public Organizacion get(Long idOrganizacion) throws DaoException {
         final Organizacion organizacion = super.selectOne(OrganizacionCatalogo.SELECT, new OrganizacionRowMapper(), idOrganizacion);
         return organizacion;
     }

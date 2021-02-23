@@ -7,6 +7,6 @@ import java.sql.SQLException;
 
 public interface RowMapper<T> {
 
-    public T mapRow(Cursor row, int position) throws SQLException;
+    public T mapRow(Cursor cursor, int position) throws SQLException;
 
 }

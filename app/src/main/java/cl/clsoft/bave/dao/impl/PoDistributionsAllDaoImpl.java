@@ -5,12 +5,13 @@ import android.content.ContentValues;
 import cl.clsoft.bave.dao.IPoDistributionsAllDao;
 import cl.clsoft.bave.dao.catalogo.PoDistributionsAllCatalogo;
 import cl.clsoft.bave.dao.catalogo.PoHeadersAllCatalogo;
+import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.PoDistributionsAll;
 
 public class PoDistributionsAllDaoImpl extends GenericDao<PoDistributionsAll> implements IPoDistributionsAllDao {
 
     @Override
-    public void insert(PoDistributionsAll poDistributionsAll) {
+    public void insert(PoDistributionsAll poDistributionsAll) throws DaoException {
         ContentValues values = new ContentValues();
         values.put(PoDistributionsAllCatalogo.COLUMN_PO_DISTRIBUTION_ID, poDistributionsAll.getPoDistributionId());
         values.put(PoDistributionsAllCatalogo.COLUMN_LINE_LOCATION_ID, poDistributionsAll.getLineLocationId());
