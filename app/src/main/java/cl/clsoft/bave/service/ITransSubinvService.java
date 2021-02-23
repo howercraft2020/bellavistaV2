@@ -4,10 +4,12 @@ import java.util.List;
 
 
 import cl.clsoft.bave.exception.ServiceException;
+import cl.clsoft.bave.model.DatosTransSubinv;
 import cl.clsoft.bave.model.MtlTransactionsInterface;
 
 
 public interface ITransSubinvService {
 
-    public List<MtlTransactionsInterface> getTransSubinv() throws ServiceException;
+    public List<DatosTransSubinv> getTransSubinv() throws ServiceException;
+    public void cargaTransferencia(String articulo,String lote, String localizador, String subinventario) throws ServiceException;
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
+import cl.clsoft.bave.model.DatosTransSubinv;
 import cl.clsoft.bave.model.MtlTransactionsInterface;
 import cl.clsoft.bave.model.RcvTransactionsInterface;
 import cl.clsoft.bave.service.ITransSubinvService;
@@ -20,7 +21,7 @@ public class TransSubinvPresenter extends BasePresenter {
         this.mService = mService;
     }
 
-    public List<MtlTransactionsInterface> getTransSubinv(){
+    public List<DatosTransSubinv> getTransSubinv(){
         try{
             return this.mService.getTransSubinv();
         }catch (ServiceException e) {

@@ -13,14 +13,15 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.model.DatosTransSubinv;
 import cl.clsoft.bave.model.MtlTransactionsInterface;
 
 public class AdapterTransSubinv extends RecyclerView.Adapter<AdapterTransSubinv.TransSubinvViewHolder> {
 
     private static final String TAG = "AdapterTransSubinv";
-    private List<MtlTransactionsInterface> transferencias;
+    private List<DatosTransSubinv> transferencias;
 
-    public AdapterTransSubinv(List<MtlTransactionsInterface> transferencias) {
+    public AdapterTransSubinv(List<DatosTransSubinv> transferencias) {
         this.transferencias = transferencias;
     }
 
@@ -60,19 +61,19 @@ public class AdapterTransSubinv extends RecyclerView.Adapter<AdapterTransSubinv.
     public class TransSubinvViewHolder extends ViewHolder {
 
         private static final String TAG = "TransSubinvViewHolder";
-        private TextView transactionInterfaceId;
-        private TextView transactionReference;
+        private TextView transctionReference;
+        private TextView transactionSourceName;
 
         public TransSubinvViewHolder(@NonNull View itemView){
             super(itemView);
-            this.transactionInterfaceId = itemView.findViewById(R.id.transactionInterfaceId);
-            this.transactionReference = itemView.findViewById(R.id.transactionReference);
+            this.transctionReference = itemView.findViewById(R.id.transctionReference);
+            this.transactionSourceName = itemView.findViewById(R.id.transactionSourceName);
 
         }
 
-        public void onBind(MtlTransactionsInterface mtlTransactionsInterface){
-            this.transactionInterfaceId.setText(mtlTransactionsInterface.getTransactionInterfaceId().toString());
-            this.transactionReference.setText(mtlTransactionsInterface.getTransactionReference());
+        public void onBind(DatosTransSubinv datosTransSubinv){
+            this.transctionReference.setText(datosTransSubinv.getTransactionReference().toString());
+            this.transactionSourceName.setText(datosTransSubinv.getTransactionSourceName());
         }
     }
 }
