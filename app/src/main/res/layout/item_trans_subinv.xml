@@ -15,10 +15,10 @@
         android:paddingLeft="3dp" />
 
     <TextView
-        android:id="@+id/transactionInterfaceId"
+        android:id="@+id/transctionReference"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="transactionInterfaceId"
+        android:text="transactionReference"
         android:layout_toRightOf="@id/TagTraspaso"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -29,7 +29,7 @@
         android:id="@+id/tagGlosa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ID : "
+        android:text="Glosa : "
         android:layout_below="@id/TagTraspaso"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -37,14 +37,14 @@
         android:paddingLeft="3dp" />
 
     <TextView
-        android:id="@+id/transactionReference"
+        android:id="@+id/transactionSourceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/transactionInterfaceId"
+        android:layout_below="@id/transctionReference"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="1dp"
         android:layout_toRightOf="@id/tagGlosa"
-        android:text="transactionReference "
+        android:text="transactionSourceName "
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -53,6 +53,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?attr/colorPrimaryDark"
-        android:layout_alignBottom="@id/tagGlosa" />
+        android:layout_alignBottom="@id/transactionSourceName" />
 
 </RelativeLayout>

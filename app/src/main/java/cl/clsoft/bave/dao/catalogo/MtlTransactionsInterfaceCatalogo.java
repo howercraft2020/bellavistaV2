@@ -57,7 +57,7 @@ public class MtlTransactionsInterfaceCatalogo {
                     COLUMN_TRANSFER_LOCATOR + " INTEGER, " +
                     COLUMN_SOURCE_CODE + " TEXT, " +
                     COLUMN_SOURCE_LINE_ID + " INTEGER, " +
-                    COLUMN_SOURCE_HEADER_ID + " INTEGER, " +
+                    COLUMN_SOURCE_HEADER_ID + " INTEGER " +
                     " ) ";
 
     public static final String SELECT_ALL = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_TRANSACTION_ACTION_ID + " = 2 AND " + COLUMN_TRANSACTION_TYPE_ID + " = 2 ";

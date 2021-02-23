@@ -4,6 +4,7 @@ import android.content.ContentValues;
 
 import cl.clsoft.bave.dao.IMtlOnhandQuantitiesDao;
 import cl.clsoft.bave.dao.catalogo.MtlOnhandQuantitiesCatalogo;
+import cl.clsoft.bave.dao.rowmapper.MtlOnHandQuantitiesRowMapper;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.MtlOnhandQuantities;
 
@@ -26,5 +27,10 @@ public class MtlOnhandQuantitiesDaoImpl extends GenericDao<MtlOnhandQuantities> 
         } catch (Exception ex) {
             throw new DaoException(1, ex.getMessage());
         }
+    }
+
+    @Override
+    public MtlOnhandQuantities get(String articulo, String lote,String localizador, String subinventario) throws DaoException {
+        return super.selectOne(MtlOnhandQuantitiesCatalogo.SELECT, new MtlOnHandQuantitiesRowMapper(), articulo);//,lote,localizador, subinventario);
     }
 }

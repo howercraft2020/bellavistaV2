@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
+import cl.clsoft.bave.model.DatosTransSubinv;
 import cl.clsoft.bave.model.MtlTransactionsInterface;
 import cl.clsoft.bave.presenter.TransSubinvPresenter;
 import cl.clsoft.bave.service.impl.TransSubinvService;
@@ -26,7 +28,7 @@ public class ActivityTransSubinv extends BaseActivity<TransSubinvPresenter> {
 
     //Variables
     private static final String TAG = "ActivityTransSubinv";
-    private List<MtlTransactionsInterface> transferencias;
+    private List<DatosTransSubinv> transferencias;
 
     //Controls
     private RecyclerView recyclerViewTransSubinv;
@@ -97,6 +99,11 @@ public class ActivityTransSubinv extends BaseActivity<TransSubinvPresenter> {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_more:
+                Intent i = new Intent(this, ActivityAgregarTransSubinv.class);
+                startActivity(i);
+                this.finish();
+                return true;
             case android.R.id.home:
                 this.finish();
                 return true;

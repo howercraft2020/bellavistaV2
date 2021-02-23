@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/traspasoEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="N° Traspaso"
+        android:inputType="textPersonName"
+        android:padding="6dp" />
+
+    <EditText
+        android:id="@+id/glosaEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="Glosa"
+        android:layout_below="@id/traspasoEditText"
+        android:inputType="textPersonName"
+        android:padding="6dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_alignBottom="@id/glosaEditText" />
+
+    <EditText
+        android:id="@+id/parteEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:layout_below="@id/glosaEditText"
+        android:hint="N° parte"
+        android:inputType="textPersonName"
+        android:padding="6dp" />
+
+    <EditText
+        android:id="@+id/sigleEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/parteEditText"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="Codigo sigle"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/subinventarioDesdeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sigleEditText"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="Subinventario Desde"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/localizadorDesdeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subinventarioDesdeEditText"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="Localizador Desde"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/loteEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/localizadorDesdeEditText"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="Nº Lote"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/cantidadEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loteEditText"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="Cantidad"
+        android:inputType="textPersonName" />
+
+</RelativeLayout>
