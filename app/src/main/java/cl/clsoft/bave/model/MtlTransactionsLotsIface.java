@@ -1,7 +1,7 @@
 package cl.clsoft.bave.model;
 
 public class MtlTransactionsLotsIface {
-    private Long mtlTransactionLostIface;
+    private Long mtlTransactionLotsIface;
     private String lastUpdateDate;
     private Long lastUpdateBy;
     private String creationDate;
@@ -15,7 +15,7 @@ public class MtlTransactionsLotsIface {
     private Long primaryQuantity;
     private Long serialTransactionTempId;
     private String productCode;
-    private Long productTrasnactionId;
+    private Long productTransactionId;
     private String supplierLotNumber;
     private String lotExpirationDate;
     private String attributeCategory;
@@ -27,12 +27,12 @@ public class MtlTransactionsLotsIface {
 
     }
 
-    public Long getMtlTransactionLostIface() {
-        return mtlTransactionLostIface;
+    public Long getMtlTransactionLotsIface() {
+        return mtlTransactionLotsIface;
     }
 
-    public void setMtlTransactionLostIface(Long mtlTransactionLostIface) {
-        this.mtlTransactionLostIface = mtlTransactionLostIface;
+    public void setMtlTransactionLotsIface(Long mtlTransactionLostIface) {
+        this.mtlTransactionLotsIface = mtlTransactionLostIface;
     }
 
     public String getLastUpdateDate() {
@@ -139,12 +139,12 @@ public class MtlTransactionsLotsIface {
         this.productCode = productCode;
     }
 
-    public Long getProductTrasnactionId() {
-        return productTrasnactionId;
+    public Long getProductTransactionId() {
+        return productTransactionId;
     }
 
-    public void setProductTrasnactionId(Long productTrasnactionId) {
-        this.productTrasnactionId = productTrasnactionId;
+    public void setProductTransactionId(Long productTrasnactionId) {
+        this.productTransactionId = productTrasnactionId;
     }
 
     public String getSupplierLotNumber() {

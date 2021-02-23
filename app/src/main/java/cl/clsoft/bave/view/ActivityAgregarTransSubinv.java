@@ -62,7 +62,7 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
 
         switch (item.getItemId()) {
             case R.id.action_save:
-                mPresenter.cargaTransferencia(articulo,lote,localizador,subinventario);
+                mPresenter.cargaTransferencia(articulo,lote,subinventario);
                 return true;
             case android.R.id.home:
                 this.finish();

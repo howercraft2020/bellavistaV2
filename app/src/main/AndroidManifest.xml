@@ -49,6 +49,7 @@
         </activity>
 
         <!-- RECEPCION OC -->
+        <activity android:name=".view.ActivityAgregarTransSubinv"></activity>
         <activity android:name=".view.ActivityTransSubinv"></activity>
         <activity android:name=".Entrega" />
         <activity
@@ -58,6 +59,7 @@
             android:name=".view.ActivityArticulosRecepcion"></activity>
         <activity
             android:name=".view.ActivityAgregarRecepcion"></activity>
+
 
     </application>
 

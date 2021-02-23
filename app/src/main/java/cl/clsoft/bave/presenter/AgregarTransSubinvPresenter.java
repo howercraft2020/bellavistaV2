@@ -16,9 +16,9 @@ public class AgregarTransSubinvPresenter extends BasePresenter {
         this.mService = mService;
     }
 
-    public void cargaTransferencia(String articulo, String lote, String localizador, String subinventario){
+    public void cargaTransferencia(String articulo, String lote, String subinventario){
             try {
-                this.mService.cargaTransferencia(articulo,lote, localizador, subinventario);
+                this.mService.cargaTransferencia(articulo,lote, subinventario);
             }catch (ServiceException e){
             e.printStackTrace();
             if(e.getCodigo() == 1){

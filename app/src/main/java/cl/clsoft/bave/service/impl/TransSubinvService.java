@@ -29,7 +29,7 @@ public class TransSubinvService implements ITransSubinvService {
     }
 
     @Override
-    public void cargaTransferencia(String articulo, String lote, String localizador, String subinventario) throws ServiceException{
+    public void cargaTransferencia(String articulo, String lote,String subinventario) throws ServiceException{
         IMtlOnhandQuantitiesDao iMtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
 
         MtlOnhandQuantities mtlOnhandQuantities;
@@ -37,7 +37,7 @@ public class TransSubinvService implements ITransSubinvService {
         try{
 
             //Captura datos
-            mtlOnhandQuantities = iMtlOnhandQuantitiesDao.get(articulo, lote, localizador,subinventario);
+            mtlOnhandQuantities = iMtlOnhandQuantitiesDao.get(articulo, lote,subinventario);
             if(mtlOnhandQuantities == null){
                 throw new ServiceException(1,"No se encuentra información de cantidad de stock");
             }

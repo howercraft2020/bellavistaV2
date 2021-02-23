@@ -30,7 +30,7 @@ public class MtlOnhandQuantitiesDaoImpl extends GenericDao<MtlOnhandQuantities> 
     }
 
     @Override
-    public MtlOnhandQuantities get(String articulo, String lote,String localizador, String subinventario) throws DaoException {
-        return super.selectOne(MtlOnhandQuantitiesCatalogo.SELECT, new MtlOnHandQuantitiesRowMapper(), articulo);//,lote,localizador, subinventario);
+    public MtlOnhandQuantities get(String articulo, String lote, String subinventario) throws DaoException {
+        return super.selectOne(MtlOnhandQuantitiesCatalogo.SELECT, new MtlOnHandQuantitiesRowMapper(), articulo,lote, subinventario);
     }
 }
