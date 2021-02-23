@@ -22,9 +22,12 @@ public class DetalleFisicoPresenter extends BasePresenter {
         this.mService = mService;
     }
 
-    public List<MtlPhysicalInventoryTags> getTags(Long id){
+    public List<MtlPhysicalInventoryTags> getTagsByInventorySubinventory(Long physicalInventoryId, String subinventory){
         try {
-            return this.mService.getAllTags(id);
+            mView.showProgres();
+            List<MtlPhysicalInventoryTags> tags = this.mService.getAllTagsByInventorySubinventory(physicalInventoryId, subinventory);
+            mView.hideProgres();
+            return tags;
         } catch(ServiceException e){
             e.printStackTrace();
         }

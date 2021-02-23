@@ -15,9 +15,9 @@ import java.util.List;
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.model.MtlPhysicalInventories;
 
-public class AdapterInventarioFisico extends RecyclerView.Adapter<AdapterInventarioFisico.ConteoFisicoViewHolder>{
+public class AdapterInventarioFisico extends RecyclerView.Adapter<AdapterInventarioFisico.InventarioFisicoViewHolder>{
 
-    private static final String TAG = "AdapterConteoFisico";
+    private static final String TAG = "AdapterInventarioFisico";
     private List<MtlPhysicalInventories> conteos;
     private RecyclerViewClickListener listener;
 
@@ -30,17 +30,16 @@ public class AdapterInventarioFisico extends RecyclerView.Adapter<AdapterInventa
 
     @NonNull
     @Override
-    public ConteoFisicoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder");
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_activity_fisico, parent, false);
-        ConteoFisicoViewHolder cfvh = new ConteoFisicoViewHolder(v);
-
+    public InventarioFisicoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d(TAG, "AdapterInventarioFisico::onCreateViewHolder");
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_inventario, parent, false);
+        InventarioFisicoViewHolder cfvh = new InventarioFisicoViewHolder(v);
         return cfvh;
     }
 
 
     @Override
-    public void onBindViewHolder(@NonNull ConteoFisicoViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull InventarioFisicoViewHolder holder, int position) {
         Log.d(TAG, "AdapterInventarioFisico::onBindViewHolder");
         holder.onBind(this.conteos.get(position));
     }
@@ -60,32 +59,25 @@ public class AdapterInventarioFisico extends RecyclerView.Adapter<AdapterInventa
 
 
 
-    public class ConteoFisicoViewHolder extends ViewHolder implements View.OnClickListener{
+    public class InventarioFisicoViewHolder extends ViewHolder implements View.OnClickListener{
 
         private static final String TAG = "ConteoFisicoViewHolder";
         private TextView contadorFisicoId;
         private TextView contadorFisicoNombre;
-        private TextView contadorFisicoSubinventario;
-        private TextView contadorFisicoLocalizador;
         private TextView contadorFisicoFechaCreacion;
 
-        public ConteoFisicoViewHolder(@NonNull View itemView) {
+        public InventarioFisicoViewHolder(@NonNull View itemView) {
             super(itemView);
             this.contadorFisicoId = itemView.findViewById(R.id.idTextView);
             this.contadorFisicoNombre = itemView.findViewById(R.id.nombreTextView);
-            this.contadorFisicoSubinventario = itemView.findViewById(R.id.subinventarioTextView);
-            this.contadorFisicoLocalizador = itemView.findViewById(R.id.localizadorTextView);
             this.contadorFisicoFechaCreacion = itemView.findViewById(R.id.fechaCreacionTextView);
 
             itemView.setOnClickListener(this);
         }
         public void onBind(MtlPhysicalInventories mtlPhysicalInventories){
 
-            //, MtlPhysicalInventoryTags mtlPhysicalInventoryTags
             this.contadorFisicoId.setText(mtlPhysicalInventories.getPhysicalInventoryId().toString());
             this.contadorFisicoNombre.setText(mtlPhysicalInventories.getPhysicalInventoryName());
-            //this.contadorFisicoSubinventario.setText(mtlPhysicalInventoryTags.getSubinventory());
-            //this.contadorFisicoLocalizador.setText(mtlPhysicalInventoryTags.getLocatorId().toString());
             this.contadorFisicoFechaCreacion.setText(mtlPhysicalInventories.getCreationDate());
         }
 

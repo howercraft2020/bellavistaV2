@@ -4,44 +4,70 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/inventarioIdText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="InventarioId" />
-
-    <TextView
-        android:id="@+id/nombreInventarioText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="nombreInventarioText" />
-
-    <TextView
-        android:id="@+id/descriptionInventarioText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="descriptionText" />
-
-    <TextView
-        android:id="@+id/subinventarioDetalleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="subinventarioTExt" />
-
-    <TextView
-        android:id="@+id/fechacreacionDetalleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="fechacreacionText" />
-
-    <View
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignBottom="@id/stockEtiquetaItemDetalle"
-        android:background="?attr/colorPrimaryDark" />
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6dip"
+            android:paddingTop="25dp"
+            android:paddingLeft="10dp"
+            android:src="@drawable/inventario01_48dp" />
+
+        <TextView
+            android:id="@+id/inventarioIdText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:text="InventarioId" />
+
+        <TextView
+            android:id="@+id/nombreInventarioText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_below="@id/inventarioIdText"
+            android:text="nombreInventarioText" />
+
+        <TextView
+            android:id="@+id/descriptionInventarioText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_below="@id/nombreInventarioText"
+            android:text="descriptionText" />
+
+        <TextView
+            android:id="@+id/subinventarioDetalleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_below="@id/descriptionInventarioText"
+            android:text="subinventarioTExt" />
+
+        <TextView
+            android:id="@+id/fechacreacionDetalleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_below="@id/subinventarioDetalleText"
+            android:text="fechacreacionText"
+            android:paddingBottom="10dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignBottom="@id/fechacreacionDetalleText"
+            android:background="?attr/colorPrimaryDark" />
+
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/itemFisicoDetalle"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </LinearLayout>

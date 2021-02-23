@@ -24,12 +24,15 @@ import cl.clsoft.bave.presenter.FisicosPresenter;
 import cl.clsoft.bave.service.impl.InventarioFisicoService;
 
 public class ActivityFisicos extends BaseActivity<FisicosPresenter> {
+
+    // Vaariables
+    private String TAG = "ActivityFisicos";
+    private List<MtlPhysicalInventories> inventarios;
+
     // Controls
     private RecyclerView recyclerViewFisicos;
     private AdapterInventarioFisico adapter;
     private AdapterInventarioFisico.RecyclerViewClickListener listener;
-    private List<MtlPhysicalInventories> inventarios;
-    private String TAG = "Agregar inventario";
 
     @NonNull
     @Override
@@ -38,18 +41,7 @@ public class ActivityFisicos extends BaseActivity<FisicosPresenter> {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-
-        inflater.inflate(R.menu.menu_activity_fisico, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
 
         // Instance Layout.
         super.onCreate(savedInstanceState);
@@ -104,19 +96,13 @@ public class ActivityFisicos extends BaseActivity<FisicosPresenter> {
             public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
             }
         });
-
-
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.agregarInventarioButton:
-                Log.d(TAG, "Agregar inventario");
-                Intent i = new Intent(this, ActivityAgregarFisicoInventario.class);
-                startActivity(i);
-                this.finish();
-                return true;
             case android.R.id.home:
                 this.finish();
                 return true;

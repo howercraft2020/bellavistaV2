@@ -9,45 +9,56 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".InventarioApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/BaveTheme">
-        <activity android:name=".view.ActivityAgregarTransSubinv"></activity>
+        android:theme="@style/BaveTheme"
+        android:name="cl.clsoft.bave.InventarioApplication">
+
         <activity android:name=".view.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- INVENTARIO CICLICO -->
+        </activity>
+
+        <!-- INVENTARIO CICLICO -->
         <activity
             android:name=".view.ActivityCiclicos"
-            android:label="Conteos Cíclicos"></activity>
-        <activity android:name=".view.ActivityCiclicoDetalle"></activity> <!-- INVENTARIO FISICO -->
+            android:label="Conteos Cíclicos" >
+        </activity>
+        <activity android:name=".view.ActivityCiclicoDetalle" >
+        </activity>
+
+        <!-- INVENTARIO FISICO -->
         <activity
             android:name=".view.ActivityFisicos"
-            android:label="Inventarios Físicos"></activity>
-        <activity
-            android:name=".view.ActivityFisicoSub"
-            android:label="Detalles de inventario"></activity>
-        <activity
-            android:name=".view.ActivityAgregarFisicoInventario"
-            android:label="Agregar inventario"></activity>
-        <activity
-            android:name=".view.ActivityFisicoDetalle"
-            android:label="Tags inventario"></activity> <!-- RECEPCION OC -->
-        <activity android:name=".view.ActivityTransSubinv" />
+            android:label="Inventarios Físicos">
+        </activity>
+        <activity android:name=".view.ActivityFisicoSub"
+            android:label="Subinventarios">
+        </activity>
+        <activity android:name=".view.ActivityFisicoDetalle"
+            android:label="Tags">
+        </activity>
+        <activity android:name=".view.ActivityAgregarFisicoInventario"
+            android:label="Agregar inventario">
+        </activity>
+
+        <!-- RECEPCION OC -->
+        <activity android:name=".view.ActivityTransSubinv"></activity>
         <activity android:name=".Entrega" />
         <activity
             android:name=".view.ActivityRecepcionOc"
-            android:label="Recepcion" />
-        <activity android:name=".view.ActivityArticulosRecepcion" />
-        <activity android:name=".view.ActivityAgregarRecepcion" />
+            android:label="Recepcion"/>
+        <activity
+            android:name=".view.ActivityArticulosRecepcion"></activity>
+        <activity
+            android:name=".view.ActivityAgregarRecepcion"></activity>
+
     </application>
 
 </manifest>

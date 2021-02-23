@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import java.util.List;
 
 import cl.clsoft.bave.R;
-import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 import cl.clsoft.bave.model.MtlPhysicalSubinventories;
 
 public class AdapterInventarioFisicoSub extends RecyclerView.Adapter<AdapterInventarioFisicoSub.InventarioFisicoSubViewHolder>{
@@ -29,7 +28,7 @@ public class AdapterInventarioFisicoSub extends RecyclerView.Adapter<AdapterInve
     @NonNull
     @Override
     public InventarioFisicoSubViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_activity_fisico_sub, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_subinventario, parent, false);
         InventarioFisicoSubViewHolder Ifsvh = new InventarioFisicoSubViewHolder(v);
 
         return Ifsvh;
@@ -55,14 +54,14 @@ public class AdapterInventarioFisicoSub extends RecyclerView.Adapter<AdapterInve
 
     public class InventarioFisicoSubViewHolder extends ViewHolder implements View.OnClickListener {
 
-        private TextView subinventarioId;
+        private TextView textSubinventario;
 
 
         public InventarioFisicoSubViewHolder(@NonNull View itemView) {
 
             super(itemView);
 
-            this.subinventarioId = itemView.findViewById(R.id.subinventarioText);
+            this.textSubinventario = itemView.findViewById(R.id.textSubinventario);
 
             itemView.setOnClickListener(this);
         }
@@ -75,7 +74,7 @@ public class AdapterInventarioFisicoSub extends RecyclerView.Adapter<AdapterInve
         public void onBind(MtlPhysicalSubinventories mtlPhysicalSubinventories) {
             if(mtlPhysicalSubinventories != null){
 
-                    this.subinventarioId.setText("Subinventario: " + mtlPhysicalSubinventories.getSubinventory());
+                    this.textSubinventario.setText(mtlPhysicalSubinventories.getSubinventory());
             }
 
         }

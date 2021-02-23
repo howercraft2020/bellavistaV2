@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/guardarInventario"
-        android:icon="@mipmap/ic_save_black_24dp"
+        android:icon="@mipmap/ic_save_white_24dp"
         android:title="Agregar a la base"
         app:showAsAction="ifRoom" />
 </menu>

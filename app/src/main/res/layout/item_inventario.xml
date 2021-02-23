@@ -4,68 +4,72 @@
     android:layout_height="wrap_content"
     android:padding="6dip">
 
-    <TextView
-        android:id="@+id/fechaCreacionEtiqueta"
+    <ImageView
+        android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/localizadorTextView"
-        android:text="FECHA CREACION:" />
-
-    <TextView
-        android:id="@+id/nombreEtiqueta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/idEtiquetaDetalle"
-        android:layout_marginTop="2dp"
-        android:text="NOMBRE:" />
+        android:layout_marginRight="6dip"
+        android:paddingTop="8dp"
+        android:paddingLeft="10dp"
+        android:src="@drawable/inventario01_48dp" />
 
     <TextView
         android:id="@+id/idEtiquetaDetalle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:textStyle="bold"
         android:text="ID:" />
-
-    <TextView
-        android:id="@+id/localizadorTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/subinventarioTextView"
-        android:text="LOCALIZADOR:" />
 
     <TextView
         android:id="@+id/idTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/idEtiquetaDetalle"
-        android:layout_marginLeft="25dp"
+        android:layout_toRightOf="@+id/idEtiquetaDetalle"
+        android:paddingLeft="10dp"
         android:text="idText" />
+
+    <TextView
+        android:id="@+id/nombreEtiqueta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/idEtiquetaDetalle"
+        android:layout_marginTop="2dp"
+        android:textStyle="bold"
+        android:text="NOMBRE:" />
 
     <TextView
         android:id="@+id/nombreTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/nombreEtiqueta"
         android:layout_below="@id/idTextView"
-        android:layout_alignLeft="@id/nombreEtiqueta"
-        android:layout_marginLeft="71dp"
         android:layout_marginTop="1dp"
+        android:paddingLeft="10dp"
         android:text="nombreText" />
 
     <TextView
-        android:id="@+id/subinventarioTextView"
+        android:id="@+id/fechaCreacionEtiqueta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/nombreTextView"
-        android:text="SUBINVENTARIO:" />
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/nombreEtiqueta"
+        android:text="FECHA CREACION:"
+        android:textStyle="bold"
+        android:paddingBottom="10dp"/>
+
 
     <TextView
         android:id="@+id/fechaCreacionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/localizadorTextView"
-        android:layout_alignLeft="@id/fechaCreacionEtiqueta"
-        android:layout_marginLeft="127dp"
+        android:layout_below="@id/nombreEtiqueta"
+        android:layout_toRightOf="@+id/fechaCreacionEtiqueta"
         android:layout_marginTop="0dp"
-        android:text="fechaCreacionText" />
+        android:text="fechaCreacionText"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"/>
 
     <View
         android:layout_width="match_parent"
