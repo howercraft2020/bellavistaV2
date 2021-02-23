@@ -12,20 +12,32 @@ import cl.clsoft.bave.service.IInventarioFisicoService;
 import cl.clsoft.bave.view.ActivityFisicoDetalle;
 import cl.clsoft.bave.view.ActivityFisicoSub;
 
-public class DetalleFisicoPresenter extends BasePresenter {
+public class FisicoDetallePresenter extends BasePresenter {
     private static final String TAG = "DetalleFisicoPresenter";
     private ActivityFisicoDetalle mView;
     private IInventarioFisicoService mService;
 
-    public DetalleFisicoPresenter(@NonNull final ActivityFisicoDetalle mView, @NonNull IInventarioFisicoService mService){
+    public FisicoDetallePresenter(@NonNull final ActivityFisicoDetalle mView, @NonNull IInventarioFisicoService mService){
         this.mView = mView;
         this.mService = mService;
     }
 
-    public List<MtlPhysicalInventoryTags> getTagsByInventorySubinventory(Long physicalInventoryId, String subinventory){
+    public List<MtlPhysicalInventoryTags> getTagsInventariados(Long physicalInventoryId, String subinventory){
         try {
             mView.showProgres();
-            List<MtlPhysicalInventoryTags> tags = this.mService.getAllTagsByInventorySubinventory(physicalInventoryId, subinventory);
+            List<MtlPhysicalInventoryTags> tags = this.mService.getAllTagsInventariadosByInventorySubinventory(physicalInventoryId, subinventory);
+            mView.hideProgres();
+            return tags;
+        } catch(ServiceException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<MtlPhysicalInventoryTags> getTagsNoInventariados(Long physicalInventoryId, String subinventory){
+        try {
+            mView.showProgres();
+            List<MtlPhysicalInventoryTags> tags = this.mService.getAllTagsNoInventariadosByInventorySubinventory(physicalInventoryId, subinventory);
             mView.hideProgres();
             return tags;
         } catch(ServiceException e){

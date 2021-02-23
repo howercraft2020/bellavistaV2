@@ -25,7 +25,7 @@ import cl.clsoft.bave.service.impl.InventarioFisicoService;
 
 public class ActivityFisicos extends BaseActivity<FisicosPresenter> {
 
-    // Vaariables
+    // Variables
     private String TAG = "ActivityFisicos";
     private List<MtlPhysicalInventories> inventarios;
 

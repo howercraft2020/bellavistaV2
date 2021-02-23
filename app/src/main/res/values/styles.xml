@@ -18,4 +18,7 @@
 
     <style name="SalcoTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="BaveTheme.CustomHintDisabled">
+        <item name="android:textColor">@color/baveSecondaryTextColor</item>
+    </style>
 </resources>

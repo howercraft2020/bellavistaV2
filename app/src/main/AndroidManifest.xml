@@ -44,8 +44,11 @@
         <activity android:name=".view.ActivityFisicoDetalle"
             android:label="Tags">
         </activity>
-        <activity android:name=".view.ActivityAgregarFisicoInventario"
-            android:label="Agregar inventario">
+        <activity android:name=".view.ActivityFisicoAgregar"
+            android:label="Agregar Inventario">
+        </activity>
+        <activity android:name=".view.ActivityFisicoEditar"
+            android:label="Editar Inventario">
         </activity>
 
         <!-- RECEPCION OC -->

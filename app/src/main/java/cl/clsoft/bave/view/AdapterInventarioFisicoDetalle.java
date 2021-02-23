@@ -50,6 +50,7 @@ public class AdapterInventarioFisicoDetalle extends RecyclerView.Adapter<Adapter
         private TextView textCodigoSigle;
         private TextView textNumeroSerie;
         private TextView textNumeroLote;
+        private TextView textVencimiento;
         private TextView textCantidad;
         private TextView textUdm;
 
@@ -60,17 +61,23 @@ public class AdapterInventarioFisicoDetalle extends RecyclerView.Adapter<Adapter
             this.textCodigoSigle = itemView.findViewById(R.id.textCodigoSigle);
             this.textNumeroSerie = itemView.findViewById(R.id.textNumeroSerie);
             this.textNumeroLote = itemView.findViewById(R.id.textNumeroLote);
+            this.textVencimiento = itemView.findViewById(R.id.textVencimiento);
             this.textCantidad = itemView.findViewById(R.id.textCantidad);
             this.textUdm = itemView.findViewById(R.id.textUdm);
         }
 
         public void onBind(MtlPhysicalInventoryTags mtlPhysicalInventoryTags) {
 
-            this.textLocalizador.setText(mtlPhysicalInventoryTags.getLocatorId().toString());
+            if (mtlPhysicalInventoryTags.getLocatorId() != null) {
+                this.textLocalizador.setText(mtlPhysicalInventoryTags.getLocatorId().toString());
+            } else {
+                this.textLocalizador.setText("");
+            }
             this.textNumeroParte.setText(mtlPhysicalInventoryTags.getDescription());
             this.textCodigoSigle.setText(mtlPhysicalInventoryTags.getSegment1());
             this.textNumeroSerie.setText(mtlPhysicalInventoryTags.getSerialNum());
             this.textNumeroLote.setText(mtlPhysicalInventoryTags.getLotNumber());
+            this.textVencimiento.setText(mtlPhysicalInventoryTags.getLotExpirationDate());
             this.textCantidad.setText(mtlPhysicalInventoryTags.getCount().toString());
             this.textUdm.setText(mtlPhysicalInventoryTags.getPrimaryUomCode());
         }

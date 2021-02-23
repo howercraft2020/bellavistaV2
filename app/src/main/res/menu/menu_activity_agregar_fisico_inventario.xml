@@ -2,7 +2,11 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item
+        android:id="@+id/clean"
+        android:title="Limpiar"
+        app:showAsAction="ifRoom"
+        android:icon="@mipmap/ic_delete_sweep_white_24dp" />
     <item
         android:id="@+id/guardarInventario"
         android:icon="@mipmap/ic_save_white_24dp"

@@ -24,15 +24,17 @@ import cl.clsoft.bave.service.impl.ConteoCiclicoService;
 
 public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter> {
 
+    // Variables
     private static final String TAG = "CiclicoDetalle";
-    private AdapterItemCiclicoDetalle adapter;
     private Long inventarioCiclicoId;
-    private TextView cycleCountHeaderIdDetalle;
-    private TextView cycleCountHeaderNameDetalle;
-    private TextView creationDateDetalle;
-
     private List<MtlCycleCountEntries> entries;
+
+    // Controls
+    private TextView cycleCountHeaderId;
+    private TextView cycleCountHeaderName;
+    private TextView creationDate;
     private RecyclerView recyclerViewDetalle;
+    private AdapterItemCiclicoDetalle adapter;
 
     @NonNull
     @Override
@@ -49,6 +51,9 @@ public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter
 
         // Bind Controls
         this.llProgressBar = findViewById(R.id.llProgressBar);
+        this.cycleCountHeaderId = findViewById(R.id.cycleCountHeaderId);
+        this.cycleCountHeaderName = findViewById(R.id.cycleCountHeaderName);
+        this.creationDate = findViewById(R.id.creationDate);
         this.recyclerViewDetalle = findViewById(R.id.itemCiclicoDetalleRecycler);
 
         // Set Controls
@@ -58,9 +63,6 @@ public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter
         //Se reciben datos de la activity anterior y se insertan en la activity actual
         inventarioCiclicoId = this.getIntent().getLongExtra("ciclicosId",0);
         MtlCycleCountHeaders inventario = mPresenter.getDPreViousDetalleCiclicos(inventarioCiclicoId);
-        this.cycleCountHeaderIdDetalle = findViewById(R.id.cycleCountHeaderIdDetalle);
-        this.cycleCountHeaderNameDetalle = findViewById(R.id.cycleCountHeaderNameDetalle);
-        this.creationDateDetalle = findViewById(R.id.creationDateDetalle);
 
         entries = mPresenter.getSigleInformation(inventarioCiclicoId);
         Log.d("++++++++++++++++--+++++", String.valueOf(entries.size()));
@@ -69,9 +71,9 @@ public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter
 
 
         if(inventario != null){
-            this.cycleCountHeaderIdDetalle.setText(inventario.getCycleCountHeaderId().toString());
-            this.cycleCountHeaderNameDetalle.setText(inventario.getCycleCountHeaderName());
-            this.creationDateDetalle.setText(inventario.getCreationDate());
+            this.cycleCountHeaderId.setText(inventario.getCycleCountHeaderId().toString());
+            this.cycleCountHeaderName.setText(inventario.getCycleCountHeaderName());
+            this.creationDate.setText(inventario.getCreationDate());
         }
 
         final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {

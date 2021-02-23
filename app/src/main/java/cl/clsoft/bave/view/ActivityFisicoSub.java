@@ -21,9 +21,7 @@ import java.util.List;
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlPhysicalInventories;
-import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 import cl.clsoft.bave.model.MtlPhysicalSubinventories;
-import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.presenter.FisicoSubPresenter;
 import cl.clsoft.bave.service.impl.InventarioFisicoService;
 
@@ -126,7 +124,7 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_inventario, menu);
+        inflater.inflate(R.menu.menu_inventario_subinventario, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -135,7 +133,7 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> {
         switch (item.getItemId()) {
             case R.id.agregarInventarioButton:
                 Log.d(TAG, "Agregar inventario");
-                Intent i = new Intent(this, ActivityAgregarFisicoInventario.class);
+                Intent i = new Intent(this, ActivityFisicoAgregar.class);
                 i.putExtra("InventarioId", inventarioId);
                 startActivity(i);
                 this.finish();

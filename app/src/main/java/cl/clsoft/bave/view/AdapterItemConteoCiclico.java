@@ -30,7 +30,7 @@ public class AdapterItemConteoCiclico extends RecyclerView.Adapter<AdapterItemCo
     @Override
     public ConteoCiclicoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder");
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_conteo_ciclico, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ciclico, parent, false);
         ConteoCiclicoViewHolder ccvh = new ConteoCiclicoViewHolder(v);
         return ccvh;
     }
