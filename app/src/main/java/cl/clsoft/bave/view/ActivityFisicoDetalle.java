@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.List;
 
@@ -32,7 +33,8 @@ public class ActivityFisicoDetalle extends BaseActivity<FisicoDetallePresenter> 
     private Long inventarioId;
     private String subinventarioId;
     MtlPhysicalInventories inventario;
-    private List<MtlPhysicalInventoryTags> tags;
+    private List<MtlPhysicalInventoryTags> tagsInventariados;
+    private List<MtlPhysicalInventoryTags> tagsNoInventariados;
 
     //Controls
     private TextView textId;
@@ -40,8 +42,8 @@ public class ActivityFisicoDetalle extends BaseActivity<FisicoDetallePresenter> 
     private TextView textDescription;
     private TextView textSubinventario;
     private TextView textFechaCreacion;
-    private RecyclerView recyclerViewFisicoDetalle;
-    private AdapterInventarioFisicoDetalle adapter;
+    private ViewPager viewPagerDetalle;
+    private FragmentPagerAdapterTags fragmentPagerAdapterTags;
 
     @Override
     protected FisicoDetallePresenter createPresenter(@NonNull Context context) {
@@ -60,15 +62,12 @@ public class ActivityFisicoDetalle extends BaseActivity<FisicoDetallePresenter> 
         this.textDescription = findViewById(R.id.textDescription);
         this.textSubinventario = findViewById(R.id.textSubinventario);
         this.textFechaCreacion = findViewById(R.id.textFechaCreacion);
-        this.recyclerViewFisicoDetalle = findViewById(R.id.itemFisicoDetalle);
+        this.viewPagerDetalle = findViewById(R.id.viewPagerDetalle);
 
         //set controls
         inventarioId = this.getIntent().getLongExtra("InventarioId", 0);
         subinventarioId = this.getIntent().getStringExtra("SubinventarioId");
         inventario = mPresenter.getPreviousInventarioFisicos(inventarioId);
-
-        this.recyclerViewFisicoDetalle.setHasFixedSize(true);
-        this.recyclerViewFisicoDetalle.setLayoutManager(new LinearLayoutManager(this));
 
         if(inventario != null){
             this.textId.setText(inventario.getPhysicalInventoryId().toString());
@@ -78,51 +77,20 @@ public class ActivityFisicoDetalle extends BaseActivity<FisicoDetallePresenter> 
             this.textFechaCreacion.setText(inventario.getCreationDate());
         }
 
-        final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-            @Override public boolean onSingleTapUp(MotionEvent e) {
-                return true;
-            }
-        });
+        this.fragmentPagerAdapterTags = new FragmentPagerAdapterTags(getSupportFragmentManager());
+        this.viewPagerDetalle.setAdapter(this.fragmentPagerAdapterTags);
 
-        this.recyclerViewFisicoDetalle.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean b) {
-            }
-
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-                try {
-                    View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-                    if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-                        int position = recyclerView.getChildAdapterPosition(child);
-                        Intent i = null;
-                        i = new Intent(getApplicationContext(), ActivityFisicoEditar.class);
-                        i.putExtra("tagId", tags.get(position).getTagId());
-                        startActivity(i);
-                        finish();
-                        return true;
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-
-            }
-
-        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        tags = mPresenter.getTagsInventariados(inventarioId, subinventarioId);
-        this.adapter = new AdapterInventarioFisicoDetalle(tags);
-        this.recyclerViewFisicoDetalle.setAdapter(this.adapter);
+        this.tagsInventariados = mPresenter.getTagsInventariados(inventarioId, subinventarioId);
+        this.tagsNoInventariados = mPresenter.getTagsNoInventariados(inventarioId, subinventarioId);
+        this.fragmentPagerAdapterTags.setTagsInventariados(this.tagsInventariados);
+        this.fragmentPagerAdapterTags.setTagsNoInventariados(this.tagsNoInventariados);
+        //this.adapter = new AdapterInventarioFisicoDetalle(tagsInventariados);
+        //this.recyclerViewFisicoDetalle.setAdapter(this.adapter);
     }
 
     @Override
