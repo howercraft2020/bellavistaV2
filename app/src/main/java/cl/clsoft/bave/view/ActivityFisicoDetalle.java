@@ -57,6 +57,7 @@ public class ActivityFisicoDetalle extends BaseActivity<FisicoDetallePresenter> 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //bind controlls
+        this.llProgressBar = findViewById(R.id.llProgressBar);
         this.textId = findViewById(R.id.textId);
         this.textNombre = findViewById(R.id.textNombre);
         this.textDescription = findViewById(R.id.textDescription);

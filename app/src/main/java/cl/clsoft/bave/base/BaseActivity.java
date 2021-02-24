@@ -16,6 +16,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public abstract class BaseActivity<Presenter extends BasePresenter> extends AppCompatActivity {
 
+    protected static final String TAG = "BaseActivity";
     protected Presenter mPresenter;
     protected static final String APP = "INVENTARIO";
     protected View llProgressBar;
@@ -70,6 +71,7 @@ public abstract class BaseActivity<Presenter extends BasePresenter> extends AppC
 
     public void showProgres() {
         if (this.llProgressBar != null){
+            Log.d(TAG, "Show Progress Bar");
             TextView tvMensaje = this.llProgressBar.findViewById(R.id.pbText);
             tvMensaje.setText("Por favor espere ...");
             this.llProgressBar.setVisibility(View.VISIBLE);
@@ -79,6 +81,7 @@ public abstract class BaseActivity<Presenter extends BasePresenter> extends AppC
 
     public void showProgres(String mensaje) {
         if (this.llProgressBar != null){
+            Log.d(TAG, "Show Progress Bar");
             TextView tvMensaje = this.llProgressBar.findViewById(R.id.pbText);
             tvMensaje.setText(mensaje);
             this.llProgressBar.setVisibility(View.VISIBLE);
@@ -88,6 +91,7 @@ public abstract class BaseActivity<Presenter extends BasePresenter> extends AppC
 
     public void hideProgres() {
         if (this.llProgressBar != null)
+            Log.d(TAG, "Hide Progress Bar");
             this.llProgressBar.setVisibility(View.GONE);
     }
 

@@ -5,10 +5,9 @@ public class MtlPhysicalSubinventories {
     private Long organizationId;
     private Long physhicalInventoryId;
     private String subinventory;
+    private String subinventoryDescription;
 
-    public MtlPhysicalSubinventories(){
-
-    }
+    public MtlPhysicalSubinventories() { }
 
     public Long getOrganizationId() {
         return organizationId;
@@ -33,4 +32,13 @@ public class MtlPhysicalSubinventories {
     public void setSubinventory(String subinventory) {
         this.subinventory = subinventory;
     }
+
+    public String getSubinventoryDescription() {
+        return subinventoryDescription;
+    }
+
+    public void setSubinventoryDescription(String subinventoryDescription) {
+        this.subinventoryDescription = subinventoryDescription;
+    }
+
 }

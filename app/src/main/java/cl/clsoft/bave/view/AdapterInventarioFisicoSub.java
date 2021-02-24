@@ -55,14 +55,14 @@ public class AdapterInventarioFisicoSub extends RecyclerView.Adapter<AdapterInve
     public class InventarioFisicoSubViewHolder extends ViewHolder implements View.OnClickListener {
 
         private TextView textSubinventario;
-
+        private TextView textDescription;
 
         public InventarioFisicoSubViewHolder(@NonNull View itemView) {
 
             super(itemView);
 
             this.textSubinventario = itemView.findViewById(R.id.textSubinventario);
-
+            this.textDescription = itemView.findViewById(R.id.textDescription);
             itemView.setOnClickListener(this);
         }
 
@@ -73,8 +73,8 @@ public class AdapterInventarioFisicoSub extends RecyclerView.Adapter<AdapterInve
 
         public void onBind(MtlPhysicalSubinventories mtlPhysicalSubinventories) {
             if(mtlPhysicalSubinventories != null){
-
                     this.textSubinventario.setText(mtlPhysicalSubinventories.getSubinventory());
+                    this.textDescription.setText(mtlPhysicalSubinventories.getSubinventoryDescription());
             }
 
         }

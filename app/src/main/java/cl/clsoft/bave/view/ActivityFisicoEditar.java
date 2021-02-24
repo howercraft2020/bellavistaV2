@@ -57,6 +57,7 @@ public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> im
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // bind controls
+        this.llProgressBar = findViewById(R.id.llProgressBar);
         this.tagId = this.getIntent().getLongExtra("tagId", 0);
         this.textInventarioId = findViewById(R.id.textInventarioId);
         this.textSubinventario = findViewById(R.id.textSubinventario);
