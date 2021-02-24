@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.ActivityAgregarCiclico">
+
+    <EditText
+        android:id="@+id/subinvEditText"
+        android:layout_width="381dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginRight="18dp"
+        android:ems="10"
+        android:hint="Subinventario"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/localizadorEditText"
+        android:layout_width="382dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subinvEditText"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginRight="18dp"
+        android:ems="10"
+        android:hint="Localizador"
+        android:inputType="textPersonName" />
+
+    <Spinner
+        android:id="@+id/loteSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_below="@id/localizadorEditText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="14dp" />
+
+    <Spinner
+        android:id="@+id/serieSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="39dp"
+        android:layout_below="@id/loteSpinner"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginRight="19dp" />
+
+    <EditText
+        android:id="@+id/cantidadCiclicoEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/serieSpinner"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="14dp"
+        android:ems="10"
+        android:hint="Cantiddad"
+        android:inputType="textPersonName" />
+</RelativeLayout>
