@@ -28,10 +28,10 @@
         <!-- INVENTARIO CICLICO -->
         <activity
             android:name=".view.ActivityCiclicos"
-            android:label="Conteos Cíclicos" >
-        </activity>
-        <activity android:name=".view.ActivityCiclicoDetalle" >
-        </activity>
+            android:label="Conteos Cíclicos" ></activity>
+        <activity android:name=".view.ActivityCiclicoDetalle" ></activity>
+        <activity android:name=".view.ActivityAgregarCiclico"></activity>
+        <activity android:name=".view.ActivityCiclicoSigleDetalle"></activity>
 
         <!-- INVENTARIO FISICO -->
         <activity

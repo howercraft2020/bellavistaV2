@@ -54,6 +54,7 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //bind controls
+        this.llProgressBar = findViewById(R.id.llProgressBar);
         this.recyclerViewFisicoSub = findViewById(R.id.itemsFisicoSub);
         this.textId = findViewById(R.id.textId);
         this.textNombre = findViewById(R.id.textNombre);

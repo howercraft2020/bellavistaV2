@@ -3,7 +3,10 @@ package cl.clsoft.bave.model;
 public class Subinventario {
     private Long organizationId;
     private String codSubinventario;
+    private String description;
     private String codLocalizador;
+
+    public Subinventario() {}
 
     public Long getOrganizationId() {
         return organizationId;
@@ -21,15 +24,20 @@ public class Subinventario {
         this.codSubinventario = codSubinventario;
     }
 
-    public String getCosLocalizador() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCodLocalizador() {
         return codLocalizador;
     }
 
-    public void setCodLocalizador(String cosLocalizador) {
-        this.codLocalizador = cosLocalizador;
+    public void setCodLocalizador(String codLocalizador) {
+        this.codLocalizador = codLocalizador;
     }
 
-    public Subinventario(){
-
-    }
 }

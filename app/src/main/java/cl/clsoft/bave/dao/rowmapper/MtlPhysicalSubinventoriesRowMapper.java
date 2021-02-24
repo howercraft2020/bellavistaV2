@@ -14,7 +14,7 @@ public class MtlPhysicalSubinventoriesRowMapper implements RowMapper<MtlPhysical
         entity.setOrganizationId(cursor.getLong(cursor.getColumnIndex(MtlPhysicalSubinventoriesCatalogo.COLUMN_ORGANIZATION_ID)));
         entity.setPhyshicalInventoryId(cursor.getLong(cursor.getColumnIndex(MtlPhysicalSubinventoriesCatalogo.COLUMN_PHYSICAL_INVENTORY_ID)));
         entity.setSubinventory(cursor.getString(cursor.getColumnIndex(MtlPhysicalSubinventoriesCatalogo.COLUMN_SUBINVENTORY)));
-
+        entity.setSubinventoryDescription(cursor.getString(cursor.getColumnIndex(MtlPhysicalSubinventoriesCatalogo.COLUMN_SUBINVENTORY_DESCRIPTION)));
         return entity;
     }
 }

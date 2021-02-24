@@ -70,6 +70,7 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // bind controls
+        this.llProgressBar = findViewById(R.id.llProgressBar);
         this.inventarioId = this.getIntent().getLongExtra("InventarioId", 0);
         this.subinventarioId = this.getIntent().getStringExtra("SubinventarioId");
         this.layoutLocator = findViewById(R.id.layoutLocator);

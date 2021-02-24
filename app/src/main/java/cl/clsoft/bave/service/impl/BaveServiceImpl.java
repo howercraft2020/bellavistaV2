@@ -80,7 +80,8 @@ public class BaveServiceImpl implements IBaveService {
                     Subinventario subinventario = new Subinventario();
                     subinventario.setOrganizationId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
                     subinventario.setCodSubinventario(extraccion[2]);
-                    subinventario.setCodLocalizador(extraccion[3]);
+                    subinventario.setDescription(extraccion[3]);
+                    subinventario.setCodLocalizador(extraccion[4]);
                     subinventarioDao.insert(subinventario);
                 } else if (extraccion[0].equals("3")) {
                     Localizador localizador = new Localizador();

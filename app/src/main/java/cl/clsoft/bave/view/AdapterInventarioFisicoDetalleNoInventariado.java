@@ -1,8 +1,5 @@
 package cl.clsoft.bave.view;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,28 +10,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 
-public class AdapterInventarioFisicoDetalle extends RecyclerView.Adapter<AdapterInventarioFisicoDetalle.InventarioFisicoDetalleViewHolder>{
-    private static final String TAG = "InventarioFisicoDetalle";
+public class AdapterInventarioFisicoDetalleNoInventariado extends RecyclerView.Adapter<AdapterInventarioFisicoDetalleNoInventariado.InventarioFisicoDetalleViewHolder> {
+    private static final String TAG = "AdapterInventarioFisicoDetalle";
     private List<MtlPhysicalInventoryTags> tags;
 
-    public AdapterInventarioFisicoDetalle(List<MtlPhysicalInventoryTags> tags){
+    public AdapterInventarioFisicoDetalleNoInventariado(List<MtlPhysicalInventoryTags> tags){
         this.tags = tags;
     }
 
     @NonNull
     @Override
-    public InventarioFisicoDetalleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdapterInventarioFisicoDetalleNoInventariado.InventarioFisicoDetalleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tag, parent, false);
-        InventarioFisicoDetalleViewHolder Ifdvh = new InventarioFisicoDetalleViewHolder(v);
+        AdapterInventarioFisicoDetalleNoInventariado.InventarioFisicoDetalleViewHolder Ifdvh = new AdapterInventarioFisicoDetalleNoInventariado.InventarioFisicoDetalleViewHolder(v);
 
         return Ifdvh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull InventarioFisicoDetalleViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AdapterInventarioFisicoDetalleNoInventariado.InventarioFisicoDetalleViewHolder holder, int position) {
         holder.onBind(this.tags.get(position));
     }
 
@@ -46,7 +43,7 @@ public class AdapterInventarioFisicoDetalle extends RecyclerView.Adapter<Adapter
         return 0;
     }
 
-    public class InventarioFisicoDetalleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class InventarioFisicoDetalleViewHolder extends RecyclerView.ViewHolder{
 
         private TextView textLocalizador;
         private TextView textNumeroParte;
@@ -67,7 +64,6 @@ public class AdapterInventarioFisicoDetalle extends RecyclerView.Adapter<Adapter
             this.textVencimiento = itemView.findViewById(R.id.textVencimiento);
             this.textCantidad = itemView.findViewById(R.id.textCantidad);
             this.textUdm = itemView.findViewById(R.id.textUdm);
-            itemView.setOnClickListener(this);
         }
 
         public void onBind(MtlPhysicalInventoryTags mtlPhysicalInventoryTags) {
@@ -85,17 +81,6 @@ public class AdapterInventarioFisicoDetalle extends RecyclerView.Adapter<Adapter
             this.textCantidad.setText(mtlPhysicalInventoryTags.getCount().toString());
             this.textUdm.setText(mtlPhysicalInventoryTags.getPrimaryUomCode());
         }
-
-        @Override
-        public void onClick(View view) {
-            Log.d(TAG, "BandejaViewHolder::onClick");
-            int position = getAdapterPosition();
-            Log.d(TAG, "BandejaViewHolder::onClick::position " + position);
-            Intent i = new Intent(itemView.getContext(), ActivityFisicoEditar.class);
-            i.putExtra("tagId", tags.get(position).getTagId());
-            itemView.getContext().startActivity(i);
-            ((Activity) itemView.getContext()).finish();
-
-        }
     }
+
 }

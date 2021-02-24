@@ -14,7 +14,8 @@ public class SubinventarioDaoImpl extends GenericDao<Subinventario> implements I
         ContentValues values = new ContentValues();
         values.put(SubinventarioCatalogo.COLUMN_ORG_ID, subinventario.getOrganizationId());
         values.put(SubinventarioCatalogo.COLUMN_COD_SUB, subinventario.getCodSubinventario());
-        values.put(SubinventarioCatalogo.COLUMN_COD_LOC, subinventario.getCosLocalizador());
+        values.put(SubinventarioCatalogo.COLUMN_DESCRIPTION, subinventario.getDescription());
+        values.put(SubinventarioCatalogo.COLUMN_COD_LOC, subinventario.getCodLocalizador());
         super.insert(SubinventarioCatalogo.TABLE, values);
     }
 }

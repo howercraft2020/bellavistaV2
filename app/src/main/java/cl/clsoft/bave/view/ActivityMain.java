@@ -109,6 +109,11 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
         if (!hasPermissions(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         mPresenter.cargaArchivos();
     }
 
