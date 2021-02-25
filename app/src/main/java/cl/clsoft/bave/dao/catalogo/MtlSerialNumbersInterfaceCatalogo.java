@@ -19,4 +19,7 @@ public class MtlSerialNumbersInterfaceCatalogo {
                     COLUMN_CREATED_BY + " INTEGER, " +
                     COLUMN_FM_SERIAL_NUMBER + " TEXT " +
                     ")";
+
+    public static final String SELECT_ALL_BY_ID = "SELECT * FROM " + TABLE + " WHERE " +COLUMN_TRANSACTION_INTERFACE_ID +
+                                                  " = ?";
 }

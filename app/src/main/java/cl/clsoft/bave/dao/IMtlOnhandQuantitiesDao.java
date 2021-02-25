@@ -6,6 +6,6 @@ import cl.clsoft.bave.model.MtlOnhandQuantities;
 public interface IMtlOnhandQuantitiesDao {
 
     public void insert(MtlOnhandQuantities mtlOnhandQuantities) throws DaoException;
-    public MtlOnhandQuantities get(String articulo, String lote, String subinventario, String localizador) throws DaoException;
+    public MtlOnhandQuantities get(String articulo, String lote, String subinventario) throws DaoException;
 
 }

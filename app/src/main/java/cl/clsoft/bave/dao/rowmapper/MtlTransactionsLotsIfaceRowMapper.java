@@ -12,7 +12,7 @@ public class MtlTransactionsLotsIfaceRowMapper implements RowMapper<MtlTransacti
     @Override
     public MtlTransactionsLotsIface mapRow(Cursor cursor, int position) throws SQLException {
         MtlTransactionsLotsIface entity = new MtlTransactionsLotsIface();
-        entity.setMtlTransactionLostIface(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_MTL_TRANSACTION_LOTS_IFACE)));
+        entity.setMtlTransactionLotsIface(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_MTL_TRANSACTION_LOTS_IFACE)));
         entity.setLastUpdateDate(cursor.getString(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_LAST_UPDATE_DATE)));
         entity.setLastUpdateBy(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_LAST_UPDATE_BY)));
         entity.setCreationDate(cursor.getString(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_CREATION_DATE)));
@@ -26,7 +26,7 @@ public class MtlTransactionsLotsIfaceRowMapper implements RowMapper<MtlTransacti
         entity.setPrimaryQuantity(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_PRIMARY_QUANTITY)));
         entity.setSerialTransactionTempId(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_SERIAL_TRANSACTION_TEMP_ID)));
         entity.setProductCode(cursor.getString(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_PRODUCT_CODE)));
-        entity.setProductTrasnactionId(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_PRODUCT_TRANSACTION_ID)));
+        entity.setProductTransactionId(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_PRODUCT_TRANSACTION_ID)));
         entity.setSupplierLotNumber(cursor.getString(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_SUPPLIER_LOT_NUMBER)));
         entity.setLotExpirationDate(cursor.getString(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_LOT_EXPIRATION_DATE)));
         entity.setAttributeCategory(cursor.getString(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_ATTRIBUTE_CATEGORY)));
