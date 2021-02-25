@@ -116,6 +116,100 @@ public class GenericDao<T> {
         }
     }
 
+    public String selectString(String sql, Object... parameters) throws DaoException {
+        Log.d(TAG, "selectString");
+
+        try {
+            String output = "";
+            StringRowMapper rm = new StringRowMapper();
+            Cursor cursor = this.getCursor(sql, parameters);
+            if (cursor != null) {
+                try {
+                    if (cursor.moveToFirst()) {
+                        output = rm.mapRow(cursor, cursor.getPosition());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw e;
+                } finally {
+                    if (cursor != null && !cursor.isClosed()) {
+                        cursor.close();
+                    }
+                }
+            }
+            return output;
+        } catch(SQLiteException e) {
+            e.printStackTrace();
+            throw new DaoException(2, e.getMessage());
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new DaoException(2, e.getMessage());
+        }
+    }
+
+    public Long selectLong(String sql, Object... parameters) throws DaoException {
+        Log.d(TAG, "selectLong");
+
+        try {
+            Long output = 0L;
+            LongRowMapper rm = new LongRowMapper();
+            Cursor cursor = this.getCursor(sql, parameters);
+            if (cursor != null) {
+                try {
+                    if (cursor.moveToFirst()) {
+                        output = rm.mapRow(cursor, cursor.getPosition());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw e;
+                } finally {
+                    if (cursor != null && !cursor.isClosed()) {
+                        cursor.close();
+                    }
+                }
+            }
+            return output;
+        } catch(SQLiteException e) {
+            e.printStackTrace();
+            throw new DaoException(2, e.getMessage());
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new DaoException(2, e.getMessage());
+        }
+    }
+
+    public Double selectDouble(String sql, Object... parameters) throws DaoException {
+        Log.d(TAG, "selectDouble");
+
+        try {
+            Double output = 0D;
+            DoubleRowMapper rm = new DoubleRowMapper();
+            Cursor cursor = this.getCursor(sql, parameters);
+            if (cursor != null) {
+
+                try {
+                    if (cursor.moveToFirst()) {
+                        output = rm.mapRow(cursor, cursor.getPosition());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw e;
+                } finally {
+                    if (cursor != null && !cursor.isClosed()) {
+                        cursor.close();
+                    }
+                }
+            }
+            return output;
+        } catch(SQLiteException e) {
+            e.printStackTrace();
+            throw new DaoException(2, e.getMessage());
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new DaoException(2, e.getMessage());
+        }
+    }
+
     public List<T> selectMany(String sql, RowMapper<T> rm, Object... parameters) throws DaoException {
         Log.d(TAG, "selectMany");
 

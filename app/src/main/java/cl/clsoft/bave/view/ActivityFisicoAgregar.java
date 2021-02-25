@@ -233,8 +233,11 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                 this.textLocator.setAdapter(adapterLocator);
                 this.hayLocalizador = true;
             } else {
-                this.textLocator.setVisibility(View.GONE);
-                this.layoutLocator.setVisibility(View.GONE);
+                //this.textLocator.setVisibility(View.GONE);
+                //this.layoutLocator.setVisibility(View.GONE);
+                this.layoutLocator.setHint("Sin Localizador");
+                this.layoutLocator.setHintEnabled(false);
+                this.textSigle.setEnabled(false);
                 this.hayLocalizador = false;
                 this.fillSigle();
             }
