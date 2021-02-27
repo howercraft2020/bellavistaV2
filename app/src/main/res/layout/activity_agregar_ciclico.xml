@@ -22,7 +22,7 @@
         android:layout_marginRight="18dp"
         android:ems="10"
         android:hint="Subinventario"
-        android:inputType="textPersonName" />
+        android:inputType="number" />
 
     <EditText
         android:id="@+id/localizadorEditText"
@@ -36,7 +36,7 @@
         android:layout_marginRight="18dp"
         android:ems="10"
         android:hint="Localizador"
-        android:inputType="textPersonName" />
+        android:inputType="number" />
 
     <Spinner
         android:id="@+id/loteSpinner"
@@ -84,5 +84,22 @@
         android:layout_marginRight="14dp"
         android:ems="10"
         android:hint="Cantiddad"
-        android:inputType="textPersonName" />
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/confirmarButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cantidadCiclicoEditText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="153dp"
+        android:layout_marginLeft="153dp"
+        android:layout_marginTop="47dp"
+        android:layout_marginEnd="155dp"
+        android:layout_marginRight="155dp"
+        android:text="Confirmar" />
+
 </RelativeLayout>
