@@ -21,6 +21,6 @@ public class MtlOnHandQuantitiesRowMapper implements RowMapper<MtlOnhandQuantiti
         entity.setUserId(cursor.getLong(cursor.getColumnIndex(MtlOnhandQuantitiesCatalogo.COLUMN_USER_ID)));
         entity.setStatusId(cursor.getLong(cursor.getColumnIndex(MtlOnhandQuantitiesCatalogo.COLUMN_STATUS_ID)));
 
-        return null;
+        return entity;
     }
 }

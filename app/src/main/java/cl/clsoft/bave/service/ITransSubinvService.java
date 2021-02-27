@@ -11,5 +11,7 @@ import cl.clsoft.bave.model.MtlTransactionsInterface;
 public interface ITransSubinvService {
 
     public List<DatosTransSubinv> getTransSubinv() throws ServiceException;
-    public void cargaTransferencia(String articulo,String lote, String subinventario) throws ServiceException;
+    public void cargaTransferencia(String articulo, String lote, String subinventario, String localizador, Long cantidad) throws ServiceException;
+    public void insertarDatos(String articulo, String lote, String subinventario, String localizador, Long cantidad,
+                              String subinventarioHasta, String localizadorHasta) throws ServiceException;
 }

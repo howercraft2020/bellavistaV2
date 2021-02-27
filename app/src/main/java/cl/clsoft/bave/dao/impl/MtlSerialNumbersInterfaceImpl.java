@@ -27,4 +27,11 @@ public class MtlSerialNumbersInterfaceImpl extends GenericDao<MtlSerialNumbersIn
         values.put(MtlSerialNumbersInterfaceCatalogo.COLUMN_FM_SERIAL_NUMBER, mtlSerialNumbersInterface.getFmSerialNumber());
         super.insert(MtlSerialNumbersInterfaceCatalogo.TABLE,values);
     }
+
+    @Override
+    public Long getCantSeries(Long transactionInterfaceId) throws DaoException {
+        return super.selectLong(MtlSerialNumbersInterfaceCatalogo.SELECT_CANTIDAD_SERIES, transactionInterfaceId);
+    }
+
+
 }

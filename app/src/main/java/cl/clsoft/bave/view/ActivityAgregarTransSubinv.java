@@ -18,7 +18,7 @@ import cl.clsoft.bave.service.impl.TransSubinvService;
 
 public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvPresenter> {
 
-    private EditText articulo, lote, localizador, subinventario;
+    private EditText articulo, lote, localizador, subinventario, cantidad;
 
     @NonNull
     @Override
@@ -44,6 +44,7 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         lote = (EditText) findViewById(R.id.loteEditText);
         localizador = (EditText) findViewById(R.id.localizadorDesdeEditText);
         subinventario = (EditText) findViewById(R.id.subinventarioDesdeEditText);
+        cantidad = (EditText) findViewById(R.id.cantidadEditText);
 
     }
 
@@ -54,6 +55,11 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         String lote;
         String localizador;
         String subinventario;
+        Long cantidad = 0L;
+
+        if(this.cantidad.getText().toString().trim().length() != 0) {
+            cantidad = Long.parseLong(this.cantidad.getText().toString());
+        }
 
         articulo = this.articulo.getText().toString();
         lote = this.lote.getText().toString();
@@ -61,8 +67,16 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         subinventario = this.subinventario.getText().toString();
 
         switch (item.getItemId()) {
-            case R.id.action_save:
-                mPresenter.cargaTransferencia(articulo,lote,subinventario);
+            case R.id.action_more:
+                mPresenter.cargaTransferencia(articulo, lote, subinventario, localizador, cantidad);
+                Intent i = new Intent(this, ActivityTransSubinvDest.class);
+                i.putExtra("codSigle", articulo);
+                i.putExtra("subinvdesde", subinventario);
+                i.putExtra("localizador", localizador);
+                i.putExtra("nroLote", lote);
+                i.putExtra("cantidad", cantidad);
+                startActivity(i);
+                this.finish();
                 return true;
             case android.R.id.home:
                 this.finish();
