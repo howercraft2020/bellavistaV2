@@ -63,4 +63,42 @@ public class MtlTransactionsInterfaceCatalogo {
     public static final String SELECT_ALL = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_TRANSACTION_ACTION_ID + " = 2 AND " + COLUMN_TRANSACTION_TYPE_ID + " = 2 ";
 
 
+
+    public static final String SELECT_LOC_OR_DES_NOT_NULL = " select count(*) from mtl_transactions_interface mti, " +
+                                                            "localizador loc, localizador loc_des " +
+                                                            "where mti.locator_id = loc.id_localizador " +
+                                                            "and mti.transfer_locator = loc_des.id_localizador " +
+                                                            "and mti.inventory_item_id = ? " +
+                                                            "and mti.subinventory_code = ? " +
+                                                            "and loc.cod_localizador = ? " +
+                                                            "and mti.transfer_subinventory = ? " +
+                                                            "and loc_des.cod_localizador = ? ";
+
+
+    public static final String SELECT_LOC_OR_NULL_DEST_NOT_NULL = " select count(*) from mtl_transactions_interface mti, " +
+                                                                  "localizador loc_des " +
+                                                                  "where mti.transfer_locator = loc_des.id_localizador " +
+                                                                  "and mti.inventory_item_id = ? " +
+                                                                  "and mti.subinventory_code = ? " +
+                                                                  "and mti.transfer_subinventory = ? " +
+                                                                  "and loc_des.cod_localizador = ? ";
+
+
+    public static final String SELECT_LOC_OR_NOT_NULL_DEST_NULL = " select count(*) from mtl_transactions_interface mti, " +
+                                                                      "localizador loc " +
+                                                                      "where mti.locator_id = loc.id_localizador " +
+                                                                      "and mti.inventory_item_id = ? " +
+                                                                      "and mti.subinventory_code = ? " +
+                                                                      "and loc.cod_localizador = ? " +
+                                                                      "and mti.transfer_subinventory = ?";
+
+    public static final String SELECT_LOC_OR_NULL_DEST_NULL = " select count(*) from mtl_transactions_interface " +
+                                                              "where inventory_item_id = ? " +
+                                                              "and subinventory_code = ? " +
+                                                              "and transfer_subinventory = ?" +
+                                                              "and locator_id IS NULL" +
+                                                              "and transfer_locator IS NULL";
+
+
+
 }

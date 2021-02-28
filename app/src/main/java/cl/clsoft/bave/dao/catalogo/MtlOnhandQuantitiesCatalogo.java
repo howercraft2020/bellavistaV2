@@ -26,13 +26,21 @@ public class MtlOnhandQuantitiesCatalogo {
                         COLUMN_STATUS_ID + " INTEGER " +
                         ")";
 
+    public static final String SELECT = "SELECT moq.* FROM mtl_onhand_quantities moq, mtl_system_items msi, localizador loc " +
+            "WHERE moq.inventory_item_id = msi.inventory_item_id " +
+            "AND loc.id_localizador = moq.locator_id " +
+            "AND msi.segment1 = ? AND ifnull(moq.lot_number,'') = ? " +
+            "AND moq.subinventory_code = ? AND ifnull(loc.cod_localizador,'') = ?";
 
+
+    /*
         public static final String SELECT = "SELECT moq.* FROM mtl_onhand_quantities moq, mtl_system_items msi, localizador loc " +
                                         "WHERE moq.inventory_item_id = msi.inventory_item_id " +
                                         "AND loc.id_localizador = moq.locator_id " +
-                                        "AND msi.segment1 = ? AND IFNULL(moq.lot_number,'') = ? " +
+                                        "AND msi.segment1 = ? AND ifnull(moq.lot_number,'') = ? " +
                                         "AND moq.subinventory_code = ?";
                                         //"AND IFNULL(loc.cod_localizador,'') = ?";
+    */
 
 
 

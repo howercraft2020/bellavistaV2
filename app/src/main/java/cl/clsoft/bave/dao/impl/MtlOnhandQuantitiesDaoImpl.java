@@ -2,6 +2,8 @@ package cl.clsoft.bave.dao.impl;
 
 import android.content.ContentValues;
 
+import java.util.List;
+
 import cl.clsoft.bave.dao.IMtlOnhandQuantitiesDao;
 import cl.clsoft.bave.dao.catalogo.MtlOnhandQuantitiesCatalogo;
 import cl.clsoft.bave.dao.rowmapper.MtlOnHandQuantitiesRowMapper;
@@ -30,7 +32,15 @@ public class MtlOnhandQuantitiesDaoImpl extends GenericDao<MtlOnhandQuantities> 
     }
 
     @Override
+    public MtlOnhandQuantities get(String articulo, String lote, String subinventario, String localizador) throws DaoException {
+        return super.selectOne(MtlOnhandQuantitiesCatalogo.SELECT, new MtlOnHandQuantitiesRowMapper(), articulo, lote, subinventario, localizador);
+    }
+
+    /*
+    @Override
     public MtlOnhandQuantities get(String articulo, String lote, String subinventario) throws DaoException {
         return super.selectOne(MtlOnhandQuantitiesCatalogo.SELECT, new MtlOnHandQuantitiesRowMapper(), articulo,lote, subinventario);
     }
+
+     */
 }

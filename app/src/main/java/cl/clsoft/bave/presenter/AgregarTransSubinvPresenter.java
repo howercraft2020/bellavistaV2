@@ -16,9 +16,21 @@ public class AgregarTransSubinvPresenter extends BasePresenter {
         this.mService = mService;
     }
 
-    public void cargaTransferencia(String articulo, String lote, String subinventario){
+    public void cargaTransferencia(String articulo, String lote, String subinventario, String localizador, Long cantidad){
             try {
-                this.mService.cargaTransferencia(articulo,lote, subinventario);
+
+                if (articulo.equals("")){
+                    mview.showError("Debe ingresar codigo Sigle");
+                }
+                else if (cantidad == 0){
+                    mview.showError("Debe Ingresar una cantidad mayor a 0");
+                }
+                else if (subinventario.equals("")){
+                    mview.showError("Debe ingresar un subinventario");
+                }
+                else {
+                    this.mService.cargaTransferencia(articulo, lote, subinventario, localizador, cantidad);
+                }
             }catch (ServiceException e){
             e.printStackTrace();
             if(e.getCodigo() == 1){

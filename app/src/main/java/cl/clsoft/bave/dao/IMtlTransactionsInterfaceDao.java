@@ -7,4 +7,13 @@ import cl.clsoft.bave.model.MtlTransactionsInterface;
 
 public interface IMtlTransactionsInterfaceDao {
     public List<MtlTransactionsInterface> getTransSubinv() throws DaoException;
+    public void insert(MtlTransactionsInterface mtlTransactionsInterface) throws DaoException;
+    public Long getLocOrDesNotNull(Long inventoryItemId, String subinventario, String localizador, String transferSubinventory, String transferLocator) throws DaoException;
+    public Long getLocOrNullDestNotNull(Long inventoryItemId, String subinventario, String transferSubinventory, String transferLocator) throws DaoException;
+    public Long getLocOrNotNullDestNull(Long inventoryItemId, String subinventario, String localizador, String transferSubinventory) throws DaoException;
+    public Long getLocOrNullDestNull(Long inventoryItemId, String subinventario, String transferSubinventory) throws DaoException;
 }
+
+
+
+
