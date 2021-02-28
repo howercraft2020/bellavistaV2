@@ -63,6 +63,10 @@
         <activity
             android:name=".view.ActivityAgregarRecepcion"></activity>
 
+        <!-- GENERICO -->
+        <activity
+            android:name=".view.ActivitySigleSearch"
+            android:label="Búsqueda Sigle"></activity>
 
     </application>
 

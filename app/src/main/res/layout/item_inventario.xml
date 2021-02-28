@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/icon"
         android:textStyle="bold"
-        android:text="ID:" />
+        android:text="INVENTARIO ID:" />
 
     <TextView
         android:id="@+id/idTextView"

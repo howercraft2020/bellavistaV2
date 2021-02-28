@@ -8,7 +8,8 @@ import cl.clsoft.bave.model.MtlSystemItems;
 public interface IMtlSystemItemsDao {
 
     public void insert(MtlSystemItems mtlSystemItems) throws DaoException;
-    public List<MtlSystemItems> getAll() throws DaoException;
     public MtlSystemItems getBySegment(String segment) throws DaoException;
+    public List<MtlSystemItems> getAll() throws DaoException;
+    public List<MtlSystemItems> getAllByDescription(String pattern) throws DaoException;
 
 }

@@ -93,6 +93,20 @@ public class MtlPhysicalInventoryTagsCatalogo {
                     "     AND  a.primary_count is not null " +
                     "     AND  a.last_updated is not null ";
 
+    public static final String SELECT_ALL_INVENTARIADOS_BY_INVENTORY =
+            " SELECT " +
+                    "     a.*, " +
+                    "     b.description, " +
+                    "     b.long_description, " +
+                    "     c.cod_localizador " +
+                    " FROM " +
+                    "     mtl_physical_inventory_tags a LEFT JOIN mtl_system_items b  ON a.inventory_item_id = b.inventory_item_id " +
+                    "     LEFT JOIN localizador c ON a.locator_id = c.id_localizador " +
+                    " WHERE " +
+                    "     a.physical_inventory_id = ?" +
+                    "     AND  a.primary_count is not null " +
+                    "     AND  a.last_updated is not null ";
+
     public static final String SELECT_ALL_NOINVENTARIADOS_BY_INVENTORY_SUBINVENTORY =
             " SELECT " +
             "     a.*, " +
@@ -142,6 +156,18 @@ public class MtlPhysicalInventoryTagsCatalogo {
                     " ORDER BY " +
                     "     segment1 ";
 
+    public static final String SELECT_SEGMENT1_BY_INVENTORY_SUBINVENTORY_LOCATORNULL =
+            " SELECT " +
+                    "     DISTINCT(segment1) " +
+                    " FROM " +
+                    "     MTL_PHYSICAL_INVENTORY_TAGS " +
+                    " WHERE " +
+                    "     physical_inventory_id = ? " +
+                    "     AND subinventory = ? " +
+                    "     AND locator_id is null " +
+                    " ORDER BY " +
+                    "     segment1 ";
+
     public static final String SELECT_SERIES_BY_INVENTORY_SUBINVENTORY =
             " SELECT " +
             "     DISTINCT(serial_num) " +
@@ -173,7 +199,7 @@ public class MtlPhysicalInventoryTagsCatalogo {
                     " WHERE " +
                     "     physical_inventory_id = ? " +
                     "     AND subinventory = ? " +
-                    "     AND ifnull(locator_id, '') = ? " +
+                    "     AND locator_id = ? " +
                     "     AND segment1 = ? " +
                     " ORDER BY " +
                     "     serial_num ";
@@ -197,7 +223,7 @@ public class MtlPhysicalInventoryTagsCatalogo {
             " WHERE " +
             "     physical_inventory_id = ? " +
             "     AND subinventory = ? " +
-            "     AND ifnull(locator_id, '') = ? " +
+            "     AND locator_id = ? " +
             "     AND segment1 = ? " +
             " ORDER BY " +
             "     lot_number ";
@@ -210,7 +236,7 @@ public class MtlPhysicalInventoryTagsCatalogo {
                     " WHERE " +
                     "     physical_inventory_id = ? " +
                     "     AND subinventory = ? " +
-                    "     AND ifnull(locator_id, '') = ? " +
+                    "     AND locator_id = ? " +
                     "     AND segment1 = ? " +
                     " ORDER BY " +
                     "     lot_expiration_date ";
@@ -227,7 +253,7 @@ public class MtlPhysicalInventoryTagsCatalogo {
                     " WHERE " +
                     "     a.physical_inventory_id = ?" +
                     "     AND a.subinventory = ?" +
-                    "     AND  ifnull(a.locator_id, '') = ?" +
+                    "     AND  a.locator_id = ?" +
                     "     AND a.segment1 = ? " +
                     "     AND ifnull(a.serial_num, '') = ? " +
                     "     AND ifnull(a.lot_number, '') = ?" +

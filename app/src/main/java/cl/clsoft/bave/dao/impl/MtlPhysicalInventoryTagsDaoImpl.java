@@ -95,6 +95,12 @@ public class MtlPhysicalInventoryTagsDaoImpl extends GenericDao<MtlPhysicalInven
     }
 
     @Override
+    public List<MtlPhysicalInventoryTags> getAllInventariadosByInventory(Long physicalInventoryId) throws DaoException {
+        Log.d(TAG, "MtlPhysicalInventoryTagsDaoImpl::getAllInventariadosByInventory");
+        return super.selectMany(MtlPhysicalInventoryTagsCatalogo.SELECT_ALL_INVENTARIADOS_BY_INVENTORY, new MtlPhysicalInventoryTagsRowMapper(), physicalInventoryId);
+    }
+
+    @Override
     public List<MtlPhysicalInventoryTags> getAllInventariadosByInventorySubinventory(Long physicalInventoryId, String subinventory) throws DaoException {
         Log.d(TAG, "MtlPhysicalInventoryTagsDaoImpl::getAllInventariadosByInventorySubinventory");
 
@@ -140,7 +146,13 @@ public class MtlPhysicalInventoryTagsDaoImpl extends GenericDao<MtlPhysicalInven
         Log.d(TAG, "MtlPhysicalInventoryTagsDaoImpl::getSegment1ByInventorySubinventoryLocator::subinventory : " + subinventory);
         Log.d(TAG, "MtlPhysicalInventoryTagsDaoImpl::getSegment1ByInventorySubinventoryLocator::locatorId : " + locatorId);
 
-        return super.selectManyString(MtlPhysicalInventoryTagsCatalogo.SELECT_SEGMENT1_BY_INVENTORY_SUBINVENTORY_LOCATOR, physicalInventoryId, subinventory, locatorId);
+        List<String> salida;
+        if (locatorId != null) {
+            salida = super.selectManyString(MtlPhysicalInventoryTagsCatalogo.SELECT_SEGMENT1_BY_INVENTORY_SUBINVENTORY_LOCATOR, physicalInventoryId, subinventory, locatorId);
+        } else {
+            salida = super.selectManyString(MtlPhysicalInventoryTagsCatalogo.SELECT_SEGMENT1_BY_INVENTORY_SUBINVENTORY_LOCATORNULL, physicalInventoryId, subinventory);
+        }
+        return salida;
     }
 
     @Override
