@@ -77,6 +77,13 @@ public class ActivityTransSubinv extends BaseActivity<TransSubinvPresenter> {
                      View child = rv.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
                      if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
                          int position = rv.getChildAdapterPosition(child);
+                         Intent i = null;
+                         i = new Intent(ActivityTransSubinv.this, ActivityTransSubinvDetalle.class);
+                         i.putExtra("numeroTraspaso", transferencias.get(position).getTransactionReference());
+                         i.putExtra("glosa", transferencias.get(position).getTransactionSourceName());
+                         startActivity(i);
+                         finish();
+                         return true;
                      }
                 }catch (Exception e){
                  e.printStackTrace();

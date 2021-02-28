@@ -18,7 +18,7 @@ import cl.clsoft.bave.service.impl.TransSubinvService;
 
 public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvPresenter> {
 
-    private EditText articulo, lote, localizador, subinventario, cantidad;
+    private EditText articulo, lote, localizador, subinventario, cantidad, glosa;
 
     @NonNull
     @Override
@@ -45,6 +45,7 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         localizador = (EditText) findViewById(R.id.localizadorDesdeEditText);
         subinventario = (EditText) findViewById(R.id.subinventarioDesdeEditText);
         cantidad = (EditText) findViewById(R.id.cantidadEditText);
+        glosa = (EditText) findViewById(R.id.glosaEditText);
 
     }
 
@@ -55,6 +56,7 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         String lote;
         String localizador;
         String subinventario;
+        String glosa;
         Long cantidad = 0L;
 
         if(this.cantidad.getText().toString().trim().length() != 0) {
@@ -65,18 +67,22 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         lote = this.lote.getText().toString();
         localizador = this.localizador.getText().toString();
         subinventario = this.subinventario.getText().toString();
+        glosa = this.glosa.getText().toString();
 
         switch (item.getItemId()) {
             case R.id.action_more:
-                mPresenter.cargaTransferencia(articulo, lote, subinventario, localizador, cantidad);
-                Intent i = new Intent(this, ActivityTransSubinvDest.class);
-                i.putExtra("codSigle", articulo);
-                i.putExtra("subinvdesde", subinventario);
-                i.putExtra("localizador", localizador);
-                i.putExtra("nroLote", lote);
-                i.putExtra("cantidad", cantidad);
-                startActivity(i);
-                this.finish();
+                if( mPresenter.cargaTransferencia(articulo, lote, subinventario, localizador, cantidad)) {
+                    Intent i = new Intent(this, ActivityTransSubinvDest.class);
+                    i.putExtra("codSigle", articulo);
+                    i.putExtra("subinvdesde", subinventario);
+                    i.putExtra("localizador", localizador);
+                    i.putExtra("nroLote", lote);
+                    i.putExtra("cantidad", cantidad);
+                    i.putExtra("glosa", glosa);
+                    startActivity(i);
+                    this.finish();
+                    return true;
+                }
                 return true;
             case android.R.id.home:
                 this.finish();

@@ -27,4 +27,13 @@ public class ArticulosRecepcionPresenter extends BasePresenter {
         }
         return null;
     }
+
+    public void crearArchivo(Long interfaceheaderId, String numeroOc, Long receiptNum) {
+        try{
+             this.mService.crearArchivo(interfaceheaderId,numeroOc,receiptNum);
+             this.mview.showSuccess("Archivo creado correctamente");
+        }catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
 }

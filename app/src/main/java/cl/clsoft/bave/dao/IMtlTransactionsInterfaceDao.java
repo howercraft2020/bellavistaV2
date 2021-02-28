@@ -12,6 +12,7 @@ public interface IMtlTransactionsInterfaceDao {
     public Long getLocOrNullDestNotNull(Long inventoryItemId, String subinventario, String transferSubinventory, String transferLocator) throws DaoException;
     public Long getLocOrNotNullDestNull(Long inventoryItemId, String subinventario, String localizador, String transferSubinventory) throws DaoException;
     public Long getLocOrNullDestNull(Long inventoryItemId, String subinventario, String transferSubinventory) throws DaoException;
+    public List<MtlTransactionsInterface> getTransferencias(String numeroTraspaso, String glosa) throws DaoException;
 }
 
 

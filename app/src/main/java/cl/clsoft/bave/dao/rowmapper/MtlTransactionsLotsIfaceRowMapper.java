@@ -12,7 +12,7 @@ public class MtlTransactionsLotsIfaceRowMapper implements RowMapper<MtlTransacti
     @Override
     public MtlTransactionsLotsIface mapRow(Cursor cursor, int position) throws SQLException {
         MtlTransactionsLotsIface entity = new MtlTransactionsLotsIface();
-        entity.setMtlTransactionLotsIface(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_MTL_TRANSACTION_LOTS_IFACE)));
+        entity.setTransactionInterfaceId(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_MTL_TRANSACTION_LOTS_IFACE)));
         entity.setLastUpdateDate(cursor.getString(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_LAST_UPDATE_DATE)));
         entity.setLastUpdateBy(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_LAST_UPDATE_BY)));
         entity.setCreationDate(cursor.getString(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_CREATION_DATE)));

@@ -58,6 +58,10 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        String interfaceHeaderId = id+String.valueOf(numeroRecep);
+
+
         switch (item.getItemId()){
             case R.id.action_more:
                 //Log.d(TAG, "Agregar Recepcion");
@@ -68,6 +72,9 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
 
                 startActivity(i);
                 this.finish();
+                return true;
+            case R.id.action_create_file:
+                mPresenter.crearArchivo(Long.parseLong(interfaceHeaderId),numeroOc, numeroRecep);
                 return true;
             case android.R.id.home:
                 Intent imain = new Intent(this, ActivityRecepcionOc.class);

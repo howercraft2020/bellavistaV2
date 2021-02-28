@@ -24,4 +24,9 @@ public class LocalizadorDaoImpl extends GenericDao<Localizador> implements ILoca
         values.put(LocalizadorCatalogo.COLUMN_COD_SEG6, localizador.getCodSeg6());
         super.insert(LocalizadorCatalogo.TABLE, values);
     }
+
+    @Override
+    public Long get(String localizador) throws DaoException {
+        return super.selectLong(LocalizadorCatalogo.SELECT_CODE_LOCALIZADOR,localizador);
+    }
 }

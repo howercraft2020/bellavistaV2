@@ -11,7 +11,7 @@ public class MtlTransactionLotsIfaceImpl extends GenericDao<MtlTransactionsLotsI
     @Override
     public void insert(MtlTransactionsLotsIface mtlTransactionsLotsIface) throws DaoException {
         ContentValues values = new ContentValues();
-        values.put(MtlTransactionsLotsIfaceCatalogo.COLUMN_MTL_TRANSACTION_LOTS_IFACE, mtlTransactionsLotsIface.getMtlTransactionLotsIface());
+        values.put(MtlTransactionsLotsIfaceCatalogo.COLUMN_MTL_TRANSACTION_LOTS_IFACE, mtlTransactionsLotsIface.getTransactionInterfaceId());
         values.put(MtlTransactionsLotsIfaceCatalogo.COLUMN_LAST_UPDATE_DATE, mtlTransactionsLotsIface.getLastUpdateDate());
         values.put(MtlTransactionsLotsIfaceCatalogo.COLUMN_LAST_UPDATE_BY, mtlTransactionsLotsIface.getLastUpdateBy());
         values.put(MtlTransactionsLotsIfaceCatalogo.COLUMN_CREATION_DATE, mtlTransactionsLotsIface.getCreationDate());

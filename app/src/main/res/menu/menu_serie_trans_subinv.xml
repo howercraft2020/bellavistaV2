@@ -2,13 +2,4 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/action_more"
-        android:icon="@mipmap/ic_local_shipping_white_24dp"
-        android:title="Destino"
-        app:showAsAction="ifRoom" />
-    <item android:id="@+id/action_save"
-        android:icon="@mipmap/ic_save_white_24dp"
-        android:title="Guardar"
-        app:showAsAction="ifRoom" />
-
 </menu>

@@ -96,9 +96,11 @@ public class MtlTransactionsInterfaceCatalogo {
                                                               "where inventory_item_id = ? " +
                                                               "and subinventory_code = ? " +
                                                               "and transfer_subinventory = ?" +
-                                                              "and locator_id IS NULL" +
-                                                              "and transfer_locator IS NULL";
+                                                              "and locator_id IS NULL " +
+                                                              "and transfer_locator IS NULL ";
 
+    public static final String SELECT_TRANSFERENCIAS = "SELECT * from " + TABLE + " WHERE " + COLUMN_TRANSACTION_REFERENCE + " = ? AND " + COLUMN_TRANSACTION_SOURCE_NAME +
+                                                       " = ?";
 
 
 }

@@ -26,6 +26,7 @@ public class TransSubinvDestPresenter extends BasePresenter {
             }
             else {
                 mservice.insertarDatos(articulo,lote, subinventario, localizador,cantidad,subinventarioHasta,localizadorHasta);
+                mview.showSuccess("Datos cargados correctamente");
             }
 
         }catch (ServiceException e) {

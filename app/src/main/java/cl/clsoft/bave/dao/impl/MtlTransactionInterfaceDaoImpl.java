@@ -70,5 +70,10 @@ public class MtlTransactionInterfaceDaoImpl extends GenericDao<MtlTransactionsIn
         return super.selectLong(MtlTransactionsInterfaceCatalogo.SELECT_LOC_OR_NULL_DEST_NULL, inventoryItemId, subinventario, transferSubinventory);
     }
 
+    @Override
+    public List<MtlTransactionsInterface> getTransferencias(String numeroTraspaso, String glosa) throws DaoException {
+        return super.selectMany(MtlTransactionsInterfaceCatalogo.SELECT_TRANSFERENCIAS, new MtlTransactionsInterfaceRowMapper());
+    }
+
 
 }

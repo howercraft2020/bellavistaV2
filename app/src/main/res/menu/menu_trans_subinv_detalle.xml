@@ -2,13 +2,13 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/action_serie"
-        android:icon="@mipmap/ic_content_paste_white_24dp"
+    <item android:id="@+id/action_more"
+        android:icon="@mipmap/ic_add_circle_white_24dp"
         android:title="Nuevo"
         app:showAsAction="ifRoom" />
-    <item android:id="@+id/action_save"
-        android:icon="@mipmap/ic_save_white_24dp"
-        android:title="Guardar"
+    <item android:id="@+id/action_create_file"
+        android:icon="@mipmap/ic_https_white_24dp"
+        android:title="Nuevo"
         app:showAsAction="ifRoom" />
 
 </menu>

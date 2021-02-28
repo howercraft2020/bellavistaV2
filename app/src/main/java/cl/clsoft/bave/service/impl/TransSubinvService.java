@@ -6,22 +6,29 @@ import java.util.List;
 import java.util.Locale;
 
 import cl.clsoft.bave.dao.IDatosTransSubInvDao;
+import cl.clsoft.bave.dao.IDatosTransSubinvDetalleDao;
 import cl.clsoft.bave.dao.ILocalizadorDao;
 import cl.clsoft.bave.dao.IMtlOnhandQuantitiesDao;
 import cl.clsoft.bave.dao.IMtlSerialNumbersInterfaceDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
+import cl.clsoft.bave.dao.IMtlTransactionLotsInterfaceDao;
 import cl.clsoft.bave.dao.IMtlTransactionsInterfaceDao;
+import cl.clsoft.bave.dao.impl.DatosTransSubinvDetalleImpl;
 import cl.clsoft.bave.dao.impl.DatosTransSubinvImpl;
+import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlOnhandQuantitiesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSerialNumbersInterfaceImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionInterfaceDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlTransactionLotsIfaceImpl;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.DatosTransSubinv;
+import cl.clsoft.bave.model.DatosTransSubinvDetalle;
 import cl.clsoft.bave.model.MtlOnhandQuantities;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.MtlTransactionsInterface;
+import cl.clsoft.bave.model.MtlTransactionsLotsIface;
 import cl.clsoft.bave.model.RcvTransactionsInterface;
 import cl.clsoft.bave.service.ITransSubinvService;
 
@@ -93,10 +100,14 @@ public class TransSubinvService implements ITransSubinvService {
         IMtlTransactionsInterfaceDao mtlTransactionsInterfaceDao = new MtlTransactionInterfaceDaoImpl();
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
         IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
+        ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
+        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceImpl();
 
         Long inventoryItemId;
         Long existe = 0L;
         String transactionInterfaceId;
+        Long locatorId = 0L;
+        Long transferLocatorId = 0L;
 
         try{
 
@@ -110,8 +121,6 @@ public class TransSubinvService implements ITransSubinvService {
                 if (inventoryItemId == null){
                      throw new ServiceException(1,"No se encuentra información para el articulo : " + articulo);
                 }
-
-                transactionInterfaceId = String.valueOf(inventoryItemId) + fechaId;
 
                 //Valida si existe en interfaz
 
@@ -136,6 +145,13 @@ public class TransSubinvService implements ITransSubinvService {
                     throw new ServiceException(1,"No se encuentra información en mtlonhandquantities");
                 }
 
+                //TransactionInterfaceId
+                transactionInterfaceId = String.valueOf(inventoryItemId) + String.valueOf(locatorId + String.valueOf(transferLocatorId));
+
+                //Datos localizador
+                locatorId = localizadorDao.get(localizador);
+                transferLocatorId = localizadorDao.get(localizadorHasta);
+
                 //Inserta datos en mtlTransactionsInterface
                 MtlTransactionsInterface mtlTransactionsInterface = new MtlTransactionsInterface();
                 mtlTransactionsInterface.setTransactionInterfaceId(Long.parseLong(transactionInterfaceId));
@@ -150,7 +166,7 @@ public class TransSubinvService implements ITransSubinvService {
                 mtlTransactionsInterface.setTransactionUom("UND"); //UOM
                 mtlTransactionsInterface.setTransactionDate(fecha);
                 mtlTransactionsInterface.setSubinventoryCode(subinventario);
-                mtlTransactionsInterface.setLocatorId(mtlOnhandQuantities.getLocatorId());
+                mtlTransactionsInterface.setLocatorId(locatorId);
                 mtlTransactionsInterface.setTransactionSourceName("Glosa"); //Agregar Parametro
                 mtlTransactionsInterface.setTransactionSourceTypeId(13L);
                 mtlTransactionsInterface.setTransactionActionId(2L);
@@ -158,12 +174,26 @@ public class TransSubinvService implements ITransSubinvService {
                 mtlTransactionsInterface.setTransactionReference("2"+fechaId);
                 mtlTransactionsInterface.setTransferSubinventory(subinventarioHasta);
                 mtlTransactionsInterface.setTransferOrganization(288L);
+                mtlTransactionsInterface.setTransferLocator(transferLocatorId);
+                mtlTransactionsInterface.setSourceCode("PDA TRANSF SUBINV");
+                mtlTransactionsInterface.setSourceLineId(1L);
+                mtlTransactionsInterface.setSourceHeaderId(1L);
+                mtlTransactionsInterfaceDao.insert(mtlTransactionsInterface);
 
-
-
-
-
-
+                //Inserta datos en tabla de lotes
+                MtlTransactionsLotsIface mtlTransactionsLotsIface = new MtlTransactionsLotsIface();
+                mtlTransactionsLotsIface.setTransactionInterfaceId(Long.parseLong(transactionInterfaceId));
+                mtlTransactionsLotsIface.setLastUpdateDate(fecha);
+                mtlTransactionsLotsIface.setLastUpdateBy(mtlOnhandQuantities.getUserId());
+                mtlTransactionsLotsIface.setCreationDate(fecha);
+                mtlTransactionsLotsIface.setCreatedBy(mtlOnhandQuantities.getUserId());
+                mtlTransactionsLotsIface.setInventoryItemId(inventoryItemId);
+                mtlTransactionsLotsIface.setLastUpdateLogin(mtlOnhandQuantities.getUserId());
+                mtlTransactionsLotsIface.setLotNumber(lote);
+                mtlTransactionsLotsIface.setTransactionQuantity(cantidad);
+                mtlTransactionsLotsIface.setPrimaryQuantity(cantidad);
+                mtlTransactionsLotsIface.setSerialTransactionTempId(Long.parseLong(transactionInterfaceId));
+                mtlTransactionLotsInterfaceDao.insert(mtlTransactionsLotsIface);
 
         }catch (ServiceException e){
             throw e;
@@ -172,6 +202,17 @@ public class TransSubinvService implements ITransSubinvService {
         }catch (Exception e){
             throw new ServiceException(2, e.getMessage());
         }
+    }
+
+    @Override
+    public List<DatosTransSubinvDetalle> getTransferencias(String numeroTraspaso) throws ServiceException {
+        IDatosTransSubinvDetalleDao datosTransSubinvDetalleDao = new DatosTransSubinvDetalleImpl();
+        try{
+            return datosTransSubinvDetalleDao.getTransferencias(numeroTraspaso);
+        }catch (Exception e){
+
+        }
+        return null;
     }
 
 }

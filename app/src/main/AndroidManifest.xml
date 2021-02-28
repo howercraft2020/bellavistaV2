@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/BaveTheme">
-        <activity android:name=".view.ActivityTransSubinvDest"></activity>
+        <activity android:name=".view.ActivityTransSubinvDetalle"></activity>
+        <activity android:name=".view.ActivityTransSubinvDest" />
         <activity android:name=".view.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,21 +34,22 @@
         <activity android:name=".view.ActivityCiclicoSigleDetalle" /> <!-- INVENTARIO FISICO -->
         <activity
             android:name=".view.ActivityFisicos"
-            android:label="Inventarios Físicos"></activity>
+            android:label="Inventarios Físicos" />
         <activity
             android:name=".view.ActivityFisicoSub"
-            android:label="Subinventarios"></activity>
+            android:label="Subinventarios" />
         <activity
             android:name=".view.ActivityFisicoDetalle"
-            android:label="Tags"></activity>
+            android:label="Tags" />
         <activity
             android:name=".view.ActivityFisicoAgregar"
-            android:label="Agregar Inventario"></activity>
+            android:label="Agregar Inventario" />
         <activity
             android:name=".view.ActivityFisicoEditar"
-            android:label="Editar Inventario"></activity> <!-- RECEPCION OC -->
+            android:label="Editar Inventario" /> <!-- RECEPCION OC -->
         <activity android:name=".view.ActivityAgregarTransSubinv" />
         <activity android:name=".view.ActivityTransSubinv" />
+        <activity android:name=".view.ActivitySeriesTrans"/>
         <activity android:name=".Entrega" />
         <activity
             android:name=".view.ActivityRecepcionOc"

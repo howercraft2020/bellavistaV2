@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dip">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="70dp"
+        android:layout_height="94dp"
+        android:layout_marginRight="6dip"
+        android:paddingLeft="10dp"
+        android:paddingTop="8dp"
+        android:src="@drawable/inventario01_48dp" />
+
+    <TextView
+        android:id="@+id/sigleEtiqueta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:textStyle="bold"
+        android:text="CODIGO SIGLE :" />
+
+    <TextView
+        android:id="@+id/sigleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/sigleEtiqueta"
+        android:paddingLeft="10dp"
+        android:text="sigleText" />
+
+    <TextView
+        android:id="@+id/subInvDesdeEtiqueta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/sigleEtiqueta"
+        android:layout_marginTop="2dp"
+        android:textStyle="bold"
+        android:text="SUBINV. DESDE :" />
+
+    <TextView
+        android:id="@+id/subInvDesdeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/subInvDesdeEtiqueta"
+        android:layout_below="@id/sigleTextView"
+        android:layout_marginTop="1dp"
+        android:paddingLeft="10dp"
+        android:text="subInvDesdeText" />
+
+    <TextView
+        android:id="@+id/locDesdeEtiqueta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/subInvDesdeEtiqueta"
+        android:text="LOCALIZADOR DESDE :"
+        android:textStyle="bold"/>
+
+
+    <TextView
+        android:id="@+id/locDesdeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subInvDesdeEtiqueta"
+        android:layout_toRightOf="@+id/locDesdeEtiqueta"
+        android:layout_marginTop="0dp"
+        android:text="localizadorDesdeText"
+        android:paddingLeft="10dp"/>
+
+
+    <TextView
+        android:id="@+id/subinvHastaEtiqueta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/locDesdeEtiqueta"
+        android:text="SUBINV. HASTA :"
+        android:textStyle="bold"/>
+
+
+    <TextView
+        android:id="@+id/subinvHastaTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/locDesdeEtiqueta"
+        android:layout_toRightOf="@+id/subinvHastaEtiqueta"
+        android:layout_marginTop="0dp"
+        android:text="subinvHastaText"
+        android:paddingLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/locHastaEtiqueta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/subinvHastaEtiqueta"
+        android:text="LOCALIZADOR HASTA :"
+        android:textStyle="bold"/>
+
+
+    <TextView
+        android:id="@+id/locHastaTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subinvHastaEtiqueta"
+        android:layout_toRightOf="@+id/locHastaEtiqueta"
+        android:layout_marginTop="0dp"
+        android:text="locHastaText"
+        android:paddingLeft="10dp"/>
+
+    ---
+
+    <TextView
+        android:id="@+id/cantidadEtiqueta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/locHastaEtiqueta"
+        android:text="CANTIDAD :"
+        android:textStyle="bold"/>
+
+
+    <TextView
+        android:id="@+id/cantidadTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/locHastaEtiqueta"
+        android:layout_toRightOf="@+id/cantidadEtiqueta"
+        android:layout_marginTop="0dp"
+        android:text="cantidadText"
+        android:paddingLeft="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_alignBottom="@id/cantidadTextView" />
+
+</RelativeLayout>

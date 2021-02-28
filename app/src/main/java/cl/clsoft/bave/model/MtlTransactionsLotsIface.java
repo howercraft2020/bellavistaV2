@@ -1,7 +1,7 @@
 package cl.clsoft.bave.model;
 
 public class MtlTransactionsLotsIface {
-    private Long mtlTransactionLotsIface;
+    private Long transactionInterfaceId;
     private String lastUpdateDate;
     private Long lastUpdateBy;
     private String creationDate;
@@ -27,12 +27,12 @@ public class MtlTransactionsLotsIface {
 
     }
 
-    public Long getMtlTransactionLotsIface() {
-        return mtlTransactionLotsIface;
+    public Long getTransactionInterfaceId() {
+        return transactionInterfaceId;
     }
 
-    public void setMtlTransactionLotsIface(Long mtlTransactionLostIface) {
-        this.mtlTransactionLotsIface = mtlTransactionLostIface;
+    public void setTransactionInterfaceId(Long transactionInterfaceId) {
+        this.transactionInterfaceId = transactionInterfaceId;
     }
 
     public String getLastUpdateDate() {
