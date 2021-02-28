@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,8 +25,10 @@ import cl.clsoft.bave.model.MtlPhysicalInventories;
 import cl.clsoft.bave.model.MtlPhysicalSubinventories;
 import cl.clsoft.bave.presenter.FisicoSubPresenter;
 import cl.clsoft.bave.service.impl.InventarioFisicoService;
+import cl.clsoft.bave.task.AppTaskExecutor;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> {
+public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
     // Variables
     private String TAG = "ActivityFisicoSub";
@@ -42,7 +45,7 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> {
 
     @Override
     protected FisicoSubPresenter createPresenter(@NonNull Context context){
-        return new FisicoSubPresenter(this, new InventarioFisicoService());
+        return new FisicoSubPresenter(this, new AppTaskExecutor(this), new InventarioFisicoService());
     }
 
     @Override
@@ -132,12 +135,10 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.agregarInventarioButton:
-                Log.d(TAG, "Agregar inventario");
-                Intent i = new Intent(this, ActivityFisicoAgregar.class);
-                i.putExtra("InventarioId", inventarioId);
-                startActivity(i);
-                this.finish();
+            case R.id.cerrar:
+                Log.d(TAG, "Cerrar inventario");
+                ConfirmationDialog dialogClose = ConfirmationDialog.newInstance("Esta seguro de cerrar el inventario?", "Confirmación", "close");
+                dialogClose.show(getSupportFragmentManager(), "closeInventarioConfirm");
                 return true;
             case android.R.id.home:
                 Intent o = new Intent(this, ActivityFisicos.class);
@@ -147,5 +148,38 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onDialogAceptarClick(DialogFragment dialog) {
+        String tipo = dialog.getArguments().getString("tipo");
+        if (tipo.equalsIgnoreCase("close")) {
+            mPresenter.closeInventory(this.inventarioId);
+        }
+    }
+
+    @Override
+    public void onDialogCancelarClick(DialogFragment dialog) {
+
+    }
+
+    public void mensajeOkCloseInventory() {
+        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+        .setTitleText("Éxito")
+        .setContentText("Inventario cerrado con éxito")
+        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sDialog) {
+                Log.d("CMFA", "CLICK");
+                Intent i = new Intent(getApplicationContext(), ActivityFisicos.class);
+                startActivity(i);
+                finish();
+            }
+        })
+        .show();
+    }
+
+    public void mensajeErrorCloseInventory() {
+        this.showError("No se pudo cerrar el inventario");
     }
 }

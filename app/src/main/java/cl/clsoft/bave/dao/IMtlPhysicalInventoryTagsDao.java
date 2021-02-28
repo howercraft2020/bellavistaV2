@@ -15,6 +15,7 @@ public interface IMtlPhysicalInventoryTagsDao {
     public void deleteByPhysicalInventory(Long physicalInventoryId) throws DaoException;
     public List<MtlPhysicalInventoryTags> getAllByInventory(Long physicalInventoryId) throws DaoException;
     public List<MtlPhysicalInventoryTags> getAllByInventorySubinventory(Long physicalInventoryId, String subinventory) throws DaoException;
+    public List<MtlPhysicalInventoryTags> getAllInventariadosByInventory(Long physicalInventoryId) throws DaoException;
     public List<MtlPhysicalInventoryTags> getAllInventariadosByInventorySubinventory(Long physicalInventoryId, String subinventory) throws DaoException;
     public List<MtlPhysicalInventoryTags> getAllNoInventariadosByInventorySubinventory(Long physicalInventoryId, String subinventory) throws DaoException;
     public List<MtlPhysicalInventoryTags> getAllByInventorySubinventorySegmentSerieLote(Long physicalInventoryId, String subinventory, Long locatorId, String segment, String serie, String lote, String vencimiento) throws DaoException;

@@ -27,9 +27,26 @@ public class LocalizadorCatalogo {
                     COLUMN_COD_SEG5 + " TEXT, " +
                     COLUMN_COD_SEG6 + " TEXT " +
             ")";
+
     public static final String UPDATE = " WHERE " + COLUMN_ID + " = ?";
     public static final String DELETE = " WHERE " + COLUMN_ID + " = ?";
     public static final String SELECT = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_ID + " = ? ";
     public static final String SELECT_CODE_LOCALIZADOR = " SELECT " + COLUMN_ID + " FROM " + TABLE + " WHERE " + COLUMN_COD_LOC + " = ?";
+
+    public static final String SELECT_BY_CODIGO =
+            " SELECT * " +
+            " FROM " +
+            "     localizador " +
+            " WHERE " +
+            "     cod_localizador = ? ";
+
+    public static final String SELECT_ALL_BY_SUBINVENTORY =
+            " SELECT * " +
+            " FROM " +
+            "     localizador " +
+            " WHERE " +
+            "     cod_subinventario = ? " +
+            " ORDER BY " +
+            "     cod_localizador";
 
 }

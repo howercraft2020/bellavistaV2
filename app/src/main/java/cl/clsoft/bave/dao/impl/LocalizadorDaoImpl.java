@@ -1,16 +1,24 @@
 package cl.clsoft.bave.dao.impl;
 
 import android.content.ContentValues;
+import android.util.Log;
+
+import java.util.List;
 
 import cl.clsoft.bave.dao.ILocalizadorDao;
 import cl.clsoft.bave.dao.catalogo.LocalizadorCatalogo;
+import cl.clsoft.bave.dao.rowmapper.LocalizadorRowMapper;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.Localizador;
 
 public class LocalizadorDaoImpl extends GenericDao<Localizador> implements ILocalizadorDao {
 
+    private static final String TAG = "Dao";
+
     @Override
     public void insert(Localizador localizador) throws DaoException {
+        Log.d(TAG, "LocalizadorDaoImpl::insert");
+
         ContentValues values = new ContentValues();
         values.put(LocalizadorCatalogo.COLUMN_ID, localizador.getIdLocalizador());
         values.put(LocalizadorCatalogo.COLUMN_ORG_ID, localizador.getOrganizationId());
@@ -28,5 +36,27 @@ public class LocalizadorDaoImpl extends GenericDao<Localizador> implements ILoca
     @Override
     public Long get(String localizador) throws DaoException {
         return super.selectLong(LocalizadorCatalogo.SELECT_CODE_LOCALIZADOR,localizador);
+    }
+
+    @Override
+    public Localizador get(Long id) throws DaoException {
+        Log.d(TAG, "LocalizadorDaoImpl::get");
+
+        return super.selectOne(LocalizadorCatalogo.SELECT, new LocalizadorRowMapper(), id);
+    }
+
+    @Override
+    public Localizador getByCodigo(String codigo) throws DaoException {
+        Log.d(TAG, "LocalizadorDaoImpl::getByCodigo");
+
+        return super.selectOne(LocalizadorCatalogo.SELECT_BY_CODIGO, new LocalizadorRowMapper(), codigo);
+    }
+
+    @Override
+    public List<Localizador> getAllBySubinventario(String subinventarioCodigo) throws DaoException {
+        Log.d(TAG, "LocalizadorDaoImpl::getAllBySubinventario");
+        Log.d(TAG, "LocalizadorDaoImpl::getAllBySubinventario::subinventarioCodigo: " + subinventarioCodigo);
+
+        return super.selectMany(LocalizadorCatalogo.SELECT_ALL_BY_SUBINVENTORY, new LocalizadorRowMapper(), subinventarioCodigo);
     }
 }

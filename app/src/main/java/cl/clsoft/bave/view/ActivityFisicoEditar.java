@@ -146,21 +146,20 @@ public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> im
 
     public void mensajeOkDelete() {
         new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-            .setTitleText("Éxito")
-            .setContentText("Eliminación exitosa")
-            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                @Override
-                public void onClick(SweetAlertDialog sDialog) {
-                    Log.d("CMFA", "CLICK");
-                    Intent i = new Intent(getApplicationContext(), ActivityFisicoDetalle.class);
-                    i.putExtra("InventarioId", inventarioId);
-                    i.putExtra("SubinventarioId", subinventarioId);
-                    startActivity(i);
-                    finish();
-                }
-            })
-            .show();
-
+        .setTitleText("Éxito")
+        .setContentText("Eliminación exitosa")
+        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sDialog) {
+                Log.d("CMFA", "CLICK");
+                Intent i = new Intent(getApplicationContext(), ActivityFisicoDetalle.class);
+                i.putExtra("InventarioId", inventarioId);
+                i.putExtra("SubinventarioId", subinventarioId);
+                startActivity(i);
+                finish();
+            }
+        })
+        .show();
     }
 
     @Override

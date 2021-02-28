@@ -17,45 +17,57 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/BaveTheme">
-        <activity android:name=".view.ActivityTransSubinvDetalle"></activity>
-        <activity android:name=".view.ActivityTransSubinvDest" />
+
         <activity android:name=".view.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- INVENTARIO CICLICO -->
+        </activity>
+
+        <!-- INVENTARIO CICLICO -->
         <activity
             android:name=".view.ActivityCiclicos"
             android:label="Conteos Cíclicos" />
         <activity android:name=".view.ActivityCiclicoDetalle" />
         <activity android:name=".view.ActivityAgregarCiclico" />
-        <activity android:name=".view.ActivityCiclicoSigleDetalle" /> <!-- INVENTARIO FISICO -->
+        <activity android:name=".view.ActivityCiclicoSigleDetalle" />
+
+        <!-- INVENTARIO FISICO -->
         <activity
             android:name=".view.ActivityFisicos"
-            android:label="Inventarios Físicos" />
+            android:label="Inventarios Físicos"></activity>
         <activity
             android:name=".view.ActivityFisicoSub"
-            android:label="Subinventarios" />
+            android:label="Subinventarios"></activity>
         <activity
             android:name=".view.ActivityFisicoDetalle"
-            android:label="Tags" />
+            android:label="Tags"></activity>
         <activity
             android:name=".view.ActivityFisicoAgregar"
-            android:label="Agregar Inventario" />
+            android:label="Agregar Inventario"></activity>
         <activity
             android:name=".view.ActivityFisicoEditar"
-            android:label="Editar Inventario" /> <!-- RECEPCION OC -->
+            android:label="Editar Inventario"></activity>
+
+        <!-- RECEPCION OC -->
         <activity android:name=".view.ActivityAgregarTransSubinv" />
         <activity android:name=".view.ActivityTransSubinv" />
-        <activity android:name=".view.ActivitySeriesTrans"/>
         <activity android:name=".Entrega" />
+        <activity android:name=".view.ActivityTransSubinvDetalle"></activity>
+        <activity android:name=".view.ActivityTransSubinvDest" />
+        <activity android:name=".view.ActivitySeriesTrans"/>
         <activity
             android:name=".view.ActivityRecepcionOc"
             android:label="Recepcion" />
         <activity android:name=".view.ActivityArticulosRecepcion" />
         <activity android:name=".view.ActivityAgregarRecepcion" />
+
+        <!-- GENERICO -->
+        <activity
+            android:name=".view.ActivitySigleSearch"
+            android:label="Búsqueda Sigle"></activity>
     </application>
 
 </manifest>

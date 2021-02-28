@@ -100,9 +100,9 @@ public class BaveServiceImpl implements IBaveService {
                     if (extraccion.length >= 9)
                         localizador.setCodSeg4(extraccion[8]);
                     if (extraccion.length >= 10)
-                    localizador.setCodSeg5(extraccion[9]);
+                        localizador.setCodSeg5(extraccion[9]);
                     if (extraccion.length >= 11)
-                    localizador.setCodSeg6(extraccion[10]);
+                        localizador.setCodSeg6(extraccion[10]);
                     localizadorDao.insert(localizador);
                 } else if (extraccion[0].equals("4")) {
                     Organizacion organizacion = new Organizacion();
@@ -142,24 +142,36 @@ public class BaveServiceImpl implements IBaveService {
                     MtlOnhandQuantities mtlOnhandQuantities = new MtlOnhandQuantities();
                     mtlOnhandQuantities.setInventoryItemId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
                     mtlOnhandQuantities.setOrganizationId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
-                    mtlOnhandQuantities.setPrimaryTransactionQuantity(extraccion[3].equalsIgnoreCase("") ? null : new Long(extraccion[3]));
-                    mtlOnhandQuantities.setSubinventoryCode(extraccion[4]);
-                    mtlOnhandQuantities.setLocatorId(extraccion[5].equalsIgnoreCase("") ? null : new Long(extraccion[5]));
-                    mtlOnhandQuantities.setLotNumber(extraccion[6]);
-                    mtlOnhandQuantities.setSerialNumber(extraccion[7]);
-                    mtlOnhandQuantities.setUserId(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
-                    //mtlOnhandQuantities.setStatusId(new Long(extraccion[9]));
+                    mtlOnhandQuantities.setPrimaryTransactionQuantity(extraccion[3].equalsIgnoreCase("") ? null : Double.valueOf(extraccion[3].replace(",", ".")));
+                    if (extraccion.length >= 5)
+                        mtlOnhandQuantities.setSubinventoryCode(extraccion[4]);
+                    if (extraccion.length >= 6)
+                            mtlOnhandQuantities.setLocatorId(extraccion[5].equalsIgnoreCase("") ? null : new Long(extraccion[5]));
+                    if (extraccion.length >= 7)
+                            mtlOnhandQuantities.setLotNumber(extraccion[6]);
+                    if (extraccion.length >= 8)
+                        mtlOnhandQuantities.setSerialNumber(extraccion[7]);
+                    if (extraccion.length >= 9)
+                        mtlOnhandQuantities.setUserId(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
+                    if (extraccion.length >= 10)
+                        mtlOnhandQuantities.setStatusId(new Long(extraccion[9]));
                     mtlOnhandQuantitiesDao.insert(mtlOnhandQuantities);
                 } else if (extraccion[0].equals("2")) {
                     MtlSystemItems mtlSystemItems = new MtlSystemItems();
                     mtlSystemItems.setInventoryItemId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
                     mtlSystemItems.setDescription(extraccion[2]);
-                    mtlSystemItems.setLongDescription(extraccion[3]);
-                    mtlSystemItems.setSegment1(extraccion[4]);
-                    mtlSystemItems.setPrimaryUomCode(extraccion[5]);
-                    mtlSystemItems.setLotControlCode(extraccion[6]);
-                    mtlSystemItems.setShelfLifeCode(extraccion[7]);
-                    mtlSystemItems.setSerialNumberControlCode(extraccion[8]);
+                    if (extraccion.length >= 4)
+                        mtlSystemItems.setLongDescription(extraccion[3]);
+                    if (extraccion.length >= 5)
+                        mtlSystemItems.setSegment1(extraccion[4]);
+                    if (extraccion.length >= 6)
+                       mtlSystemItems.setPrimaryUomCode(extraccion[5]);
+                    if (extraccion.length >= 7)
+                        mtlSystemItems.setLotControlCode(extraccion[6]);
+                    if (extraccion.length >= 8)
+                        mtlSystemItems.setShelfLifeCode(extraccion[7]);
+                    if (extraccion.length >= 9)
+                        mtlSystemItems.setSerialNumberControlCode(extraccion[8]);
                     mtlSystemItemsDao.insert(mtlSystemItems);
                 }
                 linea = leerArchivo.readLine();

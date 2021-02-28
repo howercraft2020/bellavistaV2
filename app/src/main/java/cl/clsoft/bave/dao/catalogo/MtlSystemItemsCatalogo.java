@@ -34,6 +34,11 @@ public class MtlSystemItemsCatalogo {
             "     segment1 = ? ";
 
     public static final String SELECT_ALL = "SELECT * FROM " + TABLE;
-
+    public static final String SELECT_ALL_BY_DESCRIPTION =
+            " SELECT * " +
+            " FROM " +
+            "     mtl_system_items " +
+            " WHERE " +
+            "     description || long_description like ? ";
 
 }
