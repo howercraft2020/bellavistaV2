@@ -26,6 +26,8 @@ public class MtlCycleCountEntriesDaoImpl extends GenericDao<MtlCycleCountEntries
         values.put(MtlCycleCountEntriesCatalogo.COLUMN_SEGMENT1, mtlCycleCountEntries.getSegment1());
         values.put(MtlCycleCountEntriesCatalogo.COLUMN_PRIMARY_UOM_CODE, mtlCycleCountEntries.getPrimaryUomCode());
         values.put(MtlCycleCountEntriesCatalogo.COLUMN_SERIAL_NUMBER, mtlCycleCountEntries.getSerialNumber());
+        values.put(MtlCycleCountEntriesCatalogo.COLUMN_COUNT, mtlCycleCountEntries.getCount());
+        values.put(MtlCycleCountEntriesCatalogo.COLUMN_LAST_UPDATED, mtlCycleCountEntries.getLastUpdated());
         super.insert(MtlCycleCountEntriesCatalogo.TABLE, values);
     }
 
@@ -42,6 +44,8 @@ public class MtlCycleCountEntriesDaoImpl extends GenericDao<MtlCycleCountEntries
         values.put(MtlCycleCountEntriesCatalogo.COLUMN_SEGMENT1, mtlCycleCountEntries.getSegment1());
         values.put(MtlCycleCountEntriesCatalogo.COLUMN_PRIMARY_UOM_CODE, mtlCycleCountEntries.getPrimaryUomCode());
         values.put(MtlCycleCountEntriesCatalogo.COLUMN_SERIAL_NUMBER, mtlCycleCountEntries.getSerialNumber());
+        values.put(MtlCycleCountEntriesCatalogo.COLUMN_COUNT, mtlCycleCountEntries.getCount());
+        values.put(MtlCycleCountEntriesCatalogo.COLUMN_LAST_UPDATED, mtlCycleCountEntries.getLastUpdated());
         super.update(MtlCycleCountEntriesCatalogo.TABLE, values, MtlCycleCountEntriesCatalogo.UPDATE, mtlCycleCountEntries.getCycleCountEntryId());
     }
 
@@ -68,6 +72,21 @@ public class MtlCycleCountEntriesDaoImpl extends GenericDao<MtlCycleCountEntries
     @Override
     public List<MtlCycleCountEntries> getAll() throws DaoException {
         return super.selectMany(MtlCycleCountEntriesCatalogo.SELECT_ALL, new MtlCycleCountEntriesRowMapper());
+    }
+
+    @Override
+    public List<MtlCycleCountEntries> getAllBySubinventarioLocatorSegmentLoteSerie(Long countHeaderId, String subinventory, Long locatorId, String segment, String serie, String lote) throws DaoException {
+        return selectMany(MtlCycleCountEntriesCatalogo.SELECT_ALL_BY_CYCLECOUNT_SUBINVENTORY_LOCATOR_SEGMENT_LOTE_SERIE, new MtlCycleCountEntriesRowMapper(), countHeaderId, subinventory, locatorId, segment, lote, serie);
+    }
+
+    @Override
+    public List<MtlCycleCountEntries> getAllInventariadosByHeader(Long countHeaderId) throws DaoException {
+        return super.selectMany(MtlCycleCountEntriesCatalogo.SELECT_ALL_INVENTARIADOS_BY_CYCLECOUNT, new MtlCycleCountEntriesRowMapper(), countHeaderId);
+    }
+
+    @Override
+    public List<MtlCycleCountEntries> getAllInventariadosBySubinventario(Long countHeaderId, String subinventory) throws DaoException {
+        return super.selectMany(MtlCycleCountEntriesCatalogo.SELECT_ALL_INVENTARIADOS_BY_CYCLECOUNT_SUBINVENTORY, new MtlCycleCountEntriesRowMapper(), countHeaderId, subinventory);
     }
 
 }

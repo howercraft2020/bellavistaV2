@@ -17,4 +17,10 @@ public class SubinventarioCatalogo {
             " PRIMARY KEY (" + COLUMN_ORG_ID + "," + COLUMN_COD_SUB + " )" +
             " ) ";
 
+    public static final String SELECT_ALL_BY_CICLICOID =
+            " SELECT * " +
+            " FROM " +
+            "     subinventario " +
+            " WHERE " +
+            "     cod_subinventario in (SELECT DISTINCT(subinventory) FROM mtl_cycle_count_entries WHERE cycle_count_header_id = ?)";
 }

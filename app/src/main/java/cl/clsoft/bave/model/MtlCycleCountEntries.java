@@ -8,14 +8,17 @@ public class MtlCycleCountEntries {
     private Long organizationId;
     private Long cycleCountHeaderId;
     private Long LocatorId;
+    private String locatorCode;
     private String lotNumber;
     private String segment1;        //sigle
     private String primaryUomCode;
     private String serialNumber;
+    private Double count;                 //cantidad
+    private String lastUpdated;
+    private String description;
+    private String longDescription;
 
-    public MtlCycleCountEntries(){
-
-    }
+    public MtlCycleCountEntries() {  }
 
     public Long getCycleCountEntryId() {
         return cycleCountEntryId;
@@ -73,6 +76,14 @@ public class MtlCycleCountEntries {
         LocatorId = locatorId;
     }
 
+    public String getLocatorCode() {
+        return locatorCode;
+    }
+
+    public void setLocatorCode(String locatorCode) {
+        this.locatorCode = locatorCode;
+    }
+
     public String getLotNumber() {
         return lotNumber;
     }
@@ -103,5 +114,37 @@ public class MtlCycleCountEntries {
 
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
+    }
+
+    public Double getCount() {
+        return count;
+    }
+
+    public void setCount(Double count) {
+        this.count = count;
+    }
+
+    public String getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(String lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLongDescription() {
+        return longDescription;
+    }
+
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
     }
 }

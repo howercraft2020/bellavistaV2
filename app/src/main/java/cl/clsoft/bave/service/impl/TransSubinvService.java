@@ -50,7 +50,7 @@ public class TransSubinvService implements ITransSubinvService {
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
         IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceImpl();
 
-        Long cantidadEnMano;
+        Double cantidadEnMano;
         String controlLote;
         Long seriesIngresadas;
 

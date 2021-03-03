@@ -30,26 +30,35 @@
         <activity
             android:name=".view.ActivityCiclicos"
             android:label="Conteos Cíclicos" />
-        <activity android:name=".view.ActivityCiclicoDetalle" />
-        <activity android:name=".view.ActivityAgregarCiclico" />
-        <activity android:name=".view.ActivityCiclicoSigleDetalle" />
+        <activity
+            android:name=".view.ActivityCiclicoSub"
+            android:label="Subinventarios"/>
+        <activity
+            android:name=".view.ActivityCiclicoDetalle"
+            android:label="Conteos"/>
+        <activity
+            android:name=".view.ActivityCiclicoAgregar"
+            android:label="Agregar Inventario"/>
+        <activity
+            android:name=".view.ActivityCiclicoEditar"
+            android:label="Editar Inventario"/>
 
         <!-- INVENTARIO FISICO -->
         <activity
             android:name=".view.ActivityFisicos"
-            android:label="Inventarios Físicos"></activity>
+            android:label="Inventarios Físicos"/>
         <activity
             android:name=".view.ActivityFisicoSub"
-            android:label="Subinventarios"></activity>
+            android:label="Subinventarios"/>
         <activity
             android:name=".view.ActivityFisicoDetalle"
-            android:label="Tags"></activity>
+            android:label="Tags"/>
         <activity
             android:name=".view.ActivityFisicoAgregar"
-            android:label="Agregar Inventario"></activity>
+            android:label="Agregar Inventario"/>
         <activity
             android:name=".view.ActivityFisicoEditar"
-            android:label="Editar Inventario"></activity>
+            android:label="Editar Inventario"/>
 
         <!-- RECEPCION OC -->
         <activity android:name=".view.ActivityAgregarTransSubinv" />

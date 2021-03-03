@@ -1,9 +1,7 @@
 package cl.clsoft.bave.view;
 
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -15,7 +13,6 @@ import java.util.List;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
-import cl.clsoft.bave.model.MtlCycleCountHeaders;
 
 public class AdapterItemCiclicoDetalle extends RecyclerView.Adapter<AdapterItemCiclicoDetalle.CiclicoDetalleViewHolder>{
 
@@ -28,7 +25,7 @@ public class AdapterItemCiclicoDetalle extends RecyclerView.Adapter<AdapterItemC
     @Override
     public CiclicoDetalleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder");
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ciclico_detalle, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sigle, parent, false);
         AdapterItemCiclicoDetalle.CiclicoDetalleViewHolder ccvh = new AdapterItemCiclicoDetalle.CiclicoDetalleViewHolder(v);
         return ccvh;
     }
@@ -63,14 +60,14 @@ public class AdapterItemCiclicoDetalle extends RecyclerView.Adapter<AdapterItemC
         public CiclicoDetalleViewHolder(@NonNull View itemView) {
             super(itemView);
             this.codigoSigle = itemView.findViewById(R.id.codigoSigle);
-            this.descripcionSigle = itemView.findViewById(R.id.descripcionSigle);
+            //this.descripcionSigle = itemView.findViewById(R.id.descripcionSigle);
 
         }
 
         public void onBind(MtlCycleCountEntries mtlCycleCountEntries) {
 
             this.codigoSigle.setText(mtlCycleCountEntries.getSegment1());
-            this.descripcionSigle.setText(mtlCycleCountEntries.getEntryStatusCode());
+            //this.descripcionSigle.setText(mtlCycleCountEntries.getEntryStatusCode());
         }
 
 

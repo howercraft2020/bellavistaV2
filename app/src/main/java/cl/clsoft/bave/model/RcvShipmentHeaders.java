@@ -1,6 +1,7 @@
 package cl.clsoft.bave.model;
 
 public class RcvShipmentHeaders {
+
     private Long shipmentHeaderId;
     private String lastUpdateDate;
     private Long lastUpdatedBy;

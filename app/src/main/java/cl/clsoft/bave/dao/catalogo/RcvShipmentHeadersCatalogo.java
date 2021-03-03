@@ -31,7 +31,10 @@ public class RcvShipmentHeadersCatalogo {
                     COLUMN_SHIPMENT_NUM + " TEXT, " +
                     COLUMN_RECEIPT_NUM + " TEXT, " +
                     COLUMN_EMPLOYEE_ID + " INTEGER, " +
-                    COLUMN_SHIP_TO_ORG_ID +" INTEGER " +
+                    COLUMN_SHIP_TO_ORG_ID +" INTEGER, " +
+                    " PRIMARY KEY (" + COLUMN_SHIPMENT_HEADER_ID + " )" +
                     ")";
+
+    public static final String UPDATE = COLUMN_SHIPMENT_HEADER_ID + " = ?";
 
 }

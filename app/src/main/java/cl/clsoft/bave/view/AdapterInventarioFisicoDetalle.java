@@ -73,7 +73,7 @@ public class AdapterInventarioFisicoDetalle extends RecyclerView.Adapter<Adapter
         public void onBind(MtlPhysicalInventoryTags mtlPhysicalInventoryTags) {
 
             if (mtlPhysicalInventoryTags.getLocatorId() != null) {
-                this.textLocalizador.setText(mtlPhysicalInventoryTags.getLocatorId().toString());
+                this.textLocalizador.setText(mtlPhysicalInventoryTags.getLocatorCode());
             } else {
                 this.textLocalizador.setText("");
             }

@@ -35,6 +35,7 @@ import cl.clsoft.bave.Recepcion;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.presenter.MainPresenter;
 import cl.clsoft.bave.service.impl.BaveServiceImpl;
+import cl.clsoft.bave.task.AppTaskExecutor;
 
 public class ActivityMain extends BaseActivity<MainPresenter> {
 
@@ -53,7 +54,7 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
     @NonNull
     @Override
     protected MainPresenter createPresenter(@NonNull Context context) {
-        return new MainPresenter(this, new BaveServiceImpl());
+        return new MainPresenter(this, new AppTaskExecutor(this), new BaveServiceImpl());
     }
 
     @Override

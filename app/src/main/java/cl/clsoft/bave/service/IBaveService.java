@@ -11,5 +11,6 @@ public interface IBaveService {
     public void cargarArchivoCiclico(File archivo) throws ServiceException;
     public void cargarArchivoFisico(File archivo) throws ServiceException;
     public void cargarArchivoRecepcion(File archivo) throws ServiceException;
+    public void cargarArchivoEntrega(File archivo) throws ServiceException;
 
 }
