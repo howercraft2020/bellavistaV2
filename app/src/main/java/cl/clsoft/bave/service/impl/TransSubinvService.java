@@ -1,5 +1,9 @@
 package cl.clsoft.bave.service.impl;
 
+import android.os.Environment;
+
+import java.io.File;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -48,11 +52,9 @@ public class TransSubinvService implements ITransSubinvService {
     public void cargaTransferencia(String articulo, String lote, String subinventario, String localizador, Long cantidad) throws ServiceException{
         IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
-        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceImpl();
 
-        Long cantidadEnMano;
+        Double cantidadEnMano;
         String controlLote;
-        Long seriesIngresadas;
 
         try{
 
@@ -82,10 +84,6 @@ public class TransSubinvService implements ITransSubinvService {
                 throw new ServiceException(1,"Articulo : " + articulo + " no tiene control de lote.");
             }
 
-            //Validación Series
-            seriesIngresadas = mtlSerialNumbersInterfaceDao.getCantSeries(5555L);
-
-
         }catch (ServiceException e){
             throw e;
         }catch (DaoException e){
@@ -96,10 +94,11 @@ public class TransSubinvService implements ITransSubinvService {
     }
 
     @Override
-    public void insertarDatos(String articulo, String lote, String subinventario, String localizador, Long cantidad, String subinventarioHasta, String localizadorHasta) throws ServiceException {
+    public void insertarDatos(String id,String nroTraspaso, String articulo, String lote, String subinventario, String localizador, Long cantidad, String subinventarioHasta, String localizadorHasta) throws ServiceException {
         IMtlTransactionsInterfaceDao mtlTransactionsInterfaceDao = new MtlTransactionInterfaceDaoImpl();
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
         IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
+        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceImpl();
         ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
         IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceImpl();
 
@@ -108,12 +107,22 @@ public class TransSubinvService implements ITransSubinvService {
         String transactionInterfaceId;
         Long locatorId = 0L;
         Long transferLocatorId = 0L;
+        String fechaId = "";
+        Long seriesIngresadas;
 
         try{
 
+                //TransactionInterfaceId
+                //transactionInterfaceId = String.valueOf(inventoryItemId) + String.valueOf(locatorId + String.valueOf(transferLocatorId));
+                transactionInterfaceId = id;
                 String fecha = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-                String fechaId = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault()).format(new Date());
 
+                if(nroTraspaso.equals("")) {
+                    fechaId = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault()).format(new Date());
+                }
+                else {
+                    fechaId = nroTraspaso;
+                }
                 //Validación de Articulo
                 MtlSystemItems sigle = mtlSystemItemsDao.getBySegment(articulo);
                 inventoryItemId = sigle.getInventoryItemId();
@@ -145,8 +154,12 @@ public class TransSubinvService implements ITransSubinvService {
                     throw new ServiceException(1,"No se encuentra información en mtlonhandquantities");
                 }
 
-                //TransactionInterfaceId
-                transactionInterfaceId = String.valueOf(inventoryItemId) + String.valueOf(locatorId + String.valueOf(transferLocatorId));
+                //Validación Series
+                seriesIngresadas = mtlSerialNumbersInterfaceDao.getCantSeries(Long.parseLong(id));
+                Long total = cantidad - seriesIngresadas;
+                if (seriesIngresadas < cantidad){
+                    throw new ServiceException(1, "Quedan " + total + " series por ingresar");
+                }
 
                 //Datos localizador
                 locatorId = localizadorDao.get(localizador);
@@ -171,7 +184,7 @@ public class TransSubinvService implements ITransSubinvService {
                 mtlTransactionsInterface.setTransactionSourceTypeId(13L);
                 mtlTransactionsInterface.setTransactionActionId(2L);
                 mtlTransactionsInterface.setTransactionTypeId(2L);
-                mtlTransactionsInterface.setTransactionReference("2"+fechaId);
+                mtlTransactionsInterface.setTransactionReference(fechaId);
                 mtlTransactionsInterface.setTransferSubinventory(subinventarioHasta);
                 mtlTransactionsInterface.setTransferOrganization(288L);
                 mtlTransactionsInterface.setTransferLocator(transferLocatorId);
@@ -213,6 +226,102 @@ public class TransSubinvService implements ITransSubinvService {
 
         }
         return null;
+    }
+
+    @Override
+    public void crearArchivo(String transactionReference) throws ServiceException {
+        String nomenclatura;
+        IMtlTransactionsInterfaceDao mtlTransactionsInterfaceDao = new MtlTransactionInterfaceDaoImpl();
+        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceImpl();
+
+        nomenclatura = "I_"+transactionReference+".csv";
+
+        File tarjetaSD = Environment.getExternalStorageDirectory();
+        File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
+        File rutaArchivo = new File(Dir, nomenclatura);
+        try{
+
+            //Transferencias
+            MtlTransactionsLotsIface mtlTransactionsLotsIface = new MtlTransactionsLotsIface();
+            List<MtlTransactionsInterface> mtlTransactionsInterface;
+
+            mtlTransactionsInterface = mtlTransactionsInterfaceDao.getTransferenciasByTraspaso(transactionReference);
+
+            if(mtlTransactionsInterface == null){
+                throw new ServiceException(1,"No se encuentran datos para este numero de traspaso");
+            }
+
+            FileWriter writer = new FileWriter(rutaArchivo);
+            writer.write("RECIBO;FIN" +"\r\n");
+
+            for(int i = 0; i <mtlTransactionsInterface.size(); i++){
+
+                writer.write("1;"+mtlTransactionsInterface.get(i).getTransactionInterfaceId()+";"+mtlTransactionsInterface.get(i).getProcessFlag() +
+                                  ";"+mtlTransactionsInterface.get(i).getTransactionMode()+";"+mtlTransactionsInterface.get(i).getLastUpdateDate() +
+                                  ";"+mtlTransactionsInterface.get(i).getLastUpdatedBy()+";"+mtlTransactionsInterface.get(i).getCreationDate() +
+                                  ";"+mtlTransactionsInterface.get(i).getCreatedBy()+";"+mtlTransactionsInterface.get(i).getInventoryItemId() +
+                                  ";"+mtlTransactionsInterface.get(i).getOrganizationId()+";"+mtlTransactionsInterface.get(i).getTransactionQuantity() +
+                                  ";"+mtlTransactionsInterface.get(i).getPrimaryQuantity()+";"+mtlTransactionsInterface.get(i).getTransactionUom() +
+                                  ";"+mtlTransactionsInterface.get(i).getTransactionDate()+";"+mtlTransactionsInterface.get(i).getSubinventoryCode() +
+                                  ";"+mtlTransactionsInterface.get(i).getLocatorId()+";"+mtlTransactionsInterface.get(i).getTransactionSourceName() +
+                                  ";"+mtlTransactionsInterface.get(i).getTransactionSourceTypeId()+";"+mtlTransactionsInterface.get(i).getTransactionActionId() +
+                                  ";"+mtlTransactionsInterface.get(i).getTransactionTypeId()+";"+mtlTransactionsInterface.get(i).getTransactionReference() +
+                                  ";"+mtlTransactionsInterface.get(i).getTransferSubinventory()+";"+mtlTransactionsInterface.get(i).getTransferOrganization() +
+                                  ";"+mtlTransactionsInterface.get(i).getTransferLocator()+";"+mtlTransactionsInterface.get(i).getSourceCode() +
+                                  ";"+mtlTransactionsInterface.get(i).getSourceLineId()+";"+mtlTransactionsInterface.get(i).getSourceHeaderId()+";FIN"+"\r\n");
+
+                //Busqueda de lote
+                mtlTransactionsLotsIface = mtlTransactionLotsInterfaceDao.getAll(mtlTransactionsInterface.get(i).getTransactionInterfaceId());
+
+                writer.write("2;"+mtlTransactionsLotsIface.getTransactionInterfaceId()+";"+mtlTransactionsLotsIface.getLastUpdateDate() +
+                                  ";"+mtlTransactionsLotsIface.getLastUpdateBy()+";"+mtlTransactionsLotsIface.getCreationDate() +
+                                  ";"+mtlTransactionsLotsIface.getCreatedBy()+";"+mtlTransactionsLotsIface.getLotNumber() +
+                                  ";"+mtlTransactionsLotsIface.getLotExpirationDate()+";"+mtlTransactionsLotsIface.getTransactionQuantity() +
+                                  ";"+mtlTransactionsLotsIface.getPrimaryQuantity()+";"+mtlTransactionsLotsIface.getSerialTransactionTempId() +
+                                  ";"+mtlTransactionsLotsIface.getAttributeCategory()+";"+mtlTransactionsLotsIface.getAttrubute1() +
+                                  ";"+mtlTransactionsLotsIface.getAttrubute2()+";"+mtlTransactionsLotsIface.getAttrubute3()+";FIN"+"\r\n");
+
+            }
+
+            writer.flush();
+            writer.close();
+
+        }catch (ServiceException e){
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void controlSerie(String articulo) throws ServiceException {
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+
+        String controlSerie;
+
+        try{
+
+            //Validación de Articulo
+            MtlSystemItems sigle = mtlSystemItemsDao.getBySegment(articulo);
+            controlSerie = sigle.getSerialNumberControlCode();
+
+            if (sigle.equals("")){
+                throw new ServiceException(1,"No se encuentra información de serie para el articulo : " + articulo);
+            }
+
+            if (controlSerie.equals("1")){
+                throw new ServiceException(1,"Este articulo no tiene control de serie");
+            }
+
+        }catch (ServiceException e){
+            throw e;
+        }catch (DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }catch (Exception e){
+            throw new ServiceException(2, e.getMessage());
+        }
+
+
     }
 
 }

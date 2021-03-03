@@ -16,7 +16,7 @@ public class TransSubinvDestPresenter extends BasePresenter {
         this.mservice = mservice;
     }
 
-    public void insertarDatos(String articulo, String lote, String subinventario, String localizador, Long cantidad,
+    public void insertarDatos(String id, String nroTraspaso, String articulo, String lote, String subinventario, String localizador, Long cantidad,
                               String subinventarioHasta, String localizadorHasta) {
 
         try {
@@ -25,7 +25,7 @@ public class TransSubinvDestPresenter extends BasePresenter {
                 mview.showError("Debe ingresar Subinventario");
             }
             else {
-                mservice.insertarDatos(articulo,lote, subinventario, localizador,cantidad,subinventarioHasta,localizadorHasta);
+                mservice.insertarDatos(id,nroTraspaso, articulo,lote, subinventario, localizador,cantidad,subinventarioHasta,localizadorHasta);
                 mview.showSuccess("Datos cargados correctamente");
             }
 
@@ -38,5 +38,25 @@ public class TransSubinvDestPresenter extends BasePresenter {
             }
         }
 
+    }
+
+    public boolean controlSerie (String articulo) {
+
+        boolean ok = true;
+
+        try{
+            mservice.controlSerie(articulo);
+            ok = true;
+        }catch (ServiceException e) {
+            e.printStackTrace();
+            if (e.getCodigo() == 1) {
+                mview.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                mview.showError(e.getDescripcion());
+            }
+           ok = false;
+        }
+
+        return ok;
     }
 }

@@ -75,5 +75,10 @@ public class MtlTransactionInterfaceDaoImpl extends GenericDao<MtlTransactionsIn
         return super.selectMany(MtlTransactionsInterfaceCatalogo.SELECT_TRANSFERENCIAS, new MtlTransactionsInterfaceRowMapper());
     }
 
+    @Override
+    public List<MtlTransactionsInterface> getTransferenciasByTraspaso(String numeroTraspaso) throws DaoException {
+        return super.selectMany(MtlTransactionsInterfaceCatalogo.SELECT_TRANSFERENCIAS_BY_TRASPASO, new MtlTransactionsInterfaceRowMapper(), numeroTraspaso);
+    }
+
 
 }

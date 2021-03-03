@@ -28,4 +28,13 @@ public class TransSubinvDetallePresenter extends BasePresenter {
         }
         return null;
     }
+
+    public void crearArchivo(String transactionReference){
+        try{
+            this.mservice.crearArchivo(transactionReference);
+            mview.showSuccess("Archivo creado correctamente");
+        }catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
 }

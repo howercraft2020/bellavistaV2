@@ -50,4 +50,6 @@ public class MtlTransactionsLotsIfaceCatalogo {
                     COLUMN_ATTRIBUTE_3 +" TEXT " +
             ")";
 
+    public static final String SELECT_ALL = "SELECT * from " + TABLE + " WHERE " + COLUMN_MTL_TRANSACTION_LOTS_IFACE + " = ?";
+
 }

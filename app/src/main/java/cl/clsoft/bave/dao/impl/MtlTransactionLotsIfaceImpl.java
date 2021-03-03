@@ -4,6 +4,7 @@ import android.content.ContentValues;
 
 import cl.clsoft.bave.dao.IMtlTransactionLotsInterfaceDao;
 import cl.clsoft.bave.dao.catalogo.MtlTransactionsLotsIfaceCatalogo;
+import cl.clsoft.bave.dao.rowmapper.MtlTransactionsLotsIfaceRowMapper;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.MtlTransactionsLotsIface;
 
@@ -33,5 +34,10 @@ public class MtlTransactionLotsIfaceImpl extends GenericDao<MtlTransactionsLotsI
         values.put(MtlTransactionsLotsIfaceCatalogo.COLUMN_ATTRIBUTE_2, mtlTransactionsLotsIface.getAttrubute2());
         values.put(MtlTransactionsLotsIfaceCatalogo.COLUMN_ATTRIBUTE_3, mtlTransactionsLotsIface.getAttrubute3());
         super.insert(MtlTransactionsLotsIfaceCatalogo.TABLE, values);
+    }
+
+    @Override
+    public MtlTransactionsLotsIface getAll(Long transactionInterfaceId) throws DaoException {
+        return super.selectOne(MtlTransactionsLotsIfaceCatalogo.SELECT_ALL, new MtlTransactionsLotsIfaceRowMapper(),transactionInterfaceId);
     }
 }

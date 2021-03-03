@@ -90,11 +90,19 @@ public class ActivityTransSubinvDetalle extends BaseActivity<TransSubinvDetalleP
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()){
-            case R.id.action_save:
+            case R.id.action_create_file:
+                mPresenter.crearArchivo(numeroTraspaso);
+                return true;
+            case R.id.action_more:
+                Intent i = new Intent(this, ActivityAgregarTransSubinv.class);
+                i.putExtra("nroTraspaso", numeroTraspaso);
+                i.putExtra("glosa", glosa);
+                startActivity(i);
+                this.finish();
                 return true;
             case android.R.id.home:
-                Intent i = new Intent(this, ActivityArticulosRecepcion.class);
-                startActivity(i);
+                Intent ihome = new Intent(this, ActivityTransSubinv.class);
+                startActivity(ihome);
                 this.finish();
                 return true;
             default:

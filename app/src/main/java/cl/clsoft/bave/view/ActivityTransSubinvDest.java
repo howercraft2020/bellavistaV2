@@ -14,6 +14,10 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.presenter.TransSubinvDestPresenter;
@@ -22,7 +26,7 @@ import cl.clsoft.bave.service.impl.TransSubinvService;
 public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresenter> {
 
     private TextView nroTraspasoEt, glosaEt, codigoSigleEt, subinvDesdeEt, localDesdeEt, loteEt, cantidadEt, subinvHastaEt, localHastaEt;
-    private String codigoSigle, subinvDesde, localizador, nroLote, glosa;
+    private String nroTraspaso, codigoSigle, subinvDesde, localizador, nroLote, glosa, subinvHasta, localHasta, id;
     Long cantidad;
 
     @NonNull
@@ -43,6 +47,9 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trans_subinv_dest);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        id = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault()).format(new Date());
 
         nroTraspasoEt = (TextView) findViewById(R.id.numeroTraspasoEditText);
         glosaEt = (TextView) findViewById(R.id.glosaEditText);
@@ -54,22 +61,29 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
         subinvHastaEt = (TextView) findViewById(R.id.subinvHastaEditText);
         localHastaEt = (TextView) findViewById(R.id.localizadorHastaEditText);
 
+        nroTraspaso = getIntent().getStringExtra("nroTraspaso");
         codigoSigle = getIntent().getStringExtra("codSigle");
         subinvDesde = getIntent().getStringExtra("subinvdesde");
         localizador = getIntent().getStringExtra("localizador");
         nroLote = getIntent().getStringExtra("nroLote");
         glosa = getIntent().getStringExtra("glosa");
         cantidad = getIntent().getLongExtra("cantidad",0);
+        subinvHasta = getIntent().getStringExtra("subinvHasta");
+        localHasta = getIntent().getStringExtra("localHasta");
 
-        nroTraspasoEt.setText("");
-        glosaEt.setText("");
+        if(getIntent().getStringExtra("id") != null){
+            id = getIntent().getStringExtra("id");
+        }
+
+        nroTraspasoEt.setText(nroTraspaso);
         codigoSigleEt.setText(codigoSigle);
         subinvDesdeEt.setText(subinvDesde);
         localDesdeEt.setText(localizador);
         loteEt.setText(nroLote);
         glosaEt.setText(glosa);
         cantidadEt.setText(String.valueOf(cantidad));
-
+        subinvHastaEt.setText(subinvHasta);
+        localHastaEt.setText(localHasta);
     }
 
     @Override
@@ -81,28 +95,47 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
         subinventarioHasta = this.subinvHastaEt.getText().toString();
         localizadorHasta = this.localHastaEt.getText().toString();
 
+
         switch (item.getItemId()){
             case R.id.action_save:
-                mPresenter.insertarDatos(codigoSigle,nroLote,subinvDesde,localizador,cantidad,subinventarioHasta,localizadorHasta);
+                mPresenter.insertarDatos(id, nroTraspaso, codigoSigle,nroLote,subinvDesde,localizador,cantidad,subinventarioHasta,localizadorHasta);
                 return true;
             case R.id.action_serie:
                 if(subinventarioHasta.equals("")){
                     this.showError("Debe Ingresar Subinventario de destino");
                 }
                 else {
-                    Intent i = new Intent(this, ActivitySeriesTrans.class);
-                    i.putExtra("numeroTraspaso", nroTraspasoEt.getText().toString());
-                    i.putExtra("glosa", glosa);
-                    i.putExtra("codigoSigle", codigoSigle);
-                    i.putExtra("subinvDesde", subinvDesde);
-                    i.putExtra("localizador", localizador);
-                    i.putExtra("subinventarioHasta", subinventarioHasta);
-                    i.putExtra("localizadorHasta", localizadorHasta);
-                    i.putExtra("nroLote", nroLote);
-                    i.putExtra("cantidad", cantidad);
-                    startActivity(i);
-                    this.finish();
+                    if(mPresenter.controlSerie(codigoSigle)) {
+                        Intent i = new Intent(this, ActivitySeriesTrans.class);
+                        i.putExtra("nroTraspaso", nroTraspaso);
+                        i.putExtra("glosa", glosa);
+                        i.putExtra("codigoSigle", codigoSigle);
+                        i.putExtra("subinvDesde", subinvDesde);
+                        i.putExtra("localizador", localizador);
+                        i.putExtra("subinventarioHasta", subinventarioHasta);
+                        i.putExtra("localizadorHasta", localizadorHasta);
+                        i.putExtra("nroLote", nroLote);
+                        i.putExtra("cantidad", cantidad);
+                        i.putExtra("id", id);
+                        startActivity(i);
+                        this.finish();
+                        return true;
+                    }
                 }
+                return true;
+            case android.R.id.home:
+                Intent intentAgregar = new Intent(this, ActivityAgregarTransSubinv.class);
+                intentAgregar.putExtra("nroTraspaso", nroTraspaso);
+                intentAgregar.putExtra("glosa", glosa);
+                intentAgregar.putExtra("codigoSigle", codigoSigle);
+                intentAgregar.putExtra("subinvDesde", subinvDesde);
+                intentAgregar.putExtra("localizador", localizador);
+                intentAgregar.putExtra("nroLote", nroLote);
+                intentAgregar.putExtra("cantidad", cantidad);
+                intentAgregar.putExtra("id", id);
+                startActivity(intentAgregar);
+                this.finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

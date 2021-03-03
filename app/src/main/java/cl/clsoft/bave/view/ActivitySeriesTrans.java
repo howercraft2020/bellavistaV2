@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import cl.clsoft.bave.R;
@@ -17,7 +19,7 @@ import cl.clsoft.bave.service.impl.TransSubinvService;
 public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
 
     private TextView nroTraspasoEt, glosaEt, codigoSigleEt, subinvDesdeEt, localDesdeEt, loteEt, cantidadEt, subinvHastaEt, localHastaEt;
-    private String nroTraspaso, codigoSigle, subinvDesde, localizador, nroLote, glosa, subinventarioHasta, localizadorHasta;
+    private String nroTraspaso, codigoSigle, subinvDesde, localizador, nroLote, glosa, subinventarioHasta, localizadorHasta, id;
     private Long cantidad;
 
     @NonNull
@@ -38,6 +40,7 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_series_trans);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         nroTraspasoEt = (TextView) findViewById(R.id.numeroTraspasoEditText);
         glosaEt = (TextView) findViewById(R.id.glosaEditText);
@@ -58,6 +61,7 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
         localizadorHasta = getIntent().getStringExtra("localizadorHasta");
         nroLote = getIntent().getStringExtra("nroLote");
         cantidad = getIntent().getLongExtra("cantidad",0);
+        id = getIntent().getStringExtra("id");
 
         nroTraspasoEt.setText(nroTraspaso);
         glosaEt.setText(glosa);
@@ -69,7 +73,31 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
         subinvHastaEt.setText(subinventarioHasta);
         localHastaEt.setText(localizadorHasta);
 
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                Intent i = new Intent(this,ActivityTransSubinvDest.class);
+                i.putExtra("nroTraspaso", nroTraspaso);
+                i.putExtra("glosa", glosa);
+                i.putExtra("codSigle", codigoSigle);
+                i.putExtra("subinvdesde", subinvDesde);
+                i.putExtra("localizador", localizador);
+                i.putExtra("subinvHasta", subinventarioHasta);
+                i.putExtra("localHasta", localizadorHasta);
+                i.putExtra("nroLote", nroLote);
+                i.putExtra("cantidad", cantidad);
+                i.putExtra("id", id);
+                startActivity(i);
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
     }
+
 }

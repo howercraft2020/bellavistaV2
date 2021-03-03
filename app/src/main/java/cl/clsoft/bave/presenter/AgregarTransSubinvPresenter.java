@@ -36,7 +36,7 @@ public class AgregarTransSubinvPresenter extends BasePresenter {
                 }
                 else {
                     this.mService.cargaTransferencia(articulo, lote, subinventario, localizador, cantidad);
-                    ok = false;
+                    ok = true;
                 }
             }catch (ServiceException e){
             e.printStackTrace();

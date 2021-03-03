@@ -241,6 +241,12 @@
         android:inputType="textPersonName"
         android:padding="6dp" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_alignBottom="@id/serieEditText" />
+
 
 
 </LinearLayout>

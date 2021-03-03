@@ -2,80 +2,79 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="6dip" >
+    android:padding="6dip">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dip"
+        android:paddingTop="8dp"
+        android:paddingLeft="10dp"
+        android:src="@drawable/inventario01_48dp" />
 
     <TextView
         android:id="@+id/TagSegment1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nº OC : "
-        android:textSize="16sp"
+        android:layout_toRightOf="@+id/icon"
         android:textStyle="bold"
-        android:paddingStart="3dp"
-        android:paddingLeft="3dp" />
+        android:text="Nº OC :" />
 
     <TextView
         android:id="@+id/segment1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ID"
-        android:layout_toRightOf="@id/TagSegment1"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:paddingStart="3dp"
-        android:paddingLeft="3dp" />
+        android:layout_toRightOf="@+id/TagSegment1"
+        android:paddingLeft="10dp"
+        android:text="ID" />
 
     <TextView
         android:id="@+id/TagPoHeaderId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ID : "
+        android:layout_toRightOf="@+id/icon"
         android:layout_below="@id/TagSegment1"
-        android:textSize="12sp"
+        android:layout_marginTop="2dp"
         android:textStyle="bold"
-        android:paddingStart="3dp"
-        android:paddingLeft="3dp" />
+        android:text="ID : " />
 
     <TextView
         android:id="@+id/poHeaderId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/TagPoHeaderId"
         android:layout_below="@id/segment1"
-        android:layout_marginLeft="2dp"
         android:layout_marginTop="1dp"
-        android:layout_toRightOf="@id/TagPoHeaderId"
-        android:text="poHeaderId "
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:paddingLeft="10dp"
+        android:text="poHeaderId" />
 
     <TextView
         android:id="@+id/TagReceiptNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
         android:layout_below="@id/TagPoHeaderId"
-        android:paddingStart="3dp"
-        android:paddingLeft="3dp"
-        android:paddingBottom="4dp"
         android:text="Nº Recepcion : "
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:paddingBottom="10dp"/>
+
 
     <TextView
         android:id="@+id/receiptNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/poHeaderId"
-        android:layout_marginLeft="2dp"
-        android:layout_marginTop="1dp"
-        android:layout_toRightOf="@id/TagReceiptNum"
-        android:text="ReceiptNum "
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:layout_below="@id/TagPoHeaderId"
+        android:layout_toRightOf="@+id/TagReceiptNum"
+        android:layout_marginTop="0dp"
+        android:text="ReceiptNum"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?attr/colorPrimaryDark"
-        android:layout_alignBottom="@id/TagReceiptNum" />
+        android:layout_alignBottom="@id/receiptNum" />
 
 </RelativeLayout>

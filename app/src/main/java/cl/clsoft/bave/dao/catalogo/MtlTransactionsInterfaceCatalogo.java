@@ -102,5 +102,7 @@ public class MtlTransactionsInterfaceCatalogo {
     public static final String SELECT_TRANSFERENCIAS = "SELECT * from " + TABLE + " WHERE " + COLUMN_TRANSACTION_REFERENCE + " = ? AND " + COLUMN_TRANSACTION_SOURCE_NAME +
                                                        " = ?";
 
+    public static final String SELECT_TRANSFERENCIAS_BY_TRASPASO = "SELECT * from " + TABLE + " WHERE " + COLUMN_TRANSACTION_REFERENCE + " = ?";
+
 
 }

@@ -41,6 +41,6 @@ public class RcvHeadersInterfaceDaoImpl extends GenericDao<RcvHeadersInterface> 
     }
 
     public RcvHeadersInterface get(Long interfaceHeaderId) throws DaoException {
-        return super.selectOne(" SELECT * FROM rcv_headers_interface WHERE header_interface_id = ? ", new RcvHeadersInterfaceRowMapper());
+        return super.selectOne(" SELECT * FROM rcv_headers_interface WHERE header_interface_id = ? ", new RcvHeadersInterfaceRowMapper(), interfaceHeaderId);
     }
 }

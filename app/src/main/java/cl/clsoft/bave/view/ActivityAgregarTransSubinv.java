@@ -18,7 +18,9 @@ import cl.clsoft.bave.service.impl.TransSubinvService;
 
 public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvPresenter> {
 
-    private EditText articulo, lote, localizador, subinventario, cantidad, glosa;
+    private EditText nroTraspasoEt, articuloEt, loteEt, localizadorEt, subinventarioEt, cantidadEt, glosaEt;
+    private String numeroTraspaso, glosa, codigoSigle, subinvDesde,localizador,nroLote, id;
+    private Long cantidad;
 
     @NonNull
     @Override
@@ -40,18 +42,36 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         setContentView(R.layout.activity_agregar_trans_subinv);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        articulo = (EditText) findViewById(R.id.sigleEditText);
-        lote = (EditText) findViewById(R.id.loteEditText);
-        localizador = (EditText) findViewById(R.id.localizadorDesdeEditText);
-        subinventario = (EditText) findViewById(R.id.subinventarioDesdeEditText);
-        cantidad = (EditText) findViewById(R.id.cantidadEditText);
-        glosa = (EditText) findViewById(R.id.glosaEditText);
+        articuloEt = (EditText) findViewById(R.id.sigleEditText);
+        loteEt = (EditText) findViewById(R.id.loteEditText);
+        localizadorEt = (EditText) findViewById(R.id.localizadorDesdeEditText);
+        subinventarioEt = (EditText) findViewById(R.id.subinventarioDesdeEditText);
+        cantidadEt = (EditText) findViewById(R.id.cantidadEditText);
+        glosaEt = (EditText) findViewById(R.id.glosaEditText);
+        nroTraspasoEt = (EditText) findViewById(R.id.traspasoEditText);
 
+        numeroTraspaso = getIntent().getStringExtra("nroTraspaso");
+        glosa = getIntent().getStringExtra("glosa");
+        codigoSigle = getIntent().getStringExtra("codigoSigle");
+        subinvDesde = getIntent().getStringExtra("subinvDesde");
+        localizador = getIntent().getStringExtra("localizador");
+        nroLote = getIntent().getStringExtra("nroLote");
+        cantidad = getIntent().getLongExtra("cantidad",0L);
+        id = getIntent().getStringExtra("id");
+
+        nroTraspasoEt.setText(numeroTraspaso);
+        glosaEt.setText(glosa);
+        articuloEt.setText(codigoSigle);
+        subinventarioEt.setText(subinvDesde);
+        localizadorEt.setText(localizador);
+        loteEt.setText(nroLote);
+        cantidadEt.setText(String.valueOf(cantidad));
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
+        String nroTraspaso;
         String articulo;
         String lote;
         String localizador;
@@ -59,15 +79,16 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         String glosa;
         Long cantidad = 0L;
 
-        if(this.cantidad.getText().toString().trim().length() != 0) {
-            cantidad = Long.parseLong(this.cantidad.getText().toString());
+        if(this.cantidadEt.getText().toString().trim().length() != 0) {
+            cantidad = Long.parseLong(this.cantidadEt.getText().toString());
         }
 
-        articulo = this.articulo.getText().toString();
-        lote = this.lote.getText().toString();
-        localizador = this.localizador.getText().toString();
-        subinventario = this.subinventario.getText().toString();
-        glosa = this.glosa.getText().toString();
+        nroTraspaso = this.nroTraspasoEt.getText().toString();
+        articulo = this.articuloEt.getText().toString();
+        lote = this.loteEt.getText().toString();
+        localizador = this.localizadorEt.getText().toString();
+        subinventario = this.subinventarioEt.getText().toString();
+        glosa = this.glosaEt.getText().toString();
 
         switch (item.getItemId()) {
             case R.id.action_more:
@@ -79,6 +100,8 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
                     i.putExtra("nroLote", lote);
                     i.putExtra("cantidad", cantidad);
                     i.putExtra("glosa", glosa);
+                    i.putExtra("nroTraspaso",nroTraspaso);
+                    i.putExtra("id",id);
                     startActivity(i);
                     this.finish();
                     return true;
