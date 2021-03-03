@@ -14,6 +14,11 @@ public class MtlCycleCountEntriesCatalogo {
     public static final String COLUMN_SEGMENT1 = "segment1";
     public static final String COLUMN_PRIMARY_UOM_CODE = "primary_uom_code";
     public static final String COLUMN_SERIAL_NUMBER = "serial_number";
+    public static final String COLUMN_COUNT = "count";
+    public static final String COLUMN_LAST_UPDATED = "last_updated";
+    public static final String COLUMN_DESCRIPTION = "description";
+    public static final String COLUMN_LONG_DESCRIPTION = "long_description";
+    public static final String COLUMN_LOCATOR_CODE = "cod_localizador";
 
     public static final String CREATE_TABLE =
             "CREATE TABLE "+ TABLE + "(" +
@@ -27,14 +32,74 @@ public class MtlCycleCountEntriesCatalogo {
                     COLUMN_LOT_NUMBER + " TEXT, " +
                     COLUMN_SEGMENT1 + " INTEGER, " +
                     COLUMN_PRIMARY_UOM_CODE + " INTEGER, " +
-                    COLUMN_SERIAL_NUMBER + " TEXT " +
+                    COLUMN_SERIAL_NUMBER + " TEXT, " +
+                    COLUMN_COUNT + " REAL, " +
+                    COLUMN_LAST_UPDATED + " TEXT " +
                     ")";
 
     public static final String UPDATE = COLUMN_ID + " = ?";
     public static final String DELETE = COLUMN_ID + " = ?";
     public static final String DELETE_BY_HEADER_ID = COLUMN_CYCLE_COUNT_HEADER_ID + " = ?";
-    public static final String SELECT = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_ID + " = ? ";
+    public static final String SELECT =
+            " SELECT " +
+            "     a.*, " +
+            "     b.description, " +
+            "     b.long_description, " +
+            "     c.cod_localizador " +
+            " FROM " +
+            "     mtl_cycle_count_entries a LEFT JOIN mtl_system_items b  ON a.inventory_item_id = b.inventory_item_id  " +
+            "     LEFT JOIN localizador c ON a.locator_id = c.id_localizador " +
+            " WHERE " +
+            "     a.cycle_count_entry_id = ? ";
+
     public static final String SELECT_ALL = " SELECT * FROM " + TABLE;
     public static final String SELECT_BY_HEADER_COUNT_HEADER_ID = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_CYCLE_COUNT_HEADER_ID + " = ?";
+
+    public static final String SELECT_ALL_INVENTARIADOS_BY_CYCLECOUNT =
+            " SELECT " +
+                    "     a.*, " +
+                    "     b.description, " +
+                    "     b.long_description, " +
+                    "     c.cod_localizador " +
+                    " FROM " +
+                    "     mtl_cycle_count_entries a LEFT JOIN mtl_system_items b  ON a.inventory_item_id = b.inventory_item_id  " +
+                    "     LEFT JOIN localizador c ON a.locator_id = c.id_localizador " +
+                    " WHERE " +
+                    "     a.cycle_count_header_id = ? " +
+                    "     AND a.count is not null " +
+                    "     AND a.last_updated is not null ";
+
+    public static final String SELECT_ALL_INVENTARIADOS_BY_CYCLECOUNT_SUBINVENTORY =
+            " SELECT " +
+            "     a.*, " +
+            "     b.description, " +
+            "     b.long_description, " +
+            "     c.cod_localizador " +
+            " FROM " +
+            "     mtl_cycle_count_entries a LEFT JOIN mtl_system_items b  ON a.inventory_item_id = b.inventory_item_id  " +
+            "     LEFT JOIN localizador c ON a.locator_id = c.id_localizador " +
+            " WHERE " +
+            "     a.cycle_count_header_id = ? " +
+            "     AND a.subinventory = ? " +
+            "     AND a.count is not null " +
+            "     AND a.last_updated is not null ";
+
+    public static final String SELECT_ALL_BY_CYCLECOUNT_SUBINVENTORY_LOCATOR_SEGMENT_LOTE_SERIE =
+            " SELECT " +
+            "     a.*, " +
+            "     b.description, " +
+            "     b.long_description, " +
+            "     c.cod_localizador " +
+            " FROM " +
+            "     mtl_cycle_count_entries a LEFT JOIN mtl_system_items b  ON a.inventory_item_id = b.inventory_item_id  " +
+            "     LEFT JOIN localizador c ON a.locator_id = c.id_localizador " +
+            " WHERE " +
+            "     a.cycle_count_header_id = ? " +
+            "     AND a.subinventory = ? " +
+            "     AND a.locator_id = ?" +
+            "     AND a.segment1 = ? " +
+            "     AND ifnull(a.lot_number, '') = ? " +
+            "     AND ifnull(a.serial_number, '') = ? ";
+
 
 }

@@ -13,94 +13,82 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="6dip"
-            android:layout_marginEnd="6dip"
             android:paddingTop="8dp"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:src="@drawable/inventario01_48dp"
-            android:contentDescription="Inventario Fisico"/>
+            android:src="@drawable/ciclico01_48dp" />
 
         <TextView
-            android:id="@+id/labelId"
+            android:id="@+id/labelCycleCountHeaderId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/icon"
             android:textStyle="bold"
-            android:text="INVENTARIO ID:" />
+            android:text="ID:" />
 
         <TextView
-            android:id="@+id/textId"
+            android:id="@+id/textCycleCountHeaderId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/labelId"
+            android:layout_toRightOf="@+id/labelCycleCountHeaderId"
             android:paddingLeft="10dp"
-            android:text="" />
+            android:text="textCycleCountHeaderId"/>
 
         <TextView
-            android:id="@+id/labelNombre"
+            android:id="@+id/labelCycleCountHeaderName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/icon"
-            android:layout_below="@id/labelId"
-            android:layout_marginTop="2dp"
+            android:layout_below="@+id/labelCycleCountHeaderId"
             android:textStyle="bold"
-            android:text="NOMBRE:" />
+            android:text="Nombre:" />
 
         <TextView
-            android:id="@+id/textNombre"
+            android:id="@+id/textCycleCountHeaderName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/labelNombre"
-            android:layout_below="@id/labelId"
-            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/labelCycleCountHeaderName"
+            android:layout_below="@+id/labelCycleCountHeaderId"
             android:paddingLeft="10dp"
-            android:text="" />
+            android:text="textCycleCountHeaderName"/>
 
         <TextView
-            android:id="@+id/textDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/icon"
-            android:layout_below="@id/labelNombre"
-            android:text="DESCRIPTION" />
-
-        <TextView
-            android:id="@+id/labelFechaCreacion"
+            android:id="@+id/labelCreationDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/icon"
-            android:layout_below="@id/textDescription"
+            android:layout_below="@+id/labelCycleCountHeaderName"
+            android:paddingBottom="10dp"
             android:textStyle="bold"
-            android:text="FECHA CREACION:"
-            android:paddingBottom="10dp"/>
+            android:text="Fecha de creación:" />
 
         <TextView
-            android:id="@+id/textFechaCreacion"
-            android:layout_width="match_parent"
+            android:id="@+id/textCreationDate"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/labelFechaCreacion"
-            android:layout_below="@id/textDescription"
+            android:layout_below="@+id/labelCycleCountHeaderName"
+            android:layout_toRightOf="@+id/labelCreationDate"
             android:paddingLeft="10dp"
             android:paddingBottom="10dp"
-            android:text=""/>
+            android:text="textCreationDate"/>
 
         <View
+            android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="?attr/colorPrimaryDark"
-            android:layout_alignBottom="@+id/labelFechaCreacion" />
+            android:layout_below="@id/labelCreationDate"
+            android:background="?android:attr/listDivider" />
 
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/itemsFisicoSub"
+        android:id="@+id/recyclerViewCiclicoSub"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

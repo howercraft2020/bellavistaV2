@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -21,27 +24,29 @@ import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
 import cl.clsoft.bave.presenter.CiclicoDetallePresenter;
 import cl.clsoft.bave.service.impl.ConteoCiclicoService;
+import cl.clsoft.bave.task.AppTaskExecutor;
 
 public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter> {
 
     // Variables
     private static final String TAG = "CiclicoDetalle";
     private Long inventarioCiclicoId;
+    private String subinventarioId;
     private List<MtlCycleCountEntries> entries;
 
     // Controls
-    private TextView cycleCountHeaderId;
-    private TextView cycleCountHeaderName;
-    private TextView creationDate;
-    private RecyclerView recyclerViewDetalle;
-    private AdapterItemCiclicoDetalle adapter;
+    private TextView textCycleCountHeaderId;
+    private TextView textCycleCountHeaderName;
+    private TextView textSubinventario;
+    private TextView textCreationDate;
+    private RecyclerView recyclerViewEntries;
+    private AdapterItemEntry adapter;
 
     @NonNull
     @Override
     protected CiclicoDetallePresenter createPresenter(@NonNull Context context) {
-        return new CiclicoDetallePresenter(this, new ConteoCiclicoService());
+        return new CiclicoDetallePresenter(this, new AppTaskExecutor(this), new ConteoCiclicoService());
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,29 +56,25 @@ public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter
 
         // Bind Controls
         this.llProgressBar = findViewById(R.id.llProgressBar);
-        this.cycleCountHeaderId = findViewById(R.id.cycleCountHeaderId);
-        this.cycleCountHeaderName = findViewById(R.id.cycleCountHeaderName);
-        this.creationDate = findViewById(R.id.creationDate);
-        this.recyclerViewDetalle = findViewById(R.id.itemCiclicoDetalleRecycler);
+        this.textCycleCountHeaderId = findViewById(R.id.textCycleCountHeaderId);
+        this.textCycleCountHeaderName = findViewById(R.id.textCycleCountHeaderName);
+        this.textSubinventario = findViewById(R.id.textSubinventario);
+        this.textCreationDate = findViewById(R.id.textCreationDate);
+        this.recyclerViewEntries = findViewById(R.id.recyclerViewEntries);
 
         // Set Controls
-        this.recyclerViewDetalle.setHasFixedSize(true);
-        this.recyclerViewDetalle.setLayoutManager(new LinearLayoutManager(this));
-
-        //Se reciben datos de la activity anterior y se insertan en la activity actual
         inventarioCiclicoId = this.getIntent().getLongExtra("ciclicosId",0);
-        MtlCycleCountHeaders inventario = mPresenter.getDPreViousDetalleCiclicos(inventarioCiclicoId);
+        subinventarioId = this.getIntent().getStringExtra("subinventarioId");
+        MtlCycleCountHeaders mtlCycleCountHeaders = this.mPresenter.getMtlCycleCountHeaders(this.inventarioCiclicoId);
+        if (mtlCycleCountHeaders != null) {
 
-        entries = mPresenter.getSigleInformation(inventarioCiclicoId);
-        Log.d("++++++++++++++++--+++++", String.valueOf(entries.size()));
-        this.adapter = new AdapterItemCiclicoDetalle(entries);
-        this.recyclerViewDetalle.setAdapter(this.adapter);
+            this.textCycleCountHeaderId.setText(mtlCycleCountHeaders.getCycleCountHeaderId().toString());
+            this.textCycleCountHeaderName.setText(mtlCycleCountHeaders.getCycleCountHeaderName());
+            this.textSubinventario.setText(this.subinventarioId);
+            this.textCreationDate.setText(mtlCycleCountHeaders.getCreationDate());
 
-
-        if(inventario != null){
-            this.cycleCountHeaderId.setText(inventario.getCycleCountHeaderId().toString());
-            this.cycleCountHeaderName.setText(inventario.getCycleCountHeaderName());
-            this.creationDate.setText(inventario.getCreationDate());
+            this.recyclerViewEntries.setHasFixedSize(true);
+            this.recyclerViewEntries.setLayoutManager(new LinearLayoutManager(this));
         }
 
         final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
@@ -82,7 +83,7 @@ public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter
             }
         });
 
-        this.recyclerViewDetalle.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+        this.recyclerViewEntries.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public void onRequestDisallowInterceptTouchEvent(boolean b) {
             }
@@ -94,11 +95,10 @@ public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter
                     if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
                         int position = recyclerView.getChildAdapterPosition(child);
                         Intent o = null;
-                        o = new Intent(getApplicationContext(), ActivityCiclicoSigleDetalle.class);
-                        o.putExtra("ciclicoDetalleId", entries.get(position).getCycleCountEntryId());
-                        //o.putExtra("ciclicoId", inventarioCiclicoId);
+                        o = new Intent(getApplicationContext(), ActivityCiclicoEditar.class);
+                        o.putExtra("entryId", entries.get(position).getCycleCountEntryId());
                         startActivity(o);
-                        //finish();
+                        finish();
                         return true;
                     }
                 }catch (Exception e){
@@ -111,7 +111,49 @@ public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter
             public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
             }
         });
-
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.mPresenter.loadEntries(this.inventarioCiclicoId, this.subinventarioId);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_ciclico_detalle, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent i = new Intent(getApplicationContext(), ActivityCiclicoSub.class);
+                i.putExtra("ciclicosId", this.inventarioCiclicoId);
+                startActivity(i);
+                this.finish();
+                return true;
+            case R.id.agregar:
+                Log.d(TAG, "Agregar");
+                Intent o = new Intent(this, ActivityCiclicoAgregar.class);
+                o.putExtra("ciclicosId", this.inventarioCiclicoId);
+                o.putExtra("subinventarioId", subinventarioId);
+                startActivity(o);
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void fillEntries(List<MtlCycleCountEntries> entries) {
+        if (entries != null) {
+            Log.d(TAG, "enties size: " + entries.size());
+            this.entries = entries;
+            this.adapter = new AdapterItemEntry(entries);
+            this.recyclerViewEntries.setAdapter(adapter);
+        }
+    }
 }

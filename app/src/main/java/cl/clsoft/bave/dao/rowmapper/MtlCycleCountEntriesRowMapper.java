@@ -22,6 +22,11 @@ public class MtlCycleCountEntriesRowMapper implements RowMapper<MtlCycleCountEnt
         entity.setSegment1(cursor.getString(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_SEGMENT1)));
         entity.setPrimaryUomCode(cursor.getString(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_PRIMARY_UOM_CODE)));
         entity.setSerialNumber(cursor.getString(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_SERIAL_NUMBER)));
+        entity.setCount(cursor.getDouble(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_COUNT)));
+        entity.setLastUpdated(cursor.getString(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_LAST_UPDATED)));
+        entity.setLocatorCode(cursor.getString(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_LOCATOR_CODE)));
+        entity.setDescription(cursor.getString(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_DESCRIPTION)));
+        entity.setLongDescription(cursor.getString(cursor.getColumnIndex(MtlCycleCountEntriesCatalogo.COLUMN_LONG_DESCRIPTION)));
         return entity;
     }
 }

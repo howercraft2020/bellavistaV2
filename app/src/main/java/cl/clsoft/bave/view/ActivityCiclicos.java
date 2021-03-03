@@ -75,7 +75,7 @@ public class ActivityCiclicos extends BaseActivity<CiclicosPresenter> {
                     if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
                         int position = recyclerView.getChildAdapterPosition(child);
                         Intent i = null;
-                        i = new Intent(getApplicationContext(), ActivityCiclicoDetalle.class);
+                        i = new Intent(getApplicationContext(), ActivityCiclicoSub.class);
                         i.putExtra("ciclicosId", ciclicos.get(position).getCycleCountHeaderId());
                         startActivity(i);
                         finish();

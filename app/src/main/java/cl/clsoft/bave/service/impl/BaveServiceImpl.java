@@ -22,6 +22,7 @@ import cl.clsoft.bave.dao.IPoDistributionsAllDao;
 import cl.clsoft.bave.dao.IPoHeadersAllDao;
 import cl.clsoft.bave.dao.IPoLineLocationsAllDao;
 import cl.clsoft.bave.dao.IPoLinesAllDao;
+import cl.clsoft.bave.dao.IRcvShipmentHeadersDao;
 import cl.clsoft.bave.dao.ISubinventarioDao;
 import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlCycleCountEntriesDaoImpl;
@@ -36,6 +37,7 @@ import cl.clsoft.bave.dao.impl.PoDistributionsAllDaoImpl;
 import cl.clsoft.bave.dao.impl.PoHeadersAllDaoImpl;
 import cl.clsoft.bave.dao.impl.PoLineLocationsAllDaoImpl;
 import cl.clsoft.bave.dao.impl.PoLinesAllDaoImpl;
+import cl.clsoft.bave.dao.impl.RcvShipmentHeadersDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
@@ -52,6 +54,7 @@ import cl.clsoft.bave.model.PoDistributionsAll;
 import cl.clsoft.bave.model.PoHeadersAll;
 import cl.clsoft.bave.model.PoLineLocationsAll;
 import cl.clsoft.bave.model.PoLinesAll;
+import cl.clsoft.bave.model.RcvShipmentHeaders;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.service.IBaveService;
 
@@ -340,7 +343,6 @@ public class BaveServiceImpl implements IBaveService {
         FileInputStream fis = null;
 
         try {
-
             fis = new FileInputStream(archivo);
             InputStreamReader abrirArchivo = new InputStreamReader(fis);
             BufferedReader leerArchivo = new BufferedReader(abrirArchivo);
@@ -432,6 +434,69 @@ public class BaveServiceImpl implements IBaveService {
             e.printStackTrace();
         } catch (DaoException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void cargarArchivoEntrega(File archivo) throws ServiceException {
+        IRcvShipmentHeadersDao rcvShipmentHeadersDao = new RcvShipmentHeadersDaoImpl();
+        FileInputStream fis = null;
+
+        try {
+            fis = new FileInputStream(archivo);
+            InputStreamReader abrirArchivo = new InputStreamReader(fis);
+            BufferedReader leerArchivo = new BufferedReader(abrirArchivo);
+            String linea = null;
+            linea = leerArchivo.readLine();
+            while(linea != null) {
+                String[] extraccion = linea.split("\\|", -1);
+                if (extraccion[0].equals("SHP")) {
+                    RcvShipmentHeaders rcvShipmentHeaders = new RcvShipmentHeaders();
+                    if (extraccion.length >= 2)
+                        rcvShipmentHeaders.setShipmentHeaderId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
+                    if (extraccion.length >= 3)
+                        rcvShipmentHeaders.setLastUpdateDate(extraccion[2]);
+                    if (extraccion.length >= 4)
+                        rcvShipmentHeaders.setLastUpdatedBy(extraccion[3].equalsIgnoreCase("") ? null : new Long(extraccion[3]));
+                    if (extraccion.length >= 5)
+                        rcvShipmentHeaders.setCreationDate(extraccion[4]);
+                    if (extraccion.length >= 6)
+                        rcvShipmentHeaders.setCreatedBy(extraccion[5].equalsIgnoreCase("") ? null : new Long(extraccion[5]));
+                    if (extraccion.length >= 7)
+                        rcvShipmentHeaders.setUserId(extraccion[6].equalsIgnoreCase("") ? null : new Long(extraccion[6]));
+                    if (extraccion.length >= 8)
+                        rcvShipmentHeaders.setVendorId(extraccion[7].equalsIgnoreCase("") ? null : new Long(extraccion[7]));
+                    if (extraccion.length >= 9)
+                        rcvShipmentHeaders.setVendorSiteId(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
+                    if (extraccion.length >= 10)
+                        rcvShipmentHeaders.setOrganizationId(extraccion[9].equalsIgnoreCase("") ? null : new Long(extraccion[9]));
+                    if (extraccion.length >= 11)
+                        rcvShipmentHeaders.setShipmentNum(extraccion[10]);
+                    if (extraccion.length >= 12)
+                        rcvShipmentHeaders.setReceiptNum(extraccion[11]);
+                    if (extraccion.length >= 13)
+                        rcvShipmentHeaders.setEmployeeId(extraccion[12].equalsIgnoreCase("") ? null : new Long(extraccion[12]));
+                    if (extraccion.length >= 14)
+                        rcvShipmentHeaders.setShipToOrgId(extraccion[13].equalsIgnoreCase("") ? null : new Long(extraccion[13]));
+                    rcvShipmentHeadersDao.insert(rcvShipmentHeaders);
+                } else if (extraccion[0].equals("TRX")) {
+
+                }
+                linea = leerArchivo.readLine();
+            }
+            archivo.delete();
+        } catch (DaoException e) {
+            e.printStackTrace();
+            throw new ServiceException(2, e.getDescripcion());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            throw new ServiceException(2, e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ServiceException(2, e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ServiceException(2, e.getMessage());
         }
     }
 }

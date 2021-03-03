@@ -71,7 +71,10 @@ public class RcvTransactionsCatalogo {
                     COLUMN_INSPECTION_STATUS_CODE + " TEXT, " +
                     COLUMN_DESTINATION_CONTEXT + " TEXT, " +
                     COLUMN_INTERFACE_TRANSACTION_ID + " INTEGER, " +
-                    COLUMN_ITEM_ID +" INTEGER " +
+                    COLUMN_ITEM_ID +" INTEGER, " +
+                    " PRIMARY KEY (" + COLUMN_TRANSACTION_ID + " )" +
                     " ) ";
+
+    public static final String UPDATE = COLUMN_TRANSACTION_ID + " = ?";
 
 }

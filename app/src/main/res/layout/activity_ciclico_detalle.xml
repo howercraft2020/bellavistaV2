@@ -12,10 +12,9 @@
         android:visibility="gone"
         layout="@layout/progress_bar"/>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="201dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/icon"
@@ -27,7 +26,7 @@
             android:src="@drawable/ciclico01_48dp" />
 
         <TextView
-            android:id="@+id/labelId"
+            android:id="@+id/labelCycleCountHeaderId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/icon"
@@ -35,67 +34,82 @@
             android:text="ID:" />
 
         <TextView
-            android:id="@+id/cycleCountHeaderId"
+            android:id="@+id/textCycleCountHeaderId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/labelId"
-            android:paddingLeft="10dp"/>
+            android:layout_toRightOf="@+id/labelCycleCountHeaderId"
+            android:paddingLeft="10dp"
+            android:text="textCycleCountHeaderId"/>
 
         <TextView
-            android:id="@+id/labelNombre"
+            android:id="@+id/labelCycleCountHeaderName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/icon"
-            android:layout_below="@+id/labelId"
+            android:layout_below="@+id/labelCycleCountHeaderId"
             android:textStyle="bold"
             android:text="Nombre:" />
 
         <TextView
-            android:id="@+id/cycleCountHeaderName"
+            android:id="@+id/textCycleCountHeaderName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/labelNombre"
-            android:layout_below="@+id/cycleCountHeaderId"
-            android:paddingLeft="10dp"/>
+            android:layout_toRightOf="@+id/labelCycleCountHeaderName"
+            android:layout_below="@+id/labelCycleCountHeaderId"
+            android:paddingLeft="10dp"
+            android:text="textCycleCountHeaderName"/>
 
         <TextView
-            android:id="@+id/labelFechaCreacion"
+            android:id="@+id/labelSubinventario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/icon"
-            android:layout_below="@+id/labelNombre"
+            android:layout_below="@id/labelCycleCountHeaderName"
+            android:layout_marginTop="2dp"
+            android:textStyle="bold"
+            android:text="SUBINVENTARIO:" />
+
+        <TextView
+            android:id="@+id/textSubinventario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/labelSubinventario"
+            android:layout_below="@id/labelCycleCountHeaderName"
+            android:layout_marginTop="2dp"
+            android:paddingLeft="10dp"
+            android:text="textSubinventario" />
+
+        <TextView
+            android:id="@+id/labelCreationDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_below="@+id/labelSubinventario"
+            android:paddingBottom="10dp"
             android:textStyle="bold"
             android:text="Fecha de creación:" />
 
         <TextView
-            android:id="@+id/creationDate"
+            android:id="@+id/textCreationDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cycleCountHeaderName"
-            android:layout_toRightOf="@+id/labelFechaCreacion"
+            android:layout_below="@+id/labelSubinventario"
+            android:layout_toRightOf="@+id/labelCreationDate"
             android:paddingLeft="10dp"
-            android:paddingBottom="10dp"/>
+            android:paddingBottom="10dp"
+            android:text="textCreationDate"/>
 
         <View
             android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/labelFechaCreacion"
+            android:layout_below="@id/labelCreationDate"
             android:background="?android:attr/listDivider" />
-
 
     </RelativeLayout>
 
-    <SearchView
-        android:id="@+id/busquedaSigle"
-        android:layout_width="378dp"
-        android:layout_height="28dp"
-        android:layout_below="@+id/divider"
-        android:background="#A3FDEAEA"
-        android:visibility="visible" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/itemCiclicoDetalleRecycler"
+        android:id="@+id/recyclerViewEntries"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />

@@ -162,7 +162,7 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
         this.layoutCantidad.setHintEnabled(false);
         this.textCantidad.setEnabled(false);
         //this.fillLocator();
-        mPresenter.getLocalizadoresBySubinventario(this.subinventarioCodigo);
+        this.mPresenter.getLocalizadoresBySubinventario(this.subinventarioCodigo);
     }
 
     @Override
@@ -175,11 +175,6 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_activity_agregar_fisico_inventario, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 
     @Override
@@ -213,6 +208,7 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                 return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
