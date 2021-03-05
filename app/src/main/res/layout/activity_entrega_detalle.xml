@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/llProgressBar"
+        android:visibility="gone"
+        layout="@layout/progress_bar"/>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dip" >
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6dip"
+            android:paddingTop="8dp"
+            android:paddingLeft="10dp"
+            android:src="@drawable/inventario04_48dp" />
+
+        <TextView
+            android:id="@+id/labelShipmentHeaderId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:textStyle="bold"
+            android:text="Número OC:" />
+
+        <TextView
+            android:id="@+id/textShipmentHeaderId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/labelShipmentHeaderId"
+            android:paddingLeft="10dp"
+            android:text="textShipmentHeaderId" />
+
+        <TextView
+            android:id="@+id/labelReceiptNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_below="@+id/labelShipmentHeaderId"
+            android:textStyle="bold"
+            android:text="Recepción:" />
+
+        <TextView
+            android:id="@+id/textReceiptNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/labelReceiptNum"
+            android:layout_below="@+id/labelShipmentHeaderId"
+            android:paddingLeft="10dp"
+            android:text="textReceiptNum" />
+
+        <TextView
+            android:id="@+id/labelCreationDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_below="@+id/labelReceiptNum"
+            android:textStyle="bold"
+            android:text="Fecha de creación:" />
+
+        <TextView
+            android:id="@+id/textCreationDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelReceiptNum"
+            android:layout_toRightOf="@+id/labelCreationDate"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:text="textCreationDate"  />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/colorPrimaryDark"
+            android:layout_alignBottom="@id/textCreationDate" />
+
+    </RelativeLayout>
+
+</LinearLayout>

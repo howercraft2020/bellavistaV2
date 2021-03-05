@@ -23,6 +23,11 @@ public class SubinventarioDaoImpl extends GenericDao<Subinventario> implements I
     }
 
     @Override
+    public List<Subinventario> getAll() throws DaoException {
+        return super.selectMany(SubinventarioCatalogo.SELECT_ALL, new SubinventarioRowMapper());
+    }
+
+    @Override
     public List<Subinventario> getAllByCiclico(Long conteoCiclicoId) throws DaoException {
         return super.selectMany(SubinventarioCatalogo.SELECT_ALL_BY_CICLICOID, new SubinventarioRowMapper(), conteoCiclicoId);
     }

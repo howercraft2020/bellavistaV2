@@ -37,4 +37,21 @@ public class RcvShipmentHeadersCatalogo {
 
     public static final String UPDATE = COLUMN_SHIPMENT_HEADER_ID + " = ?";
 
+    public static final String DELETE = COLUMN_SHIPMENT_HEADER_ID + " = ?";
+
+    public static final String SELECT =
+            " SELECT * " +
+            " FROM " +
+            "     rcv_shipment_headers " +
+            " WHERE " +
+            "     shipment_header_id = ? ";
+
+    public static final String SELECT_ALL =
+            " SELECT * " +
+            " FROM " +
+            "     rcv_shipment_headers " +
+            " ORDER BY " +
+            "     shipment_header_id ";
+
+
 }

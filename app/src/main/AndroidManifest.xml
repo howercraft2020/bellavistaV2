@@ -73,10 +73,27 @@
         <activity android:name=".view.ActivityArticulosRecepcion" />
         <activity android:name=".view.ActivityAgregarRecepcion" />
 
+        <!-- ENTREGA -->
+        <activity
+            android:name=".view.ActivityEntregas"
+            android:label="Entregas"/>
+        <activity
+            android:name=".view.ActivityEntregaDetalle"
+            android:label="Detalle"/>
+        <activity
+            android:name=".view.ActivityEntregaAgregar"
+            android:label="Agregar"/>
+        <activity
+            android:name=".view.ActivityEntregaAgregarLote"
+            android:label="Lote"/>
+        <activity
+            android:name=".view.ActivityEntregaAgregarSerie"
+            android:label="Serie"/>
+
         <!-- GENERICO -->
         <activity
             android:name=".view.ActivitySigleSearch"
-            android:label="Búsqueda Sigle"></activity>
+            android:label="Búsqueda Sigle"/>
     </application>
 
 </manifest>

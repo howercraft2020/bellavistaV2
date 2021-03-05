@@ -32,6 +32,7 @@ public class RcvTransactionsRowMapper implements  RowMapper<RcvTransactions>{
         entity.setPoLineLocationId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_PO_LINE_LOCATION_ID)));
         entity.setPoDistributionId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_PO_DISTRIBUTION_ID)));
         entity.setPoUnitPrice(cursor.getLong(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_PO_UNIT_PRICE)));
+        entity.setCurrencyCode(cursor.getString(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_CURRENCY_CODE)));
         entity.setCurrencyConversionType(cursor.getString(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_CURRENCY_CONVERSION_TYPE)));
         entity.setCurrencyConversionRate(cursor.getLong(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_CURRENCY_CONVERSION_RATE)));
         entity.setCurrencyConversionDate(cursor.getString(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_CURRENCY_CONVERSION_DATE)));
@@ -44,7 +45,7 @@ public class RcvTransactionsRowMapper implements  RowMapper<RcvTransactions>{
         entity.setDestinationContext(cursor.getString(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_DESTINATION_CONTEXT)));
         entity.setInterfaceTransactionId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_INTERFACE_TRANSACTION_ID)));
         entity.setItemId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_ITEM_ID)));
-
+        entity.setLineNum(cursor.getLong(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_LINE_NUM)));
         return entity;
     }
 }

@@ -23,9 +23,10 @@ public class MtlSystemItemsCatalogo {
                     COLUMN_SHELF_LIFE_CODE + " TEXT, " +
                     COLUMN_SERIAL_NUMBER_CONTROL_CODE + " TEXT " +
                     ")";
-    public static final String UPDATE = " WHERE " + COLUMN_ID + " = ?";
-    public static final String DELETE = " WHERE " + COLUMN_ID + " = ?";
+    public static final String UPDATE = COLUMN_ID + " = ?";
+    public static final String DELETE = COLUMN_ID + " = ?";
     public static final String SELECT = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_ID + " = ? ";
+
     public static final String SELECT_BY_SEGMENT =
             " SELECT * " +
             " FROM " +
