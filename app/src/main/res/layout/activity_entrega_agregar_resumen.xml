@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="24dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dip"
+        android:id="@+id/rlayoutItem">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6dip"
+            android:paddingTop="8dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:src="@drawable/inventario05_48dp" />
+
+        <TextView
+            android:id="@+id/textProductoDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold"
+            android:text="textProductoDescription" />
+
+        <TextView
+            android:id="@+id/labelProductoSigle"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textProductoDescription"
+            android:layout_toRightOf="@+id/icon"
+            android:textStyle="bold"
+            android:text="SIGLE:" />
+
+        <TextView
+            android:id="@+id/textProductoSigle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textProductoDescription"
+            android:layout_toRightOf="@+id/labelProductoSigle"
+            android:paddingLeft="10dp"
+            android:text="textShipmentHeaderId" />
+
+        <TextView
+            android:id="@+id/labelProductoCantidad"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_below="@+id/labelProductoSigle"
+            android:textStyle="bold"
+            android:text="Cantidad:" />
+
+        <TextView
+            android:id="@+id/textProductoCantidad"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelProductoSigle"
+            android:layout_toRightOf="@+id/labelProductoCantidad"
+            android:paddingLeft="5dp"
+            android:text="1000"  />
+
+        <TextView
+            android:id="@+id/labelProductoLinea"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/textProductoCantidad"
+            android:layout_below="@+id/labelProductoSigle"
+            android:textStyle="bold"
+            android:text="Línea:" />
+
+        <TextView
+            android:id="@+id/textProductoLinea"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelProductoSigle"
+            android:layout_toRightOf="@+id/labelProductoLinea"
+            android:paddingLeft="5dp"
+            android:text="10"  />
+
+        <TextView
+            android:id="@+id/labelProductoLote"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_below="@+id/labelProductoLinea"
+            android:textStyle="bold"
+            android:text="Lote:"/>
+
+        <TextView
+            android:id="@+id/textProductoLote"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelProductoLinea"
+            android:layout_toRightOf="@+id/labelProductoLote"
+            android:paddingLeft="5dp"
+            android:text="SI"  />
+
+        <TextView
+            android:id="@+id/labelProductoSerie"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/textProductoLote"
+            android:layout_below="@+id/labelProductoLinea"
+            android:textStyle="bold"
+            android:text="Serie:" />
+
+        <TextView
+            android:id="@+id/textProductoSerie"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelProductoLinea"
+            android:layout_toRightOf="@+id/labelProductoSerie"
+            android:paddingLeft="5dp"
+            android:text="NO"  />
+
+        <TextView
+            android:id="@+id/labelSubinventoryCode"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelProductoSerie"
+            android:textStyle="bold"
+            android:text="Subinventario:"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"
+            />
+
+        <TextView
+            android:id="@+id/textSubinventoryCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelProductoSerie"
+            android:layout_toRightOf="@+id/labelSubinventoryCode"
+            android:paddingLeft="10dp"
+            android:text="textSubinventoryCode"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/labelLocatorCode"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelSubinventoryCode"
+            android:textStyle="bold"
+            android:text="Localizador:"
+            android:paddingBottom="10dp"
+            />
+
+        <TextView
+            android:id="@+id/textLocatorCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelSubinventoryCode"
+            android:layout_toRightOf="@+id/labelLocatorCode"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:text="textLocatorCode"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/colorPrimaryDark"
+            android:layout_alignBottom="@id/labelLocatorCode"
+            android:layout_marginTop="10dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dip"
+        android:id="@+id/rlayoutLote">
+
+        <TextView
+            android:id="@+id/labelLote"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Lote:"
+            android:paddingBottom="10dp"
+            />
+
+        <TextView
+            android:id="@+id/textLote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/labelLote"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:text="textLote"
+            />
+
+        <TextView
+            android:id="@+id/labelVencimiento"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelLote"
+            android:textStyle="bold"
+            android:text="Vencimiento:"
+            android:paddingBottom="10dp"
+            />
+
+        <TextView
+            android:id="@+id/textVencimiento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelLote"
+            android:layout_toRightOf="@+id/labelVencimiento"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:text="textVencimiento"
+            />
+
+        <TextView
+            android:id="@+id/labelAtributo1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelVencimiento"
+            android:textStyle="bold"
+            android:text="Atributo 1:"
+            android:paddingBottom="10dp"
+            />
+
+        <TextView
+            android:id="@+id/textAtributo1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelVencimiento"
+            android:layout_toRightOf="@+id/labelAtributo1"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:text="textAtributo1"
+            />
+
+        <TextView
+            android:id="@+id/labelAtributo2"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelAtributo1"
+            android:textStyle="bold"
+            android:text="Atributo 2:"
+            android:paddingBottom="10dp"
+            />
+
+        <TextView
+            android:id="@+id/textAtributo2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelAtributo1"
+            android:layout_toRightOf="@+id/labelAtributo2"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:text="textAtributo2"
+            />
+
+        <TextView
+            android:id="@+id/labelAtributo3"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelAtributo2"
+            android:textStyle="bold"
+            android:text="Atributo 2:"
+            android:paddingBottom="10dp"
+            />
+
+        <TextView
+            android:id="@+id/textAtributo3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelAtributo2"
+            android:layout_toRightOf="@+id/labelAtributo3"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:text="textAtributo2"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/colorPrimaryDark"
+            android:layout_alignBottom="@id/labelAtributo3"
+            android:layout_marginTop="10dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dip"
+        android:id="@+id/rlayoutSeries">
+
+        <TextView
+            android:id="@+id/labelSeries"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Series:"
+            android:paddingBottom="10dp"
+            />
+
+        <TextView
+            android:id="@+id/textSeries"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/labelSeries"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:text="textSeries"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/colorPrimaryDark"
+            android:layout_alignBottom="@id/labelSeries"
+            android:layout_marginTop="10dp"/>
+    </RelativeLayout>
+
+</LinearLayout>

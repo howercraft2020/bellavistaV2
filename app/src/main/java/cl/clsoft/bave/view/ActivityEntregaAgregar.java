@@ -46,6 +46,11 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
     private Long transactionId;
     private String subinventoryCode;
     private String locatorCode;
+    private String lote;
+    private String vencimiento;
+    private String atributo1;
+    private String atributo2;
+    private String atributo3;
     private List<String> series;
     private boolean isLote = false;
     private boolean isSerie = false;
@@ -84,6 +89,7 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entrega_agregar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_highlight_off_white_36dp);
 
         // Bind Controls
         this.llProgressBar = findViewById(R.id.llProgressBar);
@@ -108,7 +114,13 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
         this.transactionId = this.getIntent().getLongExtra("TransactionId", 0);
         this.subinventoryCode = this.getIntent().getStringExtra("SubinventoryCode");
         this.locatorCode = this.getIntent().getStringExtra("LocatorCode");
+        this.lote = this.getIntent().getStringExtra("Lote");
+        this.vencimiento = this.getIntent().getStringExtra("Vencimiento");
+        this.atributo1 = this.getIntent().getStringExtra("Atributo1");
+        this.atributo2 = this.getIntent().getStringExtra("Atributo2");
+        this.atributo3 = this.getIntent().getStringExtra("Atributo3");
         this.series = this.getIntent().getStringArrayListExtra("series");
+        Log.d(TAG, "Lote: " + lote);
 
         if (transactionId > 0) {
             RcvTransactions transaction = mPresenter.getTransactionById(this.transactionId);
@@ -243,6 +255,11 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                     iLote.putExtra("TransactionId", this.transactionId);
                     iLote.putExtra("SubinventoryCode", this.subinventoryCode);
                     iLote.putExtra("LocatorCode", this.locatorCode);
+                    iLote.putExtra("Lote", this.lote);
+                    iLote.putExtra("Vencimiento", this.vencimiento);
+                    iLote.putExtra("Atributo1", this.atributo1);
+                    iLote.putExtra("Atributo2", this.atributo2);
+                    iLote.putExtra("Atributo3", this.atributo3);
                     iLote.putStringArrayListExtra("series", (ArrayList<String>) this.series);
                     startActivity(iLote);
                     this.finish();
@@ -252,6 +269,11 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                     iSerie.putExtra("TransactionId", this.transactionId);
                     iSerie.putExtra("SubinventoryCode", this.subinventoryCode);
                     iSerie.putExtra("LocatorCode", this.locatorCode);
+                    iSerie.putExtra("Lote", this.lote);
+                    iSerie.putExtra("Vencimiento", this.vencimiento);
+                    iSerie.putExtra("Atributo1", this.atributo1);
+                    iSerie.putExtra("Atributo2", this.atributo2);
+                    iSerie.putExtra("Atributo3", this.atributo3);
                     iSerie.putStringArrayListExtra("series", (ArrayList<String>) this.series);
                     startActivity(iSerie);
                     this.finish();

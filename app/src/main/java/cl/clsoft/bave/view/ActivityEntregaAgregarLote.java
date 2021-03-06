@@ -4,14 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
@@ -32,6 +38,12 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
     private boolean isLote = false;
     private boolean isSerie = false;
     private boolean isVencimiento = false;
+    private String lote;
+    private String vencimiento;
+    private String atributo1;
+    private String atributo2;
+    private String atributo3;
+    private List<String> series = new ArrayList<>();
 
     // Controls
     private TextInputLayout layoutLote;
@@ -58,6 +70,7 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entrega_agregar_lote);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_highlight_off_white_36dp);
 
         // Bind Controls
         this.llProgressBar = findViewById(R.id.llProgressBar);
@@ -77,6 +90,14 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
         this.transactionId = this.getIntent().getLongExtra("TransactionId", 0);
         this.subinventoryCode = this.getIntent().getStringExtra("SubinventoryCode");
         this.locatorCode = this.getIntent().getStringExtra("LocatorCode");
+        this.lote = this.getIntent().getStringExtra("Lote");
+        this.vencimiento = this.getIntent().getStringExtra("Vencimiento");
+        this.atributo1 = this.getIntent().getStringExtra("Atributo1");
+        this.atributo2 = this.getIntent().getStringExtra("Atributo2");
+        this.atributo3 = this.getIntent().getStringExtra("Atributo3");
+        this.series = this.getIntent().getStringArrayListExtra("series");
+        Log.d(TAG, "Lote: " + this.lote);
+
         RcvTransactions transaction = mPresenter.getTransactionById(this.transactionId);
         if (transaction != null) {
             MtlSystemItems item = mPresenter.getMtlSystemItemsById(transaction.getItemId());
@@ -96,8 +117,117 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 } else {
                     this.isVencimiento = false;
                 }
+                this.textLote.setText(this.lote);
+                this.textAtributo1.setText(this.atributo1);
+                this.textAtributo2.setText(this.atributo2);
+                this.textAtributo3.setText(this.atributo3);
             }
         }
+
+        this.textLote.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event)
+            {
+                Log.d(TAG, "onEditorAction: " + textView.getText());
+                Log.d(TAG, "actionId: " + actionId);
+                //Log.d(TAG, "Key Code: " + event.getKeyCode());
+                boolean action = false;
+                action = true;
+                if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+                {
+                    if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
+                        lote = textView.getText().toString();
+
+                    }
+                    action = true;
+                }
+                return action;
+            }
+        });
+
+        this.textVencimiento.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event)
+            {
+                Log.d(TAG, "onEditorAction: " + textView.getText());
+                Log.d(TAG, "actionId: " + actionId);
+                //Log.d(TAG, "Key Code: " + event.getKeyCode());
+                boolean action = false;
+                action = true;
+                if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+                {
+                    if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
+                        vencimiento = textView.getText().toString();
+                        Log.d(TAG, "vencimiento: " + vencimiento);
+                    }
+                    action = true;
+                }
+                return action;
+            }
+        });
+
+        this.textAtributo1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event)
+            {
+                Log.d(TAG, "onEditorAction: " + textView.getText());
+                Log.d(TAG, "actionId: " + actionId);
+                //Log.d(TAG, "Key Code: " + event.getKeyCode());
+                boolean action = false;
+                action = true;
+                if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+                {
+                    if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
+                        atributo1 = textView.getText().toString();
+
+                    }
+                    action = true;
+                }
+                return action;
+            }
+        });
+
+        this.textAtributo2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event)
+            {
+                Log.d(TAG, "onEditorAction: " + textView.getText());
+                Log.d(TAG, "actionId: " + actionId);
+                //Log.d(TAG, "Key Code: " + event.getKeyCode());
+                boolean action = false;
+                action = true;
+                if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+                {
+                    if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
+                        atributo2 = textView.getText().toString();
+
+                    }
+                    action = true;
+                }
+                return action;
+            }
+        });
+
+        this.textAtributo3.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event)
+            {
+                Log.d(TAG, "onEditorAction: " + textView.getText());
+                Log.d(TAG, "actionId: " + actionId);
+                //Log.d(TAG, "Key Code: " + event.getKeyCode());
+                boolean action = false;
+                action = true;
+                if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+                {
+                    if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
+                        atributo3 = textView.getText().toString();
+
+                    }
+                    action = true;
+                }
+                return action;
+            }
+        });
 
     }
 
@@ -125,6 +255,12 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 iSerie.putExtra("TransactionId", this.transactionId);
                 iSerie.putExtra("SubinventoryCode", this.subinventoryCode);
                 iSerie.putExtra("LocatorCode", this.locatorCode);
+                iSerie.putExtra("Lote", this.lote);
+                iSerie.putExtra("Vencimiento", this.vencimiento);
+                iSerie.putExtra("Atributo1", this.atributo1);
+                iSerie.putExtra("Atributo2", this.atributo2);
+                iSerie.putExtra("Atributo3", this.atributo3);
+                iSerie.putStringArrayListExtra("series", (ArrayList<String>) this.series);
                 startActivity(iSerie);
                 this.finish();
                 return true;
@@ -135,6 +271,12 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 iAgregar.putExtra("TransactionId", this.transactionId);
                 iAgregar.putExtra("SubinventoryCode", this.subinventoryCode);
                 iAgregar.putExtra("LocatorCode", this.locatorCode);
+                iAgregar.putExtra("Lote", this.lote);
+                iAgregar.putExtra("Vencimiento", this.vencimiento);
+                iAgregar.putExtra("Atributo1", this.atributo1);
+                iAgregar.putExtra("Atributo2", this.atributo2);
+                iAgregar.putExtra("Atributo3", this.atributo3);
+                iAgregar.putStringArrayListExtra("series", (ArrayList<String>) this.series);
                 startActivity(iAgregar);
                 this.finish();
                 return true;

@@ -89,6 +89,9 @@
         <activity
             android:name=".view.ActivityEntregaAgregarSerie"
             android:label="Serie"/>
+        <activity
+            android:name=".view.ActivityEntregaAgregarResumen"
+            android:label="Resumen"/>
 
         <!-- GENERICO -->
         <activity
