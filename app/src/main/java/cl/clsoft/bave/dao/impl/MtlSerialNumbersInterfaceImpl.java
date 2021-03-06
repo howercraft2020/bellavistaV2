@@ -33,5 +33,11 @@ public class MtlSerialNumbersInterfaceImpl extends GenericDao<MtlSerialNumbersIn
         return super.selectLong(MtlSerialNumbersInterfaceCatalogo.SELECT_CANTIDAD_SERIES, transactionInterfaceId);
     }
 
+    @Override
+    public MtlSerialNumbersInterface existeSerie(Long transactionInterfaceId, String serie) throws DaoException {
+        return super.selectOne(MtlSerialNumbersInterfaceCatalogo.SELECT_EXISTE_SERIE, new MtlSerialNumbersInterfaceRowMapper(), transactionInterfaceId, serie);
+    }
+
+
 
 }

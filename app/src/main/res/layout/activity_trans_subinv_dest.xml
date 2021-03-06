@@ -181,30 +181,43 @@
         android:background="?attr/colorPrimaryDark"
         android:layout_alignBottom="@id/creationDate" />
 
-    <EditText
-        android:id="@+id/subinvHastaEditText"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutSubinventarioDestino"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="40dp"
-        android:ems="10"
-        android:layout_below="@id/glosaEditText"
-        android:hint="Subinv. Hasta"
-        android:inputType="textPersonName"
-        android:padding="6dp" />
-    <EditText
-        android:id="@+id/localizadorHastaEditText"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="Subinventario Destino"
+        android:textColorHint="?attr/colorPrimary">
+        <cl.clsoft.bave.control.InstantAutoCompleteTextView
+            android:id="@+id/textSubinventarioDestino"
+            android:textColor="@android:color/black"
+            android:backgroundTint="?attr/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:inputType="textPhonetic">
+        </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutLocalizadorDestino"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/subinvHastaEditText"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="40dp"
-        android:ems="10"
-        android:hint="Localizador Hasta"
-        android:inputType="textPersonName" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="Localizador Destino"
+        android:textColorHint="?attr/colorPrimary">
+        <cl.clsoft.bave.control.InstantAutoCompleteTextView
+            android:id="@+id/textLocalizadorDestino"
+            android:textColor="@android:color/black"
+            android:backgroundTint="?attr/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:inputType="textPhonetic">
+        </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
 
 
 

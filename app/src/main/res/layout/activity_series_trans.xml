@@ -227,25 +227,36 @@
         android:background="?attr/colorPrimaryDark"
         android:layout_alignBottom="@id/creationDate" />
 
-    <EditText
-        android:id="@+id/serieEditText"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutSerie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="40dp"
-        android:ems="10"
-        android:layout_below="@id/glosaEditText"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:hint="Serie"
-        android:inputType="textPersonName"
-        android:padding="6dp" />
+        android:textColorHint="?attr/colorPrimary">
+        <cl.clsoft.bave.control.InstantAutoCompleteTextView
+            android:id="@+id/textSerie"
+            android:textColor="@android:color/black"
+            android:backgroundTint="?attr/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:inputType="textPhonetic">
+        </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?attr/colorPrimaryDark"
-        android:layout_alignBottom="@id/serieEditText" />
+        android:layout_alignBottom="@id/layoutSerie" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSeries"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
 
 
 
