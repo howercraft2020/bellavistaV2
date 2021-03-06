@@ -22,6 +22,7 @@ public class RcvTransactions {
     private Long poLineLocationId;
     private Long poDistributionId;
     private Long poUnitPrice;
+    private String currencyCode;
     private String currencyConversionType;
     private Long currencyConversionRate;
     private String currencyConversionDate;
@@ -34,6 +35,9 @@ public class RcvTransactions {
     private String destinationContext;
     private Long interfaceTransactionId;
     private Long itemId;
+    private Long lineNum;
+
+    public RcvTransactions() { }
 
     public Long getTransactionId() {
         return transactionId;
@@ -203,6 +207,14 @@ public class RcvTransactions {
         this.poUnitPrice = poUnitPrice;
     }
 
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
+    }
+
     public String getCurrencyConversionType() {
         return currencyConversionType;
     }
@@ -299,7 +311,11 @@ public class RcvTransactions {
         this.itemId = itemId;
     }
 
-    public RcvTransactions(){
+    public Long getLineNum() {
+        return lineNum;
+    }
 
+    public void setLineNum(Long lineNum) {
+        this.lineNum = lineNum;
     }
 }

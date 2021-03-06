@@ -83,8 +83,7 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
                     startActivity(intent);
                 }
                 if (seleccion.equals("Entrega")){
-                    Intent intent = new Intent(ActivityMain.this, Entrega.class);
-                    intent.putExtra("paso", "2");
+                    Intent intent = new Intent(ActivityMain.this, ActivityEntregas.class);
                     startActivity(intent);
                 }
                 if (seleccion.equals("Conteo Cíclico")){

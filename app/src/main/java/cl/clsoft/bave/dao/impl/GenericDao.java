@@ -2,6 +2,7 @@ package cl.clsoft.bave.dao.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteStatement;
@@ -19,25 +20,31 @@ import cl.clsoft.bave.exception.DaoException;
 
 public class GenericDao<T> {
 
-    private static final String TAG = "GenericDao";
+    private static final String TAG = "DAO";
 
     public void insert(String table, ContentValues values) throws DaoException {
-        Log.d(TAG, "insert");
+        Log.d(TAG, "GenericDao::insert");
 
         try {
             SQLiteDatabase db = DataBaseHelper.getInstance().getWritableDatabase();
             db.insert(table, null, values);
+        } catch(SQLiteConstraintException e) {
+            Log.d(TAG, "SQLiteConstraintException");
+            e.printStackTrace();
+            throw new DaoException(2, e.getMessage());
         } catch(SQLiteException e) {
+            Log.d(TAG, "SQLiteException");
             e.printStackTrace();
             throw new DaoException(2, e.getMessage());
         } catch(Exception e) {
+            Log.d(TAG, "Exception");
             e.printStackTrace();
             throw new DaoException(2, e.getMessage());
         }
     }
 
     public void update(String table, ContentValues values, String whereSql, Object... parameters) throws DaoException {
-        Log.d(TAG, "update");
+        Log.d(TAG, "GenericDao::update");
 
         try {
             SQLiteDatabase db = DataBaseHelper.getInstance().getWritableDatabase();
@@ -62,7 +69,7 @@ public class GenericDao<T> {
     }
 
     public void delete(String table, String whereSql, Object... parameters) throws DaoException {
-        Log.d(TAG, "delete");
+        Log.d(TAG, "GenericDao::delete");
 
         try {
             SQLiteDatabase db = DataBaseHelper.getInstance().getWritableDatabase();
@@ -87,7 +94,7 @@ public class GenericDao<T> {
     }
 
     public T selectOne(String sql, RowMapper<T> rm, Object... parameters) throws DaoException {
-        Log.d(TAG, "selectOne");
+        Log.d(TAG, "GenericDao::selectOne");
 
         try {
             T output = null;
@@ -117,7 +124,7 @@ public class GenericDao<T> {
     }
 
     public String selectString(String sql, Object... parameters) throws DaoException {
-        Log.d(TAG, "selectString");
+        Log.d(TAG, "GenericDao::selectString");
 
         try {
             String output = "";
@@ -148,7 +155,7 @@ public class GenericDao<T> {
     }
 
     public Long selectLong(String sql, Object... parameters) throws DaoException {
-        Log.d(TAG, "selectLong");
+        Log.d(TAG, "GenericDao::selectLong");
 
         try {
             Long output = 0L;
@@ -179,7 +186,7 @@ public class GenericDao<T> {
     }
 
     public Double selectDouble(String sql, Object... parameters) throws DaoException {
-        Log.d(TAG, "selectDouble");
+        Log.d(TAG, "GenericDao::selectDouble");
 
         try {
             Double output = 0D;
@@ -211,7 +218,7 @@ public class GenericDao<T> {
     }
 
     public List<T> selectMany(String sql, RowMapper<T> rm, Object... parameters) throws DaoException {
-        Log.d(TAG, "selectMany");
+        Log.d(TAG, "GenericDao::selectMany");
 
         try {
             List<T> output = new ArrayList<>();
@@ -244,7 +251,7 @@ public class GenericDao<T> {
     }
 
     public List<String> selectManyString(String sql, Object... parameters) throws DaoException {
-        Log.d(TAG, "selectManyString");
+        Log.d(TAG, "GenericDao::selectManyString");
 
         try {
             List<String> output = new ArrayList<>();
@@ -279,7 +286,7 @@ public class GenericDao<T> {
     }
 
     public List<Long> selectManyLong(String sql, Object... parameters) throws DaoException {
-        Log.d(TAG, "selectManyLong");
+        Log.d(TAG, "GenericDao::selectManyLong");
 
         try {
             List<Long> output = new ArrayList<>();
@@ -313,7 +320,7 @@ public class GenericDao<T> {
     }
 
     public List<Double> selectManyDouble(String sql, Object... parameters) throws DaoException {
-        Log.d(TAG, "selectManyDouble");
+        Log.d(TAG, "GenericDao::selectManyDouble");
 
         try {
             List<Double> output = new ArrayList<>();

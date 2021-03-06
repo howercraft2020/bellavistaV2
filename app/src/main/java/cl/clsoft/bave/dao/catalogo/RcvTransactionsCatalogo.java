@@ -24,6 +24,7 @@ public class RcvTransactionsCatalogo {
     public static final String COLUMN_PO_LINE_LOCATION_ID = "po_line_location_id";
     public static final String COLUMN_PO_DISTRIBUTION_ID = "po_distribution_id";
     public static final String COLUMN_PO_UNIT_PRICE = "po_unit_price";
+    public static final String COLUMN_CURRENCY_CODE = "currency_code";
     public static final String COLUMN_CURRENCY_CONVERSION_TYPE = "currency_conversion_type";
     public static final String COLUMN_CURRENCY_CONVERSION_RATE = "currency_conversion_rate";
     public static final String COLUMN_CURRENCY_CONVERSION_DATE = "currency_conversion_date";
@@ -36,6 +37,7 @@ public class RcvTransactionsCatalogo {
     public static final String COLUMN_DESTINATION_CONTEXT = "destination_context";
     public static final String COLUMN_INTERFACE_TRANSACTION_ID = "interface_transaction_id";
     public static final String COLUMN_ITEM_ID = "item_id";
+    public static final String COLUMN_LINE_NUM = "line_num";
 
     public static final String CREATE_TABLE =
             " CREATE TABLE " + TABLE + " ( " +
@@ -60,6 +62,7 @@ public class RcvTransactionsCatalogo {
                     COLUMN_PO_LINE_LOCATION_ID + " INTEGER, " +
                     COLUMN_PO_DISTRIBUTION_ID + " INTEGER, " +
                     COLUMN_PO_UNIT_PRICE + " INTEGER, " +
+                    COLUMN_CURRENCY_CODE + " TEXT, " +
                     COLUMN_CURRENCY_CONVERSION_TYPE + " TEXT, " +
                     COLUMN_CURRENCY_CONVERSION_RATE + " INTEGER, " +
                     COLUMN_CURRENCY_CONVERSION_DATE + " TEXT, " +
@@ -72,9 +75,36 @@ public class RcvTransactionsCatalogo {
                     COLUMN_DESTINATION_CONTEXT + " TEXT, " +
                     COLUMN_INTERFACE_TRANSACTION_ID + " INTEGER, " +
                     COLUMN_ITEM_ID +" INTEGER, " +
+                    COLUMN_LINE_NUM +" INTEGER, " +
                     " PRIMARY KEY (" + COLUMN_TRANSACTION_ID + " )" +
                     " ) ";
 
     public static final String UPDATE = COLUMN_TRANSACTION_ID + " = ?";
+
+    public static final String DELETE = COLUMN_TRANSACTION_ID + " = ?";
+
+    public static final String DELETE_BY_SHIPMENT_HEADER_ID = COLUMN_SHIPMENT_HEADER_ID + " = ?";
+
+    public static  final String SELECT =
+            " SELECT * " +
+            " FROM " +
+            "     rcv_transactions " +
+            " WHERE " +
+            "     transaction_id = ? ";
+
+    public static  final String SELECT_ALL_BY_SHIPMENT =
+            " SELECT * " +
+            " FROM " +
+            "     rcv_transactions " +
+            " WHERE " +
+            "     shipment_header_id = ? ";
+
+    public static  final String SELECT_ALL_BY_SHIPMENT_INVENTORY =
+            " SELECT * " +
+            " FROM " +
+            "     rcv_transactions " +
+            " WHERE " +
+            "     shipment_header_id = ? " +
+            "     AND item_id = ? ";
 
 }

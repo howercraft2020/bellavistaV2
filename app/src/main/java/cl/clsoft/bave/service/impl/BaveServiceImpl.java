@@ -23,6 +23,7 @@ import cl.clsoft.bave.dao.IPoHeadersAllDao;
 import cl.clsoft.bave.dao.IPoLineLocationsAllDao;
 import cl.clsoft.bave.dao.IPoLinesAllDao;
 import cl.clsoft.bave.dao.IRcvShipmentHeadersDao;
+import cl.clsoft.bave.dao.IRcvTransactionsDao;
 import cl.clsoft.bave.dao.ISubinventarioDao;
 import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlCycleCountEntriesDaoImpl;
@@ -38,6 +39,7 @@ import cl.clsoft.bave.dao.impl.PoHeadersAllDaoImpl;
 import cl.clsoft.bave.dao.impl.PoLineLocationsAllDaoImpl;
 import cl.clsoft.bave.dao.impl.PoLinesAllDaoImpl;
 import cl.clsoft.bave.dao.impl.RcvShipmentHeadersDaoImpl;
+import cl.clsoft.bave.dao.impl.RcvTransactionsDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
@@ -55,6 +57,7 @@ import cl.clsoft.bave.model.PoHeadersAll;
 import cl.clsoft.bave.model.PoLineLocationsAll;
 import cl.clsoft.bave.model.PoLinesAll;
 import cl.clsoft.bave.model.RcvShipmentHeaders;
+import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.service.IBaveService;
 
@@ -440,61 +443,171 @@ public class BaveServiceImpl implements IBaveService {
     @Override
     public void cargarArchivoEntrega(File archivo) throws ServiceException {
         IRcvShipmentHeadersDao rcvShipmentHeadersDao = new RcvShipmentHeadersDaoImpl();
-        FileInputStream fis = null;
+        IRcvTransactionsDao rcvTransactionsDao = new RcvTransactionsDaoImpl();
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
 
         try {
-            fis = new FileInputStream(archivo);
+            FileInputStream fis = new FileInputStream(archivo);
             InputStreamReader abrirArchivo = new InputStreamReader(fis);
             BufferedReader leerArchivo = new BufferedReader(abrirArchivo);
-            String linea = null;
-            linea = leerArchivo.readLine();
+            String linea = leerArchivo.readLine();
             while(linea != null) {
                 String[] extraccion = linea.split("\\|", -1);
                 if (extraccion[0].equals("SHP")) {
-                    RcvShipmentHeaders rcvShipmentHeaders = new RcvShipmentHeaders();
+
+                    RcvShipmentHeaders rcvShipmentHeaders = rcvShipmentHeadersDao.get(Long.valueOf(extraccion[1]));
+                    if (rcvShipmentHeaders != null) {
+                        rcvShipmentHeadersDao.delete(Long.valueOf(extraccion[1]));
+                        rcvTransactionsDao.deleteByShipmenHeader(Long.valueOf(extraccion[1]));
+                    } else {
+                        rcvShipmentHeaders = new RcvShipmentHeaders();
+                    }
+
                     if (extraccion.length >= 2)
-                        rcvShipmentHeaders.setShipmentHeaderId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
+                        rcvShipmentHeaders.setShipmentHeaderId(extraccion[1].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[1]));
                     if (extraccion.length >= 3)
                         rcvShipmentHeaders.setLastUpdateDate(extraccion[2]);
                     if (extraccion.length >= 4)
-                        rcvShipmentHeaders.setLastUpdatedBy(extraccion[3].equalsIgnoreCase("") ? null : new Long(extraccion[3]));
+                        rcvShipmentHeaders.setLastUpdatedBy(extraccion[3].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[3]));
                     if (extraccion.length >= 5)
                         rcvShipmentHeaders.setCreationDate(extraccion[4]);
                     if (extraccion.length >= 6)
-                        rcvShipmentHeaders.setCreatedBy(extraccion[5].equalsIgnoreCase("") ? null : new Long(extraccion[5]));
+                        rcvShipmentHeaders.setCreatedBy(extraccion[5].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[5]));
                     if (extraccion.length >= 7)
-                        rcvShipmentHeaders.setUserId(extraccion[6].equalsIgnoreCase("") ? null : new Long(extraccion[6]));
+                        rcvShipmentHeaders.setUserId(extraccion[6].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[6]));
                     if (extraccion.length >= 8)
-                        rcvShipmentHeaders.setVendorId(extraccion[7].equalsIgnoreCase("") ? null : new Long(extraccion[7]));
+                        rcvShipmentHeaders.setVendorId(extraccion[7].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[7]));
                     if (extraccion.length >= 9)
-                        rcvShipmentHeaders.setVendorSiteId(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
+                        rcvShipmentHeaders.setVendorSiteId(extraccion[8].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[8]));
                     if (extraccion.length >= 10)
-                        rcvShipmentHeaders.setOrganizationId(extraccion[9].equalsIgnoreCase("") ? null : new Long(extraccion[9]));
+                        rcvShipmentHeaders.setOrganizationId(extraccion[9].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[9]));
                     if (extraccion.length >= 11)
                         rcvShipmentHeaders.setShipmentNum(extraccion[10]);
                     if (extraccion.length >= 12)
                         rcvShipmentHeaders.setReceiptNum(extraccion[11]);
                     if (extraccion.length >= 13)
-                        rcvShipmentHeaders.setEmployeeId(extraccion[12].equalsIgnoreCase("") ? null : new Long(extraccion[12]));
+                        rcvShipmentHeaders.setEmployeeId(extraccion[12].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[12]));
                     if (extraccion.length >= 14)
-                        rcvShipmentHeaders.setShipToOrgId(extraccion[13].equalsIgnoreCase("") ? null : new Long(extraccion[13]));
+                        rcvShipmentHeaders.setShipToOrgId(extraccion[13].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[13]));
                     rcvShipmentHeadersDao.insert(rcvShipmentHeaders);
                 } else if (extraccion[0].equals("TRX")) {
-
+                    RcvTransactions rcvTransactions = new RcvTransactions();
+                    if (extraccion.length >= 2)
+                        rcvTransactions.setTransactionId(extraccion[1].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[1]));
+                    if (extraccion.length >= 3)
+                        rcvTransactions.setLastUpdateDate(extraccion[2]);
+                    if (extraccion.length >= 4)
+                        rcvTransactions.setLastUpdatedBy(extraccion[3].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[3]));
+                    if (extraccion.length >= 5)
+                        rcvTransactions.setCreationDate(extraccion[4]);
+                    if (extraccion.length >= 6)
+                        rcvTransactions.setCreatedBy(extraccion[5].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[5]));
+                    if (extraccion.length >= 7)
+                        rcvTransactions.setTransactionType(extraccion[6]);
+                    if (extraccion.length >= 8)
+                        rcvTransactions.setTransactionDate(extraccion[7]);
+                    if (extraccion.length >= 9)
+                        rcvTransactions.setQuantity(extraccion[8].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[8]));
+                    if (extraccion.length >= 10)
+                        rcvTransactions.setUnitOfMeasure(extraccion[9]);
+                    if (extraccion.length >= 11)
+                        rcvTransactions.setShipmentHeaderId(extraccion[10].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[10]));
+                    if (extraccion.length >= 12)
+                        rcvTransactions.setShipmentLineId(extraccion[11].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[11]));
+                    if (extraccion.length >= 13)
+                        rcvTransactions.setSourceDocumentCode(extraccion[12]);
+                    if (extraccion.length >= 14)
+                        rcvTransactions.setDestinationTypeCode(extraccion[13]);
+                    if (extraccion.length >= 15)
+                        rcvTransactions.setUnitOfMeasure(extraccion[14]);
+                    if (extraccion.length >= 16)
+                        rcvTransactions.setUomCode(extraccion[15]);
+                    if (extraccion.length >= 17)
+                        rcvTransactions.setEmployeeId(extraccion[16].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[16]));
+                    if (extraccion.length >= 18)
+                        rcvTransactions.setPoHeaderId(extraccion[17].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[17]));
+                    if (extraccion.length >= 19)
+                        rcvTransactions.setPoLineId(extraccion[18].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[18]));
+                    if (extraccion.length >= 20)
+                        rcvTransactions.setPoLineLocationId(extraccion[19].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[19]));
+                    if (extraccion.length >= 21)
+                        rcvTransactions.setPoDistributionId(extraccion[20].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[20]));
+                    if (extraccion.length >= 22)
+                        rcvTransactions.setPoUnitPrice(extraccion[21].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[21]));
+                    if (extraccion.length >= 23)
+                        rcvTransactions.setCurrencyCode(extraccion[22]);
+                    if (extraccion.length >= 24)
+                        rcvTransactions.setCurrencyConversionType(extraccion[23]);
+                    if (extraccion.length >= 25)
+                        rcvTransactions.setCurrencyConversionRate(extraccion[24].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[24]));
+                    if (extraccion.length >= 26)
+                        rcvTransactions.setCurrencyConversionDate(extraccion[25]);
+                    if (extraccion.length >= 27)
+                        rcvTransactions.setDeliverToLocationId(extraccion[26].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[26]));
+                    if (extraccion.length >= 28)
+                        rcvTransactions.setVendorId(extraccion[27].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[27]));
+                    if (extraccion.length >= 29)
+                        rcvTransactions.setVendorSiteId(extraccion[28].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[28]));
+                    if (extraccion.length >= 30)
+                        rcvTransactions.setOrganizationId(extraccion[29].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[29]));
+                    if (extraccion.length >= 31)
+                        rcvTransactions.setLocationId(extraccion[30].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[30]));
+                    if (extraccion.length >= 32)
+                        rcvTransactions.setInspectionStatusCode(extraccion[31]);
+                    if (extraccion.length >= 33)
+                        rcvTransactions.setDestinationContext(extraccion[32]);
+                    if (extraccion.length >= 34)
+                        rcvTransactions.setInterfaceTransactionId(extraccion[33].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[33]));
+                    if (extraccion.length >= 35)
+                        rcvTransactions.setItemId(extraccion[34].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[34]));
+                    if (extraccion.length >= 36)
+                        rcvTransactions.setLineNum(extraccion[35].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[35]));
+                    rcvTransactionsDao.insert(rcvTransactions);
+                } else if (extraccion[0].equals("ITM")) {
+                    boolean existe = true;
+                    MtlSystemItems mtlSystemItems = mtlSystemItemsDao.get(Long.valueOf(extraccion[1]));
+                    if (mtlSystemItems == null) {
+                        mtlSystemItems = new MtlSystemItems();
+                        existe = false;
+                    }
+                    mtlSystemItems.setInventoryItemId(extraccion[1].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[1]));
+                    if (extraccion.length >= 3)
+                        mtlSystemItems.setDescription(extraccion[2]);
+                    if (extraccion.length >= 4)
+                        mtlSystemItems.setLongDescription(extraccion[3]);
+                    if (extraccion.length >= 5)
+                        mtlSystemItems.setSegment1(extraccion[4]);
+                    if (extraccion.length >= 6)
+                        mtlSystemItems.setPrimaryUomCode(extraccion[5]);
+                    if (extraccion.length >= 7)
+                        mtlSystemItems.setLotControlCode(extraccion[6]);
+                    if (extraccion.length >= 8)
+                        mtlSystemItems.setShelfLifeCode(extraccion[7]);
+                    if (extraccion.length >= 9)
+                        mtlSystemItems.setSerialNumberControlCode(extraccion[8]);
+                    if (existe) {
+                        mtlSystemItemsDao.update(mtlSystemItems);
+                    } else {
+                        mtlSystemItemsDao.insert(mtlSystemItems);
+                    }
                 }
                 linea = leerArchivo.readLine();
             }
             archivo.delete();
         } catch (DaoException e) {
+            Log.d(TAG, "DaoException");
             e.printStackTrace();
             throw new ServiceException(2, e.getDescripcion());
         } catch (FileNotFoundException e) {
+            Log.d(TAG, "FileNotFoundException");
             e.printStackTrace();
             throw new ServiceException(2, e.getMessage());
         } catch (IOException e) {
+            Log.d(TAG, "IOException");
             e.printStackTrace();
             throw new ServiceException(2, e.getMessage());
         } catch (Exception e) {
+            Log.d(TAG, "Exception");
             e.printStackTrace();
             throw new ServiceException(2, e.getMessage());
         }
