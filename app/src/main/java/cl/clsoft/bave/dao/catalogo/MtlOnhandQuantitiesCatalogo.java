@@ -32,15 +32,18 @@ public class MtlOnhandQuantitiesCatalogo {
             "AND msi.segment1 = ? AND ifnull(moq.lot_number,'') = ? " +
             "AND moq.subinventory_code = ? AND ifnull(loc.cod_localizador,'') = ?";
 
+    public static final String SELECT_ALL = "SELECT moq.* FROM mtl_onhand_quantities moq, mtl_system_items msi, localizador loc " +
+            "WHERE moq.inventory_item_id = msi.inventory_item_id " +
+            "AND loc.id_localizador = moq.locator_id " +
+            "AND msi.segment1 = ? AND ifnull(moq.lot_number,'') = ? " +
+            "AND moq.subinventory_code = ? AND ifnull(loc.cod_localizador,'') = ?";
 
-    /*
-        public static final String SELECT = "SELECT moq.* FROM mtl_onhand_quantities moq, mtl_system_items msi, localizador loc " +
-                                        "WHERE moq.inventory_item_id = msi.inventory_item_id " +
-                                        "AND loc.id_localizador = moq.locator_id " +
-                                        "AND msi.segment1 = ? AND ifnull(moq.lot_number,'') = ? " +
-                                        "AND moq.subinventory_code = ?";
-                                        //"AND IFNULL(loc.cod_localizador,'') = ?";
-    */
+    public static final String SELECT_SERIE = "SELECT * FROM mtl_onhand_quantities moq, mtl_system_items msi, localizador loc " +
+            "WHERE moq.inventory_item_id = msi.inventory_item_id " +
+            "AND loc.id_localizador = moq.locator_id " +
+            "AND msi.segment1 = ? AND ifnull(moq.lot_number,'') = ? " +
+            "AND moq.subinventory_code = ? AND ifnull(loc.cod_localizador,'') = ? " +
+            "AND moq.serial_number = ? ";
 
 
 

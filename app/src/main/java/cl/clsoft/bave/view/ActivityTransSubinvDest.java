@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.w3c.dom.Text;
 
@@ -25,9 +28,13 @@ import cl.clsoft.bave.service.impl.TransSubinvService;
 
 public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresenter> {
 
-    private TextView nroTraspasoEt, glosaEt, codigoSigleEt, subinvDesdeEt, localDesdeEt, loteEt, cantidadEt, subinvHastaEt, localHastaEt;
+    private TextView nroTraspasoEt, glosaEt, codigoSigleEt, subinvDesdeEt, localDesdeEt, loteEt, cantidadEt;
     private String nroTraspaso, codigoSigle, subinvDesde, localizador, nroLote, glosa, subinvHasta, localHasta, id;
     Long cantidad;
+    private TextInputLayout layoutSubinventarioDestino;
+    private AutoCompleteTextView textSubinventarioDestino;
+    private TextInputLayout layoutLocalizadorDestino;
+    private AutoCompleteTextView textLocalizadorDestino;
 
     @NonNull
     @Override
@@ -51,15 +58,16 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
 
         id = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault()).format(new Date());
 
-        nroTraspasoEt = (TextView) findViewById(R.id.numeroTraspasoEditText);
-        glosaEt = (TextView) findViewById(R.id.glosaEditText);
-        codigoSigleEt = (TextView) findViewById(R.id.codigoSigleEditText);
-        subinvDesdeEt = (TextView) findViewById(R.id.subinventarioDesdeEditText);
-        localDesdeEt = (TextView) findViewById(R.id.localizadorDesdeEditText);
-        loteEt = (TextView) findViewById(R.id.nroLoteEditText);
-        cantidadEt = (TextView) findViewById(R.id.cantidadEditText);
-        subinvHastaEt = (TextView) findViewById(R.id.subinvHastaEditText);
-        localHastaEt = (TextView) findViewById(R.id.localizadorHastaEditText);
+        this.nroTraspasoEt = (TextView) findViewById(R.id.numeroTraspasoEditText);
+        this.glosaEt = (TextView) findViewById(R.id.glosaEditText);
+        this.codigoSigleEt = (TextView) findViewById(R.id.codigoSigleEditText);
+        this.subinvDesdeEt = (TextView) findViewById(R.id.subinventarioDesdeEditText);
+        this.localDesdeEt = (TextView) findViewById(R.id.localizadorDesdeEditText);
+        this.loteEt = (TextView) findViewById(R.id.nroLoteEditText);
+        this.cantidadEt = (TextView) findViewById(R.id.cantidadEditText);
+        this.textSubinventarioDestino = findViewById(R.id.textSubinventarioDestino);
+        this.textLocalizadorDestino = findViewById(R.id.textLocalizadorDestino);
+
 
         nroTraspaso = getIntent().getStringExtra("nroTraspaso");
         codigoSigle = getIntent().getStringExtra("codSigle");
@@ -82,8 +90,8 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
         loteEt.setText(nroLote);
         glosaEt.setText(glosa);
         cantidadEt.setText(String.valueOf(cantidad));
-        subinvHastaEt.setText(subinvHasta);
-        localHastaEt.setText(localHasta);
+        textSubinventarioDestino.setText(subinvHasta);
+        textLocalizadorDestino.setText(localHasta);
     }
 
     @Override
@@ -92,8 +100,8 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
         String subinventarioHasta;
         String localizadorHasta;
 
-        subinventarioHasta = this.subinvHastaEt.getText().toString();
-        localizadorHasta = this.localHastaEt.getText().toString();
+        subinventarioHasta = this.textSubinventarioDestino.getText().toString();
+        localizadorHasta = this.textLocalizadorDestino.getText().toString();
 
 
         switch (item.getItemId()){

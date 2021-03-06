@@ -36,6 +36,16 @@ public class MtlOnhandQuantitiesDaoImpl extends GenericDao<MtlOnhandQuantities> 
         return super.selectOne(MtlOnhandQuantitiesCatalogo.SELECT, new MtlOnHandQuantitiesRowMapper(), articulo, lote, subinventario, localizador);
     }
 
+    @Override
+    public MtlOnhandQuantities validaSerie(String articulo, String lote, String subinventario, String localizador, String serie) throws DaoException {
+        return super.selectOne(MtlOnhandQuantitiesCatalogo.SELECT_SERIE, new MtlOnHandQuantitiesRowMapper(), articulo, lote, subinventario, localizador, serie);
+    }
+
+    @Override
+    public List<MtlOnhandQuantities> getAll(String articulo, String lote, String subinventario, String localizador) throws DaoException {
+        return super.selectMany(MtlOnhandQuantitiesCatalogo.SELECT_ALL, new MtlOnHandQuantitiesRowMapper(), articulo, lote, subinventario, localizador);
+    }
+
     /*
     @Override
     public MtlOnhandQuantities get(String articulo, String lote, String subinventario) throws DaoException {

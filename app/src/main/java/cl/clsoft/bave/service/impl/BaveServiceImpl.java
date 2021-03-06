@@ -355,7 +355,7 @@ public class BaveServiceImpl implements IBaveService {
                 String [] extraccion = linea.split("\\|", -1);
                 if (extraccion[0].equals("CAB")) {
                     PoHeadersAll poHeadersAll = new PoHeadersAll();
-                    poHeadersAll.setCreatedBy(extraccion[4].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
+                    poHeadersAll.setCreatedBy(extraccion[4].equalsIgnoreCase("") ? null : new Long(extraccion[4]));
                     poHeadersAll.setCreationDate(extraccion[5]);
                     poHeadersAll.setVendorName(extraccion[6]);
                     poHeadersAll.setVendorId(extraccion[7].equalsIgnoreCase("") ? null : new Long(extraccion[7]));

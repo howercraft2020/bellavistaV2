@@ -26,4 +26,7 @@ public class MtlSerialNumbersInterfaceCatalogo {
     public static final String SELECT_CANTIDAD_SERIES = "SELECT COUNT(*) FROM " + TABLE + " WHERE " + COLUMN_TRANSACTION_INTERFACE_ID +
                                                         " = ?";
 
+    public static final String SELECT_EXISTE_SERIE = "select * FROM " + TABLE + " WHERE transaction_interface_id = ? " +
+                                                     "and fm_serial_number = ? ";
+
 }

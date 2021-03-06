@@ -1,6 +1,7 @@
 package cl.clsoft.bave.service.impl;
 
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,6 +18,7 @@ import cl.clsoft.bave.dao.IMtlSerialNumbersInterfaceDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.IMtlTransactionLotsInterfaceDao;
 import cl.clsoft.bave.dao.IMtlTransactionsInterfaceDao;
+import cl.clsoft.bave.dao.ISubinventarioDao;
 import cl.clsoft.bave.dao.impl.DatosTransSubinvDetalleImpl;
 import cl.clsoft.bave.dao.impl.DatosTransSubinvImpl;
 import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
@@ -25,18 +27,25 @@ import cl.clsoft.bave.dao.impl.MtlSerialNumbersInterfaceImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionInterfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionLotsIfaceImpl;
+import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.DatosTransSubinv;
 import cl.clsoft.bave.model.DatosTransSubinvDetalle;
+import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlOnhandQuantities;
+import cl.clsoft.bave.model.MtlSerialNumbersInterface;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.MtlTransactionsInterface;
 import cl.clsoft.bave.model.MtlTransactionsLotsIface;
 import cl.clsoft.bave.model.RcvTransactionsInterface;
+import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.service.ITransSubinvService;
 
 public class TransSubinvService implements ITransSubinvService {
+
+    private static final String TAG = "TransSubinvService";
+
     @Override
     public List<DatosTransSubinv> getTransSubinv() throws ServiceException {
         IDatosTransSubInvDao iDatosTransSubInvDao = new DatosTransSubinvImpl();
@@ -94,6 +103,55 @@ public class TransSubinvService implements ITransSubinvService {
     }
 
     @Override
+    public void cargaSerie(String articulo, String lote, String subinventario, String localizador, String serie, Long cantidad, Long id) throws ServiceException {
+        IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
+        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceImpl();
+
+        Long cantidadSeries;
+        MtlSerialNumbersInterface mtlSerialNumbersInterface;
+        MtlOnhandQuantities mtlOnhandQuantities;
+
+        try{
+
+            String fecha = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+            mtlOnhandQuantities = mtlOnhandQuantitiesDao.validaSerie(articulo,lote,subinventario,localizador,serie);
+            if(mtlOnhandQuantities == null){
+                throw new ServiceException(1,"Serie ingresada no valida");
+            }
+
+            cantidadSeries = mtlSerialNumbersInterfaceDao.getCantSeries(id);
+            if (cantidadSeries==cantidad){
+                throw new ServiceException(1,"No puede ingresar mas series a esta transferencia.");
+            }
+
+            mtlSerialNumbersInterface = mtlSerialNumbersInterfaceDao.existeSerie(id, serie);
+            if(mtlSerialNumbersInterface != null){
+                throw new ServiceException(1,"La serie ya ha sido ingresada a esta transferencia.");
+            }
+
+            //Llenando Tabla
+            MtlSerialNumbersInterface mtlSerialNumbersInterface1 = new MtlSerialNumbersInterface();
+            mtlSerialNumbersInterface1.setTransactionInterfaceId(id);
+            mtlSerialNumbersInterface1.setLastUpdateDate(fecha);
+            mtlSerialNumbersInterface1.setCreationDate(fecha);
+            mtlSerialNumbersInterface1.setFmSerialNumber(serie);
+            mtlSerialNumbersInterfaceDao.insert(mtlSerialNumbersInterface1);
+
+
+
+
+        }catch (ServiceException e){
+            throw e;
+        }catch (DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }catch (Exception e){
+            throw new ServiceException(2, e.getMessage());
+        }
+
+    }
+
+    @Override
     public void insertarDatos(String id,String nroTraspaso, String articulo, String lote, String subinventario, String localizador, Long cantidad, String subinventarioHasta, String localizadorHasta) throws ServiceException {
         IMtlTransactionsInterfaceDao mtlTransactionsInterfaceDao = new MtlTransactionInterfaceDaoImpl();
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
@@ -117,7 +175,7 @@ public class TransSubinvService implements ITransSubinvService {
                 transactionInterfaceId = id;
                 String fecha = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
-                if(nroTraspaso.equals("")) {
+                if(nroTraspaso == null) {
                     fechaId = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault()).format(new Date());
                 }
                 else {
@@ -322,6 +380,67 @@ public class TransSubinvService implements ITransSubinvService {
         }
 
 
+    }
+
+    @Override
+    public List<MtlSerialNumbersInterface> getAllSeries(Long transactionInterfaceId) throws ServiceException {
+        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceImpl();
+        try{
+            return mtlSerialNumbersInterfaceDao.getAll(transactionInterfaceId);
+        }catch (DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+
+
+    @Override
+    public List<MtlOnhandQuantities> getSeries(String sigle, String lote, String subinventario, String localizador) throws ServiceException {
+        IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
+        try{
+            return mtlOnhandQuantitiesDao.getAll(sigle, lote, subinventario, localizador);
+        }catch (Exception e){
+
+        }
+        return null;
+    }
+
+    @Override
+    public List<Subinventario> getSubinventarios() throws ServiceException {
+        ISubinventarioDao subinventarioDao = new SubinventarioDaoImpl();
+        try{
+            return subinventarioDao.getAll();
+        }catch (Exception e){
+
+        }
+        return null;
+    }
+
+    @Override
+    public List<Localizador> getLocalizadoresBySubinventario(String subinventarioCodigo) throws ServiceException {
+        Log.d(TAG, "TransSubninvService::getLocalizadoresBySubinventario");
+        Log.d(TAG, "TransSubninvService::getLocalizadoresBySubinventario::subinventarioCodigo: " + subinventarioCodigo);
+
+        ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
+        try {
+            List<Localizador> salida = localizadorDao.getAllBySubinventario(subinventarioCodigo);
+            return salida;
+        } catch(DaoException e){
+            e.printStackTrace();
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public MtlSystemItems getMtlSystemItemsBySegment(String segment) throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::getMtlSystemItemsBySegment");
+
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+        try {
+            return mtlSystemItemsDao.getBySegment(segment);
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
     }
 
 }
