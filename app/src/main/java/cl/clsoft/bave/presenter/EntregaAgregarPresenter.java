@@ -34,6 +34,36 @@ public class EntregaAgregarPresenter extends BasePresenter {
         this.mService = service;
     }
 
+    public RcvTransactions getTransactionById(Long transactionId) {
+        try {
+            return this.mService.getTransactionById(transactionId);
+        } catch(ServiceException e) {
+            if (e.getCodigo() == 1) {
+                this.mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                this.mView.showError(e.getDescripcion());
+            }
+        } catch(Exception e){
+            this.mView.showError(e.getMessage());
+        }
+        return null;
+    }
+
+    public MtlSystemItems getMtlSystemItemsById(Long inventoryItemId) {
+        try {
+            return this.mService.getMtlSystemItemsById(inventoryItemId);
+        } catch(ServiceException e) {
+            if (e.getCodigo() == 1) {
+                this.mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                this.mView.showError(e.getDescripcion());
+            }
+        } catch(Exception e){
+            this.mView.showError(e.getMessage());
+        }
+        return null;
+    }
+
     public MtlSystemItems getMtlSystemItemsBySegment(String segment) {
         try {
             return this.mService.getMtlSystemItemsBySegment(segment);

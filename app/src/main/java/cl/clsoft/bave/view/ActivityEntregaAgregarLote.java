@@ -27,6 +27,8 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
     private String TAG = "EntregaAgregarLote";
     private Long shipmentHeaderId;
     private Long transactionId;
+    private String subinventoryCode;
+    private String locatorCode;
     private boolean isLote = false;
     private boolean isSerie = false;
     private boolean isVencimiento = false;
@@ -73,6 +75,8 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
         // Set Controls
         this.shipmentHeaderId = this.getIntent().getLongExtra("ShipmentHeaderId", 0);
         this.transactionId = this.getIntent().getLongExtra("TransactionId", 0);
+        this.subinventoryCode = this.getIntent().getStringExtra("SubinventoryCode");
+        this.locatorCode = this.getIntent().getStringExtra("LocatorCode");
         RcvTransactions transaction = mPresenter.getTransactionById(this.transactionId);
         if (transaction != null) {
             MtlSystemItems item = mPresenter.getMtlSystemItemsById(transaction.getItemId());
@@ -119,6 +123,8 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 Intent iSerie = new Intent(this, ActivityEntregaAgregarSerie.class);
                 iSerie.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
                 iSerie.putExtra("TransactionId", this.transactionId);
+                iSerie.putExtra("SubinventoryCode", this.subinventoryCode);
+                iSerie.putExtra("LocatorCode", this.locatorCode);
                 startActivity(iSerie);
                 this.finish();
                 return true;
@@ -127,6 +133,8 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 Intent iAgregar = new Intent(this, ActivityEntregaAgregar.class);
                 iAgregar.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
                 iAgregar.putExtra("TransactionId", this.transactionId);
+                iAgregar.putExtra("SubinventoryCode", this.subinventoryCode);
+                iAgregar.putExtra("LocatorCode", this.locatorCode);
                 startActivity(iAgregar);
                 this.finish();
                 return true;

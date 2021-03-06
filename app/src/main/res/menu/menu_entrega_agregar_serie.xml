@@ -4,6 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/delete"
+        android:icon="@mipmap/ic_delete_forever_white_36dp"
+        android:title="Eliminar"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/back"
         android:icon="@mipmap/ic_keyboard_arrow_left_white_36dp"
         android:title="Grabar"
