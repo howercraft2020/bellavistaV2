@@ -172,10 +172,8 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
         switch (item.getItemId()) {
             case android.R.id.home:
                 Log.d(TAG, "home");
-                Intent i = new Intent(this, ActivityEntregaDetalle.class);
-                i.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
-                startActivity(i);
-                this.finish();
+                ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
+                dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
                 return true;
             case R.id.next:
                 Log.d(TAG, "next");
@@ -244,7 +242,13 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
         String tipo = dialog.getArguments().getString("tipo");
         if (tipo.equalsIgnoreCase("delete")) {
             this.adapter.deleteSeleccionados();
+        } else if (tipo.equalsIgnoreCase("exit")) {
+            Intent i = new Intent(this, ActivityEntregaDetalle.class);
+            i.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+            startActivity(i);
+            this.finish();
         }
+
     }
 
     @Override

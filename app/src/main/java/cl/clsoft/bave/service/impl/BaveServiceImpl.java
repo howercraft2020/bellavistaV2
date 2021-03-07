@@ -447,6 +447,7 @@ public class BaveServiceImpl implements IBaveService {
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
 
         try {
+            Long shipmentHeaderId = 0L;
             FileInputStream fis = new FileInputStream(archivo);
             InputStreamReader abrirArchivo = new InputStreamReader(fis);
             BufferedReader leerArchivo = new BufferedReader(abrirArchivo);
@@ -454,7 +455,7 @@ public class BaveServiceImpl implements IBaveService {
             while(linea != null) {
                 String[] extraccion = linea.split("\\|", -1);
                 if (extraccion[0].equals("SHP")) {
-
+                    shipmentHeaderId = Long.valueOf(extraccion[1]);
                     RcvShipmentHeaders rcvShipmentHeaders = rcvShipmentHeadersDao.get(Long.valueOf(extraccion[1]));
                     if (rcvShipmentHeaders != null) {
                         rcvShipmentHeadersDao.delete(Long.valueOf(extraccion[1]));
@@ -489,6 +490,8 @@ public class BaveServiceImpl implements IBaveService {
                         rcvShipmentHeaders.setEmployeeId(extraccion[12].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[12]));
                     if (extraccion.length >= 14)
                         rcvShipmentHeaders.setShipToOrgId(extraccion[13].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[13]));
+                    if (extraccion.length >= 15)
+                        rcvShipmentHeaders.setPoNumber(extraccion[14].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[14]));
                     rcvShipmentHeadersDao.insert(rcvShipmentHeaders);
                 } else if (extraccion[0].equals("TRX")) {
                     RcvTransactions rcvTransactions = new RcvTransactions();
@@ -589,6 +592,15 @@ public class BaveServiceImpl implements IBaveService {
                         mtlSystemItemsDao.update(mtlSystemItems);
                     } else {
                         mtlSystemItemsDao.insert(mtlSystemItems);
+                    }
+                } else if (extraccion[0].equals("IDI")) {
+                    RcvShipmentHeaders rcvShipmentHeaders = rcvShipmentHeadersDao.get(shipmentHeaderId);
+                    if (rcvShipmentHeaders != null) {
+                        rcvShipmentHeaders.setHeaderInterfaceId(Long.valueOf(extraccion[1]));
+                        rcvShipmentHeaders.setInterfaceTransactionId(Long.valueOf(extraccion[2]));
+                        rcvShipmentHeaders.setGroupId(Long.valueOf(extraccion[3]));
+                        rcvShipmentHeaders.setTransactionInterfaceId(Long.valueOf(extraccion[4]));
+                        rcvShipmentHeadersDao.update(rcvShipmentHeaders);
                     }
                 }
                 linea = leerArchivo.readLine();

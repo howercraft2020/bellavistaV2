@@ -6,6 +6,7 @@ public class RcvHeadersInterfaceCatalogo {
     public static final String COLUMN_HEADER_INTERFACE_ID = "header_interface_id";
     public static final String COLUMN_RECEIPT_SOURCE_CODE = "receipt_source_code";
     public static final String COLUMN_TRANSACTION_TYPE = "transaction_type";
+    public static final String COLUMN_AUTO_TRANSACT_CODE = "autoTransactCode";
     public static final String COLUMN_LAST_UPDATE_DATE = "last_update_date";
     public static final String COLUMN_LAST_UPDATED_BY = "last_updated_by";
     public static final String COLUMN_CREATED_BY = "created_by";
@@ -33,6 +34,7 @@ public class RcvHeadersInterfaceCatalogo {
                     COLUMN_HEADER_INTERFACE_ID + " TEXT, " +
                     COLUMN_RECEIPT_SOURCE_CODE + " TEXT, " +
                     COLUMN_TRANSACTION_TYPE + " TEXT, " +
+                    COLUMN_AUTO_TRANSACT_CODE + " TEXT, " +
                     COLUMN_LAST_UPDATE_DATE + " TEXT, " +
                     COLUMN_LAST_UPDATED_BY + " INTEGER, " +
                     COLUMN_CREATED_BY + " INTEGER, " +

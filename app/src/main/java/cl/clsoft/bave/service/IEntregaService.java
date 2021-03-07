@@ -20,6 +20,8 @@ public interface IEntregaService {
     public List<Subinventario> getSubinventarios() throws ServiceException;
     public Localizador getLocalizadorByCodigo(String codigo) throws ServiceException;
     public List<Localizador> getLocalizadoresBySubinventario(String subinventarioCodigo) throws ServiceException;
-
+    public void addTransacctionInterface(Long shipmentHeaderId, Long transactionId, String subinventoryCode,
+                                         String locatorCode, String lote, String vencimiento, String atributo1,
+                                         String atributo2, String atributo3, List<String> series, Long cantidad) throws ServiceException;
 
 }

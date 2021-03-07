@@ -23,10 +23,10 @@ import cl.clsoft.bave.dao.impl.DatosTransSubinvDetalleImpl;
 import cl.clsoft.bave.dao.impl.DatosTransSubinvImpl;
 import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlOnhandQuantitiesDaoImpl;
-import cl.clsoft.bave.dao.impl.MtlSerialNumbersInterfaceImpl;
+import cl.clsoft.bave.dao.impl.MtlSerialNumbersInterfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionInterfaceDaoImpl;
-import cl.clsoft.bave.dao.impl.MtlTransactionLotsIfaceImpl;
+import cl.clsoft.bave.dao.impl.MtlTransactionLotsIfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
@@ -38,7 +38,6 @@ import cl.clsoft.bave.model.MtlSerialNumbersInterface;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.MtlTransactionsInterface;
 import cl.clsoft.bave.model.MtlTransactionsLotsIface;
-import cl.clsoft.bave.model.RcvTransactionsInterface;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.service.ITransSubinvService;
 
@@ -105,7 +104,7 @@ public class TransSubinvService implements ITransSubinvService {
     @Override
     public void cargaSerie(String articulo, String lote, String subinventario, String localizador, String serie, Long cantidad, Long id) throws ServiceException {
         IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
-        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceImpl();
+        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
 
         Long cantidadSeries;
         MtlSerialNumbersInterface mtlSerialNumbersInterface;
@@ -156,9 +155,9 @@ public class TransSubinvService implements ITransSubinvService {
         IMtlTransactionsInterfaceDao mtlTransactionsInterfaceDao = new MtlTransactionInterfaceDaoImpl();
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
         IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
-        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceImpl();
+        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
         ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
-        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceImpl();
+        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
 
         Long inventoryItemId;
         Long existe = 0L;
@@ -290,7 +289,7 @@ public class TransSubinvService implements ITransSubinvService {
     public void crearArchivo(String transactionReference) throws ServiceException {
         String nomenclatura;
         IMtlTransactionsInterfaceDao mtlTransactionsInterfaceDao = new MtlTransactionInterfaceDaoImpl();
-        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceImpl();
+        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
 
         nomenclatura = "I_"+transactionReference+".csv";
 
@@ -384,7 +383,7 @@ public class TransSubinvService implements ITransSubinvService {
 
     @Override
     public List<MtlSerialNumbersInterface> getAllSeries(Long transactionInterfaceId) throws ServiceException {
-        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceImpl();
+        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
         try{
             return mtlSerialNumbersInterfaceDao.getAll(transactionInterfaceId);
         }catch (DaoException e){

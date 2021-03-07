@@ -4,6 +4,7 @@ public class RcvHeadersInterface {
     private Long headerInterfaceId;
     private String reciptSourceCode;
     private String transactionType;
+    private String autoTransactCode;
     private String lastUpdateDate;
     private Long lastUpdateBy;
     private Long createdBy;
@@ -25,6 +26,8 @@ public class RcvHeadersInterface {
     private String processingStatusCode;
     private String validationFlag;
     private Long groupId;
+
+    public RcvHeadersInterface() { }
 
     public Long getHeaderInterfaceId() {
         return headerInterfaceId;
@@ -48,6 +51,14 @@ public class RcvHeadersInterface {
 
     public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public String getAutoTransactCode() {
+        return autoTransactCode;
+    }
+
+    public void setAutoTransactCode(String autoTransactCode) {
+        this.autoTransactCode = autoTransactCode;
     }
 
     public String getLastUpdateDate() {
@@ -216,9 +227,5 @@ public class RcvHeadersInterface {
 
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
-    }
-
-    public RcvHeadersInterface(){
-
     }
 }

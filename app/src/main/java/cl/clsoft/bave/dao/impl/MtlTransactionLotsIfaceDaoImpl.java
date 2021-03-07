@@ -8,7 +8,7 @@ import cl.clsoft.bave.dao.rowmapper.MtlTransactionsLotsIfaceRowMapper;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.MtlTransactionsLotsIface;
 
-public class MtlTransactionLotsIfaceImpl extends GenericDao<MtlTransactionsLotsIface> implements IMtlTransactionLotsInterfaceDao {
+public class MtlTransactionLotsIfaceDaoImpl extends GenericDao<MtlTransactionsLotsIface> implements IMtlTransactionLotsInterfaceDao {
     @Override
     public void insert(MtlTransactionsLotsIface mtlTransactionsLotsIface) throws DaoException {
         ContentValues values = new ContentValues();
@@ -34,6 +34,11 @@ public class MtlTransactionLotsIfaceImpl extends GenericDao<MtlTransactionsLotsI
         values.put(MtlTransactionsLotsIfaceCatalogo.COLUMN_ATTRIBUTE_2, mtlTransactionsLotsIface.getAttrubute2());
         values.put(MtlTransactionsLotsIfaceCatalogo.COLUMN_ATTRIBUTE_3, mtlTransactionsLotsIface.getAttrubute3());
         super.insert(MtlTransactionsLotsIfaceCatalogo.TABLE, values);
+    }
+
+    @Override
+    public MtlTransactionsLotsIface get(Long transactionInterfaceId) throws DaoException {
+        return super.selectOne(MtlTransactionsLotsIfaceCatalogo.SELECT_ALL, new MtlTransactionsLotsIfaceRowMapper(),transactionInterfaceId);
     }
 
     @Override

@@ -8,10 +8,12 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -27,7 +29,7 @@ import cl.clsoft.bave.presenter.EntregaAgregarLotePresenter;
 import cl.clsoft.bave.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 
-public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLotePresenter> {
+public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLotePresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
     // Variables
     private String TAG = "EntregaAgregarLote";
@@ -121,6 +123,13 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 this.textAtributo1.setText(this.atributo1);
                 this.textAtributo2.setText(this.atributo2);
                 this.textAtributo3.setText(this.atributo3);
+                if (this.isVencimiento) {
+                    this.textVencimiento.setVisibility(View.VISIBLE);
+                    this.textVencimiento.setText(this.vencimiento);
+                } else {
+                    this.textVencimiento.setVisibility(View.GONE);
+                    this.textVencimiento.setText("");
+                }
             }
         }
 
@@ -137,7 +146,6 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 {
                     if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
                         lote = textView.getText().toString();
-
                     }
                     action = true;
                 }
@@ -159,6 +167,7 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                     if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
                         vencimiento = textView.getText().toString();
                         Log.d(TAG, "vencimiento: " + vencimiento);
+                        textAtributo1.requestFocus();
                     }
                     action = true;
                 }
@@ -179,7 +188,7 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 {
                     if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
                         atributo1 = textView.getText().toString();
-
+                        textAtributo2.requestFocus();
                     }
                     action = true;
                 }
@@ -200,7 +209,7 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 {
                     if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
                         atributo2 = textView.getText().toString();
-
+                        textAtributo3.requestFocus();
                     }
                     action = true;
                 }
@@ -243,10 +252,8 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
         switch (item.getItemId()) {
             case android.R.id.home:
                 Log.d(TAG, "home");
-                Intent i = new Intent(this, ActivityEntregaDetalle.class);
-                i.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
-                startActivity(i);
-                this.finish();
+                ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
+                dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
                 return true;
             case R.id.next:
                 Log.d(TAG, "next");
@@ -285,4 +292,19 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
         }
     }
 
+    @Override
+    public void onDialogAceptarClick(DialogFragment dialog) {
+        String tipo = dialog.getArguments().getString("tipo");
+        if (tipo.equalsIgnoreCase("exit")) {
+            Intent i = new Intent(this, ActivityEntregaDetalle.class);
+            i.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+            startActivity(i);
+            this.finish();
+        }
+    }
+
+    @Override
+    public void onDialogCancelarClick(DialogFragment dialog) {
+
+    }
 }

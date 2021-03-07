@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -38,7 +39,7 @@ import cl.clsoft.bave.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter> {
+public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
     // Variables
     private String TAG = "EntregaAgregar";
@@ -238,10 +239,8 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
         switch (item.getItemId()) {
             case android.R.id.home:
                 Log.d(TAG, "home");
-                Intent i = new Intent(this, ActivityEntregaDetalle.class);
-                i.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
-                startActivity(i);
-                this.finish();
+                ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
+                dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
                 return true;
             case R.id.limpiar:
                 Log.d(TAG, "limpiar");
@@ -385,6 +384,22 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
 
         this.segment = null;
         this.inventoryItemId = null;
+
+    }
+
+    @Override
+    public void onDialogAceptarClick(DialogFragment dialog) {
+        String tipo = dialog.getArguments().getString("tipo");
+        if (tipo.equalsIgnoreCase("exit")) {
+            Intent i = new Intent(this, ActivityEntregaDetalle.class);
+            i.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+            startActivity(i);
+            this.finish();
+        }
+    }
+
+    @Override
+    public void onDialogCancelarClick(DialogFragment dialog) {
 
     }
 }
