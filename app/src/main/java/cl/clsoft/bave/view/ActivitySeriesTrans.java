@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cl.clsoft.bave.R;
@@ -34,12 +35,37 @@ import cl.clsoft.bave.service.impl.TransSubinvService;
 
 public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
 
-    private TextView nroTraspasoEt, glosaEt, codigoSigleEt, subinvDesdeEt, localDesdeEt, loteEt, cantidadEt, subinvHastaEt, localHastaEt;
-    private String nroTraspaso, codigoSigle, subinvDesde, localizador, nroLote, glosa, subinventarioHasta, localizadorHasta, id, serie;
+    //Variables
+    private String nroTraspaso;
+    private String codigoSigle;
+    private String subinvDesde;
+    private String localizador;
+    private String nroLote;
+    private String glosa;
+    private String subinventarioHasta;
+    private String localizadorHasta;
+    private String id;
+    private String serie;
     private Long cantidad;
-    private List<MtlSerialNumbersInterface> series;
+    private String currentSerie = "";
+    private List<String> series = new ArrayList<>();
+
+    //Controls
+    private TextView nroTraspasoEt;
+    private TextView glosaEt;
+    private TextView codigoSigleEt;
+    private TextView subinvDesdeEt;
+    private TextView localDesdeEt;
+    private TextView loteEt;
+    private TextView cantidadEt;
+    private TextView subinvHastaEt;
+    private TextView localHastaEt;
     private TextInputLayout layoutSerie;
     private AutoCompleteTextView textSerie;
+
+
+    //private List<MtlSerialNumbersInterface> series;
+
 
     //Controls
     private RecyclerView recyclerViewSeries;
@@ -89,6 +115,9 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
         nroLote = getIntent().getStringExtra("nroLote");
         cantidad = getIntent().getLongExtra("cantidad",0);
         id = getIntent().getStringExtra("id");
+        this.series = this.getIntent().getStringArrayListExtra("series");
+        if (this.series == null)
+            this.series = new ArrayList<>();
 
 
         nroTraspasoEt.setText(nroTraspaso);
@@ -115,7 +144,7 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
         this.recyclerViewSeries.setHasFixedSize(true);
         this.recyclerViewSeries.setLayoutManager(new LinearLayoutManager(this));
 
-        this.series = mPresenter.getAllSeries(Long.parseLong(id));
+        //this.series = mPresenter.getAllSeries(Long.parseLong(id));
         this.adapter = new AdapterSeriesTrans(series);
         this.recyclerViewSeries.setAdapter(this.adapter);
 
@@ -130,8 +159,40 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
                 if(actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
                 {
                     if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
-                        serie = textView.getText().toString();
-                        mPresenter.cargaSerie(codigoSigle,nroLote,subinvDesde,localizador,serie,cantidad,Long.parseLong(id));
+                        String newSerie = textView.getText().toString();
+                        MtlOnhandQuantities transferencia = mPresenter.getSerieIngresada(codigoSigle,nroLote,subinvDesde,localizador,newSerie);
+
+                        if (transferencia == null){
+                             showWarning("Serie : " + newSerie + " ingresada no es valida.");
+                            }
+                        else {
+                            if (!newSerie.equalsIgnoreCase(currentSerie)) {
+                                currentSerie = newSerie;
+
+                                // Valida que no exista la nueva serie.
+                                boolean exist = false;
+                                for (String serie : adapter.getSeries()){
+                                    if(serie.equalsIgnoreCase(newSerie)){
+                                        exist = true;
+                                    }
+                                }
+                                if (exist) {
+                                    showWarning("Serie " + newSerie + " ya existe.");
+                                    textSerie.setText("");
+                                    return true;
+                                }
+
+                                if (adapter.getSeries().size() == cantidad.intValue()) {
+                                    showWarning("Ya ingreso la cantidad de series necesarias: " + cantidad);
+                                    textSerie.setText("");
+                                    return true;
+                                }
+                                adapter.addSerie(textView.getText().toString());
+                                textSerie.setText("");
+                            }
+
+                        }
+
                     }
 
                     action = true;
@@ -161,6 +222,7 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
                 i.putExtra("nroLote", nroLote);
                 i.putExtra("cantidad", cantidad);
                 i.putExtra("id", id);
+                i.putStringArrayListExtra("series", (ArrayList<String>) adapter.getSeries());
                 startActivity(i);
                 this.finish();
                 return true;

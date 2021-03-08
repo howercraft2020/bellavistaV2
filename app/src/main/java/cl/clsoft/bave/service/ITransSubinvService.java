@@ -17,14 +17,14 @@ public interface ITransSubinvService {
 
     public List<DatosTransSubinv> getTransSubinv() throws ServiceException;
     public void cargaTransferencia(String articulo, String lote, String subinventario, String localizador, Long cantidad) throws ServiceException;
-    public void cargaSerie(String articulo, String lote, String subinventario, String localizador, String serie, Long cantidad, Long id) throws ServiceException;
     public void insertarDatos(String id, String nroTraspaso, String articulo, String lote, String subinventario, String localizador, Long cantidad,
-                              String subinventarioHasta, String localizadorHasta) throws ServiceException;
+                              String subinventarioHasta, String localizadorHasta, List<String> series) throws ServiceException;
     public List<DatosTransSubinvDetalle> getTransferencias(String numeroTraspaso) throws ServiceException;
     public void crearArchivo(String transactionReference) throws ServiceException;
     public void controlSerie(String articulo) throws ServiceException;
     public List<MtlSerialNumbersInterface> getAllSeries(Long transactionInterfaceId) throws ServiceException;
     public List<MtlOnhandQuantities> getSeries(String sigle, String lote, String subinventario, String localizador) throws ServiceException;
+    public MtlOnhandQuantities getSerieIngresada(String sigle, String lote, String subinventario, String localizador, String serie) throws ServiceException;
     public List<Subinventario> getSubinventarios() throws ServiceException;
     public List<Localizador> getLocalizadoresBySubinventario(String subinventarioCodigo) throws ServiceException;
     public MtlSystemItems getMtlSystemItemsBySegment(String segment) throws ServiceException;

@@ -9,7 +9,4 @@ public interface IMtlSerialNumbersInterfaceDao {
 
     public List<MtlSerialNumbersInterface> getAll(Long transactionInterfaceId) throws DaoException;
     public void insert (MtlSerialNumbersInterface mtlSerialNumbersInterface) throws DaoException;
-    public Long getCantSeries (Long transactionInterfaceId) throws DaoException;
-    public MtlSerialNumbersInterface existeSerie (Long transactionInterfaceId, String serie) throws DaoException;
-
 }

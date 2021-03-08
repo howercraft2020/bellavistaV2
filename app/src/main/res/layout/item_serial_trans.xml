@@ -4,40 +4,37 @@
     android:layout_height="wrap_content"
     android:padding="6dip">
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="45dp"
-        android:layout_height="43dp"
-        android:layout_marginRight="6dip"
-        android:paddingLeft="10dp"
-        android:paddingTop="8dp"
-        android:src="@drawable/inventario01_48dp" />
+    <CheckBox
+        android:id="@+id/activoCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:paddingTop="20dp"/>
 
     <TextView
         android:id="@+id/serieTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/icon"
-        android:paddingTop="20sp"
+        android:layout_toRightOf="@+id/activoCheckBox"
         android:textStyle="bold"
-        android:text="NUMERO SERIE :" />
+        android:text="SERIE:"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="15dp"/>
 
     <TextView
         android:id="@+id/serieTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="20sp"
         android:layout_toRightOf="@+id/serieTag"
+        android:paddingTop="10dp"
         android:paddingLeft="10dp"
-        android:text="nroSerie
-" />
-
-
+        android:text="subinventarioText" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?attr/colorPrimaryDark"
-        android:layout_alignBottom="@id/icon" />
+        android:layout_alignBottom="@id/serieTag"
+        android:background="?attr/colorPrimaryDark" />
 
 </RelativeLayout>

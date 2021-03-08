@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,10 +19,25 @@ import cl.clsoft.bave.model.MtlSerialNumbersInterface;
 public class AdapterSeriesTrans extends RecyclerView.Adapter<AdapterSeriesTrans.SeriesTransViewHolder> {
 
     private static final String TAG = "AdapterTransSubinv";
-    private List<MtlSerialNumbersInterface> series;
+    private List<String> series;
+    private List<String> seriesSeleccionados = new ArrayList<>();
 
-    public AdapterSeriesTrans(List<MtlSerialNumbersInterface> series) {
+    public AdapterSeriesTrans(List<String> series) {
         this.series = series;
+    }
+
+    public List<String> getSeries() {
+        return this.series;
+    }
+
+    public List<String> getSeriesSeleccionados() {
+        return this.seriesSeleccionados;
+    }
+
+    public void addSerie(String serie) {
+        this.series.add(serie);
+        this.notifyItemRangeInserted(0, series.size() - 1);
+        this.notifyDataSetChanged();
     }
 
     @NonNull
@@ -47,14 +63,10 @@ public class AdapterSeriesTrans extends RecyclerView.Adapter<AdapterSeriesTrans.
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "AdapterSeriesTrans::getItemCount");
-        if (series != null && series.size() > 0) {
-            Log.d(TAG, "AdapterSeriesTrans::return " + series.size());
+        if (series != null) {
             return series.size();
-        } else {
-            Log.d(TAG, "AdapterSeriesTrans::return 0 (no series)");
-            return 0;
         }
+        return 0;
     }
 
     public class SeriesTransViewHolder extends ViewHolder{
@@ -67,8 +79,8 @@ public class AdapterSeriesTrans extends RecyclerView.Adapter<AdapterSeriesTrans.
             this.serie = itemView.findViewById(R.id.serieTextView);
         }
 
-        public void onBind(MtlSerialNumbersInterface mtlSerialNumbersInterface){
-            this.serie.setText(mtlSerialNumbersInterface.getFmSerialNumber());
+        public void onBind(String serie){
+            this.serie.setText(serie);
         }
     }
 

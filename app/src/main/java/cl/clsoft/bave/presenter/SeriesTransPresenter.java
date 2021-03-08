@@ -39,25 +39,15 @@ public class SeriesTransPresenter extends BasePresenter {
         }
     }
 
-    public void cargaSerie(String articulo, String lote, String subinventario, String localizador, String serie, Long cantidad, Long id) {
+    public MtlOnhandQuantities getSerieIngresada(String sigle, String lote, String subinventario, String localizador, String serie){
 
-        try {
-            if (serie.equals("")) {
-                mview.showError("Debe ingresar numero de serie");
-            }
-            else {
-                mService.cargaSerie(articulo,lote,subinventario,localizador, serie,cantidad, id);
-                mview.showSuccess("Serie ingresada correctamente");
-            }
-        } catch (ServiceException e) {
+        try{
+            return this.mService.getSerieIngresada(sigle,lote,subinventario, localizador,serie);
+        }catch (ServiceException e) {
             e.printStackTrace();
-            if (e.getCodigo() == 1) {
-                mview.showWarning(e.getDescripcion());
-            } else if (e.getCodigo() == 2) {
-                mview.showError(e.getDescripcion());
-            }
-
         }
-
+        return null;
     }
+
+
 }

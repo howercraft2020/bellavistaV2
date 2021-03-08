@@ -6,9 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,28 +22,55 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
+import cl.clsoft.bave.model.Localizador;
+import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.presenter.TransSubinvDestPresenter;
 import cl.clsoft.bave.service.impl.TransSubinvService;
+import cl.clsoft.bave.task.AppTaskExecutor;
 
 public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresenter> {
 
-    private TextView nroTraspasoEt, glosaEt, codigoSigleEt, subinvDesdeEt, localDesdeEt, loteEt, cantidadEt;
-    private String nroTraspaso, codigoSigle, subinvDesde, localizador, nroLote, glosa, subinvHasta, localHasta, id;
-    Long cantidad;
+    //Variables
+    private String nroTraspaso;
+    private String codigoSigle;
+    private String subinvDesde;
+    private String localizador;
+    private String nroLote;
+    private String glosa;
+    private String subinvHasta;
+    private String localHasta;
+    private String codSubinventario;
+    private String id;
+    private Long cantidad;
+    private List<String> series;
+
+    //Controls
+    private TextView nroTraspasoEt;
+    private TextView glosaEt;
+    private TextView codigoSigleEt;
+    private TextView subinvDesdeEt;
+    private TextView localDesdeEt;
+    private TextView loteEt;
+    private TextView cantidadEt;
     private TextInputLayout layoutSubinventarioDestino;
     private AutoCompleteTextView textSubinventarioDestino;
     private TextInputLayout layoutLocalizadorDestino;
     private AutoCompleteTextView textLocalizadorDestino;
 
+
+
+
     @NonNull
     @Override
     protected TransSubinvDestPresenter createPresenter(@NonNull Context context) {
-        return new TransSubinvDestPresenter(this, new TransSubinvService());
+        return new TransSubinvDestPresenter(this,new AppTaskExecutor(this), new TransSubinvService());
     }
 
     @Override
@@ -58,6 +89,7 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
 
         id = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault()).format(new Date());
 
+        this.llProgressBar = findViewById(R.id.llProgressBar);
         this.nroTraspasoEt = (TextView) findViewById(R.id.numeroTraspasoEditText);
         this.glosaEt = (TextView) findViewById(R.id.glosaEditText);
         this.codigoSigleEt = (TextView) findViewById(R.id.codigoSigleEditText);
@@ -69,15 +101,16 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
         this.textLocalizadorDestino = findViewById(R.id.textLocalizadorDestino);
 
 
-        nroTraspaso = getIntent().getStringExtra("nroTraspaso");
-        codigoSigle = getIntent().getStringExtra("codSigle");
-        subinvDesde = getIntent().getStringExtra("subinvdesde");
-        localizador = getIntent().getStringExtra("localizador");
-        nroLote = getIntent().getStringExtra("nroLote");
-        glosa = getIntent().getStringExtra("glosa");
-        cantidad = getIntent().getLongExtra("cantidad",0);
-        subinvHasta = getIntent().getStringExtra("subinvHasta");
-        localHasta = getIntent().getStringExtra("localHasta");
+        this.nroTraspaso = getIntent().getStringExtra("nroTraspaso");
+        this.codigoSigle = getIntent().getStringExtra("codSigle");
+        this.subinvDesde = getIntent().getStringExtra("subinvdesde");
+        this.localizador = getIntent().getStringExtra("localizador");
+        this.nroLote = getIntent().getStringExtra("nroLote");
+        this.glosa = getIntent().getStringExtra("glosa");
+        this.cantidad = getIntent().getLongExtra("cantidad",0);
+        this.subinvHasta = getIntent().getStringExtra("subinvHasta");
+        this.localHasta = getIntent().getStringExtra("localHasta");
+        this.series = this.getIntent().getStringArrayListExtra("series");
 
         if(getIntent().getStringExtra("id") != null){
             id = getIntent().getStringExtra("id");
@@ -92,6 +125,19 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
         cantidadEt.setText(String.valueOf(cantidad));
         textSubinventarioDestino.setText(subinvHasta);
         textLocalizadorDestino.setText(localHasta);
+
+        this.textSubinventarioDestino.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                codSubinventario = parent.getAdapter().getItem(position).toString();
+                Log.d(TAG, "codSubinventario: " + codSubinventario);
+                if (codSubinventario != null && !codSubinventario.equalsIgnoreCase("SIN LOCALIZADOR")) {
+                    mPresenter.getLocalizadoresBySubinventario(codSubinventario);
+                }
+            }
+        });
+
+        this.mPresenter.getSubinventarios();
     }
 
     @Override
@@ -106,7 +152,20 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
 
         switch (item.getItemId()){
             case R.id.action_save:
-                mPresenter.insertarDatos(id, nroTraspaso, codigoSigle,nroLote,subinvDesde,localizador,cantidad,subinventarioHasta,localizadorHasta);
+                if (series != null && !series.isEmpty()) {
+                    if (series.size() == cantidad.intValue()) {
+                        mPresenter.insertarDatos(id, nroTraspaso, codigoSigle, nroLote, subinvDesde, localizador, cantidad, subinventarioHasta, localizadorHasta,series);
+                        Intent salir = new Intent(this,ActivityTransSubinv.class);
+                        startActivity(salir);
+                        this.finish();
+                    }
+                    else{
+                        long total = cantidad.intValue() - series.size();
+                        this.showError("Quedan" + total + " series por ingresar");
+                    }
+                }else{
+                    this.showError("Quedan " + cantidad.intValue() + " series por ingresar");
+                }
                 return true;
             case R.id.action_serie:
                 if(subinventarioHasta.equals("")){
@@ -125,6 +184,7 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
                         i.putExtra("nroLote", nroLote);
                         i.putExtra("cantidad", cantidad);
                         i.putExtra("id", id);
+                        i.putStringArrayListExtra("series", (ArrayList<String>) this.series);
                         startActivity(i);
                         this.finish();
                         return true;
@@ -148,5 +208,38 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    public void fillSubinventario(List<Subinventario> subinventarios) {
+        if (subinventarios != null) {
+            if (subinventarios.size() > 0){
+                String[] subinventariosArray = new String[subinventarios.size()];
+                for (int i = 0; i <subinventarios.size();i++){
+                    subinventariosArray[i] = subinventarios.get(i).getCodSubinventario();
+                }
+                ArrayAdapter<String> adapterSubinventarios = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, subinventariosArray);
+                this.textSubinventarioDestino.setAdapter(adapterSubinventarios);
+            }
+        }
+    }
+
+    public void fillLocator(List<Localizador> localizadores) {
+        if (localizadores != null) {
+            if (localizadores.size() > 0) {
+                String[] locators = new String[localizadores.size()];
+                for (int i = 0; i < localizadores.size(); i++) {
+                    locators[i] = localizadores.get(i).getCodLocalizador();
+                }
+                ArrayAdapter<String> adapterLocator = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, locators);
+                this.textLocalizadorDestino.setAdapter(adapterLocator);
+                this.textLocalizadorDestino.setText("");
+            } else {
+                this.textLocalizadorDestino.setVisibility(View.GONE);
+                this.textLocalizadorDestino.setVisibility(View.GONE);
+                //this.textSigle.setEnabled(false); JP
+                //this.hayLocalizador = false; JP
+                //this.loadSigle();
+            }
+        }
     }
 }

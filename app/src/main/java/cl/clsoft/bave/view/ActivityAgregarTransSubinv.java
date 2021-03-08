@@ -1,9 +1,11 @@
 package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,6 +51,7 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
     private String id;
     private String codSubinventario;
     private String segment;
+    private int LAUNCH_SEARCHSINGLE_ACTIVITY = 2;
 
     //Controls
     private EditText nroTraspasoEt, glosaEt;
@@ -148,7 +151,7 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
                         MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
                         if (item != null){
 
-                            textSigle.setEnabled(false);
+                            //textSigle.setEnabled(false); Preguntar
                             if(item.getLotControlCode().equalsIgnoreCase("2")){
                                 textLote.setEnabled(true);
                                 layoutLote.setHintEnabled(true);
@@ -170,6 +173,11 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
                 }
                 return action;
             }
+        });
+
+        this.iconSearch.setOnClickListener(v -> {
+            Intent i = new Intent(this, ActivitySigleSearch.class);
+            startActivityForResult(i, LAUNCH_SEARCHSINGLE_ACTIVITY);
         });
 
         this.mPresenter.getSubinventarios();
@@ -230,7 +238,6 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
                 }
                 ArrayAdapter<String> adapterSubinventarios = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, subinventariosArray);
                 this.textSubinventario.setAdapter(adapterSubinventarios);
-                this.textSubinventario.setText("");
             }
         }
     }
@@ -255,6 +262,39 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == LAUNCH_SEARCHSINGLE_ACTIVITY){
+            if(resultCode == Activity.RESULT_OK) {
+                segment = data.getStringExtra("Segment1");
+                this.textSigle.setText(segment);
+                Log.d(TAG, "sigle: " + segment);
+                MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
+                if(item !=null) {
+                    //textSigle.setEnabled(false); preguntar
+
+                    if(item.getLotControlCode().equalsIgnoreCase("2")){
+                        this.textLote.setEnabled(true);
+                        this.layoutLote.setHintEnabled(true);
+                    }
+                    else {
+                        this.textLote.setEnabled(false);
+                        this.layoutLote.setHintEnabled(false);
+                    }
+                    layoutCantidad.setHintEnabled(true);
+                    textCantidad.setEnabled(true);
+                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
+                } else {
+                    showWarning("Item " + segment + " no encontrado en tabla maestra");
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                this.textSigle.setText("");
+            }
+        }
+    }
 
     @Override
     public void onDialogAceptarClick(DialogFragment dialog) {

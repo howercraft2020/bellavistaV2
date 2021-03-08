@@ -67,6 +67,18 @@ public class TransSubinvService implements ITransSubinvService {
 
         try{
 
+            //Validación de lote
+            MtlSystemItems sigle = mtlSystemItemsDao.getBySegment(articulo);
+            controlLote = sigle.getLotControlCode();
+
+            if (controlLote.equals("2") && lote.equals("")){
+                throw new ServiceException(1,"Debe ingresar un lote para articulo : " + articulo);
+            }
+
+            if (controlLote.equals("1") && !lote.equals("")){
+                throw new ServiceException(1,"Articulo : " + articulo + " no tiene control de lote.");
+            }
+
             //Validación datos en mtlonhandquantities
             MtlOnhandQuantities cantidades = mtlOnhandQuantitiesDao.get(articulo,lote, subinventario, localizador);
             if(cantidades == null){
@@ -81,17 +93,6 @@ public class TransSubinvService implements ITransSubinvService {
                 throw new ServiceException(1,"Cantidad no puede ser mayor a : " + cantidadEnMano);
             }
 
-            //Validación de lote
-            MtlSystemItems sigle = mtlSystemItemsDao.getBySegment(articulo);
-            controlLote = sigle.getLotControlCode();
-
-            if (controlLote.equals("2") && lote.equals("")){
-                throw new ServiceException(1,"Debe ingresar un lote para articulo : " + articulo);
-            }
-
-            if (controlLote.equals("1") && !lote.equals("")){
-                throw new ServiceException(1,"Articulo : " + articulo + " no tiene control de lote.");
-            }
 
         }catch (ServiceException e){
             throw e;
@@ -103,56 +104,7 @@ public class TransSubinvService implements ITransSubinvService {
     }
 
     @Override
-    public void cargaSerie(String articulo, String lote, String subinventario, String localizador, String serie, Long cantidad, Long id) throws ServiceException {
-        IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
-        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceImpl();
-
-        Long cantidadSeries;
-        MtlSerialNumbersInterface mtlSerialNumbersInterface;
-        MtlOnhandQuantities mtlOnhandQuantities;
-
-        try{
-
-            String fecha = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-
-            mtlOnhandQuantities = mtlOnhandQuantitiesDao.validaSerie(articulo,lote,subinventario,localizador,serie);
-            if(mtlOnhandQuantities == null){
-                throw new ServiceException(1,"Serie ingresada no valida");
-            }
-
-            cantidadSeries = mtlSerialNumbersInterfaceDao.getCantSeries(id);
-            if (cantidadSeries==cantidad){
-                throw new ServiceException(1,"No puede ingresar mas series a esta transferencia.");
-            }
-
-            mtlSerialNumbersInterface = mtlSerialNumbersInterfaceDao.existeSerie(id, serie);
-            if(mtlSerialNumbersInterface != null){
-                throw new ServiceException(1,"La serie ya ha sido ingresada a esta transferencia.");
-            }
-
-            //Llenando Tabla
-            MtlSerialNumbersInterface mtlSerialNumbersInterface1 = new MtlSerialNumbersInterface();
-            mtlSerialNumbersInterface1.setTransactionInterfaceId(id);
-            mtlSerialNumbersInterface1.setLastUpdateDate(fecha);
-            mtlSerialNumbersInterface1.setCreationDate(fecha);
-            mtlSerialNumbersInterface1.setFmSerialNumber(serie);
-            mtlSerialNumbersInterfaceDao.insert(mtlSerialNumbersInterface1);
-
-
-
-
-        }catch (ServiceException e){
-            throw e;
-        }catch (DaoException e){
-            throw new ServiceException(2, e.getDescripcion());
-        }catch (Exception e){
-            throw new ServiceException(2, e.getMessage());
-        }
-
-    }
-
-    @Override
-    public void insertarDatos(String id,String nroTraspaso, String articulo, String lote, String subinventario, String localizador, Long cantidad, String subinventarioHasta, String localizadorHasta) throws ServiceException {
+    public void insertarDatos(String id,String nroTraspaso, String articulo, String lote, String subinventario, String localizador, Long cantidad, String subinventarioHasta, String localizadorHasta, List<String> series) throws ServiceException {
         IMtlTransactionsInterfaceDao mtlTransactionsInterfaceDao = new MtlTransactionInterfaceDaoImpl();
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
         IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
@@ -202,7 +154,7 @@ public class TransSubinvService implements ITransSubinvService {
                 }
 
                 if (existe != 0){
-                    throw new ServiceException(1," : " + articulo);
+                    throw new ServiceException(1,articulo + "ya esta ingresado en interfaz");
                 }
 
                 //Datos de mtlOnHandQuantities
@@ -210,13 +162,6 @@ public class TransSubinvService implements ITransSubinvService {
 
                 if(mtlOnhandQuantities == null){
                     throw new ServiceException(1,"No se encuentra información en mtlonhandquantities");
-                }
-
-                //Validación Series
-                seriesIngresadas = mtlSerialNumbersInterfaceDao.getCantSeries(Long.parseLong(id));
-                Long total = cantidad - seriesIngresadas;
-                if (seriesIngresadas < cantidad){
-                    throw new ServiceException(1, "Quedan " + total + " series por ingresar");
                 }
 
                 //Datos localizador
@@ -251,20 +196,38 @@ public class TransSubinvService implements ITransSubinvService {
                 mtlTransactionsInterface.setSourceHeaderId(1L);
                 mtlTransactionsInterfaceDao.insert(mtlTransactionsInterface);
 
-                //Inserta datos en tabla de lotes
-                MtlTransactionsLotsIface mtlTransactionsLotsIface = new MtlTransactionsLotsIface();
-                mtlTransactionsLotsIface.setTransactionInterfaceId(Long.parseLong(transactionInterfaceId));
-                mtlTransactionsLotsIface.setLastUpdateDate(fecha);
-                mtlTransactionsLotsIface.setLastUpdateBy(mtlOnhandQuantities.getUserId());
-                mtlTransactionsLotsIface.setCreationDate(fecha);
-                mtlTransactionsLotsIface.setCreatedBy(mtlOnhandQuantities.getUserId());
-                mtlTransactionsLotsIface.setInventoryItemId(inventoryItemId);
-                mtlTransactionsLotsIface.setLastUpdateLogin(mtlOnhandQuantities.getUserId());
-                mtlTransactionsLotsIface.setLotNumber(lote);
-                mtlTransactionsLotsIface.setTransactionQuantity(cantidad);
-                mtlTransactionsLotsIface.setPrimaryQuantity(cantidad);
-                mtlTransactionsLotsIface.setSerialTransactionTempId(Long.parseLong(transactionInterfaceId));
-                mtlTransactionLotsInterfaceDao.insert(mtlTransactionsLotsIface);
+                if(lote != null) {
+                    //Inserta datos en tabla de lotes
+                    MtlTransactionsLotsIface mtlTransactionsLotsIface = new MtlTransactionsLotsIface();
+                    mtlTransactionsLotsIface.setTransactionInterfaceId(Long.parseLong(transactionInterfaceId));
+                    mtlTransactionsLotsIface.setLastUpdateDate(fecha);
+                    mtlTransactionsLotsIface.setLastUpdateBy(mtlOnhandQuantities.getUserId());
+                    mtlTransactionsLotsIface.setCreationDate(fecha);
+                    mtlTransactionsLotsIface.setCreatedBy(mtlOnhandQuantities.getUserId());
+                    mtlTransactionsLotsIface.setInventoryItemId(inventoryItemId);
+                    mtlTransactionsLotsIface.setLastUpdateLogin(mtlOnhandQuantities.getUserId());
+                    mtlTransactionsLotsIface.setLotNumber(lote);
+                    mtlTransactionsLotsIface.setTransactionQuantity(cantidad);
+                    mtlTransactionsLotsIface.setPrimaryQuantity(cantidad);
+                    mtlTransactionsLotsIface.setSerialTransactionTempId(Long.parseLong(transactionInterfaceId));
+                    mtlTransactionLotsInterfaceDao.insert(mtlTransactionsLotsIface);
+                }
+
+                if(series != null) {
+
+                    for(int i = 0; i <series.size(); i++) {
+                        MtlSerialNumbersInterface mtlSerialNumbersInterface = new MtlSerialNumbersInterface();
+                        mtlSerialNumbersInterface.setTransactionInterfaceId(Long.parseLong(transactionInterfaceId));
+                        mtlSerialNumbersInterface.setLastUpdateDate(fecha);
+                        mtlSerialNumbersInterface.setLastUpdatedBy(mtlOnhandQuantities.getUserId());
+                        mtlSerialNumbersInterface.setCreationDate(fecha);
+                        mtlSerialNumbersInterface.setCreatedBy(mtlOnhandQuantities.getUserId());
+                        mtlSerialNumbersInterface.setFmSerialNumber(series.get(i));
+                        mtlSerialNumbersInterfaceDao.insert(mtlSerialNumbersInterface);
+                    }
+                }
+
+
 
         }catch (ServiceException e){
             throw e;
@@ -291,6 +254,7 @@ public class TransSubinvService implements ITransSubinvService {
         String nomenclatura;
         IMtlTransactionsInterfaceDao mtlTransactionsInterfaceDao = new MtlTransactionInterfaceDaoImpl();
         IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceImpl();
+        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceImpl();
 
         nomenclatura = "I_"+transactionReference+".csv";
 
@@ -301,6 +265,7 @@ public class TransSubinvService implements ITransSubinvService {
 
             //Transferencias
             MtlTransactionsLotsIface mtlTransactionsLotsIface = new MtlTransactionsLotsIface();
+            List<MtlSerialNumbersInterface> mtlSerialNumbersInterface;
             List<MtlTransactionsInterface> mtlTransactionsInterface;
 
             mtlTransactionsInterface = mtlTransactionsInterfaceDao.getTransferenciasByTraspaso(transactionReference);
@@ -338,6 +303,15 @@ public class TransSubinvService implements ITransSubinvService {
                                   ";"+mtlTransactionsLotsIface.getPrimaryQuantity()+";"+mtlTransactionsLotsIface.getSerialTransactionTempId() +
                                   ";"+mtlTransactionsLotsIface.getAttributeCategory()+";"+mtlTransactionsLotsIface.getAttrubute1() +
                                   ";"+mtlTransactionsLotsIface.getAttrubute2()+";"+mtlTransactionsLotsIface.getAttrubute3()+";FIN"+"\r\n");
+
+                //Busqueda de serie
+                mtlSerialNumbersInterface = mtlSerialNumbersInterfaceDao.getAll(mtlTransactionsInterface.get(i).getTransactionInterfaceId());
+                for(int x = 0; i <mtlSerialNumbersInterface.size(); x++){
+                    writer.write("3;"+mtlSerialNumbersInterface.get(x).getTransactionInterfaceId()+";"+mtlSerialNumbersInterface.get(x).getLastUpdateDate() +
+                                      ";"+mtlSerialNumbersInterface.get(x).getLastUpdatedBy()+";"+mtlSerialNumbersInterface.get(x).getCreationDate() +
+                                      ";"+mtlSerialNumbersInterface.get(x).getCreatedBy()+";"+mtlSerialNumbersInterface.get(x).getFmSerialNumber()+";FIN"+"\r\n");
+
+                }
 
             }
 
@@ -443,4 +417,15 @@ public class TransSubinvService implements ITransSubinvService {
         }
     }
 
+    @Override
+    public MtlOnhandQuantities getSerieIngresada(String sigle, String lote, String subinventario, String localizador, String serie) throws ServiceException {
+        IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
+
+        try {
+            return mtlOnhandQuantitiesDao.validaSerie(sigle,lote,subinventario,localizador, serie);
+        }catch (Exception e){
+
+        }
+        return null;
+    }
 }

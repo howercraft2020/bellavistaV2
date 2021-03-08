@@ -31,5 +31,4 @@ public class SubinventarioCatalogo {
             " WHERE " +
             "     cod_subinventario in (SELECT DISTINCT(subinventory) FROM mtl_cycle_count_entries WHERE cycle_count_header_id = ?)";
 
-    public static final String SELECT_ALL = " SELECT * FROM " + TABLE;
 }

@@ -28,15 +28,6 @@ public class MtlSerialNumbersInterfaceImpl extends GenericDao<MtlSerialNumbersIn
         super.insert(MtlSerialNumbersInterfaceCatalogo.TABLE,values);
     }
 
-    @Override
-    public Long getCantSeries(Long transactionInterfaceId) throws DaoException {
-        return super.selectLong(MtlSerialNumbersInterfaceCatalogo.SELECT_CANTIDAD_SERIES, transactionInterfaceId);
-    }
-
-    @Override
-    public MtlSerialNumbersInterface existeSerie(Long transactionInterfaceId, String serie) throws DaoException {
-        return super.selectOne(MtlSerialNumbersInterfaceCatalogo.SELECT_EXISTE_SERIE, new MtlSerialNumbersInterfaceRowMapper(), transactionInterfaceId, serie);
-    }
 
 
 
