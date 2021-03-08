@@ -1,6 +1,7 @@
 package cl.clsoft.bave.model;
 
 public class RcvTransactionsInterface {
+
     private Long interfaceTransactionId;
     private String lastUpdatedDate;
     private Long lastUpdatedBy;
@@ -8,23 +9,27 @@ public class RcvTransactionsInterface {
     private Long createdBy;
     private String transactionType;
     private String transactionDate;
+    private String processingStatusCode;
+    private String processingModeCode;
     private Long quantity;
     private String unitOfMeasure;
     private Long itemId;
     private String itemDescription;
     private String UomCode;
+    private Long employeeId;
+    private Long shipmentHeaderId;
+    private Long shipmentLineId;
     private Long shipToLocationId;
-    private Long primaryQuantity;
-    private String receiptSourceCode;
     private Long vendorId;
     private Long vendorSiteId;
     private Long toOrganizationId;
+    private String sourceDocumentCode;
+    private Long parentTransactionId;
     private Long poHeaderId;
     private Long poLineId;
     private Long poLineLocation;
     private Long poUnitPrice;
     private String currencyCode;
-    private String sourceDocumentCode;
     private String currencyConversionType;
     private Long currencyConversionRate;
     private String currencyConversionDate;
@@ -33,35 +38,24 @@ public class RcvTransactionsInterface {
     private Long locationId;
     private Long deliverToLocationId;
     private String inspectionStatusCode;
-    private Long headerInterfaceId;
-    private String vendorSiteCode;
-    private String processingStatusCode;
-    private String comments;
+    private String subinventory;
+    private Long locatorId;
+    private String shipmentNum;
     private Long useMtlLot;
     private Long UseMtlSerial;
+    private Long groupId;
     private String transactionStatusCode;
+    private String autoTransactCode;
+    private String receiptSourceCode;
     private String validationFlag;
     private Long orgId;
-    private Long groupId;
-    private String autoTransactCode;
+    private Long primaryQuantity;
+    private Long headerInterfaceId;
+    private String vendorSiteCode;
+    private String comments;
     private String segment1;
 
-
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    public String getSegment1() {
-        return segment1;
-    }
-
-    public void setSegment1(String segment1) {
-        this.segment1 = segment1;
-    }
+    public RcvTransactionsInterface() { }
 
     public Long getInterfaceTransactionId() {
         return interfaceTransactionId;
@@ -119,6 +113,22 @@ public class RcvTransactionsInterface {
         this.transactionDate = transactionDate;
     }
 
+    public String getProcessingStatusCode() {
+        return processingStatusCode;
+    }
+
+    public void setProcessingStatusCode(String processingStatusCode) {
+        this.processingStatusCode = processingStatusCode;
+    }
+
+    public String getProcessingModeCode() {
+        return processingModeCode;
+    }
+
+    public void setProcessingModeCode(String processingModeCode) {
+        this.processingModeCode = processingModeCode;
+    }
+
     public Long getQuantity() {
         return quantity;
     }
@@ -159,28 +169,36 @@ public class RcvTransactionsInterface {
         UomCode = uomCode;
     }
 
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public Long getShipmentHeaderId() {
+        return shipmentHeaderId;
+    }
+
+    public void setShipmentHeaderId(Long shipmentHeaderId) {
+        this.shipmentHeaderId = shipmentHeaderId;
+    }
+
+    public Long getShipmentLineId() {
+        return shipmentLineId;
+    }
+
+    public void setShipmentLineId(Long shipmentLineId) {
+        this.shipmentLineId = shipmentLineId;
+    }
+
     public Long getShipToLocationId() {
         return shipToLocationId;
     }
 
     public void setShipToLocationId(Long shipToLocationId) {
         this.shipToLocationId = shipToLocationId;
-    }
-
-    public Long getPrimaryQuantity() {
-        return primaryQuantity;
-    }
-
-    public void setPrimaryQuantity(Long primaryQuantity) {
-        this.primaryQuantity = primaryQuantity;
-    }
-
-    public String getReceiptSourceCode() {
-        return receiptSourceCode;
-    }
-
-    public void setReceiptSourceCode(String receiptSourceCode) {
-        this.receiptSourceCode = receiptSourceCode;
     }
 
     public Long getVendorId() {
@@ -205,6 +223,22 @@ public class RcvTransactionsInterface {
 
     public void setToOrganizationId(Long toOrganizationId) {
         this.toOrganizationId = toOrganizationId;
+    }
+
+    public String getSourceDocumentCode() {
+        return sourceDocumentCode;
+    }
+
+    public void setSourceDocumentCode(String sourceDocumentCode) {
+        this.sourceDocumentCode = sourceDocumentCode;
+    }
+
+    public Long getParentTransactionId() {
+        return parentTransactionId;
+    }
+
+    public void setParentTransactionId(Long parentTransactionId) {
+        this.parentTransactionId = parentTransactionId;
     }
 
     public Long getPoHeaderId() {
@@ -243,16 +277,8 @@ public class RcvTransactionsInterface {
         return currencyCode;
     }
 
-    public void setCurrencyCode(String currencyCod) {
-        this.currencyCode = currencyCod;
-    }
-
-    public String getSourceDocumentCode() {
-        return sourceDocumentCode;
-    }
-
-    public void setSourceDocumentCode(String sourceDocumentCode) {
-        this.sourceDocumentCode = sourceDocumentCode;
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     public String getCurrencyConversionType() {
@@ -319,28 +345,28 @@ public class RcvTransactionsInterface {
         this.inspectionStatusCode = inspectionStatusCode;
     }
 
-    public Long getHeaderInterfaceId() {
-        return headerInterfaceId;
+    public String getSubinventory() {
+        return subinventory;
     }
 
-    public void setHeaderInterfaceId(Long headerInterfaceId) {
-        this.headerInterfaceId = headerInterfaceId;
+    public void setSubinventory(String subinventory) {
+        this.subinventory = subinventory;
     }
 
-    public String getVendorSiteCode() {
-        return vendorSiteCode;
+    public Long getLocatorId() {
+        return locatorId;
     }
 
-    public void setVendorSiteCode(String vendorSiteCode) {
-        this.vendorSiteCode = vendorSiteCode;
+    public void setLocatorId(Long locatorId) {
+        this.locatorId = locatorId;
     }
 
-    public String getProcessingStatusCode() {
-        return processingStatusCode;
+    public String getShipmentNum() {
+        return shipmentNum;
     }
 
-    public void setProcessingStatusCode(String processingStatusCode) {
-        this.processingStatusCode = processingStatusCode;
+    public void setShipmentNum(String shipmentNum) {
+        this.shipmentNum = shipmentNum;
     }
 
     public Long getUseMtlLot() {
@@ -359,12 +385,36 @@ public class RcvTransactionsInterface {
         UseMtlSerial = useMtlSerial;
     }
 
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
     public String getTransactionStatusCode() {
         return transactionStatusCode;
     }
 
     public void setTransactionStatusCode(String transactionStatusCode) {
         this.transactionStatusCode = transactionStatusCode;
+    }
+
+    public String getAutoTransactCode() {
+        return autoTransactCode;
+    }
+
+    public void setAutoTransactCode(String autoTransactCode) {
+        this.autoTransactCode = autoTransactCode;
+    }
+
+    public String getReceiptSourceCode() {
+        return receiptSourceCode;
+    }
+
+    public void setReceiptSourceCode(String receiptSourceCode) {
+        this.receiptSourceCode = receiptSourceCode;
     }
 
     public String getValidationFlag() {
@@ -383,23 +433,43 @@ public class RcvTransactionsInterface {
         this.orgId = orgId;
     }
 
-    public Long getGroupId() {
-        return groupId;
+    public Long getPrimaryQuantity() {
+        return primaryQuantity;
     }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setPrimaryQuantity(Long primaryQuantity) {
+        this.primaryQuantity = primaryQuantity;
     }
 
-    public String getAutoTransactCode() {
-        return autoTransactCode;
+    public Long getHeaderInterfaceId() {
+        return headerInterfaceId;
     }
 
-    public void setAutoTransactCode(String autoTransactCode) {
-        this.autoTransactCode = autoTransactCode;
+    public void setHeaderInterfaceId(Long headerInterfaceId) {
+        this.headerInterfaceId = headerInterfaceId;
     }
 
-    public RcvTransactionsInterface(){
+    public String getVendorSiteCode() {
+        return vendorSiteCode;
+    }
 
+    public void setVendorSiteCode(String vendorSiteCode) {
+        this.vendorSiteCode = vendorSiteCode;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getSegment1() {
+        return segment1;
+    }
+
+    public void setSegment1(String segment1) {
+        this.segment1 = segment1;
     }
 }

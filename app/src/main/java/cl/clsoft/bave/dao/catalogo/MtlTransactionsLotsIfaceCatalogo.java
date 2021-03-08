@@ -47,7 +47,8 @@ public class MtlTransactionsLotsIfaceCatalogo {
                     COLUMN_ATTRIBUTE_CATEGORY + " TEXT, " +
                     COLUMN_ATTRIBUTE_1 + " TEXT, " +
                     COLUMN_ATTRIBUTE_2 + " TEXT, " +
-                    COLUMN_ATTRIBUTE_3 +" TEXT " +
+                    COLUMN_ATTRIBUTE_3 +" TEXT, " +
+                    " PRIMARY KEY (" + COLUMN_MTL_TRANSACTION_LOTS_IFACE + " )" +
             ")";
 
     private static final String SELECT = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_MTL_TRANSACTION_LOTS_IFACE + " = ?";

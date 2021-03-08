@@ -27,23 +27,27 @@ public class RcvTransactionsInterfaceDaoImpl extends GenericDao<RcvTransactionsI
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_CREATED_BY, rcvTransactionsInterface.getCreatedBy());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_TYPE, rcvTransactionsInterface.getTransactionType());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_DATE, rcvTransactionsInterface.getTransactionDate());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_PROCESSING_STATUS_CODE, rcvTransactionsInterface.getProcessingStatusCode());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_PROCESSING_MODE_CODE, rcvTransactionsInterface.getProcessingModeCode());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_QUANTITY, rcvTransactionsInterface.getQuantity());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_UNIT_OF_MEASURE, rcvTransactionsInterface.getUnitOfMeasure());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_ITEM_ID, rcvTransactionsInterface.getItemId());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_ITEM_DESCRIPTION, rcvTransactionsInterface.getItemDescription());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_UOM_CODE, rcvTransactionsInterface.getUomCode());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_EMPLOYEE_ID, rcvTransactionsInterface.getEmployeeId());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_SHIPMENT_HEADER_ID, rcvTransactionsInterface.getShipmentHeaderId());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_SHIPMENT_LINE_ID, rcvTransactionsInterface.getShipmentLineId());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_SHIP_TO_LOCATION_ID, rcvTransactionsInterface.getShipToLocationId());
-        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_PRIMARY_QUANTITY, rcvTransactionsInterface.getPrimaryQuantity());
-        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_RECEIPT_SOURCE_CODE, rcvTransactionsInterface.getReceiptSourceCode());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_VENDOR_ID, rcvTransactionsInterface.getVendorId());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_VENDOR_SITE_ID, rcvTransactionsInterface.getVendorSiteId());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_TO_ORGANIZATION_ID, rcvTransactionsInterface.getToOrganizationId());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_SOURCE_DOCUMENT_CODE, rcvTransactionsInterface.getSourceDocumentCode());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_PARENT_TRANSACTION_ID, rcvTransactionsInterface.getParentTransactionId());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_PO_HEADER_ID, rcvTransactionsInterface.getPoHeaderId());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_PO_LINE_ID, rcvTransactionsInterface.getPoLineId());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_PO_LINE_LOCATION_ID, rcvTransactionsInterface.getPoLineLocation());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_PO_UNIT_PRICE, rcvTransactionsInterface.getPoUnitPrice());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_CURRENCY_CODE, rcvTransactionsInterface.getCurrencyCode());
-        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_SOURCE_DOCUMENT_CODE, rcvTransactionsInterface.getSourceDocumentCode());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_CURRENCY_CONVERSION_TYPE, rcvTransactionsInterface.getCurrencyConversionType());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_CURRENCY_CONVERSION_RATE, rcvTransactionsInterface.getCurrencyConversionRate());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_CURRENCY_CONVERSION_DATE, rcvTransactionsInterface.getCurrencyConversionDate());
@@ -52,19 +56,22 @@ public class RcvTransactionsInterfaceDaoImpl extends GenericDao<RcvTransactionsI
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_LOCATION_ID, rcvTransactionsInterface.getLocationId());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_DELIVER_TO_LOCATION_ID, rcvTransactionsInterface.getDeliverToLocationId());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_INSPECTION_STATUS_CODE, rcvTransactionsInterface.getInspectionStatusCode());
-        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_HEADER_INTERFACE_ID, rcvTransactionsInterface.getHeaderInterfaceId());
-        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_VENDOR_SITE_CODE, rcvTransactionsInterface.getVendorSiteCode());
-        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_PROCESSING_STATUS_CODE, rcvTransactionsInterface.getProcessingStatusCode());
-        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_COMMENTS, rcvTransactionsInterface.getComments());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_SUBINVENTORY, rcvTransactionsInterface.getSubinventory());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_LOCATOR_ID, rcvTransactionsInterface.getLocatorId());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_SHIPMENT_NUM, rcvTransactionsInterface.getShipmentNum());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_USE_MTL_LOT, rcvTransactionsInterface.getUseMtlLot());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_USE_MTL_SERIAL, rcvTransactionsInterface.getUseMtlSerial());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_GROUP_ID, rcvTransactionsInterface.getGroupId());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_STATUS_CODE, rcvTransactionsInterface.getTransactionStatusCode());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_AUTO_TRANSACT_CODE, rcvTransactionsInterface.getAutoTransactCode());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_RECEIPT_SOURCE_CODE, rcvTransactionsInterface.getReceiptSourceCode());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_VALIDATION_FLAG, rcvTransactionsInterface.getValidationFlag());
         values.put(RcvTransactionsInterfaceCatalogo.COLUMN_ORG_ID, rcvTransactionsInterface.getOrgId());
-        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_GROUP_ID, rcvTransactionsInterface.getGroupId());
-        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_AUTO_TRANSACT_CODE, rcvTransactionsInterface.getAutoTransactCode());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_PRIMARY_QUANTITY, rcvTransactionsInterface.getPrimaryQuantity());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_HEADER_INTERFACE_ID, rcvTransactionsInterface.getHeaderInterfaceId());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_VENDOR_SITE_CODE, rcvTransactionsInterface.getVendorSiteCode());
+        values.put(RcvTransactionsInterfaceCatalogo.COLUMN_COMMENTS, rcvTransactionsInterface.getComments());
         super.insert(RcvTransactionsInterfaceCatalogo.TABLE, values);
-
     }
 
     @Override

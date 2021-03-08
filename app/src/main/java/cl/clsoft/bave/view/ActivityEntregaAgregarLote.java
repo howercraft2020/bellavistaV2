@@ -10,6 +10,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,7 @@ import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.presenter.EntregaAgregarLotePresenter;
 import cl.clsoft.bave.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
+import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLotePresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
@@ -42,6 +45,7 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
     private boolean isVencimiento = false;
     private String lote;
     private String vencimiento;
+    private String categoria;
     private String atributo1;
     private String atributo2;
     private String atributo3;
@@ -52,6 +56,10 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
     private TextInputEditText textLote;
     private TextInputLayout layoutVencimiento;
     private TextInputEditText textVencimiento;
+    private MaterialSpinner spinnerCategoria;
+    private MaterialSpinner spinnerAtributo1;
+    private MaterialSpinner spinnerAtributo2;
+    private MaterialSpinner spinnerAtributo3;
     private TextInputLayout layoutAtributo1;
     private TextInputEditText textAtributo1;
     private TextInputLayout layoutAtributo2;
@@ -80,6 +88,10 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
         this.textLote = findViewById(R.id.textLote);
         this.layoutVencimiento = findViewById(R.id.layoutVencimiento);
         this.textVencimiento = findViewById(R.id.textVencimiento);
+        this.spinnerCategoria = findViewById(R.id.spinnerCategoria);
+        this.spinnerAtributo1 = findViewById(R.id.spinnerAtributo1);
+        this.spinnerAtributo2 = findViewById(R.id.spinnerAtributo2);
+        this.spinnerAtributo3 = findViewById(R.id.spinnerAtributo3);
         this.layoutAtributo1 = findViewById(R.id.layoutAtributo1);
         this.textAtributo1 = findViewById(R.id.textAtributo1);
         this.layoutAtributo2 = findViewById(R.id.layoutAtributo2);
@@ -99,6 +111,16 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
         this.atributo3 = this.getIntent().getStringExtra("Atributo3");
         this.series = this.getIntent().getStringArrayListExtra("series");
         Log.d(TAG, "Lote: " + this.lote);
+
+        spinnerAtributo1.setVisibility(View.GONE);
+        spinnerAtributo2.setVisibility(View.GONE);
+        spinnerAtributo3.setVisibility(View.GONE);
+        layoutAtributo1.setVisibility(View.GONE);
+        layoutAtributo2.setVisibility(View.GONE);
+        layoutAtributo3.setVisibility(View.GONE);
+        fillSpinnerAtributo1();
+        fillSpinnerAtributo2();
+
 
         RcvTransactions transaction = mPresenter.getTransactionById(this.transactionId);
         if (transaction != null) {
@@ -127,9 +149,10 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                     this.textVencimiento.setVisibility(View.VISIBLE);
                     this.textVencimiento.setText(this.vencimiento);
                 } else {
-                    this.textVencimiento.setVisibility(View.GONE);
+                    this.layoutVencimiento.setVisibility(View.GONE);
                     this.textVencimiento.setText("");
                 }
+                this.fillCategorias();
             }
         }
 
@@ -172,6 +195,45 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                     action = true;
                 }
                 return action;
+            }
+        });
+
+        this.spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String newCategoria = (String) adapterView.getSelectedItem();
+                if (newCategoria != null) {
+                    Log.d(TAG, "categoria: " + newCategoria);
+                    categoria = newCategoria;
+                    if (categoria.equalsIgnoreCase("REPUESTOS")) {
+                        spinnerAtributo1.setVisibility(View.VISIBLE);
+                        spinnerAtributo2.setVisibility(View.VISIBLE);
+                        spinnerAtributo3.setVisibility(View.GONE);
+                        layoutAtributo1.setVisibility(View.GONE);
+                        layoutAtributo2.setVisibility(View.GONE);
+                        layoutAtributo3.setVisibility(View.VISIBLE);
+
+                    } else if (categoria.equalsIgnoreCase("LIQUIDOS Y LUBRICANTES")) {
+                        spinnerAtributo1.setVisibility(View.GONE);
+                        spinnerAtributo2.setVisibility(View.GONE);
+                        spinnerAtributo3.setVisibility(View.GONE);
+                        layoutAtributo1.setVisibility(View.VISIBLE);
+                        layoutAtributo2.setVisibility(View.VISIBLE);
+                        layoutAtributo3.setVisibility(View.GONE);
+                    } else {
+                        spinnerAtributo1.setVisibility(View.GONE);
+                        spinnerAtributo2.setVisibility(View.GONE);
+                        spinnerAtributo3.setVisibility(View.GONE);
+                        layoutAtributo1.setVisibility(View.GONE);
+                        layoutAtributo2.setVisibility(View.GONE);
+                        layoutAtributo3.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -310,6 +372,36 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
     @Override
     public void onDialogCancelarClick(DialogFragment dialog) {
 
+    }
+
+    private void fillCategorias() {
+        List<String> categorias = new ArrayList<>();
+
+        categorias.add("REPUESTOS");
+        categorias.add("LIQUIDOS Y LUBRICANTES");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categorias);
+        this.spinnerCategoria.setAdapter(adapter);
+    }
+
+    private void fillSpinnerAtributo1() {
+        List<String> atributos1 = new ArrayList<>();
+
+        atributos1.add("ALTERNATIVO");
+        atributos1.add("ORIGINAL");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, atributos1);
+        this.spinnerAtributo1.setAdapter(adapter);
+    }
+
+    private void fillSpinnerAtributo2() {
+        List<String> atributos2 = new ArrayList<>();
+
+        atributos2.add("SI");
+        atributos2.add("NO");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, atributos2);
+        this.spinnerAtributo2.setAdapter(adapter);
     }
 
     private void confirmacionSalir() {

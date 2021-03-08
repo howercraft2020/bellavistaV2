@@ -184,7 +184,7 @@ public class EntregaServiceImpl implements IEntregaService {
         IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
         IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
         try {
-            Localizador localizador;
+            Localizador localizador = null;
             boolean isControlLote = false;
             boolean isControlSerie = false;
             boolean isControlVencimiento = false;
@@ -296,19 +296,21 @@ public class EntregaServiceImpl implements IEntregaService {
             rcvTransactionsInterface.setTransactionType("DELIVER");
             rcvTransactionsInterface.setTransactionDate(sysDate);
             rcvTransactionsInterface.setProcessingStatusCode("PENDING");
-            //rcvTransactionsInterface.setPro
+            rcvTransactionsInterface.setProcessingModeCode("BATCH");
             rcvTransactionsInterface.setQuantity(cantidad);
             rcvTransactionsInterface.setUnitOfMeasure(rcvTransactions.getUnitOfMeasure());
             rcvTransactionsInterface.setItemId(item.getInventoryItemId());
             rcvTransactionsInterface.setItemDescription(item.getDescription());
             rcvTransactionsInterface.setUomCode(item.getPrimaryUomCode());
-            //rcvTransactionsInterface.setEmployeeId(?)
+            rcvTransactionsInterface.setEmployeeId(rcvShipmentHeaders.getEmployeeId());
+            rcvTransactionsInterface.setShipmentHeaderId(rcvTransactions.getShipmentHeaderId());
+            rcvTransactionsInterface.setShipmentLineId(rcvTransactions.getShipmentLineId());
             rcvTransactionsInterface.setShipToLocationId(248L);
             rcvTransactionsInterface.setVendorId(rcvTransactions.getVendorId());
             rcvTransactionsInterface.setVendorSiteId(rcvTransactions.getVendorSiteId());
             rcvTransactionsInterface.setToOrganizationId(288L);
             rcvTransactionsInterface.setSourceDocumentCode("PO");
-            //rcvTransactionsInterface.setPa
+            rcvTransactionsInterface.setParentTransactionId(rcvTransactions.getTransactionId());
             rcvTransactionsInterface.setPoHeaderId(rcvTransactions.getPoHeaderId());
             rcvTransactionsInterface.setPoLineId(rcvTransactions.getPoLineId());
             rcvTransactionsInterface.setPoLineLocation(rcvTransactions.getPoLineLocationId());
@@ -322,9 +324,9 @@ public class EntregaServiceImpl implements IEntregaService {
             rcvTransactionsInterface.setLocationId(rcvTransactions.getLocationId());
             rcvTransactionsInterface.setDeliverToLocationId(248L);
             rcvTransactionsInterface.setInspectionStatusCode("NOT INSPECTED");
-            //rcvTransactionsInterface.setS
-            //rcvTransactionsInterface.setLocatorId();
-            //rcvTransactionsInterface.setsh
+            rcvTransactionsInterface.setSubinventory(subinventario.getCodSubinventario());
+            rcvTransactionsInterface.setLocatorId(localizador != null ?  localizador.getIdLocalizador() : null);
+            rcvTransactionsInterface.setShipmentNum(rcvShipmentHeaders.getShipmentNum());
             if (isControlLote)
                 rcvTransactionsInterface.setUseMtlLot(1L);
             else
@@ -333,13 +335,11 @@ public class EntregaServiceImpl implements IEntregaService {
                 rcvTransactionsInterface.setUseMtlSerial(1L);
             else
                 rcvTransactionsInterface.setUseMtlSerial(0L);
-            rcvTransactionsInterface.setProcessingStatusCode("PENDING");
-            //rcvTransactionsInterface.setpro
             rcvTransactionsInterface.setGroupId(rcvShipmentHeaders.getGroupId());
             rcvTransactionsInterface.setTransactionStatusCode("PENDING");
             rcvTransactionsInterface.setReceiptSourceCode("VENDOR");
             rcvTransactionsInterface.setValidationFlag("Y");
-            rcvHeadersInterface.setOrgId(rcvTransactions.getOrganizationId());
+            rcvTransactionsInterface.setOrgId(rcvTransactions.getOrganizationId());
             rcvTransactionsInterfaceDao.insert(rcvTransactionsInterface);
 
             // Crea Lote

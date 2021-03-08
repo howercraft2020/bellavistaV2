@@ -55,7 +55,8 @@ public class RcvHeadersInterfaceCatalogo {
                     COLUMN_ORG_ID + " INTEGER, " +
                     COLUMN_PROCESSING_STATUS_CODE + " TEXT, " +
                     COLUMN_VALIDATION_FLAG + " TEXT, " +
-                    COLUMN_GROUP_ID +" INTEGER " +
+                    COLUMN_GROUP_ID +" INTEGER, " +
+                    " PRIMARY KEY (" + COLUMN_HEADER_INTERFACE_ID + " )" +
                     " ) ";
 
 }

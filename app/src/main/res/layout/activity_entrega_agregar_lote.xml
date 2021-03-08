@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -48,6 +50,78 @@
             android:text=""
             android:inputType="date" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/spinnerCategoria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorPrimaryDark"
+        android:textColor="@android:color/black"
+        app:ms_alignLabels="false"
+        app:ms_arrowSize="14dp"
+        app:ms_baseColor="?attr/colorPrimaryDark"
+        app:ms_enableErrorLabel="true"
+        app:ms_enableFloatingLabel="true"
+        app:ms_floatingLabelText="Categoría"
+        app:ms_hint="Categoría"
+        app:ms_hintColor="?attr/colorPrimaryDark"
+        app:ms_hintTextSize="18dp"
+        app:ms_multiline="false"
+        app:ms_thickness="1dp" />
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/spinnerAtributo1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorPrimaryDark"
+        android:textColor="@android:color/black"
+        app:ms_alignLabels="false"
+        app:ms_arrowSize="14dp"
+        app:ms_baseColor="?attr/colorPrimaryDark"
+        app:ms_enableErrorLabel="true"
+        app:ms_enableFloatingLabel="true"
+        app:ms_floatingLabelText="Atributo 1"
+        app:ms_hint="Atributo 1"
+        app:ms_hintColor="?attr/colorPrimaryDark"
+        app:ms_hintTextSize="18dp"
+        app:ms_multiline="false"
+        app:ms_thickness="1dp" />
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/spinnerAtributo2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorPrimaryDark"
+        android:textColor="@android:color/black"
+        app:ms_alignLabels="false"
+        app:ms_arrowSize="14dp"
+        app:ms_baseColor="?attr/colorPrimaryDark"
+        app:ms_enableErrorLabel="true"
+        app:ms_enableFloatingLabel="true"
+        app:ms_floatingLabelText="Atributo 2"
+        app:ms_hint="Atributo 2"
+        app:ms_hintColor="?attr/colorPrimaryDark"
+        app:ms_hintTextSize="18dp"
+        app:ms_multiline="false"
+        app:ms_thickness="1dp" />
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/spinnerAtributo3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorPrimaryDark"
+        android:textColor="@android:color/black"
+        app:ms_alignLabels="false"
+        app:ms_arrowSize="14dp"
+        app:ms_baseColor="?attr/colorPrimaryDark"
+        app:ms_enableErrorLabel="true"
+        app:ms_enableFloatingLabel="true"
+        app:ms_floatingLabelText="Atributo 3"
+        app:ms_hint="Atributo 3"
+        app:ms_hintColor="?attr/colorPrimaryDark"
+        app:ms_hintTextSize="18dp"
+        app:ms_multiline="false"
+        app:ms_thickness="1dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutAtributo1"
