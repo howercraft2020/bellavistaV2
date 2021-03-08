@@ -15,6 +15,13 @@ public class RcvShipmentHeaders {
     private String receiptNum;
     private Long employeeId;
     private Long shipToOrgId;
+    private Long poNumber;
+    private Long headerInterfaceId;
+    private Long interfaceTransactionId;
+    private Long groupId;
+    private Long transactionInterfaceId;
+
+    public RcvShipmentHeaders() { }
 
     public Long getShipmentHeaderId() {
         return shipmentHeaderId;
@@ -120,7 +127,43 @@ public class RcvShipmentHeaders {
         this.shipToOrgId = shipToOrgId;
     }
 
-    public RcvShipmentHeaders(){
+    public Long getPoNumber() {
+        return poNumber;
+    }
 
+    public void setPoNumber(Long poNumber) {
+        this.poNumber = poNumber;
+    }
+
+    public Long getHeaderInterfaceId() {
+        return headerInterfaceId;
+    }
+
+    public void setHeaderInterfaceId(Long headerInterfaceId) {
+        this.headerInterfaceId = headerInterfaceId;
+    }
+
+    public Long getInterfaceTransactionId() {
+        return interfaceTransactionId;
+    }
+
+    public void setInterfaceTransactionId(Long interfaceTransactionId) {
+        this.interfaceTransactionId = interfaceTransactionId;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public Long getTransactionInterfaceId() {
+        return transactionInterfaceId;
+    }
+
+    public void setTransactionInterfaceId(Long transactionInterfaceId) {
+        this.transactionInterfaceId = transactionInterfaceId;
     }
 }

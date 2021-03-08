@@ -24,7 +24,11 @@ public class RcvShipmentHeadersRowMapper implements RowMapper<RcvShipmentHeaders
         entity.setReceiptNum(cursor.getString(cursor.getColumnIndex(RcvShipmentHeadersCatalogo.COLUMN_RECEIPT_NUM)));
         entity.setEmployeeId(cursor.getLong(cursor.getColumnIndex(RcvShipmentHeadersCatalogo.COLUMN_EMPLOYEE_ID)));
         entity.setShipToOrgId(cursor.getLong(cursor.getColumnIndex(RcvShipmentHeadersCatalogo.COLUMN_SHIP_TO_ORG_ID)));
-
+        entity.setPoNumber(cursor.getLong(cursor.getColumnIndex(RcvShipmentHeadersCatalogo.COLUMN_PO_NUMBER)));
+        entity.setHeaderInterfaceId(cursor.getLong(cursor.getColumnIndex(RcvShipmentHeadersCatalogo.COLUMN_HEADER_INTERFACE_ID)));
+        entity.setInterfaceTransactionId(cursor.getLong(cursor.getColumnIndex(RcvShipmentHeadersCatalogo.COLUMN_INTERFACE_TRANSACTION_ID)));
+        entity.setGroupId(cursor.getLong(cursor.getColumnIndex(RcvShipmentHeadersCatalogo.COLUMN_GROUP_ID)));
+        entity.setTransactionInterfaceId(cursor.getLong(cursor.getColumnIndex(RcvShipmentHeadersCatalogo.COLUMN_TRANSACTION_INTERFACE_ID)));
         return entity;
     }
 }

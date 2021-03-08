@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,9 @@ import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.presenter.EntregaAgregarResumenPresenter;
 import cl.clsoft.bave.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarResumenPresenter> {
+public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarResumenPresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
     // Variables
     private String TAG = "EntregaAgregar";
@@ -64,7 +66,6 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
     protected EntregaAgregarResumenPresenter createPresenter(@NonNull Context context) {
         return new EntregaAgregarResumenPresenter(this, new AppTaskExecutor(this), new EntregaServiceImpl());
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +139,11 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
     }
 
     @Override
+    public void onBackPressed() {
+        this.confirmacionSalir();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_entrega_agregar_resumen, menu);
@@ -148,13 +154,12 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
         switch (item.getItemId()) {
             case android.R.id.home:
                 Log.d(TAG, "home");
-                Intent i = new Intent(this, ActivityEntregaDetalle.class);
-                i.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
-                startActivity(i);
-                this.finish();
+                this.confirmacionSalir();
                 return true;
             case R.id.grabar:
                 Log.d(TAG, "grabar");
+                ConfirmationDialog dialogSave = ConfirmationDialog.newInstance("Desea ingresar este producto a la entrega?", "Confirmación", "save");
+                dialogSave.show(getSupportFragmentManager(), "saveAgregarConfirm");
                 return true;
             case R.id.back:
                 Log.d(TAG, "back");
@@ -246,4 +251,44 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
         this.rlayoutSeries.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onDialogAceptarClick(DialogFragment dialog) {
+        String tipo = dialog.getArguments().getString("tipo");
+        if (tipo.equalsIgnoreCase("exit")) {
+            Intent i = new Intent(this, ActivityEntregaDetalle.class);
+            i.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+            startActivity(i);
+            this.finish();
+        } else if (tipo.equalsIgnoreCase("save")) {
+            this.mPresenter.addTransacctionInterface(this.shipmentHeaderId, this.transactionId, this.subinventoryCode,
+                    this.locatorCode, this.lote, this.vencimiento, this.atributo1, this.atributo2, this.atributo3, this.series, 1L);
+        }
+    }
+
+    @Override
+    public void onDialogCancelarClick(DialogFragment dialog) {
+
+    }
+
+    private void confirmacionSalir() {
+        ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
+        dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
+    }
+
+    public void resultadoOkAddTransaction() {
+        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+            .setTitleText("Éxito")
+            .setContentText("Creación exitosa")
+            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sDialog) {
+                    Log.d("CMFA", "CLICK");
+                    Intent i = new Intent(getApplicationContext(), ActivityEntregaDetalle.class);
+                    i.putExtra("ShipmentHeaderId", shipmentHeaderId);
+                    startActivity(i);
+                    finish();
+                }
+            })
+            .show();
+    }
 }

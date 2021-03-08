@@ -3,7 +3,7 @@ package cl.clsoft.bave.dao.catalogo;
 public class MtlTransactionsLotsIfaceCatalogo {
 
     public static final String TABLE = "mtl_transactions_lots_iface";
-    public static final String COLUMN_MTL_TRANSACTION_LOTS_IFACE = "mtl_transaction_lots_iface";
+    public static final String COLUMN_MTL_TRANSACTION_LOTS_IFACE = "transaction_interface_id";
     public static final String COLUMN_LAST_UPDATE_DATE = "last_update_date";
     public static final String COLUMN_LAST_UPDATE_BY = "last_update_by";
     public static final String COLUMN_CREATION_DATE = "creation_date";
@@ -49,6 +49,8 @@ public class MtlTransactionsLotsIfaceCatalogo {
                     COLUMN_ATTRIBUTE_2 + " TEXT, " +
                     COLUMN_ATTRIBUTE_3 +" TEXT " +
             ")";
+
+    private static final String SELECT = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_MTL_TRANSACTION_LOTS_IFACE + " = ?";
 
     public static final String SELECT_ALL = "SELECT * from " + TABLE + " WHERE " + COLUMN_MTL_TRANSACTION_LOTS_IFACE + " = ?";
 

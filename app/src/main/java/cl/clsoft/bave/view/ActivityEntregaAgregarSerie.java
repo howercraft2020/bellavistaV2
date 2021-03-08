@@ -161,6 +161,11 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
     }
 
     @Override
+    public void onBackPressed() {
+        this.confirmacionSalir();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_entrega_agregar_serie, menu);
@@ -172,10 +177,7 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
         switch (item.getItemId()) {
             case android.R.id.home:
                 Log.d(TAG, "home");
-                Intent i = new Intent(this, ActivityEntregaDetalle.class);
-                i.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
-                startActivity(i);
-                this.finish();
+                this.confirmacionSalir();
                 return true;
             case R.id.next:
                 Log.d(TAG, "next");
@@ -244,11 +246,22 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
         String tipo = dialog.getArguments().getString("tipo");
         if (tipo.equalsIgnoreCase("delete")) {
             this.adapter.deleteSeleccionados();
+        } else if (tipo.equalsIgnoreCase("exit")) {
+            Intent i = new Intent(this, ActivityEntregaDetalle.class);
+            i.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+            startActivity(i);
+            this.finish();
         }
+
     }
 
     @Override
     public void onDialogCancelarClick(DialogFragment dialog) {
 
+    }
+
+    private void confirmacionSalir() {
+        ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
+        dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
     }
 }

@@ -26,7 +26,8 @@ import cl.clsoft.bave.dao.impl.MtlOnhandQuantitiesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSerialNumbersInterfaceImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionInterfaceDaoImpl;
-import cl.clsoft.bave.dao.impl.MtlTransactionLotsIfaceImpl;
+import cl.clsoft.bave.dao.impl.MtlTransactionLotsIfaceDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlTransactionLotsIfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
@@ -103,6 +104,8 @@ public class TransSubinvService implements ITransSubinvService {
         }
     }
 
+
+
     @Override
     public void insertarDatos(String id,String nroTraspaso, String articulo, String lote, String subinventario, String localizador, Long cantidad, String subinventarioHasta, String localizadorHasta, List<String> series) throws ServiceException {
         IMtlTransactionsInterfaceDao mtlTransactionsInterfaceDao = new MtlTransactionInterfaceDaoImpl();
@@ -110,7 +113,7 @@ public class TransSubinvService implements ITransSubinvService {
         IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
         IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceImpl();
         ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
-        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceImpl();
+        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
 
         Long inventoryItemId;
         Long existe = 0L;
@@ -253,7 +256,7 @@ public class TransSubinvService implements ITransSubinvService {
     public void crearArchivo(String transactionReference) throws ServiceException {
         String nomenclatura;
         IMtlTransactionsInterfaceDao mtlTransactionsInterfaceDao = new MtlTransactionInterfaceDaoImpl();
-        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceImpl();
+        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
         IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceImpl();
 
         nomenclatura = "I_"+transactionReference+".csv";

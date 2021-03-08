@@ -23,6 +23,11 @@ public class SubinventarioDaoImpl extends GenericDao<Subinventario> implements I
     }
 
     @Override
+    public Subinventario getByCodigo(String codigo) throws DaoException {
+        return super.selectOne(SubinventarioCatalogo.SELECT_BY_CODIGO, new SubinventarioRowMapper(), codigo);
+    }
+
+    @Override
     public List<Subinventario> getAll() throws DaoException {
         return super.selectMany(SubinventarioCatalogo.SELECT_ALL, new SubinventarioRowMapper());
     }

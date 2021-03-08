@@ -66,7 +66,7 @@ public class AdapterItemEntrega extends RecyclerView.Adapter<AdapterItemEntrega.
 
         public void onBind(RcvShipmentHeaders rcvShipmentHeaders) {
             if (rcvShipmentHeaders != null) {
-                this.textShipmentHeaderId.setText(rcvShipmentHeaders.getShipmentHeaderId().toString());
+                this.textShipmentHeaderId.setText(rcvShipmentHeaders.getPoNumber().toString());
                 this.textReceiptNum.setText(rcvShipmentHeaders.getReceiptNum());
                 this.textCreationDate.setText(rcvShipmentHeaders.getCreationDate());
             }

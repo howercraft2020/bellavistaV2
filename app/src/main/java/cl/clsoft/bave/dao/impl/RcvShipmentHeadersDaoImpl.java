@@ -33,6 +33,11 @@ public class RcvShipmentHeadersDaoImpl extends GenericDao<RcvShipmentHeaders> im
         values.put(RcvShipmentHeadersCatalogo.COLUMN_RECEIPT_NUM, rcvShipmentHeaders.getReceiptNum());
         values.put(RcvShipmentHeadersCatalogo.COLUMN_EMPLOYEE_ID, rcvShipmentHeaders.getEmployeeId());
         values.put(RcvShipmentHeadersCatalogo.COLUMN_SHIP_TO_ORG_ID, rcvShipmentHeaders.getShipToOrgId());
+        values.put(RcvShipmentHeadersCatalogo.COLUMN_PO_NUMBER, rcvShipmentHeaders.getPoNumber());
+        values.put(RcvShipmentHeadersCatalogo.COLUMN_HEADER_INTERFACE_ID, rcvShipmentHeaders.getHeaderInterfaceId());
+        values.put(RcvShipmentHeadersCatalogo.COLUMN_INTERFACE_TRANSACTION_ID, rcvShipmentHeaders.getInterfaceTransactionId());
+        values.put(RcvShipmentHeadersCatalogo.COLUMN_GROUP_ID, rcvShipmentHeaders.getGroupId());
+        values.put(RcvShipmentHeadersCatalogo.COLUMN_TRANSACTION_INTERFACE_ID, rcvShipmentHeaders.getTransactionInterfaceId());
         super.insert(RcvShipmentHeadersCatalogo.TABLE, values);
     }
 
@@ -53,6 +58,11 @@ public class RcvShipmentHeadersDaoImpl extends GenericDao<RcvShipmentHeaders> im
         values.put(RcvShipmentHeadersCatalogo.COLUMN_RECEIPT_NUM, rcvShipmentHeaders.getReceiptNum());
         values.put(RcvShipmentHeadersCatalogo.COLUMN_EMPLOYEE_ID, rcvShipmentHeaders.getEmployeeId());
         values.put(RcvShipmentHeadersCatalogo.COLUMN_SHIP_TO_ORG_ID, rcvShipmentHeaders.getShipToOrgId());
+        values.put(RcvShipmentHeadersCatalogo.COLUMN_PO_NUMBER, rcvShipmentHeaders.getPoNumber());
+        values.put(RcvShipmentHeadersCatalogo.COLUMN_HEADER_INTERFACE_ID, rcvShipmentHeaders.getHeaderInterfaceId());
+        values.put(RcvShipmentHeadersCatalogo.COLUMN_INTERFACE_TRANSACTION_ID, rcvShipmentHeaders.getInterfaceTransactionId());
+        values.put(RcvShipmentHeadersCatalogo.COLUMN_GROUP_ID, rcvShipmentHeaders.getGroupId());
+        values.put(RcvShipmentHeadersCatalogo.COLUMN_TRANSACTION_INTERFACE_ID, rcvShipmentHeaders.getTransactionInterfaceId());
         super.update(RcvShipmentHeadersCatalogo.TABLE, values, RcvShipmentHeadersCatalogo.UPDATE, rcvShipmentHeaders.getShipmentHeaderId());
     }
 

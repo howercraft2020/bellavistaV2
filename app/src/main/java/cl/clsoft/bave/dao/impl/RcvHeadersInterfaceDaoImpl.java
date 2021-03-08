@@ -1,6 +1,7 @@
 package cl.clsoft.bave.dao.impl;
 
 import cl.clsoft.bave.dao.catalogo.MtlCycleCountHeadersCatalogo;
+import cl.clsoft.bave.dao.catalogo.RcvHeadersInterfaceCatalogo;
 import cl.clsoft.bave.dao.rowmapper.MtlCycleCountHeadersRowMapper;
 import cl.clsoft.bave.dao.rowmapper.RowMapper;
 import cl.clsoft.bave.dao.rowmapper.RcvHeadersInterfaceRowMapper;
@@ -13,31 +14,32 @@ public class RcvHeadersInterfaceDaoImpl extends GenericDao<RcvHeadersInterface> 
 {
     public void insert(RcvHeadersInterface rcvHeadersInterface) throws DaoException {
         final ContentValues values = new ContentValues();
-        values.put("header_interface_id", rcvHeadersInterface.getHeaderInterfaceId());
-        values.put("receipt_source_code", rcvHeadersInterface.getReciptSourceCode());
-        values.put("transaction_type", rcvHeadersInterface.getTransactionType());
-        values.put("last_update_date", rcvHeadersInterface.getLastUpdateDate());
-        values.put("last_updated_by", rcvHeadersInterface.getLastUpdateBy());
-        values.put("created_by", rcvHeadersInterface.getCreatedBy());
-        values.put("receipt_num", rcvHeadersInterface.getReciptNum());
-        values.put("vendor_id", rcvHeadersInterface.getVendorId());
-        values.put("vendor_site_code", rcvHeadersInterface.getVendorSiteCode());
-        values.put("vendor_site_id", rcvHeadersInterface.getVendorSiteId());
-        values.put("ship_to_organization_code", rcvHeadersInterface.getShipToOrganizationCode());
-        values.put("location_id", rcvHeadersInterface.getLocationId());
-        values.put("receiver_id", rcvHeadersInterface.getReceiverId());
-        values.put("currency_code", rcvHeadersInterface.getCurrencyCode());
-        values.put("conversion_rate_type", rcvHeadersInterface.getConversionRateType());
-        values.put("conversion_rate", rcvHeadersInterface.getConversionRate());
-        values.put("conversion_rate_date", rcvHeadersInterface.getConversionRateDate());
-        values.put("payment_terms_id", rcvHeadersInterface.getPaymentTermsId());
-        values.put("transaction_date", rcvHeadersInterface.getTransactionDate());
-        values.put("comments", rcvHeadersInterface.getComments());
-        values.put("org_id", rcvHeadersInterface.getOrgId());
-        values.put("processing_status_code", rcvHeadersInterface.getProcessingStatusCode());
-        values.put("validation_flag", rcvHeadersInterface.getValidationFlag());
-        values.put("group_id", rcvHeadersInterface.getGroupId());
-        super.insert("rcv_headers_interface", values);
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_HEADER_INTERFACE_ID, rcvHeadersInterface.getHeaderInterfaceId());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_RECEIPT_SOURCE_CODE, rcvHeadersInterface.getReciptSourceCode());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_TRANSACTION_TYPE, rcvHeadersInterface.getTransactionType());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_AUTO_TRANSACT_CODE, rcvHeadersInterface.getAutoTransactCode());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_LAST_UPDATE_DATE, rcvHeadersInterface.getLastUpdateDate());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_LAST_UPDATED_BY, rcvHeadersInterface.getLastUpdateBy());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_CREATED_BY, rcvHeadersInterface.getCreatedBy());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_RECEIPT_NUM, rcvHeadersInterface.getReciptNum());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_VENDOR_ID, rcvHeadersInterface.getVendorId());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_VENDOR_SITE_CODE, rcvHeadersInterface.getVendorSiteCode());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_VENDOR_SITE_ID, rcvHeadersInterface.getVendorSiteId());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_SHIP_TO_ORGANIZATION_CODE, rcvHeadersInterface.getShipToOrganizationCode());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_LOCATION_ID, rcvHeadersInterface.getLocationId());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_RECEIVER_ID, rcvHeadersInterface.getReceiverId());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_CURRENCY_CODE, rcvHeadersInterface.getCurrencyCode());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_CONVERSION_RATE_TYPE, rcvHeadersInterface.getConversionRateType());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_CONVERSION_RATE, rcvHeadersInterface.getConversionRate());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_CONVERSION_RATE_DATE, rcvHeadersInterface.getConversionRateDate());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_PAYMENT_TERMS_ID, rcvHeadersInterface.getPaymentTermsId());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_TRANSACTION_DATE, rcvHeadersInterface.getTransactionDate());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_COMMENTS, rcvHeadersInterface.getComments());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_ORG_ID, rcvHeadersInterface.getOrgId());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_PROCESSING_STATUS_CODE, rcvHeadersInterface.getProcessingStatusCode());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_VALIDATION_FLAG, rcvHeadersInterface.getValidationFlag());
+        values.put(RcvHeadersInterfaceCatalogo.COLUMN_GROUP_ID, rcvHeadersInterface.getGroupId());
+        super.insert(RcvHeadersInterfaceCatalogo.TABLE, values);
     }
 
     public RcvHeadersInterface get(Long interfaceHeaderId) throws DaoException {

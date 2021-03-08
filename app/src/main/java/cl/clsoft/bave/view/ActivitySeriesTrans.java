@@ -2,6 +2,7 @@ package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,7 +34,7 @@ import cl.clsoft.bave.model.MtlSerialNumbersInterface;
 import cl.clsoft.bave.presenter.SeriesTransPresenter;
 import cl.clsoft.bave.service.impl.TransSubinvService;
 
-public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
+public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
     //Variables
     private String nroTraspaso;
@@ -77,13 +78,6 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
         return new SeriesTransPresenter(this, new TransSubinvService());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-
-        inflater.inflate(R.menu.menu_serie_trans_subinv, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,6 +201,13 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_serie_trans_subinv, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()){
@@ -225,6 +226,15 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
                 i.putStringArrayListExtra("series", (ArrayList<String>) adapter.getSeries());
                 startActivity(i);
                 this.finish();
+                return true;
+            case R.id.delete:
+                Log.d(TAG, "seleccionados " + adapter.getSeriesSeleccionados().size());
+                if (adapter.getSeriesSeleccionados().size() > 0) {
+                    ConfirmationDialog dialogDelete = ConfirmationDialog.newInstance("Esta seguro de eliminar las serie(s) seleccionada(s)?", "Confirmación", "delete");
+                    dialogDelete.show(getSupportFragmentManager(), "deleteSerieConfirm");
+                } else {
+                    showWarning("Debe seleccionar al menos una serie.");
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -246,4 +256,16 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> {
         }
     }
 
+    @Override
+    public void onDialogAceptarClick(DialogFragment dialog) {
+        String tipo = dialog.getArguments().getString("tipo");
+        if (tipo.equalsIgnoreCase("delete")) {
+            this.adapter.deleteSeleccionados();
+        }
+    }
+
+    @Override
+    public void onDialogCancelarClick(DialogFragment dialog) {
+
+    }
 }

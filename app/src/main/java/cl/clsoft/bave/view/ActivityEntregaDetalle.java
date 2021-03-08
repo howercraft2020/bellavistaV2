@@ -55,7 +55,7 @@ public class ActivityEntregaDetalle extends BaseActivity<EntregaDetallePresenter
         // Set Controls
         this.rcvShipmentHeaders = mPresenter.getEntrega(this.shipmentHeaderId);
         if (this.rcvShipmentHeaders != null) {
-            this.textShipmentHeaderId.setText(rcvShipmentHeaders.getShipmentHeaderId().toString());
+            this.textShipmentHeaderId.setText(rcvShipmentHeaders.getPoNumber().toString());
             this.textReceiptNum.setText(rcvShipmentHeaders.getReceiptNum());
             this.textCreationDate.setText(rcvShipmentHeaders.getCreationDate());
         }

@@ -2,6 +2,8 @@ package cl.clsoft.bave.presenter;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
+
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlSystemItems;
@@ -52,6 +54,24 @@ public class EntregaAgregarResumenPresenter extends BasePresenter {
             this.mView.showError(e.getMessage());
         }
         return null;
+    }
+
+    public void addTransacctionInterface(Long shipmentHeaderId, Long transactionId, String subinventoryCode,
+                                         String locatorCode, String lote, String vencimiento, String atributo1,
+                                         String atributo2, String atributo3, List<String> series, Long cantidad) {
+        try {
+            this.mService.addTransacctionInterface(shipmentHeaderId, transactionId, subinventoryCode, locatorCode,
+                    lote, vencimiento, atributo1, atributo2, atributo3, series, cantidad);
+            mView.resultadoOkAddTransaction();
+        } catch(ServiceException e) {
+            if (e.getCodigo() == 1) {
+                this.mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                this.mView.showError(e.getDescripcion());
+            }
+        } catch(Exception e){
+            this.mView.showError(e.getMessage());
+        }
     }
 
 }

@@ -16,6 +16,11 @@ public class RcvShipmentHeadersCatalogo {
     public static final String COLUMN_RECEIPT_NUM = "receipt_num";
     public static final String COLUMN_EMPLOYEE_ID = "employee_id";
     public static final String COLUMN_SHIP_TO_ORG_ID = "ship_to_org_id";
+    public static final String COLUMN_PO_NUMBER = "po_number";
+    public static final String COLUMN_HEADER_INTERFACE_ID = "headerInterfaceId";
+    public static final String COLUMN_INTERFACE_TRANSACTION_ID = "interfaceTransactionId";
+    public static final String COLUMN_GROUP_ID = "groupId";
+    public static final String COLUMN_TRANSACTION_INTERFACE_ID = "transactionInterfaceId";
 
     public static final String CREATE_TABLE =
             " CREATE TABLE " + TABLE + " ( " +
@@ -32,6 +37,11 @@ public class RcvShipmentHeadersCatalogo {
                     COLUMN_RECEIPT_NUM + " TEXT, " +
                     COLUMN_EMPLOYEE_ID + " INTEGER, " +
                     COLUMN_SHIP_TO_ORG_ID +" INTEGER, " +
+                    COLUMN_PO_NUMBER +" INTEGER, " +
+                    COLUMN_HEADER_INTERFACE_ID +" INTEGER, " +
+                    COLUMN_INTERFACE_TRANSACTION_ID +" INTEGER, " +
+                    COLUMN_GROUP_ID +" INTEGER, " +
+                    COLUMN_TRANSACTION_INTERFACE_ID +" INTEGER, " +
                     " PRIMARY KEY (" + COLUMN_SHIPMENT_HEADER_ID + " )" +
                     ")";
 

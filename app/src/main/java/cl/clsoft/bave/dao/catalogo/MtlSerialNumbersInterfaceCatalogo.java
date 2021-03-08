@@ -8,7 +8,11 @@ public class MtlSerialNumbersInterfaceCatalogo {
     public static final String COLUMN_LAST_UPDATED_BY = "last_updated_by";
     public static final String COLUMN_CREATION_DATE = "creation_date";
     public static final String COLUMN_CREATED_BY = "created_by";
+    public static final String COLUMN_LAST_UPDATE_LOGIN = "last_update_login";
     public static final String COLUMN_FM_SERIAL_NUMBER = "fm_serial_number";
+    public static final String COLUMN_TO_SERIAL_NUMBER = "to_serial_number";
+    public static final String COLUMN_PRODUCT_CODE = "product_code";
+    public static final String COLUMN_PRODUCT_TRANSACTION_ID = "product_transaction_id";
 
     public static final String CREATE_TABLE =
             " CREATE TABLE " + TABLE + "( " +
@@ -17,8 +21,15 @@ public class MtlSerialNumbersInterfaceCatalogo {
                     COLUMN_LAST_UPDATED_BY + " INTEGER, " +
                     COLUMN_CREATION_DATE + " TEXT, " +
                     COLUMN_CREATED_BY + " INTEGER, " +
-                    COLUMN_FM_SERIAL_NUMBER + " TEXT " +
+                    COLUMN_LAST_UPDATE_LOGIN + " INTEGER, " +
+                    COLUMN_FM_SERIAL_NUMBER + " TEXT, " +
+                    COLUMN_TO_SERIAL_NUMBER + " TEXT, " +
+                    COLUMN_PRODUCT_CODE + " TEXT, " +
+                    COLUMN_PRODUCT_TRANSACTION_ID + " INTEGER, " +
+                    " PRIMARY KEY (" + COLUMN_TRANSACTION_INTERFACE_ID + " )" +
                     ")";
+
+    public static final String SELECT = "SELECT * FROM " + TABLE + " WHERE " +COLUMN_TRANSACTION_INTERFACE_ID + " = ?";
 
     public static final String SELECT_ALL_BY_ID = "SELECT * FROM " + TABLE + " WHERE " +COLUMN_TRANSACTION_INTERFACE_ID +
                                                   " = ?";
