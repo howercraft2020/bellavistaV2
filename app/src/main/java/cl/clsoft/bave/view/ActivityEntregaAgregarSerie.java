@@ -161,6 +161,11 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
     }
 
     @Override
+    public void onBackPressed() {
+        this.confirmacionSalir();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_entrega_agregar_serie, menu);
@@ -172,8 +177,7 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
         switch (item.getItemId()) {
             case android.R.id.home:
                 Log.d(TAG, "home");
-                ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
-                dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
+                this.confirmacionSalir();
                 return true;
             case R.id.next:
                 Log.d(TAG, "next");
@@ -254,5 +258,10 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
     @Override
     public void onDialogCancelarClick(DialogFragment dialog) {
 
+    }
+
+    private void confirmacionSalir() {
+        ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
+        dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
     }
 }

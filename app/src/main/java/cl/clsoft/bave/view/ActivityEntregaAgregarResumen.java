@@ -67,7 +67,6 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
         return new EntregaAgregarResumenPresenter(this, new AppTaskExecutor(this), new EntregaServiceImpl());
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -140,6 +139,11 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
     }
 
     @Override
+    public void onBackPressed() {
+        this.confirmacionSalir();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_entrega_agregar_resumen, menu);
@@ -150,8 +154,7 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
         switch (item.getItemId()) {
             case android.R.id.home:
                 Log.d(TAG, "home");
-                ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
-                dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
+                this.confirmacionSalir();
                 return true;
             case R.id.grabar:
                 Log.d(TAG, "grabar");
@@ -267,21 +270,25 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
 
     }
 
+    private void confirmacionSalir() {
+        ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
+        dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
+    }
+
     public void resultadoOkAddTransaction() {
         new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-                .setTitleText("Éxito")
-                .setContentText("Creación exitosa")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        Log.d("CMFA", "CLICK");
-                        Intent i = new Intent(getApplicationContext(), ActivityEntregaDetalle.class);
-                        i.putExtra("ShipmentHeaderId", shipmentHeaderId);
-                        startActivity(i);
-                        finish();
-                    }
-                })
-                .show();
-
+            .setTitleText("Éxito")
+            .setContentText("Creación exitosa")
+            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sDialog) {
+                    Log.d("CMFA", "CLICK");
+                    Intent i = new Intent(getApplicationContext(), ActivityEntregaDetalle.class);
+                    i.putExtra("ShipmentHeaderId", shipmentHeaderId);
+                    startActivity(i);
+                    finish();
+                }
+            })
+            .show();
     }
 }
