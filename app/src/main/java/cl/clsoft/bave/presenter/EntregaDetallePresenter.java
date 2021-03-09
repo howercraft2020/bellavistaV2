@@ -2,7 +2,10 @@ package cl.clsoft.bave.presenter;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
+
 import cl.clsoft.bave.base.BasePresenter;
+import cl.clsoft.bave.dto.TransactionsDto;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.RcvShipmentHeaders;
 import cl.clsoft.bave.service.IEntregaService;
@@ -25,6 +28,19 @@ public class EntregaDetallePresenter extends BasePresenter {
     public RcvShipmentHeaders getEntrega(Long shipmentHeaderId) {
         try {
             return this.mService.getEntrega(shipmentHeaderId);
+        } catch (ServiceException e) {
+            if (e.getCodigo() == 1) {
+                mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                mView.showError(e.getDescripcion());
+            }
+        }
+        return null;
+    }
+
+    public List<TransactionsDto> getTransactions(Long shipmentHeaderId) {
+        try {
+            return this.mService.getTransactionsInterfaceByShipmentHeader(shipmentHeaderId);
         } catch (ServiceException e) {
             if (e.getCodigo() == 1) {
                 mView.showWarning(e.getDescripcion());

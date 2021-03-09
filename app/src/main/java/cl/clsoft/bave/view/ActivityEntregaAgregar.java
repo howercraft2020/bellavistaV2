@@ -47,8 +47,11 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
     private Long transactionId;
     private String subinventoryCode;
     private String locatorCode;
+    private Double cantidad;
     private String lote;
+    private String loteProveedor;
     private String vencimiento;
+    private String categoria;
     private String atributo1;
     private String atributo2;
     private String atributo3;
@@ -70,6 +73,8 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
     private TextView textProductoDescription;
     private TextView textProductoCantidad;
     private TextView textProductoLinea;
+    private TextInputLayout layoutCantidad;
+    private TextInputEditText textCantidad;
     private TextInputLayout layoutSubinventory;
     private InstantAutoCompleteTextView textSubinventory;
     private TextInputLayout layoutLocator;
@@ -103,6 +108,8 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
         this.textProductoDescription = findViewById(R.id.textProductoDescription);
         this.textProductoCantidad = findViewById(R.id.textProductoCantidad);
         this.textProductoLinea = findViewById(R.id.textProductoLinea);
+        this.layoutCantidad = findViewById(R.id.layoutCantidad);
+        this.textCantidad = findViewById(R.id.textCantidad);
         this.layoutSubinventory = findViewById(R.id.layoutSubinventory);
         this.textSubinventory = findViewById(R.id.textSubinventory);
         this.layoutLocator = findViewById(R.id.layoutLocator);
@@ -113,15 +120,19 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
         // Set Controls
         this.shipmentHeaderId = this.getIntent().getLongExtra("ShipmentHeaderId", 0);
         this.transactionId = this.getIntent().getLongExtra("TransactionId", 0);
+        this.cantidad = this.getIntent().getDoubleExtra("Cantidad", 0);
         this.subinventoryCode = this.getIntent().getStringExtra("SubinventoryCode");
         this.locatorCode = this.getIntent().getStringExtra("LocatorCode");
         this.lote = this.getIntent().getStringExtra("Lote");
+        this.loteProveedor = this.getIntent().getStringExtra("LoteProveedor");
         this.vencimiento = this.getIntent().getStringExtra("Vencimiento");
+        this.categoria = this.getIntent().getStringExtra("Categoria");
         this.atributo1 = this.getIntent().getStringExtra("Atributo1");
         this.atributo2 = this.getIntent().getStringExtra("Atributo2");
         this.atributo3 = this.getIntent().getStringExtra("Atributo3");
         this.series = this.getIntent().getStringArrayListExtra("series");
         Log.d(TAG, "Lote: " + lote);
+        Log.d(TAG, "Cantidad: " + cantidad);
 
         if (transactionId > 0) {
             RcvTransactions transaction = mPresenter.getTransactionById(this.transactionId);
@@ -139,6 +150,7 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                         this.isSerie = false;
                     }
                     this.fillProducto(item.getDescription(), item.getSegment1(), transaction.getQuantity(),transaction.getLineNum(), this.isLote, this.isSerie);
+                    this.layoutCantidad.setVisibility(View.VISIBLE);
                     this.layoutSubinventory.setVisibility(View.VISIBLE);
                     this.layoutLocator.setVisibility(View.VISIBLE);
 
@@ -147,6 +159,7 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
         } else {
             this.rlayoutSigle.setVisibility(View.VISIBLE);
             this.rlayoutItem.setVisibility(View.GONE);
+            this.layoutCantidad.setVisibility(View.GONE);
             this.layoutSubinventory.setVisibility(View.GONE);
             this.layoutLocator.setVisibility(View.GONE);
         }
@@ -225,6 +238,8 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                 }
             }
         }
+
+        this.textCantidad.setText(this.cantidad.toString());
     }
 
     @Override
@@ -252,34 +267,42 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                 return true;
             case R.id.next:
                 Log.d(TAG, "next");
-                if (this.isLote) {
-                    Intent iLote = new Intent(this, ActivityEntregaAgregarLote.class);
-                    iLote.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
-                    iLote.putExtra("TransactionId", this.transactionId);
-                    iLote.putExtra("SubinventoryCode", this.subinventoryCode);
-                    iLote.putExtra("LocatorCode", this.locatorCode);
-                    iLote.putExtra("Lote", this.lote);
-                    iLote.putExtra("Vencimiento", this.vencimiento);
-                    iLote.putExtra("Atributo1", this.atributo1);
-                    iLote.putExtra("Atributo2", this.atributo2);
-                    iLote.putExtra("Atributo3", this.atributo3);
-                    iLote.putStringArrayListExtra("series", (ArrayList<String>) this.series);
-                    startActivity(iLote);
-                    this.finish();
-                } else if (isSerie) {
-                    Intent iSerie = new Intent(this, ActivityEntregaAgregarSerie.class);
-                    iSerie.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
-                    iSerie.putExtra("TransactionId", this.transactionId);
-                    iSerie.putExtra("SubinventoryCode", this.subinventoryCode);
-                    iSerie.putExtra("LocatorCode", this.locatorCode);
-                    iSerie.putExtra("Lote", this.lote);
-                    iSerie.putExtra("Vencimiento", this.vencimiento);
-                    iSerie.putExtra("Atributo1", this.atributo1);
-                    iSerie.putExtra("Atributo2", this.atributo2);
-                    iSerie.putExtra("Atributo3", this.atributo3);
-                    iSerie.putStringArrayListExtra("series", (ArrayList<String>) this.series);
-                    startActivity(iSerie);
-                    this.finish();
+                if (this.validaDatos()) {
+                    if (this.isLote) {
+                        Intent iLote = new Intent(this, ActivityEntregaAgregarLote.class);
+                        iLote.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+                        iLote.putExtra("TransactionId", this.transactionId);
+                        iLote.putExtra("Cantidad", this.cantidad);
+                        iLote.putExtra("SubinventoryCode", this.subinventoryCode);
+                        iLote.putExtra("LocatorCode", this.locatorCode);
+                        iLote.putExtra("Lote", this.lote);
+                        iLote.putExtra("LoteProveedor", this.loteProveedor);
+                        iLote.putExtra("Vencimiento", this.vencimiento);
+                        iLote.putExtra("Categoria", this.categoria);
+                        iLote.putExtra("Atributo1", this.atributo1);
+                        iLote.putExtra("Atributo2", this.atributo2);
+                        iLote.putExtra("Atributo3", this.atributo3);
+                        iLote.putStringArrayListExtra("series", (ArrayList<String>) this.series);
+                        startActivity(iLote);
+                        this.finish();
+                    } else if (isSerie) {
+                        Intent iSerie = new Intent(this, ActivityEntregaAgregarSerie.class);
+                        iSerie.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+                        iSerie.putExtra("TransactionId", this.transactionId);
+                        iSerie.putExtra("Cantidad", this.cantidad);
+                        iSerie.putExtra("SubinventoryCode", this.subinventoryCode);
+                        iSerie.putExtra("LocatorCode", this.locatorCode);
+                        iSerie.putExtra("Lote", this.lote);
+                        iSerie.putExtra("LoteProveedor", this.loteProveedor);
+                        iSerie.putExtra("Vencimiento", this.vencimiento);
+                        iSerie.putExtra("Categoria", this.categoria);
+                        iSerie.putExtra("Atributo1", this.atributo1);
+                        iSerie.putExtra("Atributo2", this.atributo2);
+                        iSerie.putExtra("Atributo3", this.atributo3);
+                        iSerie.putStringArrayListExtra("series", (ArrayList<String>) this.series);
+                        startActivity(iSerie);
+                        this.finish();
+                    }
                 }
                 return true;
             default:
@@ -335,8 +358,10 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
 
                 this.rlayoutItem.setVisibility(View.VISIBLE);
                 this.rlayoutSigle.setVisibility(View.GONE);
+                this.layoutCantidad.setVisibility(View.VISIBLE);
                 this.layoutSubinventory.setVisibility(View.VISIBLE);
                 this.layoutLocator.setVisibility(View.VISIBLE);
+                this.textCantidad.setText(rcvTransactions.getQuantity().toString());
             }
         }
     }
@@ -362,7 +387,7 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
         }
     }
 
-    private void fillProducto(String descripcion, String segment, Long cantidad, Long linea, boolean isLote, boolean isSerie) {
+    private void fillProducto(String descripcion, String segment, Double cantidad, Long linea, boolean isLote, boolean isSerie) {
         this.rlayoutSigle.setVisibility(View.GONE);
         this.rlayoutItem.setVisibility(View.VISIBLE);
         this.textProductoDescription.setText(descripcion);
@@ -377,18 +402,6 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
             this.textProductoSerie.setText("SI");
         else
             this.textProductoSerie.setText("NO");
-    }
-
-    public void cleanScreen() {
-        this.rlayoutSigle.setVisibility(View.VISIBLE);
-        this.rlayoutItem.setVisibility(View.GONE);
-        this.layoutSubinventory.setVisibility(View.GONE);
-        this.layoutLocator.setVisibility(View.GONE);
-        this.textSigle.setText("");
-
-        this.segment = null;
-        this.inventoryItemId = null;
-
     }
 
     @Override
@@ -411,4 +424,79 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
         ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
         dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
     }
+
+    private boolean validaDatos() {
+
+        // Valida Sigle
+        if (this.transactionId == null) {
+            return false;
+        }
+
+        // Valida Cantidad.
+        if (this.textCantidad.getText() == null) {
+            this.textCantidad.setError("ingrese la cantidad");
+            return false;
+        }
+        if (this.textCantidad.getText().toString().isEmpty()) {
+            this.textCantidad.setError("ingrese la cantidad");
+            return false;
+        }
+        this.cantidad = Double.valueOf(this.textCantidad.getText().toString());
+
+        // Valida Subinventario
+        if (this.textSubinventory.getText() == null) {
+            this.textSubinventory.setError("ingrese el subinventario");
+            return false;
+        }
+        if (this.textSubinventory.getText().toString().isEmpty()) {
+            this.textSubinventory.setError("ingrese el subinventario");
+            return false;
+        }
+        this.subinventoryCode = this.textSubinventory.getText().toString();
+
+        // Valida Localizador
+        if (this.textLocator.getText() == null) {
+            this.textLocator.setError("ingrese el localizador");
+            return false;
+        }
+        if (this.textLocator.getText().toString().isEmpty()) {
+            this.textLocator.setError("ingrese el localizador");
+            return false;
+        }
+        this.locatorCode = this.textLocator.getText().toString();
+
+        return true;
+    }
+
+    private void cleanScreen() {
+        this.rlayoutSigle.setVisibility(View.VISIBLE);
+        this.rlayoutItem.setVisibility(View.GONE);
+        this.layoutCantidad.setVisibility(View.GONE);
+        this.layoutSubinventory.setVisibility(View.GONE);
+        this.layoutLocator.setVisibility(View.GONE);
+        this.textSigle.setText("");
+
+        // Reinicia Variables
+        this.transactionId = null;
+        this.segment = null;
+        this.inventoryItemId = null;
+        this.subinventoryCode = null;
+        this.textSubinventory.setText("");
+        this.locatorCode = null;
+        this.textLocator.setText("");
+        this.cantidad = null;
+        this.textCantidad.setText("");
+
+        this.lote = null;
+        this.loteProveedor = null;
+        this.vencimiento = null;
+        this.categoria = null;
+        this.atributo1 = null;
+        this.atributo2 = null;
+        this.atributo3 = null;
+
+        this.series = new ArrayList<>();
+
+    }
+
 }

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dip">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dip"
+        android:paddingTop="8dp"
+        android:paddingLeft="10dp"
+        android:src="@drawable/inventario05_48dp" />
+
+    <TextView
+        android:id="@+id/labelLinea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:textStyle="bold"
+        android:text="INVENTARIO ID:" />
+
+    <TextView
+        android:id="@+id/textLinea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/labelLinea"
+        android:paddingLeft="10dp"
+        android:text="idText" />
+
+    <TextView
+        android:id="@+id/labelSigle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/labelLinea"
+        android:layout_marginTop="2dp"
+        android:textStyle="bold"
+        android:text="NOMBRE:" />
+
+    <TextView
+        android:id="@+id/textSigle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/labelSigle"
+        android:layout_below="@id/labelLinea"
+        android:layout_marginTop="1dp"
+        android:paddingLeft="10dp"
+        android:text="nombreText" />
+
+    <TextView
+        android:id="@+id/labelFechaCreacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/labelSigle"
+        android:text="FECHA CREACION:"
+        android:textStyle="bold"
+        android:paddingBottom="10dp"/>
+
+
+    <TextView
+        android:id="@+id/textFechaCreacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labelSigle"
+        android:layout_toRightOf="@+id/labelFechaCreacion"
+        android:layout_marginTop="0dp"
+        android:text="fechaCreacionText"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_alignBottom="@id/labelFechaCreacion" />
+
+</RelativeLayout>

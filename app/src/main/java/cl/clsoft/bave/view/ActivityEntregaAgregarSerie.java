@@ -38,10 +38,13 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
     private String TAG = "EntregaAgregarSerie";
     private Long shipmentHeaderId;
     private Long transactionId;
+    private Double cantidad;
     private String subinventoryCode;
     private String locatorCode;
     private String lote;
+    private String loteProveedor;
     private String vencimiento;
+    private String categoria;
     private String atributo1;
     private String atributo2;
     private String atributo3;
@@ -49,7 +52,6 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
     private String currentSerie = "";
     private boolean isLote = false;
     private boolean isSerie = false;
-    private Long cantidad;
 
     // Controls
     private TextInputLayout layoutSerie;
@@ -81,10 +83,13 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
         // Set Controls
         this.shipmentHeaderId = this.getIntent().getLongExtra("ShipmentHeaderId", 0);
         this.transactionId = this.getIntent().getLongExtra("TransactionId", 0);
+        this.cantidad = this.getIntent().getDoubleExtra("Cantidad", 0);
         this.subinventoryCode = this.getIntent().getStringExtra("SubinventoryCode");
         this.locatorCode = this.getIntent().getStringExtra("LocatorCode");
         this.lote = this.getIntent().getStringExtra("Lote");
+        this.loteProveedor = this.getIntent().getStringExtra("LoteProveedor");
         this.vencimiento = this.getIntent().getStringExtra("Vencimiento");
+        this.categoria = this.getIntent().getStringExtra("Categoria");
         this.atributo1 = this.getIntent().getStringExtra("Atributo1");
         this.atributo2 = this.getIntent().getStringExtra("Atributo2");
         this.atributo3 = this.getIntent().getStringExtra("Atributo3");
@@ -106,7 +111,6 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
                 } else {
                     this.isSerie = false;
                 }
-                cantidad = transaction.getQuantity();
             }
         }
 
@@ -116,7 +120,6 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
             {
                 Log.d(TAG, "onEditorAction: " + textView.getText());
                 Log.d(TAG, "actionId: " + actionId);
-                Log.d(TAG, "Key Code: " + event.getKeyCode());
                 boolean action = false;
                 action = true;
                 if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
@@ -184,10 +187,13 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
                 Intent iResumen = new Intent(this, ActivityEntregaAgregarResumen.class);
                 iResumen.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
                 iResumen.putExtra("TransactionId", this.transactionId);
+                iResumen.putExtra("Cantidad", this.cantidad);
                 iResumen.putExtra("SubinventoryCode", this.subinventoryCode);
                 iResumen.putExtra("LocatorCode", this.locatorCode);
                 iResumen.putExtra("Lote", this.lote);
+                iResumen.putExtra("LoteProveedor", this.loteProveedor);
                 iResumen.putExtra("Vencimiento", this.vencimiento);
+                iResumen.putExtra("Categoria", this.categoria);
                 iResumen.putExtra("Atributo1", this.atributo1);
                 iResumen.putExtra("Atributo2", this.atributo2);
                 iResumen.putExtra("Atributo3", this.atributo3);
@@ -201,10 +207,13 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
                     Intent iLote = new Intent(this, ActivityEntregaAgregarLote.class);
                     iLote.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
                     iLote.putExtra("TransactionId", this.transactionId);
+                    iLote.putExtra("Cantidad", this.cantidad);
                     iLote.putExtra("SubinventoryCode", this.subinventoryCode);
                     iLote.putExtra("LocatorCode", this.locatorCode);
                     iLote.putExtra("Lote", this.lote);
+                    iLote.putExtra("LoteProveedor", this.loteProveedor);
                     iLote.putExtra("Vencimiento", this.vencimiento);
+                    iLote.putExtra("Categoria", this.categoria);
                     iLote.putExtra("Atributo1", this.atributo1);
                     iLote.putExtra("Atributo2", this.atributo2);
                     iLote.putExtra("Atributo3", this.atributo3);
@@ -215,10 +224,13 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
                     Intent iAgregar = new Intent(this, ActivityEntregaAgregar.class);
                     iAgregar.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
                     iAgregar.putExtra("TransactionId", this.transactionId);
+                    iAgregar.putExtra("Cantidad", this.cantidad);
                     iAgregar.putExtra("SubinventoryCode", this.subinventoryCode);
                     iAgregar.putExtra("LocatorCode", this.locatorCode);
                     iAgregar.putExtra("Lote", this.lote);
+                    iAgregar.putExtra("LoteProveedor", this.loteProveedor);
                     iAgregar.putExtra("Vencimiento", this.vencimiento);
+                    iAgregar.putExtra("Categoria", this.categoria);
                     iAgregar.putExtra("Atributo1", this.atributo1);
                     iAgregar.putExtra("Atributo2", this.atributo2);
                     iAgregar.putExtra("Atributo3", this.atributo3);

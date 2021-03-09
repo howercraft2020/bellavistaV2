@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="24dp"
+    android:paddingTop="5dp"
     android:paddingLeft="24dp"
     android:paddingRight="24dp">
 
@@ -18,7 +18,6 @@
         android:id="@+id/layoutLote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:hint="Lote"
         android:textColorHint="?attr/colorPrimary">
@@ -34,10 +33,27 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutLoteProveedor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Lote Proveedor"
+        android:textColorHint="?attr/colorPrimary">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textLoteProveedor"
+            android:textColor="@android:color/black"
+            android:backgroundTint="?attr/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:inputType="textPhonetic"
+            android:imeOptions="actionNext"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutVencimiento"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:hint="Vencimiento (dd-mm-aaaa)"
         android:textColorHint="?attr/colorPrimary">
@@ -127,7 +143,6 @@
         android:id="@+id/layoutAtributo1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:hint="Atributo 1"
         android:textColorHint="?attr/colorPrimary">
@@ -145,7 +160,6 @@
         android:id="@+id/layoutAtributo2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:hint="Atributo 2"
         android:textColorHint="?attr/colorPrimary">
@@ -163,7 +177,6 @@
         android:id="@+id/layoutAtributo3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:hint="Atributo 3"
         android:textColorHint="?attr/colorPrimary">

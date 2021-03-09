@@ -8,7 +8,7 @@ public class RcvTransactions {
     private Long createdBy;
     private String transactionType;
     private String transactionDate;
-    private Long quantity;
+    private Double quantity;
     private String unitOfMeasure;
     private Long shipmentHeaderId;
     private Long  shipmentLineId;
@@ -95,11 +95,11 @@ public class RcvTransactions {
         this.transactionDate = transactionDate;
     }
 
-    public Long getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Long quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 

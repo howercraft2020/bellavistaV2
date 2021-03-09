@@ -92,6 +92,9 @@
         <activity
             android:name=".view.ActivityEntregaAgregarResumen"
             android:label="Resumen"/>
+        <activity
+            android:name=".view.ActivityEntregaTransactionDetalle"
+            android:label="Transacción"/>
 
         <!-- GENERICO -->
         <activity

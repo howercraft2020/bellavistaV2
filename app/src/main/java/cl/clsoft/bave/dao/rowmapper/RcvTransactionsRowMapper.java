@@ -18,7 +18,7 @@ public class RcvTransactionsRowMapper implements  RowMapper<RcvTransactions>{
         entity.setCreatedBy(cursor.getLong(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_CREATED_BY)));
         entity.setTransactionType(cursor.getString(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_TRANSACTION_TYPE)));
         entity.setTransactionDate(cursor.getString(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_TRANSACTION_DATE)));
-        entity.setQuantity(cursor.getLong(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_QUANTITY)));
+        entity.setQuantity(cursor.getDouble(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_QUANTITY)));
         entity.setUnitOfMeasure(cursor.getString(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_UNIT_OF_MEASURE)));
         entity.setShipmentHeaderId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_SHIPMENT_HEADER_ID)));
         entity.setShipmentLineId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsCatalogo.COLUMN_SHIPMENT_LINE_ID)));

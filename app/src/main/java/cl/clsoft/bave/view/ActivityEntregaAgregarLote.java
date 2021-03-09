@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,12 +39,14 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
     private String TAG = "EntregaAgregarLote";
     private Long shipmentHeaderId;
     private Long transactionId;
+    private Double cantidad;
     private String subinventoryCode;
     private String locatorCode;
     private boolean isLote = false;
     private boolean isSerie = false;
     private boolean isVencimiento = false;
     private String lote;
+    private String loteProveedor;
     private String vencimiento;
     private String categoria;
     private String atributo1;
@@ -54,6 +57,8 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
     // Controls
     private TextInputLayout layoutLote;
     private TextInputEditText textLote;
+    private TextInputLayout layoutLoteProveedor;
+    private TextInputEditText textLoteProveedor;
     private TextInputLayout layoutVencimiento;
     private TextInputEditText textVencimiento;
     private MaterialSpinner spinnerCategoria;
@@ -86,6 +91,8 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
         this.llProgressBar = findViewById(R.id.llProgressBar);
         this.layoutLote = findViewById(R.id.layoutLote);
         this.textLote = findViewById(R.id.textLote);
+        this.layoutLoteProveedor = findViewById(R.id.layoutLoteProveedor);
+        this.textLoteProveedor = findViewById(R.id.textLoteProveedor);
         this.layoutVencimiento = findViewById(R.id.layoutVencimiento);
         this.textVencimiento = findViewById(R.id.textVencimiento);
         this.spinnerCategoria = findViewById(R.id.spinnerCategoria);
@@ -102,24 +109,75 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
         // Set Controls
         this.shipmentHeaderId = this.getIntent().getLongExtra("ShipmentHeaderId", 0);
         this.transactionId = this.getIntent().getLongExtra("TransactionId", 0);
+        this.cantidad = this.getIntent().getDoubleExtra("Cantidad", 0);
         this.subinventoryCode = this.getIntent().getStringExtra("SubinventoryCode");
         this.locatorCode = this.getIntent().getStringExtra("LocatorCode");
         this.lote = this.getIntent().getStringExtra("Lote");
+        this.loteProveedor = this.getIntent().getStringExtra("LoteProveedor");
         this.vencimiento = this.getIntent().getStringExtra("Vencimiento");
+        this.categoria = this.getIntent().getStringExtra("Categoria");
         this.atributo1 = this.getIntent().getStringExtra("Atributo1");
         this.atributo2 = this.getIntent().getStringExtra("Atributo2");
         this.atributo3 = this.getIntent().getStringExtra("Atributo3");
         this.series = this.getIntent().getStringArrayListExtra("series");
         Log.d(TAG, "Lote: " + this.lote);
+        Log.d(TAG, "Categoria: " + this.categoria);
+        Log.d(TAG, "Atributo1: " + this.atributo1);
+        Log.d(TAG, "Atributo2: " + this.atributo2);
+        Log.d(TAG, "Atributo3: " + this.atributo3);
 
+        // Set Categoria - Atributos
         spinnerAtributo1.setVisibility(View.GONE);
         spinnerAtributo2.setVisibility(View.GONE);
         spinnerAtributo3.setVisibility(View.GONE);
         layoutAtributo1.setVisibility(View.GONE);
         layoutAtributo2.setVisibility(View.GONE);
         layoutAtributo3.setVisibility(View.GONE);
-        fillSpinnerAtributo1();
-        fillSpinnerAtributo2();
+        if (this.categoria != null && !this.categoria.isEmpty()) {
+            Log.d(TAG, "Categoria: " + this.categoria);
+            if (this.categoria.equalsIgnoreCase("REPUESTOS")) {
+                Log.d(TAG, "Set Respuestos");
+                this.fillCategorias(1L);
+                if (this.atributo1 != null && !this.atributo1.isEmpty()) {
+                    if (this.atributo1.equalsIgnoreCase("ALTERNATIVO")) {
+                        this.fillSpinnerAtributo1(1L);
+                    } else if (this.atributo1.equalsIgnoreCase("ORIGINAL")) {
+                        this.fillSpinnerAtributo1(2L);
+                    }
+                    if (this.atributo2 != null && !this.atributo2.isEmpty()) {
+                        if (this.atributo2.equalsIgnoreCase("SI")) {
+                            this.fillSpinnerAtributo2(1L);
+                        } else if (this.atributo2.equalsIgnoreCase("NO")) {
+                            this.fillSpinnerAtributo2(2L);
+                        }
+                    } else {
+                        this.fillSpinnerAtributo2(null);
+                    }
+                    if (this.atributo3 != null && !this.atributo3.isEmpty()) {
+                        this.textAtributo3.setText(this.atributo3);
+                    }
+                } else {
+                    this.fillSpinnerAtributo1(null);
+                }
+            } else if (this.categoria.equalsIgnoreCase("LIQUIDOS Y LUBRICANTES")) {
+                Log.d(TAG, "Set Lubricantes");
+                this.fillCategorias(2L);
+                if (this.atributo1 != null && !this.atributo1.isEmpty()) {
+                    Log.d(TAG, "Set Atributo 1");
+                    this.textAtributo1.setText(this.atributo1);
+                }
+                if (this.atributo2 != null && !this.atributo2.isEmpty()) {
+                    Log.d(TAG, "Set Atributo 2");
+                    this.textAtributo2.setText(this.atributo2);
+                }
+                this.fillSpinnerAtributo1(null);
+                this.fillSpinnerAtributo2(null);
+            }
+        } else {
+            this.fillCategorias(null);
+            this.fillSpinnerAtributo1(null);
+            this.fillSpinnerAtributo2(null);
+        }
 
 
         RcvTransactions transaction = mPresenter.getTransactionById(this.transactionId);
@@ -142,9 +200,7 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                     this.isVencimiento = false;
                 }
                 this.textLote.setText(this.lote);
-                this.textAtributo1.setText(this.atributo1);
-                this.textAtributo2.setText(this.atributo2);
-                this.textAtributo3.setText(this.atributo3);
+                this.textLoteProveedor.setText(this.loteProveedor);
                 if (this.isVencimiento) {
                     this.textVencimiento.setVisibility(View.VISIBLE);
                     this.textVencimiento.setText(this.vencimiento);
@@ -152,51 +208,8 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                     this.layoutVencimiento.setVisibility(View.GONE);
                     this.textVencimiento.setText("");
                 }
-                this.fillCategorias();
             }
         }
-
-        this.textLote.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event)
-            {
-                Log.d(TAG, "onEditorAction: " + textView.getText());
-                Log.d(TAG, "actionId: " + actionId);
-                //Log.d(TAG, "Key Code: " + event.getKeyCode());
-                boolean action = false;
-                action = true;
-                if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
-                {
-                    if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
-                        lote = textView.getText().toString();
-                    }
-                    action = true;
-                }
-                return action;
-            }
-        });
-
-        this.textVencimiento.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event)
-            {
-                Log.d(TAG, "onEditorAction: " + textView.getText());
-                Log.d(TAG, "actionId: " + actionId);
-                //Log.d(TAG, "Key Code: " + event.getKeyCode());
-                boolean action = false;
-                action = true;
-                if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
-                {
-                    if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
-                        vencimiento = textView.getText().toString();
-                        Log.d(TAG, "vencimiento: " + vencimiento);
-                        textAtributo1.requestFocus();
-                    }
-                    action = true;
-                }
-                return action;
-            }
-        });
 
         this.spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -237,6 +250,38 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
             }
         });
 
+        this.spinnerAtributo1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String newAtributo1 = (String) adapterView.getSelectedItem();
+                if (newAtributo1 != null) {
+                    Log.d(TAG, "newAtributo1: " + newAtributo1);
+                    atributo1 = newAtributo1;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        this.spinnerAtributo2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String newAtributo2 = (String) adapterView.getSelectedItem();
+                if (newAtributo2 != null) {
+                    Log.d(TAG, "newAtributo2: " + newAtributo2);
+                    atributo2 = newAtributo2;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         this.textAtributo1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event)
@@ -250,7 +295,6 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 {
                     if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
                         atributo1 = textView.getText().toString();
-                        textAtributo2.requestFocus();
                     }
                     action = true;
                 }
@@ -271,7 +315,6 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 {
                     if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
                         atributo2 = textView.getText().toString();
-                        textAtributo3.requestFocus();
                     }
                     action = true;
                 }
@@ -323,35 +366,45 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 return true;
             case R.id.next:
                 Log.d(TAG, "next");
-                Intent iSerie = new Intent(this, ActivityEntregaAgregarSerie.class);
-                iSerie.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
-                iSerie.putExtra("TransactionId", this.transactionId);
-                iSerie.putExtra("SubinventoryCode", this.subinventoryCode);
-                iSerie.putExtra("LocatorCode", this.locatorCode);
-                iSerie.putExtra("Lote", this.lote);
-                iSerie.putExtra("Vencimiento", this.vencimiento);
-                iSerie.putExtra("Atributo1", this.atributo1);
-                iSerie.putExtra("Atributo2", this.atributo2);
-                iSerie.putExtra("Atributo3", this.atributo3);
-                iSerie.putStringArrayListExtra("series", (ArrayList<String>) this.series);
-                startActivity(iSerie);
-                this.finish();
+                if (this.validaDatos()) {
+                    Intent iSerie = new Intent(this, ActivityEntregaAgregarSerie.class);
+                    iSerie.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+                    iSerie.putExtra("TransactionId", this.transactionId);
+                    iSerie.putExtra("Cantidad", this.cantidad);
+                    iSerie.putExtra("SubinventoryCode", this.subinventoryCode);
+                    iSerie.putExtra("LocatorCode", this.locatorCode);
+                    iSerie.putExtra("Lote", this.lote);
+                    iSerie.putExtra("LoteProveedor", this.loteProveedor);
+                    iSerie.putExtra("Vencimiento", this.vencimiento);
+                    iSerie.putExtra("Categoria", this.categoria);
+                    iSerie.putExtra("Atributo1", this.atributo1);
+                    iSerie.putExtra("Atributo2", this.atributo2);
+                    iSerie.putExtra("Atributo3", this.atributo3);
+                    iSerie.putStringArrayListExtra("series", (ArrayList<String>) this.series);
+                    startActivity(iSerie);
+                    this.finish();
+                }
                 return true;
             case R.id.back:
                 Log.d(TAG, "back");
-                Intent iAgregar = new Intent(this, ActivityEntregaAgregar.class);
-                iAgregar.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
-                iAgregar.putExtra("TransactionId", this.transactionId);
-                iAgregar.putExtra("SubinventoryCode", this.subinventoryCode);
-                iAgregar.putExtra("LocatorCode", this.locatorCode);
-                iAgregar.putExtra("Lote", this.lote);
-                iAgregar.putExtra("Vencimiento", this.vencimiento);
-                iAgregar.putExtra("Atributo1", this.atributo1);
-                iAgregar.putExtra("Atributo2", this.atributo2);
-                iAgregar.putExtra("Atributo3", this.atributo3);
-                iAgregar.putStringArrayListExtra("series", (ArrayList<String>) this.series);
-                startActivity(iAgregar);
-                this.finish();
+                if (this.validaDatos()) {
+                    Intent iAgregar = new Intent(this, ActivityEntregaAgregar.class);
+                    iAgregar.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+                    iAgregar.putExtra("TransactionId", this.transactionId);
+                    iAgregar.putExtra("Cantidad", this.cantidad);
+                    iAgregar.putExtra("SubinventoryCode", this.subinventoryCode);
+                    iAgregar.putExtra("LocatorCode", this.locatorCode);
+                    iAgregar.putExtra("Lote", this.lote);
+                    iAgregar.putExtra("LoteProveedor", this.loteProveedor);
+                    iAgregar.putExtra("Vencimiento", this.vencimiento);
+                    iAgregar.putExtra("Categoria", this.categoria);
+                    iAgregar.putExtra("Atributo1", this.atributo1);
+                    iAgregar.putExtra("Atributo2", this.atributo2);
+                    iAgregar.putExtra("Atributo3", this.atributo3);
+                    iAgregar.putStringArrayListExtra("series", (ArrayList<String>) this.series);
+                    startActivity(iAgregar);
+                    this.finish();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -374,7 +427,7 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
 
     }
 
-    private void fillCategorias() {
+    private void fillCategorias(Long position) {
         List<String> categorias = new ArrayList<>();
 
         categorias.add("REPUESTOS");
@@ -382,9 +435,14 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categorias);
         this.spinnerCategoria.setAdapter(adapter);
+        if (position != null) {
+            Log.d(TAG, "Seleccionando valor " + position);
+            this.spinnerCategoria.setSelection(position.intValue());
+            this.spinnerCategoria.setSelected(true);
+        }
     }
 
-    private void fillSpinnerAtributo1() {
+    private void fillSpinnerAtributo1(Long position) {
         List<String> atributos1 = new ArrayList<>();
 
         atributos1.add("ALTERNATIVO");
@@ -392,9 +450,14 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, atributos1);
         this.spinnerAtributo1.setAdapter(adapter);
+        if (position != null) {
+            Log.d(TAG, "Seleccionando valor " + position);
+            this.spinnerAtributo1.setSelection(position.intValue());
+            this.spinnerAtributo1.setSelected(true);
+        }
     }
 
-    private void fillSpinnerAtributo2() {
+    private void fillSpinnerAtributo2(Long position) {
         List<String> atributos2 = new ArrayList<>();
 
         atributos2.add("SI");
@@ -402,10 +465,69 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, atributos2);
         this.spinnerAtributo2.setAdapter(adapter);
+        if (position != null) {
+            Log.d(TAG, "Seleccionando valor " + position);
+            this.spinnerAtributo2.setSelection(position.intValue());
+            this.spinnerAtributo2.setSelected(true);
+        }
     }
 
     private void confirmacionSalir() {
         ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
         dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
     }
+
+    private boolean validaDatos() {
+
+        // Valida Lote
+        if (this.textLote.getText() == null) {
+            this.textLote.setError("ingrese lote");
+            return false;
+        }
+        if (this.textLote.getText().toString().isEmpty()) {
+            this.textLote.setError("ingrese lote");
+            return false;
+        }
+        this.lote = this.textLote.getText().toString();
+
+        // Valida Lote Proveedor
+        if (this.textLoteProveedor.getText() != null && !this.textLoteProveedor.getText().toString().isEmpty()) {
+            this.loteProveedor = this.textLoteProveedor.getText().toString();
+        } else {
+            this.loteProveedor = null;
+        }
+
+        // Valida Vencimiento
+        if (this.isVencimiento) {
+            if (this.textVencimiento.getText() == null) {
+                this.textVencimiento.setError("ingrese vencimiento");
+                return false;
+            }
+            if (this.textVencimiento.getText().toString().isEmpty()) {
+                this.textVencimiento.setError("ingrese vencimiento");
+                return false;
+            }
+            this.vencimiento = this.textVencimiento.getText().toString();
+        }
+
+        // Valida categoria
+        if (categoria == null) {
+            this.spinnerCategoria.setError("Seleccione categoría");
+            return false;
+        }
+
+        if (this.categoria.equalsIgnoreCase("REPUESTOS")) {
+            // Asigna Atributo 3
+            this.atributo3 = this.textAtributo3.getText().toString();
+        } else if (this.categoria.equalsIgnoreCase("LIQUIDOS Y LUBRICANTES")) {
+            // Asigna Atributo 1
+            this.atributo1 = this.textAtributo1.getText().toString();
+            // Asigna Atributo 2
+            this.atributo2 = this.textAtributo2.getText().toString();
+            // Asigna Atributo 3
+            this.atributo3 = this.textAtributo3.getText().toString();
+        }
+        return true;
+    }
+
 }

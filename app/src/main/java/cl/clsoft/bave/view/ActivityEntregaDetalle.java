@@ -4,16 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
+import cl.clsoft.bave.dto.TransactionsDto;
 import cl.clsoft.bave.model.RcvShipmentHeaders;
 import cl.clsoft.bave.presenter.EntregaDetallePresenter;
 import cl.clsoft.bave.service.impl.EntregaServiceImpl;
@@ -25,11 +33,14 @@ public class ActivityEntregaDetalle extends BaseActivity<EntregaDetallePresenter
     private String TAG = "ActivityEntregaDetalle";
     private Long shipmentHeaderId;
     private RcvShipmentHeaders rcvShipmentHeaders;
+    private List<TransactionsDto> transactions;
 
     // Controls
     private TextView textShipmentHeaderId;
     private TextView textReceiptNum;
     private TextView textCreationDate;
+    private RecyclerView recyclerViewTransactions;
+    private AdapterItemTransactionInterface adapter;
 
     @NonNull
     @Override
@@ -51,6 +62,7 @@ public class ActivityEntregaDetalle extends BaseActivity<EntregaDetallePresenter
         this.textShipmentHeaderId = findViewById(R.id.textShipmentHeaderId);
         this.textReceiptNum = findViewById(R.id.textReceiptNum);
         this.textCreationDate = findViewById(R.id.textCreationDate);
+        this.recyclerViewTransactions = findViewById(R.id.recyclerViewTransactions);
 
         // Set Controls
         this.rcvShipmentHeaders = mPresenter.getEntrega(this.shipmentHeaderId);
@@ -59,6 +71,48 @@ public class ActivityEntregaDetalle extends BaseActivity<EntregaDetallePresenter
             this.textReceiptNum.setText(rcvShipmentHeaders.getReceiptNum());
             this.textCreationDate.setText(rcvShipmentHeaders.getCreationDate());
         }
+
+        this.recyclerViewTransactions.setHasFixedSize(true);
+        this.recyclerViewTransactions.setLayoutManager(new LinearLayoutManager(this));
+        this.transactions = mPresenter.getTransactions(this.shipmentHeaderId);
+        this.adapter = new AdapterItemTransactionInterface(this.transactions);
+        this.recyclerViewTransactions.setAdapter(adapter);
+        final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+        });
+
+        this.recyclerViewTransactions.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean b) {
+            }
+
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+                try {
+                    View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+                    if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+                        int position = recyclerView.getChildAdapterPosition(child);
+                        Intent i = new Intent(getApplicationContext(), ActivityEntregaTransactionDetalle.class);
+                        i.putExtra("InterfaceTransactionId", transactions.get(position).getInterfaceTransactionId());
+                        i.putExtra("ShipmentHeaderId", shipmentHeaderId);
+                        startActivity(i);
+                        finish();
+                        return true;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+            }
+        });
+
     }
 
     @Override

@@ -22,8 +22,8 @@ public class MtlTransactionsLotsIfaceRowMapper implements RowMapper<MtlTransacti
         entity.setInventoryItemId(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_INVENTORY_ITEM_ID)));
         entity.setLastUpdateLogin(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_LAST_UPDATE_LOGIN)));
         entity.setLotNumber(cursor.getString(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_LOT_NUMBER)));
-        entity.setTransactionQuantity(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_TRANSACTION_QUANTITY)));
-        entity.setPrimaryQuantity(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_PRIMARY_QUANTITY)));
+        entity.setTransactionQuantity(cursor.getDouble(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_TRANSACTION_QUANTITY)));
+        entity.setPrimaryQuantity(cursor.getDouble(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_PRIMARY_QUANTITY)));
         entity.setSerialTransactionTempId(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_SERIAL_TRANSACTION_TEMP_ID)));
         entity.setProductCode(cursor.getString(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_PRODUCT_CODE)));
         entity.setProductTransactionId(cursor.getLong(cursor.getColumnIndex(MtlTransactionsLotsIfaceCatalogo.COLUMN_PRODUCT_TRANSACTION_ID)));

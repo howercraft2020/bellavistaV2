@@ -11,8 +11,8 @@ public class MtlTransactionsLotsIface {
     private Long inventoryItemId;
     private Long lastUpdateLogin;
     private String lotNumber;
-    private Long transactionQuantity;
-    private Long primaryQuantity;
+    private Double transactionQuantity;
+    private Double primaryQuantity;
     private Long serialTransactionTempId;
     private String productCode;
     private Long productTransactionId;
@@ -107,19 +107,19 @@ public class MtlTransactionsLotsIface {
         this.lotNumber = lotNumber;
     }
 
-    public Long getTransactionQuantity() {
+    public Double getTransactionQuantity() {
         return transactionQuantity;
     }
 
-    public void setTransactionQuantity(Long transactionQuantity) {
+    public void setTransactionQuantity(Double transactionQuantity) {
         this.transactionQuantity = transactionQuantity;
     }
 
-    public Long getPrimaryQuantity() {
+    public Double getPrimaryQuantity() {
         return primaryQuantity;
     }
 
-    public void setPrimaryQuantity(Long primaryQuantity) {
+    public void setPrimaryQuantity(Double primaryQuantity) {
         this.primaryQuantity = primaryQuantity;
     }
 
