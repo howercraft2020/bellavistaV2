@@ -52,15 +52,6 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> impl
     private List<String> series = new ArrayList<>();
 
     //Controls
-    private TextView nroTraspasoEt;
-    private TextView glosaEt;
-    private TextView codigoSigleEt;
-    private TextView subinvDesdeEt;
-    private TextView localDesdeEt;
-    private TextView loteEt;
-    private TextView cantidadEt;
-    private TextView subinvHastaEt;
-    private TextView localHastaEt;
     private TextInputLayout layoutSerie;
     private AutoCompleteTextView textSerie;
 
@@ -85,15 +76,6 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> impl
         setContentView(R.layout.activity_series_trans);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nroTraspasoEt = (TextView) findViewById(R.id.numeroTraspasoEditText);
-        glosaEt = (TextView) findViewById(R.id.glosaEditText);
-        codigoSigleEt = (TextView) findViewById(R.id.codigoSigleEditText);
-        subinvDesdeEt = (TextView) findViewById(R.id.subinventarioDesdeEditText);
-        localDesdeEt = (TextView) findViewById(R.id.localizadorDesdeEditText);
-        loteEt = (TextView) findViewById(R.id.nroLoteEditText);
-        cantidadEt = (TextView) findViewById(R.id.cantidadEditText);
-        subinvHastaEt = (TextView) findViewById(R.id.subinventarioHastaEditText);
-        localHastaEt = (TextView) findViewById(R.id.localizadorHastaEditText);
         layoutSerie = findViewById(R.id.layoutSerie);
         textSerie = findViewById(R.id.textSerie);
 
@@ -104,25 +86,14 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> impl
         codigoSigle = getIntent().getStringExtra("codigoSigle");
         subinvDesde = getIntent().getStringExtra("subinvDesde");
         localizador = getIntent().getStringExtra("localizador");
-        subinventarioHasta = getIntent().getStringExtra("subinventarioHasta");
-        localizadorHasta = getIntent().getStringExtra("localizadorHasta");
+        subinventarioHasta = getIntent().getStringExtra("subinvHasta");
+        localizadorHasta = getIntent().getStringExtra("localHasta");
         nroLote = getIntent().getStringExtra("nroLote");
         cantidad = getIntent().getLongExtra("cantidad",0);
         id = getIntent().getStringExtra("id");
         this.series = this.getIntent().getStringArrayListExtra("series");
         if (this.series == null)
             this.series = new ArrayList<>();
-
-
-        nroTraspasoEt.setText(nroTraspaso);
-        glosaEt.setText(glosa);
-        codigoSigleEt.setText(codigoSigle);
-        subinvDesdeEt.setText(subinvDesde);
-        localDesdeEt.setText(localizador);
-        loteEt.setText(nroLote);
-        cantidadEt.setText(String.valueOf(cantidad));
-        subinvHastaEt.setText(subinventarioHasta);
-        localHastaEt.setText(localizadorHasta);
 
         //Bind Controls
         this.llProgressBar = findViewById(R.id.llProgressBar);
@@ -215,8 +186,8 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> impl
                 Intent i = new Intent(this,ActivityTransSubinvDest.class);
                 i.putExtra("nroTraspaso", nroTraspaso);
                 i.putExtra("glosa", glosa);
-                i.putExtra("codSigle", codigoSigle);
-                i.putExtra("subinvdesde", subinvDesde);
+                i.putExtra("codigoSigle", codigoSigle);
+                i.putExtra("subinvDesde", subinvDesde);
                 i.putExtra("localizador", localizador);
                 i.putExtra("subinvHasta", subinventarioHasta);
                 i.putExtra("localHasta", localizadorHasta);

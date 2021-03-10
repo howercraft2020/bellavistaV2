@@ -17,86 +17,76 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/BaveTheme">
-
+        <activity android:name=".view.ActivityTransSubinvResumen"></activity>
         <activity android:name=".view.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- INVENTARIO CICLICO -->
+        </activity> <!-- INVENTARIO CICLICO -->
         <activity
             android:name=".view.ActivityCiclicos"
             android:label="Conteos Cíclicos" />
         <activity
             android:name=".view.ActivityCiclicoSub"
-            android:label="Subinventarios"/>
+            android:label="Subinventarios" />
         <activity
             android:name=".view.ActivityCiclicoDetalle"
-            android:label="Conteos"/>
+            android:label="Conteos" />
         <activity
             android:name=".view.ActivityCiclicoAgregar"
-            android:label="Agregar Inventario"/>
+            android:label="Agregar Inventario" />
         <activity
             android:name=".view.ActivityCiclicoEditar"
-            android:label="Editar Inventario"/>
-
-        <!-- INVENTARIO FISICO -->
+            android:label="Editar Inventario" /> <!-- INVENTARIO FISICO -->
         <activity
             android:name=".view.ActivityFisicos"
-            android:label="Inventarios Físicos"/>
+            android:label="Inventarios Físicos" />
         <activity
             android:name=".view.ActivityFisicoSub"
-            android:label="Subinventarios"/>
+            android:label="Subinventarios" />
         <activity
             android:name=".view.ActivityFisicoDetalle"
-            android:label="Tags"/>
+            android:label="Tags" />
         <activity
             android:name=".view.ActivityFisicoAgregar"
-            android:label="Agregar Inventario"/>
+            android:label="Agregar Inventario" />
         <activity
             android:name=".view.ActivityFisicoEditar"
-            android:label="Editar Inventario"/>
-
-        <!-- RECEPCION OC -->
+            android:label="Editar Inventario" /> <!-- RECEPCION OC -->
         <activity android:name=".view.ActivityAgregarTransSubinv" />
         <activity android:name=".view.ActivityTransSubinv" />
         <activity android:name=".Entrega" />
-        <activity android:name=".view.ActivityTransSubinvDetalle"></activity>
+        <activity android:name=".view.ActivityTransSubinvDetalle" />
         <activity android:name=".view.ActivityTransSubinvDest" />
-        <activity android:name=".view.ActivitySeriesTrans"/>
+        <activity android:name=".view.ActivitySeriesTrans" />
         <activity
             android:name=".view.ActivityRecepcionOc"
             android:label="Recepcion" />
         <activity android:name=".view.ActivityArticulosRecepcion" />
-        <activity android:name=".view.ActivityAgregarRecepcion" />
-
-        <!-- ENTREGA -->
+        <activity android:name=".view.ActivityAgregarRecepcion" /> <!-- ENTREGA -->
         <activity
             android:name=".view.ActivityEntregas"
-            android:label="Entregas"/>
+            android:label="Entregas" />
         <activity
             android:name=".view.ActivityEntregaDetalle"
-            android:label="Detalle"/>
+            android:label="Detalle" />
         <activity
             android:name=".view.ActivityEntregaAgregar"
-            android:label="Agregar"/>
+            android:label="Agregar" />
         <activity
             android:name=".view.ActivityEntregaAgregarLote"
-            android:label="Lote"/>
+            android:label="Lote" />
         <activity
             android:name=".view.ActivityEntregaAgregarSerie"
-            android:label="Serie"/>
+            android:label="Serie" />
         <activity
             android:name=".view.ActivityEntregaAgregarResumen"
-            android:label="Resumen"/>
-
-        <!-- GENERICO -->
+            android:label="Resumen" /> <!-- GENERICO -->
         <activity
             android:name=".view.ActivitySigleSearch"
-            android:label="Búsqueda Sigle"/>
+            android:label="Búsqueda Sigle" />
     </application>
 
 </manifest>

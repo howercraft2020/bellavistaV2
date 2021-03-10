@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cl.clsoft.bave.R;
@@ -48,10 +49,15 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
     private String subinvDesde;
     private String localizador;
     private String nroLote;
+    private String subinvHasta;
+    private String localHasta;
     private String id;
     private String codSubinventario;
     private String segment;
+    private List<String> series = new ArrayList<>();
     private int LAUNCH_SEARCHSINGLE_ACTIVITY = 2;
+    private boolean isLote = false;
+    private boolean isSerie = false;
 
     //Controls
     private EditText nroTraspasoEt, glosaEt;
@@ -87,6 +93,7 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_trans_subinv);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_highlight_off_white_36dp);
 
 
         this.llProgressBar = findViewById(R.id.llProgressBar);
@@ -107,14 +114,17 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
 
 
 
-        numeroTraspaso = getIntent().getStringExtra("nroTraspaso");
-        glosa = getIntent().getStringExtra("glosa");
-        codigoSigle = getIntent().getStringExtra("codigoSigle");
-        subinvDesde = getIntent().getStringExtra("subinvDesde");
-        localizador = getIntent().getStringExtra("localizador");
-        nroLote = getIntent().getStringExtra("nroLote");
-        cantidad = getIntent().getLongExtra("cantidad",0L);
-        id = getIntent().getStringExtra("id");
+        this.numeroTraspaso = getIntent().getStringExtra("nroTraspaso");
+        this.glosa = getIntent().getStringExtra("glosa");
+        this.codigoSigle = getIntent().getStringExtra("codigoSigle");
+        this.subinvDesde = getIntent().getStringExtra("subinvDesde");
+        this.localizador = getIntent().getStringExtra("localizador");
+        this.nroLote = getIntent().getStringExtra("nroLote");
+        this.cantidad = getIntent().getLongExtra("cantidad",0L);
+        this.subinvHasta = getIntent().getStringExtra("subinvHasta");
+        this.localHasta = getIntent().getStringExtra("localHasta");
+        this.id = getIntent().getStringExtra("id");
+        this.series = this.getIntent().getStringArrayListExtra("series");
 
         nroTraspasoEt.setText(numeroTraspaso);
         glosaEt.setText(glosa);
@@ -155,10 +165,17 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
                             if(item.getLotControlCode().equalsIgnoreCase("2")){
                                 textLote.setEnabled(true);
                                 layoutLote.setHintEnabled(true);
+                                isLote = true;
                             }
                             else {
                                 textLote.setEnabled(false);
                                 layoutLote.setHintEnabled(false);
+                                isLote = false;
+                            }
+                            if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                                isSerie = true;
+                            } else {
+                                isSerie = false;
                             }
                             layoutCantidad.setHintEnabled(true);
                             textCantidad.setEnabled(true);
@@ -209,20 +226,25 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
             case R.id.action_more:
                 if( mPresenter.cargaTransferencia(articulo, lote, subinventario, localizador, cantidad)) {
                     Intent i = new Intent(this, ActivityTransSubinvDest.class);
-                    i.putExtra("codSigle", articulo);
-                    i.putExtra("subinvdesde", subinventario);
+                    i.putExtra("codigoSigle", articulo);
+                    i.putExtra("subinvDesde", subinventario);
                     i.putExtra("localizador", localizador);
                     i.putExtra("nroLote", lote);
                     i.putExtra("cantidad", cantidad);
                     i.putExtra("glosa", glosa);
                     i.putExtra("nroTraspaso",nroTraspaso);
                     i.putExtra("id",id);
+                    i.putExtra("subinvHasta",subinvHasta);
+                    i.putExtra("localHasta",localHasta);
+                    i.putStringArrayListExtra("series", (ArrayList<String>) this.series);
                     startActivity(i);
                     this.finish();
                     return true;
                 }
                 return true;
             case android.R.id.home:
+                Log.d(TAG, "home");
+                this.confirmacionSalir();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -278,10 +300,17 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
                     if(item.getLotControlCode().equalsIgnoreCase("2")){
                         this.textLote.setEnabled(true);
                         this.layoutLote.setHintEnabled(true);
+                        isLote = true;
                     }
                     else {
                         this.textLote.setEnabled(false);
                         this.layoutLote.setHintEnabled(false);
+                        isLote = false;
+                    }
+                    if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                        isSerie = true;
+                    } else {
+                        isSerie = false;
                     }
                     layoutCantidad.setHintEnabled(true);
                     textCantidad.setEnabled(true);
@@ -296,9 +325,16 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         }
     }
 
+    private void confirmacionSalir() {
+        ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
+        dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
+    }
+
     @Override
     public void onDialogAceptarClick(DialogFragment dialog) {
-
+        Intent i = new Intent(this, ActivityTransSubinv.class);
+        startActivity(i);
+        this.finish();
     }
 
     @Override

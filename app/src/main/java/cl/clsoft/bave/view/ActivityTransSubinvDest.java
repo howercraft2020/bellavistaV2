@@ -49,16 +49,11 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
     private String codSubinventario;
     private String id;
     private Long cantidad;
+    private boolean isLote = false;
+    private boolean isSerie = false;
     private List<String> series;
 
     //Controls
-    private TextView nroTraspasoEt;
-    private TextView glosaEt;
-    private TextView codigoSigleEt;
-    private TextView subinvDesdeEt;
-    private TextView localDesdeEt;
-    private TextView loteEt;
-    private TextView cantidadEt;
     private TextInputLayout layoutSubinventarioDestino;
     private AutoCompleteTextView textSubinventarioDestino;
     private TextInputLayout layoutLocalizadorDestino;
@@ -90,20 +85,13 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
         id = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault()).format(new Date());
 
         this.llProgressBar = findViewById(R.id.llProgressBar);
-        this.nroTraspasoEt = (TextView) findViewById(R.id.numeroTraspasoEditText);
-        this.glosaEt = (TextView) findViewById(R.id.glosaEditText);
-        this.codigoSigleEt = (TextView) findViewById(R.id.codigoSigleEditText);
-        this.subinvDesdeEt = (TextView) findViewById(R.id.subinventarioDesdeEditText);
-        this.localDesdeEt = (TextView) findViewById(R.id.localizadorDesdeEditText);
-        this.loteEt = (TextView) findViewById(R.id.nroLoteEditText);
-        this.cantidadEt = (TextView) findViewById(R.id.cantidadEditText);
         this.textSubinventarioDestino = findViewById(R.id.textSubinventarioDestino);
         this.textLocalizadorDestino = findViewById(R.id.textLocalizadorDestino);
 
 
         this.nroTraspaso = getIntent().getStringExtra("nroTraspaso");
-        this.codigoSigle = getIntent().getStringExtra("codSigle");
-        this.subinvDesde = getIntent().getStringExtra("subinvdesde");
+        this.codigoSigle = getIntent().getStringExtra("codigoSigle");
+        this.subinvDesde = getIntent().getStringExtra("subinvDesde");
         this.localizador = getIntent().getStringExtra("localizador");
         this.nroLote = getIntent().getStringExtra("nroLote");
         this.glosa = getIntent().getStringExtra("glosa");
@@ -116,13 +104,6 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
             id = getIntent().getStringExtra("id");
         }
 
-        nroTraspasoEt.setText(nroTraspaso);
-        codigoSigleEt.setText(codigoSigle);
-        subinvDesdeEt.setText(subinvDesde);
-        localDesdeEt.setText(localizador);
-        loteEt.setText(nroLote);
-        glosaEt.setText(glosa);
-        cantidadEt.setText(String.valueOf(cantidad));
         textSubinventarioDestino.setText(subinvHasta);
         textLocalizadorDestino.setText(localHasta);
 
@@ -152,6 +133,22 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
 
         switch (item.getItemId()){
             case R.id.action_save:
+                Intent i = new Intent(this, ActivityTransSubinvResumen.class);
+                i.putExtra("nroTraspaso", nroTraspaso);
+                i.putExtra("glosa", glosa);
+                i.putExtra("codigoSigle", codigoSigle);
+                i.putExtra("subinvDesde", subinvDesde);
+                i.putExtra("localizador", localizador);
+                i.putExtra("subinvHasta", subinventarioHasta);
+                i.putExtra("localHasta", localizadorHasta);
+                i.putExtra("nroLote", nroLote);
+                i.putExtra("cantidad", cantidad);
+                i.putExtra("id", id);
+                i.putStringArrayListExtra("series", (ArrayList<String>) this.series);
+                startActivity(i);
+                this.finish();
+                return true;
+                /*
                 if (series != null && !series.isEmpty()) {
                     if (series.size() == cantidad.intValue()) {
                         mPresenter.insertarDatos(id, nroTraspaso, codigoSigle, nroLote, subinvDesde, localizador, cantidad, subinventarioHasta, localizadorHasta,series);
@@ -167,25 +164,27 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
                     this.showError("Quedan " + cantidad.intValue() + " series por ingresar");
                 }
                 return true;
+
+                 */
             case R.id.action_serie:
                 if(subinventarioHasta.equals("")){
                     this.showError("Debe Ingresar Subinventario de destino");
                 }
                 else {
                     if(mPresenter.controlSerie(codigoSigle)) {
-                        Intent i = new Intent(this, ActivitySeriesTrans.class);
-                        i.putExtra("nroTraspaso", nroTraspaso);
-                        i.putExtra("glosa", glosa);
-                        i.putExtra("codigoSigle", codigoSigle);
-                        i.putExtra("subinvDesde", subinvDesde);
-                        i.putExtra("localizador", localizador);
-                        i.putExtra("subinventarioHasta", subinventarioHasta);
-                        i.putExtra("localizadorHasta", localizadorHasta);
-                        i.putExtra("nroLote", nroLote);
-                        i.putExtra("cantidad", cantidad);
-                        i.putExtra("id", id);
-                        i.putStringArrayListExtra("series", (ArrayList<String>) this.series);
-                        startActivity(i);
+                        Intent a = new Intent(this, ActivitySeriesTrans.class);
+                        a.putExtra("nroTraspaso", nroTraspaso);
+                        a.putExtra("glosa", glosa);
+                        a.putExtra("codigoSigle", codigoSigle);
+                        a.putExtra("subinvDesde", subinvDesde);
+                        a.putExtra("localizador", localizador);
+                        a.putExtra("subinvHasta", subinventarioHasta);
+                        a.putExtra("localHasta", localizadorHasta);
+                        a.putExtra("nroLote", nroLote);
+                        a.putExtra("cantidad", cantidad);
+                        a.putExtra("id", id);
+                        a.putStringArrayListExtra("series", (ArrayList<String>) this.series);
+                        startActivity(a);
                         this.finish();
                         return true;
                     }
@@ -201,6 +200,9 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
                 intentAgregar.putExtra("nroLote", nroLote);
                 intentAgregar.putExtra("cantidad", cantidad);
                 intentAgregar.putExtra("id", id);
+                intentAgregar.putExtra("subinvHasta", subinventarioHasta);
+                intentAgregar.putExtra("localHasta", localizadorHasta);
+                intentAgregar.putStringArrayListExtra("series", (ArrayList<String>) this.series);
                 startActivity(intentAgregar);
                 this.finish();
                 return true;

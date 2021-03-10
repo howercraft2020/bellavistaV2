@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_more"
-        android:icon="@mipmap/ic_local_shipping_white_24dp"
+        android:icon="@mipmap/ic_keyboard_arrow_right_white_36dp"
         android:title="Destino"
         app:showAsAction="ifRoom" />
 
