@@ -265,8 +265,8 @@ public class TransSubinvService implements ITransSubinvService {
                     mtlTransactionsLotsIface.setInventoryItemId(inventoryItemId);
                     mtlTransactionsLotsIface.setLastUpdateLogin(mtlOnhandQuantities.getUserId());
                     mtlTransactionsLotsIface.setLotNumber(lote);
-                    mtlTransactionsLotsIface.setTransactionQuantity(cantidad);
-                    mtlTransactionsLotsIface.setPrimaryQuantity(cantidad);
+                    //mtlTransactionsLotsIface.setTransactionQuantity(cantidad);
+                    //mtlTransactionsLotsIface.setPrimaryQuantity(cantidad);
                     mtlTransactionsLotsIface.setSerialTransactionTempId(Long.parseLong(transactionInterfaceId));
                     mtlTransactionLotsInterfaceDao.insert(mtlTransactionsLotsIface);
                 }

@@ -148,7 +148,7 @@ public class RecepcionOcService implements IRecepcionOcService {
             rcvTransactionsInterface1.setCreationDate(fecha);
             rcvTransactionsInterface1.setTransactionType("RECEIVE");
             rcvTransactionsInterface1.setTransactionDate(fecha);
-            rcvTransactionsInterface1.setQuantity(cantidad);
+            //rcvTransactionsInterface1.setQuantity(cantidad);
             rcvTransactionsInterface1.setUomCode(datosRecepcion.getUnitMeasLookupCode());
             rcvTransactionsInterface1.setItemId(datosRecepcion.getItemId());
             rcvTransactionsInterface1.setItemDescription(datosRecepcion.getItemDescription());

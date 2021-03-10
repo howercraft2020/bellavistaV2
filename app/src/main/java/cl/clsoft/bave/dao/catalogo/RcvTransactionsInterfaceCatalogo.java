@@ -71,7 +71,7 @@ public class RcvTransactionsInterfaceCatalogo {
                     COLUMN_TRANSACTION_DATE + " TEXT, " +
                     COLUMN_PROCESSING_STATUS_CODE + " TEXT, " +
                     COLUMN_PROCESSING_MODE_CODE + " TEXT, " +
-                    COLUMN_QUANTITY + " INTEGER, " +
+                    COLUMN_QUANTITY + " REAL, " +
                     COLUMN_UNIT_OF_MEASURE + " TEXT, " +
                     COLUMN_ITEM_ID + " INTEGER, " +
                     COLUMN_ITEM_DESCRIPTION + " TEXT, " +
@@ -119,4 +119,22 @@ public class RcvTransactionsInterfaceCatalogo {
     public static final String SELECT = " SELECT * FROM rcv_transactions_interface rti, mtl_system_items msi where rti.item_id = msi.inventory_item_id AND rti.header_interface_id = ? ";
     public static final String SELECT_EXISTE_LINEA = " SELECT * FROM rcv_transactions_interface rti, mtl_system_items msi where  rti.item_id = msi.inventory_item_id and rti.header_interface_id = ?  and msi.segment1 = ? ";
 
+    public static final String SELECT_BY_PARENT_TRANSACTION_ID =
+            " SELECT * " +
+            " FROM " +
+            "     rcv_transactions_interface rti, " +
+            "     mtl_system_items msi " +
+            " WHERE " +
+            "     rti.item_id = msi.inventory_item_id " +
+            "     AND rti.parent_transaction_id = ? ";
+
+
+    public static final String SELECT_BY_INTERFACE_TRANSACTION_ID =
+            " SELECT * " +
+                    " FROM " +
+                    "     rcv_transactions_interface rti, " +
+                    "     mtl_system_items msi " +
+                    " WHERE " +
+                    "     rti.item_id = msi.inventory_item_id " +
+                    "     AND rti.interface_transaction_id = ? ";
 }

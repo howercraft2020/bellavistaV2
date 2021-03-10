@@ -57,11 +57,11 @@ public class EntregaAgregarResumenPresenter extends BasePresenter {
     }
 
     public void addTransacctionInterface(Long shipmentHeaderId, Long transactionId, String subinventoryCode,
-                                         String locatorCode, String lote, String vencimiento, String atributo1,
-                                         String atributo2, String atributo3, List<String> series, Long cantidad) {
+                                         String locatorCode, String lote, String loteProveedor, String vencimiento, String categoria, String atributo1,
+                                         String atributo2, String atributo3, List<String> series, Double cantidad) {
         try {
             this.mService.addTransacctionInterface(shipmentHeaderId, transactionId, subinventoryCode, locatorCode,
-                    lote, vencimiento, atributo1, atributo2, atributo3, series, cantidad);
+                    lote, loteProveedor, vencimiento, categoria, atributo1, atributo2, atributo3, series, cantidad);
             mView.resultadoOkAddTransaction();
         } catch(ServiceException e) {
             if (e.getCodigo() == 1) {

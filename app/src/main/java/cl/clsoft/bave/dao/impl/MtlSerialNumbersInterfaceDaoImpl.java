@@ -37,6 +37,10 @@ public class MtlSerialNumbersInterfaceDaoImpl extends GenericDao<MtlSerialNumber
         return super.selectOne(MtlSerialNumbersInterfaceCatalogo.SELECT, new MtlSerialNumbersInterfaceRowMapper(), transactionInterfaceId);
     }
 
+    @Override
+    public List<MtlSerialNumbersInterface> getAllByInterfaceTransactionId(Long interfaceTransactionId) throws DaoException {
+        return super.selectMany(MtlSerialNumbersInterfaceCatalogo.SELECT_BY_PRODUCT_TRANSACTION_ID, new MtlSerialNumbersInterfaceRowMapper(), interfaceTransactionId);
+    }
 
 
 }

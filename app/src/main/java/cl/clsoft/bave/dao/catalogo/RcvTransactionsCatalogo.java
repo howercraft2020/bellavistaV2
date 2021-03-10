@@ -48,7 +48,7 @@ public class RcvTransactionsCatalogo {
                     COLUMN_CREATED_BY + " INTEGER, " +
                     COLUMN_TRANSACTION_TYPE + " TEXT, " +
                     COLUMN_TRANSACTION_DATE + " TEXT, " +
-                    COLUMN_QUANTITY + " INTEGER, " +
+                    COLUMN_QUANTITY + " REAL, " +
                     COLUMN_UNIT_OF_MEASURE + " TEXT, " +
                     COLUMN_SHIPMENT_HEADER_ID + " INTEGER, " +
                     COLUMN_SHIPMENT_LINE_ID + " INTEGER, " +

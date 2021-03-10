@@ -510,7 +510,7 @@ public class BaveServiceImpl implements IBaveService {
                     if (extraccion.length >= 8)
                         rcvTransactions.setTransactionDate(extraccion[7]);
                     if (extraccion.length >= 9)
-                        rcvTransactions.setQuantity(extraccion[8].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[8]));
+                        rcvTransactions.setQuantity(extraccion[8].equalsIgnoreCase("") ? null : Double.valueOf(extraccion[8]));
                     if (extraccion.length >= 10)
                         rcvTransactions.setUnitOfMeasure(extraccion[9]);
                     if (extraccion.length >= 11)

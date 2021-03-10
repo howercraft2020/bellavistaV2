@@ -11,7 +11,7 @@ public class RcvTransactionsInterface {
     private String transactionDate;
     private String processingStatusCode;
     private String processingModeCode;
-    private Long quantity;
+    private Double quantity;
     private String unitOfMeasure;
     private Long itemId;
     private String itemDescription;
@@ -129,11 +129,11 @@ public class RcvTransactionsInterface {
         this.processingModeCode = processingModeCode;
     }
 
-    public Long getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Long quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 

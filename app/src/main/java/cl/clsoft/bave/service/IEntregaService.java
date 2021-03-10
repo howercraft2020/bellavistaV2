@@ -2,6 +2,9 @@ package cl.clsoft.bave.service;
 
 import java.util.List;
 
+import cl.clsoft.bave.dto.TransactionDetalleDto;
+import cl.clsoft.bave.dto.TransactionsDto;
+import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlSystemItems;
@@ -21,7 +24,9 @@ public interface IEntregaService {
     public Localizador getLocalizadorByCodigo(String codigo) throws ServiceException;
     public List<Localizador> getLocalizadoresBySubinventario(String subinventarioCodigo) throws ServiceException;
     public void addTransacctionInterface(Long shipmentHeaderId, Long transactionId, String subinventoryCode,
-                                         String locatorCode, String lote, String vencimiento, String atributo1,
-                                         String atributo2, String atributo3, List<String> series, Long cantidad) throws ServiceException;
+                                         String locatorCode, String lote, String loteProveedor, String vencimiento, String categoria, String atributo1,
+                                         String atributo2, String atributo3, List<String> series, Double cantidad) throws ServiceException;
+    public List<TransactionsDto> getTransactionsInterfaceByShipmentHeader(Long shipmentHeaderId) throws ServiceException;
+    public TransactionDetalleDto getTransactionsInterfaceById(Long interfaceTransactionId) throws ServiceException;
 
 }
