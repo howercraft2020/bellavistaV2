@@ -53,6 +53,13 @@ public class MtlTransactionsLotsIfaceCatalogo {
 
     private static final String SELECT = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_MTL_TRANSACTION_LOTS_IFACE + " = ?";
 
+    public static final String SELECTBY_PRODUCT_TRANSACTION_ID =
+            " SELECT * " +
+            " FROM " +
+            "     mtl_transactions_lots_iface " +
+            " WHERE " +
+            "     product_transaction_id = ? ";
+
     public static final String SELECT_ALL = "SELECT * from " + TABLE + " WHERE " + COLUMN_MTL_TRANSACTION_LOTS_IFACE + " = ?";
 
 }

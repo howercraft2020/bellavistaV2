@@ -27,6 +27,7 @@ import cl.clsoft.bave.dao.impl.RcvShipmentHeadersDaoImpl;
 import cl.clsoft.bave.dao.impl.RcvTransactionsDaoImpl;
 import cl.clsoft.bave.dao.impl.RcvTransactionsInterfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
+import cl.clsoft.bave.dto.TransactionDetalleDto;
 import cl.clsoft.bave.dto.TransactionsDto;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
@@ -415,6 +416,88 @@ public class EntregaServiceImpl implements IEntregaService {
                 }
             }
             return salida;
+        } catch (DaoException e) {
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public TransactionDetalleDto getTransactionsInterfaceById(Long interfaceTransactionId) throws ServiceException {
+        Log.d(TAG, "EntregaServiceImpl::getTransactionsInterfaceById");
+        Log.d(TAG, "EntregaServiceImpl::getTransactionsInterfaceById::interfaceTransactionId: " + interfaceTransactionId);
+
+        IRcvTransactionsDao rcvTransactionsDao = new RcvTransactionsDaoImpl();
+        IRcvTransactionsInterfaceDao rcvTransactionsInterfaceDao = new RcvTransactionsInterfaceDaoImpl();
+        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+        ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
+        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
+
+        try {
+            Localizador localizador = null;
+            boolean isControlLote = false;
+            boolean isControlSerie = false;
+            boolean isControlVencimiento = false;
+            MtlTransactionsLotsIface mtlTransactionsLotsIface = null;
+            List<MtlSerialNumbersInterface> serials;
+
+            TransactionDetalleDto dto = new TransactionDetalleDto();
+            RcvTransactionsInterface rcvTransactionsInterface = rcvTransactionsInterfaceDao.getByInterfaceTransactionId(interfaceTransactionId);
+
+            // Item
+            MtlSystemItems item = mtlSystemItemsDao.get(rcvTransactionsInterface.getItemId());
+            if (item == null) {
+                throw new ServiceException(1, "SystemItem con Id " + rcvTransactionsInterface.getItemId() + " no existe en el sistema");
+            }
+            if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                isControlLote = true;
+            }
+            if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                isControlSerie = true;
+            }
+            if (item.getShelfLifeCode().equalsIgnoreCase("2") || item.getShelfLifeCode().equalsIgnoreCase("4")) {
+                isControlVencimiento = true;
+            }
+
+            // Locator
+            if (rcvTransactionsInterface.getLocatorId() != null) {
+                localizador = localizadorDao.get(rcvTransactionsInterface.getLocatorId());
+                if (localizador == null) {
+                    throw new ServiceException(1, "Localizador " + rcvTransactionsInterface.getLocatorId() + " no existe en el sistema");
+                }
+            }
+
+
+            dto.setShipmentHeaderId(rcvTransactionsInterface.getShipmentHeaderId());
+            dto.setTransactionId(rcvTransactionsInterface.getParentTransactionId());
+            dto.setCantidad(rcvTransactionsInterface.getQuantity());
+            dto.setSubinventoryCode(rcvTransactionsInterface.getSubinventory());
+            dto.setLocatorCode(localizador != null ? localizador.getCodLocalizador() : null);
+            dto.setLote(isControlLote);
+            dto.setSerie(isControlSerie);
+
+            if (isControlLote) {
+                mtlTransactionsLotsIface = mtlTransactionLotsInterfaceDao.getByInterfaceTransactionId(rcvTransactionsInterface.getInterfaceTransactionId());
+                if (mtlTransactionsLotsIface != null) {
+                    dto.setLote(mtlTransactionsLotsIface.getLotNumber());
+                    dto.setLoteProveedor(mtlTransactionsLotsIface.getSupplierLotNumber());
+                    dto.setCategoria(mtlTransactionsLotsIface.getAttributeCategory());
+                    dto.setAtributo1(mtlTransactionsLotsIface.getAttrubute1());
+                    dto.setAtributo2(mtlTransactionsLotsIface.getAttrubute2());
+                    dto.setAtributo3(mtlTransactionsLotsIface.getAttrubute3());
+
+                }
+            }
+
+            if (isControlLote) {
+                serials = mtlSerialNumbersInterfaceDao.getAllByInterfaceTransactionId(rcvTransactionsInterface.getInterfaceTransactionId());
+                List<String> strSerials = new ArrayList<>();
+                for (MtlSerialNumbersInterface serial : serials) {
+                    strSerials.add(serial.getFmSerialNumber());
+                }
+                dto.setSeries(strSerials);
+            }
+            return dto;
         } catch (DaoException e) {
             throw new ServiceException(2, e.getDescripcion());
         }

@@ -7,5 +7,6 @@ public interface IMtlTransactionLotsInterfaceDao {
 
     public void insert (MtlTransactionsLotsIface mtlTransactionsLotsIface) throws DaoException;
     public MtlTransactionsLotsIface get(Long transactionInterfaceId) throws DaoException;
+    public MtlTransactionsLotsIface getByInterfaceTransactionId(Long interfaceTransactionId) throws DaoException;
     public MtlTransactionsLotsIface getAll(Long transactionInterfaceId) throws DaoException;
 }

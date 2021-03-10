@@ -15,6 +15,9 @@ import androidx.fragment.app.DialogFragment;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
+import cl.clsoft.bave.dto.TransactionDetalleDto;
+import cl.clsoft.bave.model.MtlSystemItems;
+import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.presenter.EntregaTransactionDetallePresenter;
 import cl.clsoft.bave.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
@@ -84,6 +87,42 @@ public class ActivityEntregaTransactionDetalle extends BaseActivity<EntregaTrans
         // Set Controls
         this.interfaceTransactionId = this.getIntent().getLongExtra("InterfaceTransactionId", 0);
         this.shipmentHeaderId = this.getIntent().getLongExtra("ShipmentHeaderId", 0);
+
+        TransactionDetalleDto dto = mPresenter.getTransactionsInterfaceById(this.interfaceTransactionId);
+        if (dto != null) {
+
+            RcvTransactions transaction = mPresenter.getTransactionById(dto.getTransactionId());
+            if (transaction != null) {
+                MtlSystemItems item = mPresenter.getMtlSystemItemsById(transaction.getItemId());
+                if (item != null) {
+                    this.textProductoDescription.setText(item.getDescription());
+                    this.textProductoSigle.setText(item.getSegment1());
+                    this.textProductoCantidad.setText(dto.getCantidad().toString());
+                    this.textProductoLinea.setText(transaction.getLineNum().toString());
+                    this.textProductoLote.setText(dto.isLote() ? "SI" : "NO");
+                    this.textProductoSerie.setText(dto.isSerie() ? "SI" : "NO");
+                    this.textSubinventoryCode.setText(dto.getSubinventoryCode());
+                    this.textLocatorCode.setText(dto.getLocatorCode());
+                    this.textLote.setText(dto.getLote());
+                    this.textLoteProveedor.setText(dto.getLoteProveedor());
+                    this.textVencimiento.setText(dto.getVencimiento());
+                    this.textCategoria.setText(dto.getCategoria());
+                    this.textAtributo1.setText(dto.getAtributo1());
+                    this.textAtributo2.setText(dto.getAtributo2());
+                    this.textAtributo3.setText(dto.getAtributo3());
+
+                    if (dto.getSeries() != null) {
+                        String strSeries = "";
+                        for (String serie : dto.getSeries()) {
+                            strSeries = strSeries + serie + ", ";
+                        }
+                        this.textSeries.setText(strSeries);
+                    }
+                }
+            }
+
+
+        }
 
     }
 

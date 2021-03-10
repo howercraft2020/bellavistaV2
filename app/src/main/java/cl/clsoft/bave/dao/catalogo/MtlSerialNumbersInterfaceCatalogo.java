@@ -34,4 +34,12 @@ public class MtlSerialNumbersInterfaceCatalogo {
     public static final String SELECT_ALL_BY_ID = "SELECT * FROM " + TABLE + " WHERE " +COLUMN_TRANSACTION_INTERFACE_ID +
                                                   " = ?";
 
+
+    public static final String SELECT_BY_PRODUCT_TRANSACTION_ID =
+            " SELECT * " +
+            " FROM " +
+            "     mtl_serial_numbers_interface " +
+            " WHERE " +
+            "     product_transaction_id = ? ";
+
 }

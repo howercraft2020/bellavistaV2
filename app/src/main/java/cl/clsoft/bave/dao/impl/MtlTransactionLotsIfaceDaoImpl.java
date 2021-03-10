@@ -42,6 +42,11 @@ public class MtlTransactionLotsIfaceDaoImpl extends GenericDao<MtlTransactionsLo
     }
 
     @Override
+    public MtlTransactionsLotsIface getByInterfaceTransactionId(Long interfaceTransactionId) throws DaoException {
+        return super.selectOne(MtlTransactionsLotsIfaceCatalogo.SELECTBY_PRODUCT_TRANSACTION_ID, new MtlTransactionsLotsIfaceRowMapper(), interfaceTransactionId);
+    }
+
+    @Override
     public MtlTransactionsLotsIface getAll(Long transactionInterfaceId) throws DaoException {
         return super.selectOne(MtlTransactionsLotsIfaceCatalogo.SELECT_ALL, new MtlTransactionsLotsIfaceRowMapper(),transactionInterfaceId);
     }

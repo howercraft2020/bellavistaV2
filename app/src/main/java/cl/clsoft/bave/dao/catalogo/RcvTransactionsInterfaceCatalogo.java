@@ -127,4 +127,14 @@ public class RcvTransactionsInterfaceCatalogo {
             " WHERE " +
             "     rti.item_id = msi.inventory_item_id " +
             "     AND rti.parent_transaction_id = ? ";
+
+
+    public static final String SELECT_BY_INTERFACE_TRANSACTION_ID =
+            " SELECT * " +
+                    " FROM " +
+                    "     rcv_transactions_interface rti, " +
+                    "     mtl_system_items msi " +
+                    " WHERE " +
+                    "     rti.item_id = msi.inventory_item_id " +
+                    "     AND rti.interface_transaction_id = ? ";
 }

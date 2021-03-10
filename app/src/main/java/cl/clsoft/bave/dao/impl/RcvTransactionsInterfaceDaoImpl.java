@@ -84,4 +84,9 @@ public class RcvTransactionsInterfaceDaoImpl extends GenericDao<RcvTransactionsI
         return super.selectOne(RcvTransactionsInterfaceCatalogo.SELECT_BY_PARENT_TRANSACTION_ID, new RcvTransactionsInterfaceRowMapper(), transactionId);
     }
 
+    @Override
+    public RcvTransactionsInterface getByInterfaceTransactionId(Long interfaceTransactionId) throws DaoException {
+        return super.selectOne(RcvTransactionsInterfaceCatalogo.SELECT_BY_INTERFACE_TRANSACTION_ID, new RcvTransactionsInterfaceRowMapper(), interfaceTransactionId);
+    }
+
 }
