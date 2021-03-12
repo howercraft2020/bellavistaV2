@@ -39,7 +39,7 @@ import cl.clsoft.bave.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter> implements ConfirmationDialog.ConfirmationDialogListener {
+public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter> implements ConfirmationDialog.ConfirmationDialogListener, DialogSeleccionLinea.DialogSeleccionLineaListener {
 
     // Variables
     private String TAG = "EntregaAgregar";
@@ -62,6 +62,7 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
     private Long inventoryItemId;
     private String currentSigle = "";
     private int LAUNCH_SEARCHSINGLE_ACTIVITY = 2;
+    CharSequence[] items;
 
     // Controls
     private TextInputLayout layoutSigle;
@@ -186,7 +187,7 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                                 textSigle.setText("");
                                 currentSigle = "";
                             }
-
+                            validaSigle();
                         }
                     }
                     action = true;
@@ -333,36 +334,54 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                 showWarning("Sigle " + segment + " no encontrado en OC");
                 this.segment = null;
                 this.inventoryItemId = null;
+            } else if (transactions.size() > 1) {
+                items = new CharSequence[transactions.size()];
+                int index = 0;
+                for (RcvTransactions transaction : transactions) {
+                    Log.d(TAG, "items add " + transaction.getLineNum().toString());
+                    items[index] = transaction.getLineNum().toString();
+                    index++;
+                }
+                DialogSeleccionLinea dialogLinea =new DialogSeleccionLinea();
+                Bundle args = new Bundle();
+                args.putCharSequenceArray("items", items);
+                dialogLinea.setArguments(args);
+                dialogLinea.show(getSupportFragmentManager(), "DialogLinea");
             } else {
-                RcvTransactions rcvTransactions = transactions.get(0);
-                this.transactionId = rcvTransactions.getTransactionId();
-                MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
-                this.textProductoSigle.setText(segment);
-                this.textProductoDescription.setText(item.getDescription());
-                this.textProductoCantidad.setText(rcvTransactions.getQuantity().toString());
-                this.textProductoLinea.setText(rcvTransactions.getLineNum().toString());
-                if (item.getLotControlCode().equalsIgnoreCase("2")) {
-                    this.isLote = true;
-                    this.textProductoLote.setText("SI");
-                } else {
-                    this.isLote = false;
-                    this.textProductoLote.setText("NO");
-                }
-                if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
-                    this.isSerie = true;
-                    this.textProductoSerie.setText("SI");
-                } else {
-                    this.isSerie = false;
-                    this.textProductoSerie.setText("NO");
-                }
-
-                this.rlayoutItem.setVisibility(View.VISIBLE);
-                this.rlayoutSigle.setVisibility(View.GONE);
-                this.layoutCantidad.setVisibility(View.VISIBLE);
-                this.layoutSubinventory.setVisibility(View.VISIBLE);
-                this.layoutLocator.setVisibility(View.VISIBLE);
-                this.textCantidad.setText(rcvTransactions.getQuantity().toString());
+                this.setSigle(transactions.get(0));
             }
+        }
+    }
+
+    private void setSigle(RcvTransactions transaction) {
+        this.transactionId = transaction.getTransactionId();
+        MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
+        if (item != null) {
+            this.textProductoSigle.setText(segment);
+            this.textProductoDescription.setText(item.getDescription());
+            this.textProductoCantidad.setText(transaction.getQuantity().toString());
+            this.textProductoLinea.setText(transaction.getLineNum().toString());
+            if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                this.isLote = true;
+                this.textProductoLote.setText("SI");
+            } else {
+                this.isLote = false;
+                this.textProductoLote.setText("NO");
+            }
+            if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                this.isSerie = true;
+                this.textProductoSerie.setText("SI");
+            } else {
+                this.isSerie = false;
+                this.textProductoSerie.setText("NO");
+            }
+
+            this.rlayoutItem.setVisibility(View.VISIBLE);
+            this.rlayoutSigle.setVisibility(View.GONE);
+            this.layoutCantidad.setVisibility(View.VISIBLE);
+            this.layoutSubinventory.setVisibility(View.VISIBLE);
+            this.layoutLocator.setVisibility(View.VISIBLE);
+            this.textCantidad.setText(transaction.getQuantity().toString());
         }
     }
 
@@ -499,4 +518,15 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
 
     }
 
+    @Override
+    public void onDialogLineaPositiveClick(DialogFragment dialog) {
+        Log.d(TAG, "salida " + ((DialogSeleccionLinea) dialog).selectedItem);
+        String linea = ((DialogSeleccionLinea) dialog).selectedItem;
+        List<RcvTransactions> transactions = mPresenter.getTransaccionsByShipmentInventory(shipmentHeaderId, inventoryItemId);
+        for (RcvTransactions transaction : transactions) {
+            if (transaction.getLineNum().toString().equalsIgnoreCase(linea)) {
+                this.setSigle(transaction);
+            }
+        }
+    }
 }

@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/icon"
         android:textStyle="bold"
-        android:text="INVENTARIO ID:" />
+        android:text="Línea:" />
 
     <TextView
         android:id="@+id/textLinea"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/labelLinea"
         android:paddingLeft="10dp"
-        android:text="idText" />
+        android:text="textLinea" />
 
     <TextView
         android:id="@+id/labelSigle"
@@ -37,7 +37,7 @@
         android:layout_below="@id/labelLinea"
         android:layout_marginTop="2dp"
         android:textStyle="bold"
-        android:text="NOMBRE:" />
+        android:text="SIGLE:" />
 
     <TextView
         android:id="@+id/textSigle"
@@ -47,7 +47,7 @@
         android:layout_below="@id/labelLinea"
         android:layout_marginTop="1dp"
         android:paddingLeft="10dp"
-        android:text="nombreText" />
+        android:text="textSigle" />
 
     <TextView
         android:id="@+id/labelFechaCreacion"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/icon"
         android:layout_below="@id/labelSigle"
-        android:text="FECHA CREACION:"
+        android:text="Fecha Creación:"
         android:textStyle="bold"
         android:paddingBottom="10dp"/>
 
@@ -67,7 +67,7 @@
         android:layout_below="@id/labelSigle"
         android:layout_toRightOf="@+id/labelFechaCreacion"
         android:layout_marginTop="0dp"
-        android:text="fechaCreacionText"
+        android:text="textFechaCreacion"
         android:paddingLeft="10dp"
         android:paddingBottom="10dp"/>
 

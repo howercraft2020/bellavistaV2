@@ -26,6 +26,7 @@ import cl.clsoft.bave.model.RcvShipmentHeaders;
 import cl.clsoft.bave.presenter.EntregaDetallePresenter;
 import cl.clsoft.bave.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ActivityEntregaDetalle extends BaseActivity<EntregaDetallePresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
@@ -41,6 +42,7 @@ public class ActivityEntregaDetalle extends BaseActivity<EntregaDetallePresenter
     private TextView textCreationDate;
     private RecyclerView recyclerViewTransactions;
     private AdapterItemTransactionInterface adapter;
+    private SweetAlertDialog dialog;
 
     @NonNull
     @Override
@@ -116,6 +118,14 @@ public class ActivityEntregaDetalle extends BaseActivity<EntregaDetallePresenter
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_entrega_detalle, menu);
@@ -152,7 +162,7 @@ public class ActivityEntregaDetalle extends BaseActivity<EntregaDetallePresenter
     public void onDialogAceptarClick(DialogFragment dialog) {
         String tipo = dialog.getArguments().getString("tipo");
         if (tipo.equalsIgnoreCase("close")) {
-            //mPresenter.closeInventory(this.inventarioId);
+            mPresenter.closeEntrega(this.shipmentHeaderId);
         }
     }
 
@@ -160,4 +170,20 @@ public class ActivityEntregaDetalle extends BaseActivity<EntregaDetallePresenter
     public void onDialogCancelarClick(DialogFragment dialog) {
 
     }
+
+    public void resultadoOkCerrarEntrega() {
+        dialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+        dialog.setTitleText("Éxito")
+            .setContentText("Cierre exitoso")
+            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sDialog) {
+                    Intent i = new Intent(getApplicationContext(), ActivityEntregas.class);
+                    startActivity(i);
+                    finish();
+                }
+            })
+            .show();
+    }
+
 }

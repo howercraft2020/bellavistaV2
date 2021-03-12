@@ -59,4 +59,13 @@ public class RcvHeadersInterfaceCatalogo {
                     " PRIMARY KEY (" + COLUMN_HEADER_INTERFACE_ID + " )" +
                     " ) ";
 
+    public static final String UPDATE = COLUMN_HEADER_INTERFACE_ID + " = ?";
+    public static final String DELETE = COLUMN_HEADER_INTERFACE_ID + " = ?";
+    public static final String SELECT =
+            " SELECT * " +
+            " FROM " +
+            "     rcv_headers_interface " +
+            " WHERE " +
+            "     header_interface_id = ? ";
+
 }

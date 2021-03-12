@@ -19,6 +19,7 @@ public interface IEntregaService {
     public MtlSystemItems getMtlSystemItemsBySegment(String segment) throws ServiceException;
     public MtlSystemItems getMtlSystemItemsById(Long inventoryItemId) throws ServiceException;
     public List<RcvTransactions> getTransaccionsByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws ServiceException;
+    public List<RcvTransactions> getTransaccionsDisponiblesByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws ServiceException;
     public RcvTransactions getTransactionById(Long transactionId) throws ServiceException;
     public List<Subinventario> getSubinventarios() throws ServiceException;
     public Localizador getLocalizadorByCodigo(String codigo) throws ServiceException;
@@ -28,5 +29,7 @@ public interface IEntregaService {
                                          String atributo2, String atributo3, List<String> series, Double cantidad) throws ServiceException;
     public List<TransactionsDto> getTransactionsInterfaceByShipmentHeader(Long shipmentHeaderId) throws ServiceException;
     public TransactionDetalleDto getTransactionsInterfaceById(Long interfaceTransactionId) throws ServiceException;
+    public void deleteTransactionsInterfaceById(Long interfaceTransactionId) throws ServiceException;
+    public void closeEntrega(Long shipmentHeaderId) throws ServiceException;
 
 }

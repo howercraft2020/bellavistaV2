@@ -116,25 +116,37 @@ public class RcvTransactionsInterfaceCatalogo {
                     " PRIMARY KEY (" + COLUMN_INTERFACE_TRANSACTION_ID + " )" +
                     " ) ";
 
+    public static final String UPDATE = COLUMN_INTERFACE_TRANSACTION_ID + " = ?";
+    public static final String DELETE = COLUMN_INTERFACE_TRANSACTION_ID + " = ?";
+
     public static final String SELECT = " SELECT * FROM rcv_transactions_interface rti, mtl_system_items msi where rti.item_id = msi.inventory_item_id AND rti.header_interface_id = ? ";
     public static final String SELECT_EXISTE_LINEA = " SELECT * FROM rcv_transactions_interface rti, mtl_system_items msi where  rti.item_id = msi.inventory_item_id and rti.header_interface_id = ?  and msi.segment1 = ? ";
 
     public static final String SELECT_BY_PARENT_TRANSACTION_ID =
-            " SELECT * " +
-            " FROM " +
-            "     rcv_transactions_interface rti, " +
-            "     mtl_system_items msi " +
-            " WHERE " +
-            "     rti.item_id = msi.inventory_item_id " +
-            "     AND rti.parent_transaction_id = ? ";
-
+            " SELECT * "
+            + " FROM "
+            + "     rcv_transactions_interface rti, "
+            + "     mtl_system_items msi "
+            + " WHERE "
+            + "     rti.item_id = msi.inventory_item_id "
+            + "     AND rti.parent_transaction_id = ? ";
 
     public static final String SELECT_BY_INTERFACE_TRANSACTION_ID =
-            " SELECT * " +
-                    " FROM " +
-                    "     rcv_transactions_interface rti, " +
-                    "     mtl_system_items msi " +
-                    " WHERE " +
-                    "     rti.item_id = msi.inventory_item_id " +
-                    "     AND rti.interface_transaction_id = ? ";
+            " SELECT * "
+            + " FROM "
+            + "     rcv_transactions_interface rti, "
+            + "     mtl_system_items msi "
+            + " WHERE "
+            + "     rti.item_id = msi.inventory_item_id "
+            + "     AND rti.interface_transaction_id = ? ";
+
+    public static final String SELECT_ALL_BY_HEADER_INTERFACE_ID =
+            " SELECT * "
+            + " FROM "
+            + "     rcv_transactions_interface rti, "
+            + "     mtl_system_items msi "
+            + " WHERE "
+            + "     rti.item_id = msi.inventory_item_id "
+            + "     AND rti.header_interface_id = ? ";
+
 }
