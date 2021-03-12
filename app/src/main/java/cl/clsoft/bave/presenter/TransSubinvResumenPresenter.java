@@ -32,11 +32,11 @@ public class TransSubinvResumenPresenter extends BasePresenter {
         return null;
     }
 
-    public void insertarDatos(String id, String nroTraspaso, String articulo, String lote, String subinventario, String localizador, Long cantidad,
-                              String subinventarioHasta, String localizadorHasta, List<String> series) {
+    public void insertarDatos(String id, String nroTraspaso, String articulo, String lote, String subinventario, String localizador, Double cantidad,
+                              String subinventarioHasta, String localizadorHasta, String glosa, List<String> series) {
 
         try {
-                mservice.insertarDatos(id,nroTraspaso, articulo,lote, subinventario, localizador,cantidad,subinventarioHasta,localizadorHasta, series);
+                mservice.insertarDatos(id,nroTraspaso, articulo,lote, subinventario, localizador,cantidad,subinventarioHasta,localizadorHasta, glosa, series);
                 mview.resultadoOkAddTransaction();
 
         }catch (ServiceException e) {

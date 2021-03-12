@@ -19,6 +19,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="40dp"
         android:ems="10"
+        android:enabled="false"
         android:hint="N° Traspaso"
         android:inputType="textPersonName"
         android:padding="6dp" />
@@ -32,6 +33,7 @@
         android:layout_marginRight="40dp"
         android:ems="10"
         android:hint="Glosa"
+        android:textColorHint="?attr/colorPrimary"
         android:layout_below="@id/traspasoEditText"
         android:inputType="textPersonName"
         android:padding="6dp" />

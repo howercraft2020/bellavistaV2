@@ -35,30 +35,6 @@ public class TransSubinvDestPresenter extends BasePresenter {
         mTaskExecutor.async(new TransSubinvDestPresenter.LocalizadoresBySubinventario(subinventarioCodigo));
     }
 
-    public void insertarDatos(String id, String nroTraspaso, String articulo, String lote, String subinventario, String localizador, Long cantidad,
-                              String subinventarioHasta, String localizadorHasta, List<String> series) {
-
-        try {
-
-            if(subinventarioHasta.equals("")){
-                mview.showError("Debe ingresar Subinventario");
-            }
-            else {
-                mservice.insertarDatos(id,nroTraspaso, articulo,lote, subinventario, localizador,cantidad,subinventarioHasta,localizadorHasta, series);
-                mview.showSuccess("Datos cargados correctamente");
-            }
-
-        }catch (ServiceException e) {
-            e.printStackTrace();
-            if (e.getCodigo() == 1) {
-                mview.showWarning(e.getDescripcion());
-            } else if (e.getCodigo() == 2) {
-                mview.showError(e.getDescripcion());
-            }
-        }
-
-    }
-
     public void getSubinventarios(){
         List<Subinventario> subinventarios;
         try{

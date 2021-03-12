@@ -58,6 +58,7 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
     private int LAUNCH_SEARCHSINGLE_ACTIVITY = 2;
     private boolean isLote = false;
     private boolean isSerie = false;
+    private Double cantidad;
 
     //Controls
     private EditText nroTraspasoEt, glosaEt;
@@ -72,7 +73,7 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
     private TextInputLayout layoutCantidad;
     private TextInputEditText textCantidad;
     private ImageView iconSearch;
-    private Long cantidad;
+
 
     @NonNull
     @Override
@@ -114,13 +115,13 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
 
 
 
-        this.numeroTraspaso = getIntent().getStringExtra("nroTraspaso");
+        this.numeroTraspaso = getIntent().getStringExtra("numeroTraspaso");
         this.glosa = getIntent().getStringExtra("glosa");
         this.codigoSigle = getIntent().getStringExtra("codigoSigle");
         this.subinvDesde = getIntent().getStringExtra("subinvDesde");
         this.localizador = getIntent().getStringExtra("localizador");
         this.nroLote = getIntent().getStringExtra("nroLote");
-        this.cantidad = getIntent().getLongExtra("cantidad",0L);
+        this.cantidad = getIntent().getDoubleExtra("cantidad",0.0);
         this.subinvHasta = getIntent().getStringExtra("subinvHasta");
         this.localHasta = getIntent().getStringExtra("localHasta");
         this.id = getIntent().getStringExtra("id");
@@ -209,10 +210,10 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         String localizador;
         String subinventario;
         String glosa;
-        Long cantidad = 0L;
+        Double cantidad = 0.0;
 
         if(this.textCantidad.getText().toString().trim().length() != 0) {
-            cantidad = Long.parseLong(this.textCantidad.getText().toString());
+            cantidad = Double.parseDouble(this.textCantidad.getText().toString());
         }
 
         nroTraspaso = this.nroTraspasoEt.getText().toString();
@@ -232,7 +233,7 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
                     i.putExtra("nroLote", lote);
                     i.putExtra("cantidad", cantidad);
                     i.putExtra("glosa", glosa);
-                    i.putExtra("nroTraspaso",nroTraspaso);
+                    i.putExtra("numeroTraspaso",nroTraspaso);
                     i.putExtra("id",id);
                     i.putExtra("subinvHasta",subinvHasta);
                     i.putExtra("localHasta",localHasta);

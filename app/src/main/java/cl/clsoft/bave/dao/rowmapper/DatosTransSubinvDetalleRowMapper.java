@@ -18,6 +18,7 @@ public class DatosTransSubinvDetalleRowMapper implements RowMapper<DatosTransSub
         entity.setSubinventarioHasta(cursor.getString(cursor.getColumnIndex(DatosTransSubinvDetalleCatalogo.COLUMN_SUBINVENTARIO_HASTA)));
         entity.setLocalizadorHasta(cursor.getString(cursor.getColumnIndex(DatosTransSubinvDetalleCatalogo.COLUMN_LOCALIZADOR_HASTA)));
         entity.setTransactionQuantity(cursor.getLong(cursor.getColumnIndex(DatosTransSubinvDetalleCatalogo.COLUMN_TRANSACTION_QUANTITY)));
+        entity.setTransactionInterfaceId(cursor.getLong(cursor.getColumnIndex(DatosTransSubinvDetalleCatalogo.COLUMN_TRANSACTION_INTERFACE_ID)));
 
         return entity;
     }

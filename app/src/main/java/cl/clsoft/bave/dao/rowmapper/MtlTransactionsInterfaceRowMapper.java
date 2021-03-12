@@ -20,8 +20,8 @@ public class MtlTransactionsInterfaceRowMapper implements RowMapper<MtlTransacti
         entity.setCreatedBy(cursor.getLong(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_CREATED_BY)));
         entity.setInventoryItemId(cursor.getLong(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_INVENTORY_ITEM_ID)));
         entity.setOrganizationId(cursor.getLong(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_ORGANIZATION_ID)));
-        entity.setTransactionQuantity(cursor.getLong(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_QUANTITY)));
-        entity.setPrimaryQuantity(cursor.getLong(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_PRIMARY_QUANTITY)));
+        entity.setTransactionQuantity(cursor.getDouble(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_QUANTITY)));
+        entity.setPrimaryQuantity(cursor.getDouble(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_PRIMARY_QUANTITY)));
         entity.setTransactionUom(cursor.getString(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_UOM)));
         entity.setTransactionDate(cursor.getString(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_TRANSACTION_DATE)));
         entity.setSubinventoryCode(cursor.getString(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_SUBINVENTORY_CODE)));

@@ -37,7 +37,7 @@ public class AgregarTransSubinvPresenter extends BasePresenter {
         mTaskExecutor.async(new AgregarTransSubinvPresenter.LocalizadoresBySubinventario(subinventarioCodigo));
     }
 
-    public boolean cargaTransferencia(String articulo, String lote, String subinventario, String localizador, Long cantidad){
+    public boolean cargaTransferencia(String articulo, String lote, String subinventario, String localizador, Double cantidad){
 
         boolean ok = true;
 

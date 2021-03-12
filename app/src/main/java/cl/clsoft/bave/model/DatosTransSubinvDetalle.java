@@ -8,6 +8,7 @@ public class DatosTransSubinvDetalle {
     private String subinventarioHasta;
     private String localizadorHasta;
     private Long transactionQuantity;
+    private Long transactionInterfaceId;
 
     public DatosTransSubinvDetalle() {
     }
@@ -58,5 +59,13 @@ public class DatosTransSubinvDetalle {
 
     public void setTransactionQuantity(Long transactionQuantity) {
         this.transactionQuantity = transactionQuantity;
+    }
+
+    public Long getTransactionInterfaceId() {
+        return transactionInterfaceId;
+    }
+
+    public void setTransactionInterfaceId(Long transactionInterfaceId) {
+        this.transactionInterfaceId = transactionInterfaceId;
     }
 }

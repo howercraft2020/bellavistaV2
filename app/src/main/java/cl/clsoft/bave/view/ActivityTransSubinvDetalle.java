@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -82,8 +83,42 @@ public class ActivityTransSubinvDetalle extends BaseActivity<TransSubinvDetalleP
         this.recyclerViewTransSubinvDetalle.setLayoutManager(new LinearLayoutManager(this));
 
         transferencias = mPresenter.getTransferencias(numeroTraspaso);
+
         this.adapter = new AdapterTransSubinvDetalle(transferencias);
         this.recyclerViewTransSubinvDetalle.setAdapter(this.adapter);
+
+        this.recyclerViewTransSubinvDetalle.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+                try{
+                    View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+                    if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+                        int position = recyclerView.getChildAdapterPosition(child);
+                        Intent i = new Intent(getApplicationContext(), ActivityTransSubinvTransactionDetalle.class);
+                        i.putExtra("transactionInterfaceId", transferencias.get(position).getTransactionInterfaceId());
+                        i.putExtra("numeroTraspaso", numeroTraspaso);
+                        i.putExtra("glosa", glosa);
+                        startActivity(i);
+                        finish();
+                        return true;
+                    }
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
     }
 
     @Override
@@ -95,7 +130,7 @@ public class ActivityTransSubinvDetalle extends BaseActivity<TransSubinvDetalleP
                 return true;
             case R.id.action_more:
                 Intent i = new Intent(this, ActivityAgregarTransSubinv.class);
-                i.putExtra("nroTraspaso", numeroTraspaso);
+                i.putExtra("numeroTraspaso", numeroTraspaso);
                 i.putExtra("glosa", glosa);
                 startActivity(i);
                 this.finish();

@@ -11,8 +11,8 @@ public class MtlTransactionsInterface {
     private Long createdBy;
     private Long inventoryItemId;
     private Long organizationId;
-    private Long transactionQuantity;
-    private Long primaryQuantity;
+    private Double transactionQuantity;
+    private Double primaryQuantity;
     private String transactionUom;
     private String transactionDate;
     private String subinventoryCode;
@@ -103,19 +103,19 @@ public class MtlTransactionsInterface {
         this.organizationId = organizationId;
     }
 
-    public Long getTransactionQuantity() {
+    public Double getTransactionQuantity() {
         return transactionQuantity;
     }
 
-    public void setTransactionQuantity(Long transactionQuantity) {
+    public void setTransactionQuantity(Double transactionQuantity) {
         this.transactionQuantity = transactionQuantity;
     }
 
-    public Long getPrimaryQuantity() {
+    public Double getPrimaryQuantity() {
         return primaryQuantity;
     }
 
-    public void setPrimaryQuantity(Long primaryQuantity) {
+    public void setPrimaryQuantity(Double primaryQuantity) {
         this.primaryQuantity = primaryQuantity;
     }
 

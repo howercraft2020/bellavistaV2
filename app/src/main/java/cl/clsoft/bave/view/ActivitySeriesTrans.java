@@ -47,7 +47,7 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> impl
     private String localizadorHasta;
     private String id;
     private String serie;
-    private Long cantidad;
+    private Double cantidad;
     private String currentSerie = "";
     private List<String> series = new ArrayList<>();
 
@@ -89,7 +89,7 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> impl
         subinventarioHasta = getIntent().getStringExtra("subinvHasta");
         localizadorHasta = getIntent().getStringExtra("localHasta");
         nroLote = getIntent().getStringExtra("nroLote");
-        cantidad = getIntent().getLongExtra("cantidad",0);
+        cantidad = getIntent().getDoubleExtra("cantidad",0.0);
         id = getIntent().getStringExtra("id");
         this.series = this.getIntent().getStringArrayListExtra("series");
         if (this.series == null)

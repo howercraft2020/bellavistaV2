@@ -37,7 +37,7 @@ public class ActivityTransSubinvResumen extends BaseActivity<TransSubinvResumenP
     private String subinvHasta;
     private String localHasta;
     private String id;
-    private Long cantidad;
+    private Double cantidad;
     private boolean isLote = false;
     private boolean isSerie = false;
     private List<String> series;
@@ -53,6 +53,7 @@ public class ActivityTransSubinvResumen extends BaseActivity<TransSubinvResumenP
     private TextView textDestLocatorCode;
     private TextView textLocatorCode;
     private TextView textLote;
+    private TextView textGlosa;
     private TextView textSeries;
     private RelativeLayout rlayoutLote;
     private RelativeLayout rlayoutSeries;
@@ -82,6 +83,7 @@ public class ActivityTransSubinvResumen extends BaseActivity<TransSubinvResumenP
         this.textDestLocatorCode = findViewById(R.id.textDestLocatorCode);
         this.textLocatorCode = findViewById(R.id.textLocatorCode);
         this.textLote = findViewById(R.id.textLote);
+        this.textGlosa = findViewById(R.id.textGlosa);
         this.textSeries = findViewById(R.id.textSeries);
         this.rlayoutLote = findViewById(R.id.rlayoutLote);
         this.rlayoutSeries = findViewById(R.id.rlayoutSeries);
@@ -95,7 +97,7 @@ public class ActivityTransSubinvResumen extends BaseActivity<TransSubinvResumenP
         this.localizador = getIntent().getStringExtra("localizador");
         this.nroLote = getIntent().getStringExtra("nroLote");
         this.glosa = getIntent().getStringExtra("glosa");
-        this.cantidad = getIntent().getLongExtra("cantidad",0);
+        this.cantidad = getIntent().getDoubleExtra("cantidad",0.0);
         this.subinvHasta = getIntent().getStringExtra("subinvHasta");
         this.localHasta = getIntent().getStringExtra("localHasta");
         this.series = this.getIntent().getStringArrayListExtra("series");
@@ -117,7 +119,7 @@ public class ActivityTransSubinvResumen extends BaseActivity<TransSubinvResumenP
                 this.isSerie = false;
             }
             this.fillProducto(item.getDescription(), item.getSegment1(), this.cantidad,
-                    this.isLote, this.isSerie, this.subinvDesde, this.localizador, this.subinvHasta, this.localHasta);
+                    this.isLote, this.isSerie, this.subinvDesde, this.localizador, this.subinvHasta, this.localHasta, this.glosa);
 
             if (this.isLote) {
                 this.fillLote(this.nroLote);
@@ -168,9 +170,9 @@ public class ActivityTransSubinvResumen extends BaseActivity<TransSubinvResumenP
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void fillProducto(String descripcion, String segment, Long cantidad,
+    private void fillProducto(String descripcion, String segment, Double cantidad,
                               boolean isLote, boolean isSerie, String subinventoryCode, String locatorCode, String destSubinventoryCode,
-                              String destLocatorCode) {
+                              String destLocatorCode, String glosa) {
         this.textProductoDescription.setText(descripcion);
         this.textProductoSigle.setText(segment);
         this.textProductoCantidad.setText(cantidad.toString());
@@ -186,6 +188,7 @@ public class ActivityTransSubinvResumen extends BaseActivity<TransSubinvResumenP
         this.textLocatorCode.setText(locatorCode);
         this.textDestSubinventoryCode.setText(destSubinventoryCode);
         this.textDestLocatorCode.setText(destLocatorCode);
+        this.textGlosa.setText(glosa);
     }
 
     private void fillLote(String lote) {
@@ -208,7 +211,7 @@ public class ActivityTransSubinvResumen extends BaseActivity<TransSubinvResumenP
     @Override
     public void onDialogAceptarClick(DialogFragment dialog) {
         this.mPresenter.insertarDatos(this.id,this.nroTraspaso,this.codigoSigle,this.nroLote,
-                this.subinvDesde,this.localizador,this.cantidad,this.subinvHasta, this.localHasta, series);
+                this.subinvDesde,this.localizador,this.cantidad,this.subinvHasta, this.localHasta, this.glosa, series);
     }
 
     @Override

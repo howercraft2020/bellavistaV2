@@ -48,7 +48,7 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
     private String localHasta;
     private String codSubinventario;
     private String id;
-    private Long cantidad;
+    private Double cantidad;
     private boolean isLote = false;
     private boolean isSerie = false;
     private List<String> series;
@@ -95,7 +95,7 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
         this.localizador = getIntent().getStringExtra("localizador");
         this.nroLote = getIntent().getStringExtra("nroLote");
         this.glosa = getIntent().getStringExtra("glosa");
-        this.cantidad = getIntent().getLongExtra("cantidad",0);
+        this.cantidad = getIntent().getDoubleExtra("cantidad",0.0);
         this.subinvHasta = getIntent().getStringExtra("subinvHasta");
         this.localHasta = getIntent().getStringExtra("localHasta");
         this.series = this.getIntent().getStringArrayListExtra("series");

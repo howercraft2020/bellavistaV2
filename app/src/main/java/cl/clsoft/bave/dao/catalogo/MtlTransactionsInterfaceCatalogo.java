@@ -62,6 +62,8 @@ public class MtlTransactionsInterfaceCatalogo {
 
     public static final String SELECT_ALL = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_TRANSACTION_ACTION_ID + " = 2 AND " + COLUMN_TRANSACTION_TYPE_ID + " = 2 ";
 
+    public static final String SELECT_ALL_BY_ID = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_TRANSACTION_INTERFACE_ID + " = ?";
+
 
 
     public static final String SELECT_LOC_OR_DES_NOT_NULL = " select count(*) from mtl_transactions_interface mti, " +

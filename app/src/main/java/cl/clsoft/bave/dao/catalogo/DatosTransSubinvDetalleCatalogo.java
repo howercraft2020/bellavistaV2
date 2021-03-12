@@ -8,8 +8,9 @@ public class DatosTransSubinvDetalleCatalogo {
     public static final String COLUMN_SUBINVENTARIO_HASTA = "subinventario_hasta";
     public static final String COLUMN_LOCALIZADOR_HASTA = "localizador_hasta";
     public static final String COLUMN_TRANSACTION_QUANTITY = "transaction_quantity";
+    public static final String COLUMN_TRANSACTION_INTERFACE_ID = "transaction_interface_id";
 
-    public static final String SELECT = "select msi.segment1, mti.subinventory_code, " +
+    public static final String SELECT = "select msi.segment1, mti.subinventory_code, mti.transaction_interface_id, " +
             "(select loc.cod_localizador from localizador loc where loc.id_localizador = mti.locator_id) localizador, " +
             "mti.transfer_subinventory subinventario_hasta, " +
             "(select loc.cod_localizador from localizador loc where loc.id_localizador = mti.transfer_locator) localizador_hasta, " +
