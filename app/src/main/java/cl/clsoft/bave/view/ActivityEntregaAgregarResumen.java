@@ -65,6 +65,7 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
     private TextView textSeries;
     private RelativeLayout rlayoutLote;
     private RelativeLayout rlayoutSeries;
+    private SweetAlertDialog dialog;
 
     @NonNull
     @Override
@@ -145,6 +146,14 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
                     this.fillSeries(this.series);
                 }
             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialog != null) {
+            dialog.dismiss();
         }
     }
 
@@ -296,8 +305,8 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
     }
 
     public void resultadoOkAddTransaction() {
-        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-            .setTitleText("Éxito")
+        dialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+        dialog.setTitleText("Éxito")
             .setContentText("Creación exitosa")
             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                 @Override

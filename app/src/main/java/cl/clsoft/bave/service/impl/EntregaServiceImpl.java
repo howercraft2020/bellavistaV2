@@ -1,7 +1,11 @@
 package cl.clsoft.bave.service.impl;
 
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -111,7 +115,21 @@ public class EntregaServiceImpl implements IEntregaService {
     public List<RcvTransactions> getTransaccionsByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws ServiceException {
         Log.d(TAG, "EntregaServiceImpl::getTransaccionsByShipmentInventory");
         Log.d(TAG, "EntregaServiceImpl::getTransaccionsByShipmentInventory::shipmentHeaderId: " + shipmentHeaderId);
-        Log.d(TAG, "EntregaServiceImpl::getTransaccionsByShipmentInventory");
+        Log.d(TAG, "EntregaServiceImpl::getTransaccionsByShipmentInventory::inventoryItemId: " + inventoryItemId);
+
+        IRcvTransactionsDao rcvTransactionsDao = new RcvTransactionsDaoImpl();
+        try {
+            return rcvTransactionsDao.getAllByShipmentInventory(shipmentHeaderId, inventoryItemId);
+        } catch (DaoException e) {
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<RcvTransactions> getTransaccionsDisponiblesByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws ServiceException {
+        Log.d(TAG, "EntregaServiceImpl::getTransaccionsDisponiblesByShipmentInventory");
+        Log.d(TAG, "EntregaServiceImpl::getTransaccionsDisponiblesByShipmentInventory::shipmentHeaderId: " + shipmentHeaderId);
+        Log.d(TAG, "EntregaServiceImpl::getTransaccionsDisponiblesByShipmentInventory::inventoryItemId: " + inventoryItemId);
 
         IRcvTransactionsDao rcvTransactionsDao = new RcvTransactionsDaoImpl();
         try {
@@ -176,6 +194,13 @@ public class EntregaServiceImpl implements IEntregaService {
     public void addTransacctionInterface(Long shipmentHeaderId, Long transactionId, String subinventoryCode,
                                          String locatorCode, String lote, String loteProveedor, String vencimiento, String categoria, String atributo1,
                                          String atributo2, String atributo3, List<String> series, Double cantidad) throws ServiceException {
+        Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface");
+        Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface::shipmentHeaderId: " + shipmentHeaderId);
+        Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface::transactionId: " + transactionId);
+        Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface::subinventoryCode: " + subinventoryCode);
+        Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface::locatorCode: " + locatorCode);
+        Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface::lote: " + lote);
+        Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface::loteProveedor: " + loteProveedor);
 
         IRcvShipmentHeadersDao rcvShipmentHeadersDao = new RcvShipmentHeadersDaoImpl();
         IRcvTransactionsDao rcvTransactionsDao = new RcvTransactionsDaoImpl();
@@ -187,6 +212,7 @@ public class EntregaServiceImpl implements IEntregaService {
         IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
         IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
         try {
+            RcvTransactionsInterface rcvTransactionsInterface;
             Localizador localizador = null;
             boolean isControlLote = false;
             boolean isControlSerie = false;
@@ -241,6 +267,11 @@ public class EntregaServiceImpl implements IEntregaService {
             }
 
             // Validaciones
+            RcvTransactionsInterface transactionsInterfaceExiste = rcvTransactionsInterfaceDao.getByTransactionId(transactionId);
+            if (transactionsInterfaceExiste != null) {
+                throw new ServiceException(1, "Producto ya fue ingresado");
+            }
+
             if (cantidad.longValue() > rcvTransactions.getQuantity().longValue()) {
                 throw new ServiceException(1, "la cantidad es mayor a lo especificado " + rcvTransactions.getQuantity());
             }
@@ -290,7 +321,7 @@ public class EntregaServiceImpl implements IEntregaService {
 
             // Crea RCV_TRANSACTIONS_INTERFACE
             interfaceTransactionId = rcvShipmentHeaders.getInterfaceTransactionId() + rcvTransactions.getLineNum() - 1;
-            RcvTransactionsInterface rcvTransactionsInterface = new RcvTransactionsInterface();
+            rcvTransactionsInterface = new RcvTransactionsInterface();
             rcvTransactionsInterface.setInterfaceTransactionId(interfaceTransactionId);
             rcvTransactionsInterface.setLastUpdatedDate(sysDate);
             rcvTransactionsInterface.setLastUpdatedBy(rcvShipmentHeaders.getUserId());
@@ -349,6 +380,7 @@ public class EntregaServiceImpl implements IEntregaService {
             // Crea Lote
             if (isControlLote) {
                 transactionInterfaceId = this.getNextTransactionInterfaceId(rcvShipmentHeaders.getTransactionInterfaceId());
+                Log.d(TAG, "Agregando Lote " + transactionInterfaceId);
                 MtlTransactionsLotsIface mtlTransactionsLotsIface = new MtlTransactionsLotsIface();
                 mtlTransactionsLotsIface.setTransactionInterfaceId(transactionInterfaceId);
                 mtlTransactionsLotsIface.setLastUpdateDate(sysDate);
@@ -370,8 +402,9 @@ public class EntregaServiceImpl implements IEntregaService {
 
             // Crea Series
             if (isControlSerie) {
+                transactionInterfaceId = this.getNextTransactionInterfaceId(rcvShipmentHeaders.getTransactionInterfaceId());
                 for (String serie : series) {
-                    transactionInterfaceId = this.getNextTransactionInterfaceId(rcvShipmentHeaders.getTransactionInterfaceId());
+                    Log.d(TAG, "Agregando Serie " + transactionInterfaceId);
                     MtlSerialNumbersInterface mtlSerialNumbersInterface = new MtlSerialNumbersInterface();
                     mtlSerialNumbersInterface.setTransactionInterfaceId(transactionInterfaceId);
                     mtlSerialNumbersInterface.setLastUpdateDate(sysDate);
@@ -489,7 +522,7 @@ public class EntregaServiceImpl implements IEntregaService {
                 }
             }
 
-            if (isControlLote) {
+            if (isControlSerie) {
                 serials = mtlSerialNumbersInterfaceDao.getAllByInterfaceTransactionId(rcvTransactionsInterface.getInterfaceTransactionId());
                 List<String> strSerials = new ArrayList<>();
                 for (MtlSerialNumbersInterface serial : serials) {
@@ -500,6 +533,193 @@ public class EntregaServiceImpl implements IEntregaService {
             return dto;
         } catch (DaoException e) {
             throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public void deleteTransactionsInterfaceById(Long interfaceTransactionId) throws ServiceException {
+        Log.d(TAG, "EntregaServiceImpl::deleteTransactionsInterfaceById");
+        Log.d(TAG, "EntregaServiceImpl::deleteTransactionsInterfaceById::interfaceTransactionId: " + interfaceTransactionId);
+
+        IRcvTransactionsInterfaceDao rcvTransactionsInterfaceDao = new RcvTransactionsInterfaceDaoImpl();
+        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
+        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
+
+        try {
+            rcvTransactionsInterfaceDao.delete(interfaceTransactionId);
+            mtlTransactionLotsInterfaceDao.deleteByInterfaceTransactionId(interfaceTransactionId);
+            mtlSerialNumbersInterfaceDao.deleteByInterfaceTransactionId(interfaceTransactionId);
+        } catch (DaoException e) {
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public void closeEntrega(Long shipmentHeaderId) throws ServiceException {
+        Log.d(TAG, "EntregaServiceImpl::closeEntrega");
+        Log.d(TAG, "EntregaServiceImpl::closeEntrega::shipmentHeaderId: " + shipmentHeaderId);
+
+        IRcvShipmentHeadersDao rcvShipmentHeadersDao = new RcvShipmentHeadersDaoImpl();
+        IRcvTransactionsDao rcvTransactionsDao = new RcvTransactionsDaoImpl();
+        IRcvHeadersInterfaceDao rcvHeadersInterfaceDao = new RcvHeadersInterfaceDaoImpl();
+        IRcvTransactionsInterfaceDao rcvTransactionsInterfaceDao = new RcvTransactionsInterfaceDaoImpl();
+        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
+        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
+        try {
+            RcvShipmentHeaders rcvShipmentHeaders = rcvShipmentHeadersDao.get(shipmentHeaderId);
+            if (rcvShipmentHeaders == null) {
+                throw new ServiceException(1, "Entrega " + shipmentHeaderId + " no existe en el sistema");
+            }
+
+            RcvHeadersInterface rcvHeadersInterface = rcvHeadersInterfaceDao.get(rcvShipmentHeaders.getHeaderInterfaceId());
+            if (rcvHeadersInterface == null) {
+                throw new ServiceException(1, "Headers Interface " + rcvShipmentHeaders.getHeaderInterfaceId() + " no existe en el sistema");
+            }
+
+            List<RcvTransactionsInterface> trxs = rcvTransactionsInterfaceDao.getAllByHeader(rcvHeadersInterface.getHeaderInterfaceId());
+            if (trxs.size() == 0) {
+                throw new ServiceException(1, "No hay transacciones ingresadas para esta entrega");
+            }
+
+            // Genera archivo Conteo
+            String nombreArchivo = "I_2_" + shipmentHeaderId + ".csv";
+            File tarjetaSD = Environment.getExternalStorageDirectory();
+            File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
+            File archivo = new File(Dir, nombreArchivo);
+            FileWriter writer = new FileWriter(archivo);
+            writer.write(
+                    "HDR;"
+                    + (rcvHeadersInterface.getHeaderInterfaceId() == null ? "null" : rcvHeadersInterface.getHeaderInterfaceId()) + ";"
+                    + (rcvHeadersInterface.getGroupId() == null ? "null" : rcvHeadersInterface.getGroupId()) + ";"
+                    + (rcvHeadersInterface.getProcessingStatusCode() == null ? "null" : (rcvHeadersInterface.getProcessingStatusCode().isEmpty() ? "null" : rcvHeadersInterface.getProcessingStatusCode())) + ";"
+                    + (rcvHeadersInterface.getReciptSourceCode() == null ? "null" : (rcvHeadersInterface.getReciptSourceCode().isEmpty() ? "null" : rcvHeadersInterface.getReciptSourceCode())) + ";"
+                    + (rcvHeadersInterface.getTransactionType() == null ? "null" : (rcvHeadersInterface.getTransactionType().isEmpty() ? "null" : rcvHeadersInterface.getTransactionType())) + ";"
+                    + (rcvHeadersInterface.getAutoTransactCode() == null ? "null" : (rcvHeadersInterface.getAutoTransactCode().isEmpty() ? "null" : rcvHeadersInterface.getAutoTransactCode())) + ";"
+                    + (rcvHeadersInterface.getLastUpdateDate() == null ? "null" : (rcvHeadersInterface.getLastUpdateDate().isEmpty() ? "null" : rcvHeadersInterface.getLastUpdateDate())) + ";"
+                    + (rcvHeadersInterface.getLastUpdateBy() == null ? "null" : rcvHeadersInterface.getLastUpdateBy()) + ";"
+                    + "0;"
+                    + (rcvHeadersInterface.getCreatedBy() == null ? "null" : rcvHeadersInterface.getCreatedBy()) + ";"
+                    + (rcvHeadersInterface.getVendorId() == null ? "null" : rcvHeadersInterface.getVendorId()) + ";"
+                    + (rcvHeadersInterface.getShipToOrganizationCode() == null ? "null" : (rcvHeadersInterface.getShipToOrganizationCode().isEmpty() ? "null" : rcvHeadersInterface.getShipToOrganizationCode())) + ";"
+                    + (rcvHeadersInterface.getValidationFlag() == null ? "null" : (rcvHeadersInterface.getValidationFlag().isEmpty() ? "null" : rcvHeadersInterface.getValidationFlag())) + ";"
+                    + "FIN\r\n"
+            );
+            for (RcvTransactionsInterface trx : trxs) {
+                writer.write(
+                        "TRX;"
+                        + (trx.getInterfaceTransactionId() == null ? "null" : trx.getInterfaceTransactionId()) + ";"
+                        + (trx.getLastUpdatedDate() == null ? "null" : (trx.getLastUpdatedDate().isEmpty() ? "null" : trx.getLastUpdatedDate())) + ";"
+                        + (trx.getLastUpdatedBy() == null ? "null" : trx.getLastUpdatedBy()) + ";"
+                        + (trx.getCreationDate() == null ? "null" : (trx.getCreationDate().isEmpty() ? "null" : trx.getCreationDate())) + ";"
+                        + (trx.getCreatedBy() == null ? "null" : trx.getCreatedBy()) + ";"
+                        + (trx.getTransactionType() == null ? "null" : (trx.getTransactionType().isEmpty() ? "null" : trx.getTransactionType())) + ";"
+                        + (trx.getTransactionDate() == null ? "null" : (trx.getTransactionDate().isEmpty() ? "null" : trx.getTransactionDate())) + ";"
+                        + (trx.getProcessingStatusCode() == null ? "null" : (trx.getProcessingStatusCode().isEmpty() ? "null" : trx.getProcessingStatusCode())) + ";"
+                        + (trx.getProcessingModeCode() == null ? "null" : (trx.getProcessingModeCode().isEmpty() ? "null" : trx.getProcessingModeCode())) + ";"
+                        + (trx.getQuantity() == null ? "null" : trx.getQuantity()) + ";"
+                        + (trx.getUnitOfMeasure() == null ? "null" : (trx.getUnitOfMeasure().isEmpty() ? "null" : trx.getUnitOfMeasure())) + ";"
+                        + (trx.getItemId() == null ? "null" : trx.getItemId()) + ";"
+                        + (trx.getItemDescription() == null ? "null" : (trx.getItemDescription().isEmpty() ? "null" : trx.getItemDescription())) + ";"
+                        + (trx.getUomCode() == null ? "null" : (trx.getUomCode().isEmpty() ? "null" : trx.getUomCode())) + ";"
+                        + (trx.getEmployeeId() == null ? "null" : trx.getEmployeeId()) + ";"
+                        + (trx.getShipmentHeaderId() == null ? "null" : trx.getShipmentHeaderId()) + ";"
+                        + (trx.getShipmentLineId() == null ? "null" : trx.getShipmentLineId()) + ";"
+                        + (trx.getShipToLocationId() == null ? "null" : trx.getShipToLocationId()) + ";"
+                        + (trx.getVendorId() == null ? "null" : trx.getVendorId()) + ";"
+                        + (trx.getVendorSiteCode() == null ? "null" : (trx.getVendorSiteCode().isEmpty() ? "null" : trx.getVendorSiteCode())) + ";"
+                        + (trx.getToOrganizationId() == null ? "null" : trx.getToOrganizationId()) + ";"
+                        + (trx.getSourceDocumentCode() == null ? "null" : (trx.getSourceDocumentCode().isEmpty() ? "null" : trx.getSourceDocumentCode())) + ";"
+                        + (trx.getParentTransactionId() == null ? "null" : trx.getParentTransactionId()) + ";"
+                        + (trx.getPoHeaderId() == null ? "null" : trx.getPoHeaderId()) + ";"
+                        + (trx.getPoLineId() == null ? "null" : trx.getPoLineId()) + ";"
+                        + (trx.getPoLineLocation() == null ? "null" : trx.getPoLineLocation()) + ";"
+                        + (trx.getPoUnitPrice() == null ? "null" : trx.getPoUnitPrice()) + ";"
+                        + (trx.getCurrencyCode() == null ? "null" : (trx.getCurrencyCode().isEmpty() ? "null" : trx.getCurrencyCode())) + ";"
+                        + (trx.getCurrencyConversionType() == null ? "null" : (trx.getCurrencyConversionType().isEmpty() ? "null" : trx.getCurrencyConversionType())) + ";"
+                        + (trx.getCurrencyConversionRate() == null ? "null" : trx.getCurrencyConversionRate()) + ";"
+                        + (trx.getCurrencyConversionDate() == null ? "null" : (trx.getCurrencyConversionDate().isEmpty() ? "null" : trx.getCurrencyConversionDate())) + ";"
+                        + (trx.getPoDistributionId() == null ? "null" : trx.getPoDistributionId()) + ";"
+                        + (trx.getDestinationTypeCode() == null ? "null" : (trx.getDestinationTypeCode().isEmpty() ? "null" : trx.getDestinationTypeCode())) + ";"
+                        + (trx.getLocationId() == null ? "null" : trx.getLocationId()) + ";"
+                        + (trx.getDeliverToLocationId() == null ? "null" : trx.getDeliverToLocationId()) + ";"
+                        + (trx.getInspectionStatusCode() == null ? "null" : (trx.getInspectionStatusCode().isEmpty() ? "null" : trx.getInspectionStatusCode())) + ";"
+                        + (trx.getSubinventory() == null ? "null" : (trx.getSubinventory().isEmpty() ? "null" : trx.getSubinventory())) + ";"
+                        + (trx.getLocatorId() == null ? "null" : trx.getLocatorId()) + ";"
+                        + (trx.getShipmentNum() == null ? "null" : (trx.getShipmentNum().isEmpty() ? "null" : trx.getShipmentNum())) + ";"
+                        + (trx.getUseMtlLot() == null ? "null" : trx.getUseMtlLot()) + ";"
+                        + (trx.getUseMtlSerial() == null ? "null" : trx.getUseMtlSerial()) + ";"
+                        + (trx.getGroupId() == null ? "null" : trx.getGroupId()) + ";"
+                        + (trx.getTransactionStatusCode() == null ? "null" : (trx.getTransactionStatusCode().isEmpty() ? "null" : trx.getTransactionStatusCode())) + ";"
+                        + (trx.getAutoTransactCode() == null ? "null" : (trx.getAutoTransactCode().isEmpty() ? "null" : trx.getAutoTransactCode())) + ";"
+                        + (trx.getReceiptSourceCode() == null ? "null" : (trx.getReceiptSourceCode().isEmpty() ? "null" : trx.getReceiptSourceCode())) + ";"
+                        + (trx.getValidationFlag() == null ? "null" : (trx.getValidationFlag().isEmpty() ? "null" : trx.getValidationFlag())) + ";"
+                        + (trx.getOrgId() == null ? "null" : trx.getOrgId()) + ";"
+                        + "FIN\r\n"
+                );
+            }
+            for (RcvTransactionsInterface trx : trxs) {
+                MtlTransactionsLotsIface lote = mtlTransactionLotsInterfaceDao.getByInterfaceTransactionId(trx.getInterfaceTransactionId());
+                if (lote != null) {
+                    writer.write(
+                            "LOT;"
+                            + (lote.getTransactionInterfaceId() == null ? "null" : lote.getTransactionInterfaceId()) + ";"
+                            + (lote.getLastUpdateDate() == null ? "null" : (lote.getLastUpdateDate().isEmpty() ? "null" : lote.getLastUpdateDate())) + ";"
+                            + (lote.getLastUpdateBy() == null ? "null" : lote.getLastUpdateBy()) + ";"
+                            + (lote.getCreationDate() == null ? "null" : (lote.getCreationDate().isEmpty() ? "null" : lote.getCreationDate())) + ";"
+                            + (lote.getCreatedBy() == null ? "null" : lote.getCreatedBy()) + ";"
+                            + (lote.getLastUpdateLogin() == null ? "null" : lote.getLastUpdateLogin()) + ";"
+                            + (lote.getLotNumber() == null ? "null" : (lote.getLotNumber().isEmpty() ? "null" : lote.getLotNumber())) + ";"
+                            + (lote.getTransactionQuantity() == null ? "null" : lote.getTransactionQuantity()) + ";"
+                            + (lote.getPrimaryQuantity() == null ? "null" : lote.getPrimaryQuantity()) + ";"
+                            + (lote.getSerialTransactionTempId() == null ? "null" : lote.getSerialTransactionTempId()) + ";"
+                            + (lote.getProductCode() == null ? "null" : (lote.getProductCode().isEmpty() ? "null" : lote.getProductCode())) + ";"
+                            + (lote.getProductTransactionId() == null ? "null" : lote.getProductTransactionId()) + ";"
+                            + (lote.getSupplierLotNumber() == null ? "null" : (lote.getSupplierLotNumber().isEmpty() ? "null" : lote.getSupplierLotNumber())) + ";"
+                            + (lote.getLotExpirationDate() == null ? "null" : (lote.getLotExpirationDate().isEmpty() ? "null" : lote.getLotExpirationDate())) + ";"
+                            + (lote.getAttributeCategory() == null ? "null" : (lote.getAttributeCategory().isEmpty() ? "null" : lote.getAttributeCategory())) + ";"
+                            + (lote.getAttrubute1() == null ? "null" : (lote.getAttrubute1().isEmpty() ? "null" : lote.getAttrubute1())) + ";"
+                            + (lote.getAttrubute2() == null ? "null" : (lote.getAttrubute2().isEmpty() ? "null" : lote.getAttrubute2())) + ";"
+                            + (lote.getAttrubute3() == null ? "null" : (lote.getAttrubute3().isEmpty() ? "null" : lote.getAttrubute3())) + ";"
+                            + "FIN\r\n"
+                    );
+                }
+            }
+            for (RcvTransactionsInterface trx : trxs) {
+                List<MtlSerialNumbersInterface> series = mtlSerialNumbersInterfaceDao.getAllByInterfaceTransactionId(trx.getInterfaceTransactionId());
+                for (MtlSerialNumbersInterface serie : series) {
+                    writer.write(
+                            "SER;"
+                            + (serie.getTransactionInterfaceId() == null ? "null" : serie.getTransactionInterfaceId()) + ";"
+                            + (serie.getLastUpdateDate() == null ? "null" : (serie.getLastUpdateDate().isEmpty() ? "null" : serie.getLastUpdateDate())) + ";"
+                            + (serie.getLastUpdatedBy() == null ? "null" : serie.getLastUpdatedBy()) + ";"
+                            + (serie.getCreationDate() == null ? "null" : (serie.getCreationDate().isEmpty() ? "null" : serie.getCreationDate())) + ";"
+                            + (serie.getCreatedBy() == null ? "null" : serie.getCreatedBy()) + ";"
+                            + (serie.getLastUpdateLogin() == null ? "null" : serie.getLastUpdateLogin()) + ";"
+                            + (serie.getFmSerialNumber() == null ? "null" : (serie.getFmSerialNumber().isEmpty() ? "null" : serie.getFmSerialNumber())) + ";"
+                            + (serie.getToSerialNumber() == null ? "null" : (serie.getToSerialNumber().isEmpty() ? "null" : serie.getToSerialNumber())) + ";"
+                            + (serie.getProductCode() == null ? "null" : (serie.getProductCode().isEmpty() ? "null" : serie.getProductCode())) + ";"
+                            + (serie.getProductTransactionId() == null ? "null" : serie.getProductTransactionId()) + ";"
+                            + "FIN\r\n"
+                    );
+
+                }
+            }
+            writer.flush();
+            writer.close();
+
+            // Elimina datos de la BD
+            for (RcvTransactionsInterface trx : trxs) {
+                mtlSerialNumbersInterfaceDao.deleteByInterfaceTransactionId(trx.getInterfaceTransactionId());
+                mtlTransactionLotsInterfaceDao.deleteByInterfaceTransactionId(rcvShipmentHeaders.getInterfaceTransactionId());
+                rcvTransactionsInterfaceDao.delete(trx.getInterfaceTransactionId());
+            }
+            rcvHeadersInterfaceDao.delete(rcvShipmentHeaders.getHeaderInterfaceId());
+            rcvTransactionsDao.deleteByShipmenHeader(shipmentHeaderId);
+            rcvShipmentHeadersDao.delete(shipmentHeaderId);
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        } catch(IOException e){
+            throw new ServiceException(2, e.getMessage());
         }
     }
 

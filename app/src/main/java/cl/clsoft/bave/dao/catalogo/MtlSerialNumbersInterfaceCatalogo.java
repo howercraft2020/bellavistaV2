@@ -28,6 +28,10 @@ public class MtlSerialNumbersInterfaceCatalogo {
                     COLUMN_PRODUCT_TRANSACTION_ID + " INTEGER " +
                     ")";
 
+
+    public static final String UPDATE = COLUMN_TRANSACTION_INTERFACE_ID + " = ?";
+    public static final String DELETE = COLUMN_TRANSACTION_INTERFACE_ID + " = ?";
+    public static final String DELETE_BY_PRODUCT_TRANSACTION_ID = COLUMN_PRODUCT_TRANSACTION_ID + " = ?";
     public static final String SELECT = "SELECT * FROM " + TABLE + " WHERE " +COLUMN_TRANSACTION_INTERFACE_ID + " = ?";
 
     public static final String SELECT_ALL_BY_ID = "SELECT * FROM " + TABLE + " WHERE " +COLUMN_TRANSACTION_INTERFACE_ID +

@@ -51,6 +51,10 @@ public class MtlTransactionsLotsIfaceCatalogo {
                     " PRIMARY KEY (" + COLUMN_MTL_TRANSACTION_LOTS_IFACE + " )" +
             ")";
 
+    public static final String UPDATE = COLUMN_MTL_TRANSACTION_LOTS_IFACE + " = ?";
+    public static final String DELETE = COLUMN_MTL_TRANSACTION_LOTS_IFACE + " = ?";
+    public static final String DELETE_BY_PRODUCT_TRANSACTION_ID = COLUMN_PRODUCT_TRANSACTION_ID + " = ?";
+
     private static final String SELECT = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_MTL_TRANSACTION_LOTS_IFACE + " = ?";
 
     public static final String SELECTBY_PRODUCT_TRANSACTION_ID =

@@ -39,7 +39,7 @@ public abstract class BaseActivity<Presenter extends BasePresenter> extends AppC
     }
 
     @Override
-    public void onDestroy() {
+    protected void onDestroy() {
         super.onDestroy();
         mPresenter.onDestroy();
     }

@@ -68,4 +68,19 @@ public class EntregaTransactionDetallePresenter extends BasePresenter {
         return null;
     }
 
+    public void deleteTransactionsInterfaceById(Long interfaceTransactionId) {
+        try {
+            this.mService.deleteTransactionsInterfaceById(interfaceTransactionId);
+            mView.resultadoOkDeleteTransaction();
+        } catch(ServiceException e) {
+            if (e.getCodigo() == 1) {
+                this.mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                this.mView.showError(e.getDescripcion());
+            }
+        } catch(Exception e){
+            this.mView.showError(e.getMessage());
+        }
+    }
+
 }

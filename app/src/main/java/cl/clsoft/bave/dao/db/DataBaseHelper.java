@@ -32,7 +32,7 @@ import cl.clsoft.bave.dao.catalogo.SubinventarioCatalogo;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     // Database Info
-    private static final String DATABASE_NAME = "invetarioDatabase";
+    private static final String DATABASE_NAME = "inventarioDatabase";
     private static final int DATABASE_VERSION = 1;
     private static DataBaseHelper sInstance;
 

@@ -5,6 +5,9 @@ import cl.clsoft.bave.model.RcvHeadersInterface;
 
 public interface IRcvHeadersInterfaceDao
 {
-    void insert(RcvHeadersInterface rcvHeadersInterface) throws DaoException;
-    RcvHeadersInterface get( Long interfaceHeaderId) throws DaoException;
+
+    public void insert(RcvHeadersInterface rcvHeadersInterface) throws DaoException;
+    public void update(RcvHeadersInterface rcvHeadersInterface) throws DaoException;
+    public void delete(Long headerInterfaceId) throws DaoException;
+    RcvHeadersInterface get(Long headerInterfaceId) throws DaoException;
 }

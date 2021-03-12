@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.presenter.EntregaTransactionDetallePresenter;
 import cl.clsoft.bave.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ActivityEntregaTransactionDetalle extends BaseActivity<EntregaTransactionDetallePresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
@@ -48,6 +50,7 @@ public class ActivityEntregaTransactionDetalle extends BaseActivity<EntregaTrans
     private TextView textSeries;
     private RelativeLayout rlayoutLote;
     private RelativeLayout rlayoutSeries;
+    private SweetAlertDialog dialog;
 
     @NonNull
     @Override
@@ -118,14 +121,30 @@ public class ActivityEntregaTransactionDetalle extends BaseActivity<EntregaTrans
                         }
                         this.textSeries.setText(strSeries);
                     }
+
+                    if (dto.isLote()) {
+                        this.rlayoutLote.setVisibility(View.VISIBLE);
+                    } else {
+                        this.rlayoutLote.setVisibility(View.GONE);
+                    }
+
+                    if (dto.isSerie()) {
+                        this.rlayoutSeries.setVisibility(View.VISIBLE);
+                    } else {
+                        this.rlayoutSeries.setVisibility(View.GONE);
+                    }
                 }
             }
-
-
         }
-
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -158,7 +177,7 @@ public class ActivityEntregaTransactionDetalle extends BaseActivity<EntregaTrans
     public void onDialogAceptarClick(DialogFragment dialog) {
         String tipo = dialog.getArguments().getString("tipo");
         if (tipo.equalsIgnoreCase("delete")) {
-            //mPresenter.closeInventory(this.inventarioId);
+            mPresenter.deleteTransactionsInterfaceById(this.interfaceTransactionId);
         }
 
     }
@@ -167,4 +186,24 @@ public class ActivityEntregaTransactionDetalle extends BaseActivity<EntregaTrans
     public void onDialogCancelarClick(DialogFragment dialog) {
 
     }
+
+
+
+    public void resultadoOkDeleteTransaction() {
+        dialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+        dialog.setTitleText("Éxito")
+            .setContentText("Eliminación exitosa")
+            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sDialog) {
+                    Log.d("CMFA", "CLICK");
+                    Intent i = new Intent(getApplicationContext(), ActivityEntregaDetalle.class);
+                    i.putExtra("ShipmentHeaderId", shipmentHeaderId);
+                    startActivity(i);
+                    finish();
+                }
+            })
+            .show();
+    }
+
 }

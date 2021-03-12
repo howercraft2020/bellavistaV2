@@ -107,4 +107,13 @@ public class RcvTransactionsCatalogo {
             "     shipment_header_id = ? " +
             "     AND item_id = ? ";
 
+    public static  final String SELECT_ALL_DISPONIBLES_BY_SHIPMENT_INVENTORY =
+            " SELECT * " +
+                    " FROM " +
+                    "     rcv_transactions " +
+                    " WHERE " +
+                    "     shipment_header_id = ? " +
+                    "     AND item_id = ? " +
+                    "     AND transaction_id NOT IN ( SELECT parent_transaction_id from rcv_transactions WHERE header_interface_ID = ?)";
+
 }

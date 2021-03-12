@@ -51,4 +51,16 @@ public class EntregaDetallePresenter extends BasePresenter {
         return null;
     }
 
+    public void closeEntrega(Long shipmentHeaderId){
+        try {
+            this.mService.closeEntrega(shipmentHeaderId);
+            mView.resultadoOkCerrarEntrega();
+        } catch (ServiceException e) {
+            if (e.getCodigo() == 1) {
+                mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                mView.showError(e.getDescripcion());
+            }
+        }
+    }
 }
