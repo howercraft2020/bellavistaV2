@@ -96,6 +96,14 @@
             android:name=".view.ActivityEntregaTransactionDetalle"
             android:label="Transacción"/>
 
+        <!-- CONSULTA -->
+        <activity
+            android:name=".view.ActivityConsultaItem"
+            android:label="Stock"/>
+        <activity
+            android:name=".view.ActivityConsultaSubinventario"
+            android:label="Stock"/>
+
         <!-- GENERICO -->
         <activity
             android:name=".view.ActivitySigleSearch"

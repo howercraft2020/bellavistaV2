@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="6dip">
+
+    <include
+        android:id="@+id/llProgressBar"
+        android:visibility="gone"
+        layout="@layout/progress_bar"/>
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/spinnerSubinventory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorPrimaryDark"
+        android:textColor="@android:color/black"
+        app:ms_alignLabels="false"
+        app:ms_arrowSize="14dp"
+        app:ms_baseColor="?attr/colorPrimaryDark"
+        app:ms_enableErrorLabel="true"
+        app:ms_enableFloatingLabel="true"
+        app:ms_floatingLabelText="Subinventario"
+        app:ms_hint="Subinventario"
+        app:ms_hintColor="?attr/colorPrimaryDark"
+        app:ms_hintTextSize="18dp"
+        app:ms_multiline="false"
+        app:ms_thickness="1dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewItems"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+</LinearLayout>
