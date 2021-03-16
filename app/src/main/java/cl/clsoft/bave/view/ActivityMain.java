@@ -105,6 +105,15 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
                     startActivity(intent);
                 }
 
+                if (seleccion.equals("Consulta Stock Item")){
+                    Intent intent = new Intent(ActivityMain.this, ActivityConsultaItem.class);
+                    startActivity(intent);
+                }
+
+                if (seleccion.equals("Consulta Stock Subinventario")){
+                    Intent intent = new Intent(ActivityMain.this, ActivityConsultaSubinventario.class);
+                    startActivity(intent);
+                }
             }
         });
 

@@ -32,6 +32,11 @@ public class MtlOnhandQuantitiesDaoImpl extends GenericDao<MtlOnhandQuantities> 
     }
 
     @Override
+    public void deleteAll() throws DaoException {
+        super.delete(MtlOnhandQuantitiesCatalogo.TABLE, null, null);
+    }
+
+    @Override
     public MtlOnhandQuantities get(String articulo, String lote, String subinventario, String localizador) throws DaoException {
         return super.selectOne(MtlOnhandQuantitiesCatalogo.SELECT, new MtlOnHandQuantitiesRowMapper(), articulo, lote, subinventario, localizador);
     }

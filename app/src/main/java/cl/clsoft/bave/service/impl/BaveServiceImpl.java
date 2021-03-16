@@ -137,10 +137,17 @@ public class BaveServiceImpl implements IBaveService {
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
 
         FileInputStream fis = null;
+        BufferedReader leerArchivo = null;
         try {
             fis = new FileInputStream(archivo);
             InputStreamReader abrirArchivo = new InputStreamReader(fis);
-            BufferedReader leerArchivo = new BufferedReader(abrirArchivo);
+
+            // Borra Registros existentes
+            mtlOnhandQuantitiesDao.deleteAll();
+            mtlSystemItemsDao.deleteAll();
+
+            // Carga Archivo
+            leerArchivo = new BufferedReader(abrirArchivo);
             String linea = null;
             linea = leerArchivo.readLine();
             while(linea != null){

@@ -55,6 +55,13 @@ public class MtlSystemItemsDaoImpl extends GenericDao<MtlSystemItems> implements
     }
 
     @Override
+    public void deleteAll() throws DaoException {
+        Log.d(TAG, "MtlSystemItemsDaoImpl::deleteAll");
+
+        super.delete(MtlSystemItemsCatalogo.TABLE, null, null);
+    }
+
+    @Override
     public MtlSystemItems get(Long inventoryItemId) throws DaoException {
         Log.d(TAG, "MtlSystemItemsDaoImpl::get");
         Log.d(TAG, "MtlSystemItemsDaoImpl::get::inventoryItemId: " + inventoryItemId);
