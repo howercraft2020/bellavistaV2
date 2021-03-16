@@ -99,6 +99,12 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
                     Intent intent = new Intent(ActivityMain.this, ActivityTransSubinv.class);
                     startActivity(intent);
                 }
+
+                if (seleccion.equals("Transferencia Organización")){
+                    Intent intent = new Intent(ActivityMain.this, ActivityTransOrg.class);
+                    startActivity(intent);
+                }
+
             }
         });
 

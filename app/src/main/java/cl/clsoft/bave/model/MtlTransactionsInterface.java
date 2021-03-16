@@ -28,8 +28,17 @@ public class MtlTransactionsInterface {
     private String sourceCode;
     private Long sourceLineId;
     private Long sourceHeaderId;
+    private String shipmentNumber;
 
     public MtlTransactionsInterface(){}
+
+    public String getShipmentNumber() {
+        return shipmentNumber;
+    }
+
+    public void setShipmentNumber(String shipmentNumber) {
+        this.shipmentNumber = shipmentNumber;
+    }
 
     public Long getTransactionInterfaceId() {
         return transactionInterfaceId;

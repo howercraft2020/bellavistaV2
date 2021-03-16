@@ -6,6 +6,7 @@ import java.util.List;
 
 import cl.clsoft.bave.dao.IMtlTransactionsInterfaceDao;
 import cl.clsoft.bave.dao.catalogo.MtlTransactionsInterfaceCatalogo;
+import cl.clsoft.bave.dao.catalogo.RcvTransactionsInterfaceCatalogo;
 import cl.clsoft.bave.dao.rowmapper.MtlTransactionsInterfaceRowMapper;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.MtlTransactionsInterface;
@@ -47,6 +48,7 @@ public class MtlTransactionInterfaceDaoImpl extends GenericDao<MtlTransactionsIn
         values.put(MtlTransactionsInterfaceCatalogo.COLUMN_SOURCE_CODE, mtlTransactionsInterface.getSourceCode());
         values.put(MtlTransactionsInterfaceCatalogo.COLUMN_SOURCE_LINE_ID, mtlTransactionsInterface.getSourceLineId());
         values.put(MtlTransactionsInterfaceCatalogo.COLUMN_SOURCE_HEADER_ID, mtlTransactionsInterface.getSourceHeaderId());
+        values.put(MtlTransactionsInterfaceCatalogo.COLUMN_SHIPMENT_NUMBER, mtlTransactionsInterface.getShipmentNumber());
         super.insert(MtlTransactionsInterfaceCatalogo.TABLE, values);
     }
 
@@ -71,6 +73,11 @@ public class MtlTransactionInterfaceDaoImpl extends GenericDao<MtlTransactionsIn
     }
 
     @Override
+    public Long getLocNull(Long inventoryItemId, String subinventario, String localizador) throws DaoException {
+        return super.selectLong(MtlTransactionsInterfaceCatalogo.SELECT_LOC_NULL, inventoryItemId,subinventario,localizador);
+    }
+
+    @Override
     public List<MtlTransactionsInterface> getTransferencias(String numeroTraspaso, String glosa) throws DaoException {
         return super.selectMany(MtlTransactionsInterfaceCatalogo.SELECT_TRANSFERENCIAS, new MtlTransactionsInterfaceRowMapper());
     }
@@ -81,8 +88,18 @@ public class MtlTransactionInterfaceDaoImpl extends GenericDao<MtlTransactionsIn
     }
 
     @Override
+    public List<MtlTransactionsInterface> getTransferenciasByShipment(String numeroTraspaso) throws DaoException {
+        return super.selectMany(MtlTransactionsInterfaceCatalogo.SELECT_TRANSFERENCIAS_BY_SHIPMENT, new MtlTransactionsInterfaceRowMapper(), numeroTraspaso);
+    }
+
+    @Override
     public MtlTransactionsInterface getTransferenciasById(Long transactionInterfaceId) throws DaoException {
         return super.selectOne(MtlTransactionsInterfaceCatalogo.SELECT_ALL_BY_ID, new MtlTransactionsInterfaceRowMapper(), transactionInterfaceId);
+    }
+
+    @Override
+    public void delete(Long transactionInterfaceId) throws DaoException {
+        super.delete(MtlTransactionsInterfaceCatalogo.TABLE, MtlTransactionsInterfaceCatalogo.DELETE, transactionInterfaceId);
     }
 
 

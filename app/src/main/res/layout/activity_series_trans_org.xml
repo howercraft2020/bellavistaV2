@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="6dip">
+
+    <include
+        android:id="@+id/llProgressBar"
+        android:visibility="gone"
+        layout="@layout/progress_bar"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_alignBottom="@id/creationDate" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutSerie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="Serie"
+        android:textColorHint="?attr/colorPrimary">
+        <cl.clsoft.bave.control.InstantAutoCompleteTextView
+            android:id="@+id/textSerie"
+            android:textColor="@android:color/black"
+            android:backgroundTint="?attr/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:inputType="textPhonetic">
+        </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_alignBottom="@id/layoutSerie" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSeries"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+
+
+</LinearLayout>

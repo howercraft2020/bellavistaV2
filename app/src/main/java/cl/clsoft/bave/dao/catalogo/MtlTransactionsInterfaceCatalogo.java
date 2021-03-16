@@ -29,6 +29,7 @@ public class MtlTransactionsInterfaceCatalogo {
     public static final String COLUMN_SOURCE_CODE = "source_code";
     public static final String COLUMN_SOURCE_LINE_ID = "source_line_id";
     public static final String COLUMN_SOURCE_HEADER_ID = "source_header_id";
+    public static final String COLUMN_SHIPMENT_NUMBER = "shipment_number";
 
     public static final String CREATE_TABLE =
             " CREATE TABLE " + TABLE + " ( " +
@@ -57,7 +58,8 @@ public class MtlTransactionsInterfaceCatalogo {
                     COLUMN_TRANSFER_LOCATOR + " INTEGER, " +
                     COLUMN_SOURCE_CODE + " TEXT, " +
                     COLUMN_SOURCE_LINE_ID + " INTEGER, " +
-                    COLUMN_SOURCE_HEADER_ID + " INTEGER " +
+                    COLUMN_SOURCE_HEADER_ID + " INTEGER, " +
+                    COLUMN_SHIPMENT_NUMBER + " INTEGER " +
                     " ) ";
 
     public static final String SELECT_ALL = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_TRANSACTION_ACTION_ID + " = 2 AND " + COLUMN_TRANSACTION_TYPE_ID + " = 2 ";
@@ -101,10 +103,21 @@ public class MtlTransactionsInterfaceCatalogo {
                                                               "and locator_id IS NULL " +
                                                               "and transfer_locator IS NULL ";
 
+    public static final String SELECT_LOC_NULL = "select count(*) from mtl_transactions_interface mti, "+
+                                                 "localizador loc " +
+                                                 "where mti.locator_id = loc.id_localizador " +
+                                                 "and mti.inventory_item_id = ? " +
+                                                 "and mti.subinventory_code = ? " +
+                                                 "and ifnull(loc.cod_localizador, '') = ? ";
+
     public static final String SELECT_TRANSFERENCIAS = "SELECT * from " + TABLE + " WHERE " + COLUMN_TRANSACTION_REFERENCE + " = ? AND " + COLUMN_TRANSACTION_SOURCE_NAME +
                                                        " = ?";
 
     public static final String SELECT_TRANSFERENCIAS_BY_TRASPASO = "SELECT * from " + TABLE + " WHERE " + COLUMN_TRANSACTION_REFERENCE + " = ?";
+    public static final String SELECT_TRANSFERENCIAS_BY_SHIPMENT = "SELECT * from " + TABLE + " WHERE " + COLUMN_SHIPMENT_NUMBER + " = ?";
+
+
+    public static final String DELETE = COLUMN_TRANSACTION_INTERFACE_ID + " = ?";
 
 
 }

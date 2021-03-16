@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="24dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
+
+    <include
+        android:id="@+id/llProgressBar"
+        android:visibility="gone"
+        layout="@layout/progress_bar"/>
+
+    <EditText
+        android:id="@+id/traspasoEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:enabled="false"
+        android:hint="N° Traspaso"
+        android:inputType="textPersonName"
+        android:padding="6dp" />
+
+    <EditText
+        android:id="@+id/glosaEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="Glosa"
+        android:textColorHint="?attr/colorPrimary"
+        android:layout_below="@id/traspasoEditText"
+        android:inputType="textPersonName"
+        android:padding="6dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_alignBottom="@id/glosaEditText" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutOrgDestino"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="Org. Destino"
+        android:textColorHint="?attr/colorPrimary">
+        <cl.clsoft.bave.control.InstantAutoCompleteTextView
+            android:id="@+id/textOrgDestino"
+            android:textColor="@android:color/black"
+            android:backgroundTint="?attr/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:inputType="textPhonetic">
+        </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>

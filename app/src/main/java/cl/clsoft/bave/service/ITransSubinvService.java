@@ -32,4 +32,5 @@ public interface ITransSubinvService {
     public MtlSystemItems getMtlSystemItemsBySegment(String segment) throws ServiceException;
     public MtlTransactionDetalleDto getTransactionsInterfaceById(Long transactionInterfaceId) throws ServiceException;
     public MtlSystemItems getMtlSystemItemsById(Long inventoryItemId) throws ServiceException;
+    public void deleteTransactionsInterfaceById(Long transactionInterfaceId) throws ServiceException;
 }

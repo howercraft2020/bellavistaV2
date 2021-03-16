@@ -32,7 +32,7 @@ public class TransSubinvDetallePresenter extends BasePresenter {
     public void crearArchivo(String transactionReference){
         try{
             this.mservice.crearArchivo(transactionReference);
-            mview.showSuccess("Archivo creado correctamente");
+            mview.resultadoOkCerrarTransferencia();
         }catch (ServiceException e) {
             e.printStackTrace();
         }

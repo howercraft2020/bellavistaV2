@@ -61,7 +61,8 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
     private Double cantidad;
 
     //Controls
-    private EditText nroTraspasoEt, glosaEt;
+    private EditText nroTraspasoEt;
+    private EditText glosaEt;
     private TextInputLayout layoutSubinventario;
     private AutoCompleteTextView textSubinventario;
     private TextInputLayout layoutLocator;

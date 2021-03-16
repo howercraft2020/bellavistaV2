@@ -17,7 +17,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/BaveTheme">
-        <activity android:name=".view.ActivityTransSubinvTransactionDetalle"></activity>
+
+        <!-- TRANSFERENCIA ORGANIZACION-->
+
+        <activity android:name=".view.ActivityTransOrgTransactionDetalle"></activity>
+        <activity android:name=".view.ActivityTransOrgResumen" />
+        <activity android:name=".view.ActivitySeriesTransOrg" />
+        <activity android:name=".view.ActivityAgregarTransOrg" />
+        <activity android:name=".view.ActivityAgregarTransOrgDestino" />
+        <activity android:name=".view.ActivityTransOrgDetalle" />
+        <activity android:name=".view.ActivityTransOrg" />
+        <activity android:name=".view.ActivityTransSubinvTransactionDetalle" />
         <activity android:name=".view.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,7 +64,10 @@
             android:label="Agregar Inventario" />
         <activity
             android:name=".view.ActivityFisicoEditar"
-            android:label="Editar Inventario" /> <!-- RECEPCION OC -->
+            android:label="Editar Inventario" />
+
+        <!-- TRANSFERENCIA SUBINVENTARIO-->
+
         <activity android:name=".view.ActivityAgregarTransSubinv" />
         <activity android:name=".view.ActivityTransSubinv" />
         <activity android:name=".Entrega" />
@@ -62,6 +75,10 @@
         <activity android:name=".view.ActivityTransSubinvDest" />
         <activity android:name=".view.ActivitySeriesTrans" />
         <activity android:name=".view.ActivityTransSubinvResumen" />
+
+
+        <!-- RECEPCION OC -->
+
         <activity
             android:name=".view.ActivityRecepcionOc"
             android:label="Recepcion" />

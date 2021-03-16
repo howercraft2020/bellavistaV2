@@ -91,7 +91,7 @@ public class ActivityTransSubinvResumen extends BaseActivity<TransSubinvResumenP
         // Set Controls
         this.rlayoutLote.setVisibility(View.GONE);
         this.rlayoutSeries.setVisibility(View.GONE);
-        this.nroTraspaso = getIntent().getStringExtra("nroTraspaso");
+        this.nroTraspaso = getIntent().getStringExtra("numeroTraspaso");
         this.codigoSigle = getIntent().getStringExtra("codigoSigle");
         this.subinvDesde = getIntent().getStringExtra("subinvDesde");
         this.localizador = getIntent().getStringExtra("localizador");
@@ -136,7 +136,7 @@ public class ActivityTransSubinvResumen extends BaseActivity<TransSubinvResumenP
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intentAgregar = new Intent(this, ActivityAgregarTransSubinv.class);
-                intentAgregar.putExtra("nroTraspaso", nroTraspaso);
+                intentAgregar.putExtra("numeroTraspaso", nroTraspaso);
                 intentAgregar.putExtra("glosa", glosa);
                 intentAgregar.putExtra("codigoSigle", codigoSigle);
                 intentAgregar.putExtra("subinvDesde", subinvDesde);

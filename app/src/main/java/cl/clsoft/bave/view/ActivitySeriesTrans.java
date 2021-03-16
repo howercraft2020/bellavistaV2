@@ -81,7 +81,7 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> impl
 
         this.textSerie.setThreshold(1);
 
-        nroTraspaso = getIntent().getStringExtra("nroTraspaso");
+        nroTraspaso = getIntent().getStringExtra("numeroTraspaso");
         glosa = getIntent().getStringExtra("glosa");
         codigoSigle = getIntent().getStringExtra("codigoSigle");
         subinvDesde = getIntent().getStringExtra("subinvDesde");
@@ -184,7 +184,7 @@ public class ActivitySeriesTrans extends BaseActivity<SeriesTransPresenter> impl
         switch (item.getItemId()){
             case android.R.id.home:
                 Intent i = new Intent(this,ActivityTransSubinvDest.class);
-                i.putExtra("nroTraspaso", nroTraspaso);
+                i.putExtra("numeroTraspaso", nroTraspaso);
                 i.putExtra("glosa", glosa);
                 i.putExtra("codigoSigle", codigoSigle);
                 i.putExtra("subinvDesde", subinvDesde);

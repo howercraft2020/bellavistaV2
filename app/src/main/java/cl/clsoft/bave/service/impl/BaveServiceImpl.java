@@ -81,7 +81,7 @@ public class BaveServiceImpl implements IBaveService {
             String linea = null;
             linea = leerArchivo.readLine();
             while(linea != null){
-                String [] extraccion = linea.split("\\|");
+                String [] extraccion = linea.split("\\|",-1);
                 if (extraccion[0].equals("2")) {
                     Subinventario subinventario = new Subinventario();
                     subinventario.setOrganizationId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
@@ -114,6 +114,7 @@ public class BaveServiceImpl implements IBaveService {
                     Organizacion organizacion = new Organizacion();
                     organizacion.setIdOrganizacion(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
                     organizacion.setCode(extraccion[2]);
+                    organizacion.setTransferencia(extraccion[3]);
                     organizacionDao.insert(organizacion);
                 }
                 linea = leerArchivo.readLine();

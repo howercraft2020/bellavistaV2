@@ -89,7 +89,7 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
         this.textLocalizadorDestino = findViewById(R.id.textLocalizadorDestino);
 
 
-        this.nroTraspaso = getIntent().getStringExtra("nroTraspaso");
+        this.nroTraspaso = getIntent().getStringExtra("numeroTraspaso");
         this.codigoSigle = getIntent().getStringExtra("codigoSigle");
         this.subinvDesde = getIntent().getStringExtra("subinvDesde");
         this.localizador = getIntent().getStringExtra("localizador");
@@ -134,7 +134,7 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
         switch (item.getItemId()){
             case R.id.action_save:
                 Intent i = new Intent(this, ActivityTransSubinvResumen.class);
-                i.putExtra("nroTraspaso", nroTraspaso);
+                i.putExtra("numeroTraspaso", nroTraspaso);
                 i.putExtra("glosa", glosa);
                 i.putExtra("codigoSigle", codigoSigle);
                 i.putExtra("subinvDesde", subinvDesde);
@@ -173,7 +173,7 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
                 else {
                     if(mPresenter.controlSerie(codigoSigle)) {
                         Intent a = new Intent(this, ActivitySeriesTrans.class);
-                        a.putExtra("nroTraspaso", nroTraspaso);
+                        a.putExtra("numeroTraspaso", nroTraspaso);
                         a.putExtra("glosa", glosa);
                         a.putExtra("codigoSigle", codigoSigle);
                         a.putExtra("subinvDesde", subinvDesde);
@@ -192,7 +192,7 @@ public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresent
                 return true;
             case android.R.id.home:
                 Intent intentAgregar = new Intent(this, ActivityAgregarTransSubinv.class);
-                intentAgregar.putExtra("nroTraspaso", nroTraspaso);
+                intentAgregar.putExtra("numeroTraspaso", nroTraspaso);
                 intentAgregar.putExtra("glosa", glosa);
                 intentAgregar.putExtra("codigoSigle", codigoSigle);
                 intentAgregar.putExtra("subinvDesde", subinvDesde);

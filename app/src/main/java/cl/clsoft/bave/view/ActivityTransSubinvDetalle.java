@@ -2,12 +2,14 @@ package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,11 +29,12 @@ import cl.clsoft.bave.model.DatosTransSubinvDetalle;
 import cl.clsoft.bave.model.MtlTransactionsInterface;
 import cl.clsoft.bave.presenter.TransSubinvDetallePresenter;
 import cl.clsoft.bave.service.impl.TransSubinvService;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class ActivityTransSubinvDetalle extends BaseActivity<TransSubinvDetallePresenter> {
+public class ActivityTransSubinvDetalle extends BaseActivity<TransSubinvDetallePresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
     //Variables
-    private static final String TAG = "ActivityTransSubinvDetalle";
+    private static final String TAG = "ActivityTransSubinvDet";
     private List<DatosTransSubinvDetalle> transferencias;
     private String numeroTraspaso, glosa;
     private TextView numeroTraspasoEt, glosaEt;
@@ -39,6 +42,7 @@ public class ActivityTransSubinvDetalle extends BaseActivity<TransSubinvDetalleP
     //Controls
     private RecyclerView recyclerViewTransSubinvDetalle;
     private AdapterTransSubinvDetalle adapter;
+    private SweetAlertDialog dialog;
 
     @NonNull
     @Override
@@ -126,7 +130,9 @@ public class ActivityTransSubinvDetalle extends BaseActivity<TransSubinvDetalleP
 
         switch (item.getItemId()){
             case R.id.action_create_file:
-                mPresenter.crearArchivo(numeroTraspaso);
+                Log.d(TAG, "cerrar");
+                ConfirmationDialog dialogClose = ConfirmationDialog.newInstance("Esta seguro de cerrar la transferencia?", "Confirmación", "close");
+                dialogClose.show(getSupportFragmentManager(), "closeEntregaConfirm");
                 return true;
             case R.id.action_more:
                 Intent i = new Intent(this, ActivityAgregarTransSubinv.class);
@@ -143,5 +149,33 @@ public class ActivityTransSubinvDetalle extends BaseActivity<TransSubinvDetalleP
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onDialogAceptarClick(DialogFragment dialog) {
+        String tipo = dialog.getArguments().getString("tipo");
+        if (tipo.equalsIgnoreCase("close")) {
+            mPresenter.crearArchivo(this.numeroTraspaso);
+        }
+    }
+
+    @Override
+    public void onDialogCancelarClick(DialogFragment dialog) {
+
+    }
+
+    public void resultadoOkCerrarTransferencia() {
+        dialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+        dialog.setTitleText("Éxito")
+                .setContentText("Cierre exitoso")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        Intent i = new Intent(getApplicationContext(), ActivityTransSubinv.class);
+                        startActivity(i);
+                        finish();
+                    }
+                })
+                .show();
     }
 }

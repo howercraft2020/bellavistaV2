@@ -13,6 +13,7 @@ public class OrganizacionRowMapper implements RowMapper<Organizacion> {
         Organizacion entity = new Organizacion();
         entity.setIdOrganizacion(cursor.getLong(cursor.getColumnIndex(OrganizacionCatalogo.COLUMN_ID)));
         entity.setCode(cursor.getString(cursor.getColumnIndex(OrganizacionCatalogo.COLUMN_CODE)));
+        entity.setTransferencia(cursor.getString(cursor.getColumnIndex(OrganizacionCatalogo.COLUMN_TRANSFERENCIA)));
         return entity;
     }
 

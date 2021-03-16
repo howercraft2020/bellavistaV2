@@ -37,6 +37,7 @@ public class MtlTransactionsInterfaceRowMapper implements RowMapper<MtlTransacti
         entity.setSourceCode(cursor.getString(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_SOURCE_CODE)));
         entity.setSourceLineId(cursor.getLong(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_SOURCE_LINE_ID)));
         entity.setSourceHeaderId(cursor.getLong(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_SOURCE_HEADER_ID)));
+        entity.setShipmentNumber(cursor.getString(cursor.getColumnIndex(MtlTransactionsInterfaceCatalogo.COLUMN_SHIPMENT_NUMBER)));
 
         return entity;
     }

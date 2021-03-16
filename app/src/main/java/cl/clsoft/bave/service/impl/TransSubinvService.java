@@ -19,6 +19,7 @@ import cl.clsoft.bave.dao.IMtlSerialNumbersInterfaceDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.IMtlTransactionLotsInterfaceDao;
 import cl.clsoft.bave.dao.IMtlTransactionsInterfaceDao;
+import cl.clsoft.bave.dao.IRcvTransactionsInterfaceDao;
 import cl.clsoft.bave.dao.ISubinventarioDao;
 import cl.clsoft.bave.dao.impl.DatosTransSubinvDetalleImpl;
 import cl.clsoft.bave.dao.impl.DatosTransSubinvImpl;
@@ -29,6 +30,7 @@ import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionInterfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionLotsIfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionLotsIfaceDaoImpl;
+import cl.clsoft.bave.dao.impl.RcvTransactionsInterfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
 import cl.clsoft.bave.dto.MtlTransactionDetalleDto;
 import cl.clsoft.bave.exception.DaoException;
@@ -121,10 +123,12 @@ public class TransSubinvService implements ITransSubinvService {
         Long inventoryItemId;
         Long existe = 0L;
         String transactionInterfaceId;
+
         Long locatorId = 0L;
         Long transferLocatorId = 0L;
         String fechaId = "";
         String idSerie = "";
+        String sigleUomCode = "";
         Long seriesIngresadas;
         boolean isControlLote = false;
         boolean isControlSerie = false;
@@ -145,6 +149,7 @@ public class TransSubinvService implements ITransSubinvService {
                 //Validación de Articulo
                 MtlSystemItems sigle = mtlSystemItemsDao.getBySegment(articulo);
                 inventoryItemId = sigle.getInventoryItemId();
+                sigleUomCode = sigle.getPrimaryUomCode();
 
                 if (inventoryItemId == null){
                      throw new ServiceException(1,"No se encuentra información para el articulo : " + articulo);
@@ -240,7 +245,7 @@ public class TransSubinvService implements ITransSubinvService {
                 mtlTransactionsInterface.setOrganizationId(mtlOnhandQuantities.getOrganizationId());
                 mtlTransactionsInterface.setTransactionQuantity(cantidad);
                 mtlTransactionsInterface.setPrimaryQuantity(cantidad);
-                mtlTransactionsInterface.setTransactionUom("UND"); //UOM
+                mtlTransactionsInterface.setTransactionUom(sigleUomCode);
                 mtlTransactionsInterface.setTransactionDate(fecha);
                 mtlTransactionsInterface.setSubinventoryCode(subinventarioDesde.getCodSubinventario());
                 mtlTransactionsInterface.setLocatorId(localizadorDesde.getIdLocalizador());
@@ -248,7 +253,7 @@ public class TransSubinvService implements ITransSubinvService {
                 mtlTransactionsInterface.setTransactionSourceTypeId(13L);
                 mtlTransactionsInterface.setTransactionActionId(2L);
                 mtlTransactionsInterface.setTransactionTypeId(2L);
-                mtlTransactionsInterface.setTransactionReference(fechaId);
+                mtlTransactionsInterface.setTransactionReference("Q_01"+fechaId);
                 mtlTransactionsInterface.setTransferSubinventory(subinventarioDestino.getCodSubinventario());
                 mtlTransactionsInterface.setTransferOrganization(288L);
                 mtlTransactionsInterface.setTransferLocator(localizadorDestino.getIdLocalizador());
@@ -315,67 +320,100 @@ public class TransSubinvService implements ITransSubinvService {
         IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
         IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
 
-        nomenclatura = "I_"+transactionReference+".csv";
-
-        File tarjetaSD = Environment.getExternalStorageDirectory();
-        File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
-        File rutaArchivo = new File(Dir, nomenclatura);
         try{
 
-            //Transferencias
-            MtlTransactionsLotsIface mtlTransactionsLotsIface = new MtlTransactionsLotsIface();
-            List<MtlSerialNumbersInterface> mtlSerialNumbersInterface;
-            List<MtlTransactionsInterface> mtlTransactionsInterface;
+            List<MtlTransactionsInterface> trxs = mtlTransactionsInterfaceDao.getTransferenciasByTraspaso(transactionReference);
 
-            mtlTransactionsInterface = mtlTransactionsInterfaceDao.getTransferenciasByTraspaso(transactionReference);
-
-            if(mtlTransactionsInterface == null){
+            if(trxs.size() == 0){
                 throw new ServiceException(1,"No se encuentran datos para este numero de traspaso");
             }
 
+            nomenclatura = "I_"+transactionReference+".csv";
+
+            File tarjetaSD = Environment.getExternalStorageDirectory();
+            File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
+            File rutaArchivo = new File(Dir, nomenclatura);
+
             FileWriter writer = new FileWriter(rutaArchivo);
-            writer.write("RECIBO;FIN" +"\r\n");
+            writer.write("SUBINV;FIN" +"\r\n");
 
-            for(int i = 0; i <mtlTransactionsInterface.size(); i++){
+            for (MtlTransactionsInterface trx : trxs) {
+                writer.write("1;"
+                + (trx.getTransactionInterfaceId() == null ? "null" : trx.getTransactionInterfaceId()) + ";"
+                + (trx.getProcessFlag() == null ? "null" : trx.getProcessFlag()) + ";"
+                + (trx.getTransactionMode() == null ? "null" : trx.getTransactionMode()) + ";"
+                + (trx.getLastUpdateDate() == null ? "null" : (trx.getLastUpdateDate().isEmpty() ? "null" : trx.getLastUpdateDate())) + ";"
+                + (trx.getLastUpdatedBy() == null ? "null" : trx.getLastUpdatedBy()) + ";"
+                + (trx.getCreationDate() == null ? "null" : (trx.getCreationDate().isEmpty() ? "null" : trx.getCreationDate())) + ";"
+                + (trx.getCreatedBy() == null ? "null" : trx.getCreatedBy()) + ";"
+                + (trx.getInventoryItemId() == null ? "null" : trx.getInventoryItemId()) + ";"
+                + (trx.getOrganizationId() == null ? "null" : trx.getOrganizationId()) + ";"
+                + (trx.getTransactionQuantity() == null ? "null" : trx.getTransactionQuantity()) + ";"
+                + (trx.getPrimaryQuantity() == null ? "null" : trx.getPrimaryQuantity()) + ";"
+                + (trx.getTransactionUom() == null ? "null" : (trx.getTransactionUom().isEmpty() ? "null" : trx.getTransactionUom())) + ";"
+                + (trx.getTransactionDate() == null ? "null" : (trx.getTransactionDate().isEmpty() ? "null" : trx.getTransactionDate())) + ";"
+                + (trx.getSubinventoryCode() == null ? "null" : (trx.getSubinventoryCode().isEmpty() ? "null" : trx.getSubinventoryCode())) + ";"
+                + (trx.getLocatorId() == null ? "null" : trx.getLocatorId()) + ";"
+                + (trx.getTransactionSourceName() == null ? "null" : (trx.getTransactionSourceName().isEmpty() ? "null" : trx.getTransactionSourceName())) + ";"
+                + (trx.getTransactionSourceTypeId() == null ? "null" : trx.getTransactionSourceTypeId()) + ";"
+                + (trx.getTransactionActionId() == null ? "null" : trx.getTransactionActionId()) + ";"
+                + (trx.getTransactionTypeId() == null ? "null" : trx.getTransactionTypeId()) + ";"
+                + (trx.getTransactionReference() == null ? "null" : (trx.getTransactionReference().isEmpty() ? "null" : trx.getTransactionReference())) + ";"
+                + (trx.getTransferSubinventory() == null ? "null" : (trx.getTransferSubinventory().isEmpty() ? "null" : trx.getTransferSubinventory())) + ";"
+                + (trx.getTransferOrganization() == null ? "null" : trx.getTransferOrganization()) + ";"
+                + (trx.getTransferLocator() == null ? "null" : trx.getTransferLocator()) + ";"
+                + (trx.getSourceCode() == null ? "null" : (trx.getSourceCode().isEmpty() ? "null" : trx.getSourceCode())) + ";"
+                + (trx.getSourceLineId() == null ? "null" : trx.getSourceLineId()) + ";"
+                + (trx.getSourceHeaderId() == null ? "null" : trx.getSourceHeaderId()) + ";"
+                + "FIN\r\n");
+            }
 
-                writer.write("1;"+mtlTransactionsInterface.get(i).getTransactionInterfaceId()+";"+mtlTransactionsInterface.get(i).getProcessFlag() +
-                                  ";"+mtlTransactionsInterface.get(i).getTransactionMode()+";"+mtlTransactionsInterface.get(i).getLastUpdateDate() +
-                                  ";"+mtlTransactionsInterface.get(i).getLastUpdatedBy()+";"+mtlTransactionsInterface.get(i).getCreationDate() +
-                                  ";"+mtlTransactionsInterface.get(i).getCreatedBy()+";"+mtlTransactionsInterface.get(i).getInventoryItemId() +
-                                  ";"+mtlTransactionsInterface.get(i).getOrganizationId()+";"+mtlTransactionsInterface.get(i).getTransactionQuantity() +
-                                  ";"+mtlTransactionsInterface.get(i).getPrimaryQuantity()+";"+mtlTransactionsInterface.get(i).getTransactionUom() +
-                                  ";"+mtlTransactionsInterface.get(i).getTransactionDate()+";"+mtlTransactionsInterface.get(i).getSubinventoryCode() +
-                                  ";"+mtlTransactionsInterface.get(i).getLocatorId()+";"+mtlTransactionsInterface.get(i).getTransactionSourceName() +
-                                  ";"+mtlTransactionsInterface.get(i).getTransactionSourceTypeId()+";"+mtlTransactionsInterface.get(i).getTransactionActionId() +
-                                  ";"+mtlTransactionsInterface.get(i).getTransactionTypeId()+";"+mtlTransactionsInterface.get(i).getTransactionReference() +
-                                  ";"+mtlTransactionsInterface.get(i).getTransferSubinventory()+";"+mtlTransactionsInterface.get(i).getTransferOrganization() +
-                                  ";"+mtlTransactionsInterface.get(i).getTransferLocator()+";"+mtlTransactionsInterface.get(i).getSourceCode() +
-                                  ";"+mtlTransactionsInterface.get(i).getSourceLineId()+";"+mtlTransactionsInterface.get(i).getSourceHeaderId()+";FIN"+"\r\n");
-
-                //Busqueda de lote
-                mtlTransactionsLotsIface = mtlTransactionLotsInterfaceDao.getAll(mtlTransactionsInterface.get(i).getTransactionInterfaceId());
-
-                writer.write("2;"+mtlTransactionsLotsIface.getTransactionInterfaceId()+";"+mtlTransactionsLotsIface.getLastUpdateDate() +
-                                  ";"+mtlTransactionsLotsIface.getLastUpdateBy()+";"+mtlTransactionsLotsIface.getCreationDate() +
-                                  ";"+mtlTransactionsLotsIface.getCreatedBy()+";"+mtlTransactionsLotsIface.getLotNumber() +
-                                  ";"+mtlTransactionsLotsIface.getLotExpirationDate()+";"+mtlTransactionsLotsIface.getTransactionQuantity() +
-                                  ";"+mtlTransactionsLotsIface.getPrimaryQuantity()+";"+mtlTransactionsLotsIface.getSerialTransactionTempId() +
-                                  ";"+mtlTransactionsLotsIface.getAttributeCategory()+";"+mtlTransactionsLotsIface.getAttrubute1() +
-                                  ";"+mtlTransactionsLotsIface.getAttrubute2()+";"+mtlTransactionsLotsIface.getAttrubute3()+";FIN"+"\r\n");
-
-                //Busqueda de serie
-                mtlSerialNumbersInterface = mtlSerialNumbersInterfaceDao.getAll(mtlTransactionsInterface.get(i).getTransactionInterfaceId());
-                for(int x = 0; i <mtlSerialNumbersInterface.size(); x++){
-                    writer.write("3;"+mtlSerialNumbersInterface.get(x).getTransactionInterfaceId()+";"+mtlSerialNumbersInterface.get(x).getLastUpdateDate() +
-                                      ";"+mtlSerialNumbersInterface.get(x).getLastUpdatedBy()+";"+mtlSerialNumbersInterface.get(x).getCreationDate() +
-                                      ";"+mtlSerialNumbersInterface.get(x).getCreatedBy()+";"+mtlSerialNumbersInterface.get(x).getFmSerialNumber()+";FIN"+"\r\n");
-
+            for (MtlTransactionsInterface trx : trxs) {
+                MtlTransactionsLotsIface lote = mtlTransactionLotsInterfaceDao.get(trx.getTransactionInterfaceId());
+                if (lote != null) {
+                    writer.write("2;"
+                    + (lote.getTransactionInterfaceId() == null ? "null" : lote.getTransactionInterfaceId()) + ";"
+                    + (lote.getLastUpdateDate() == null ? "null" : (lote.getLastUpdateDate().isEmpty() ? "null" : lote.getLastUpdateDate())) + ";"
+                    + (lote.getLastUpdateBy() == null ? "null" : lote.getLastUpdateBy()) + ";"
+                    + (lote.getCreationDate() == null ? "null" : (lote.getCreationDate().isEmpty() ? "null" : lote.getCreationDate())) + ";"
+                    + (lote.getCreatedBy() == null ? "null" : lote.getCreatedBy()) + ";"
+                    + (lote.getLotNumber() == null ? "null" : (lote.getLotNumber().isEmpty() ? "null" : lote.getLotNumber())) + ";"
+                    + (lote.getLotExpirationDate() == null ? "null" : (lote.getLotExpirationDate().isEmpty() ? "null" : lote.getLotExpirationDate())) + ";"
+                    + (lote.getTransactionQuantity() == null ? "null" : lote.getTransactionQuantity()) + ";"
+                    + (lote.getPrimaryQuantity() == null ? "null" : lote.getPrimaryQuantity()) + ";"
+                    + (lote.getSerialTransactionTempId() == null ? "null" : lote.getSerialTransactionTempId()) + ";"
+                    + (lote.getAttributeCategory() == null ? "null" : (lote.getAttributeCategory().isEmpty() ? "null" : lote.getAttributeCategory())) + ";"
+                    + (lote.getAttrubute1() == null ? "null" : (lote.getAttrubute1().isEmpty() ? "null" : lote.getAttrubute1())) + ";"
+                    + (lote.getAttrubute2() == null ? "null" : (lote.getAttrubute2().isEmpty() ? "null" : lote.getAttrubute2())) + ";"
+                    + (lote.getAttrubute3() == null ? "null" : (lote.getAttrubute3().isEmpty() ? "null" : lote.getAttrubute3())) + ";"
+                    + "FIN\r\n");
                 }
 
             }
 
+            for (MtlTransactionsInterface trx : trxs) {
+                List<MtlSerialNumbersInterface> series = mtlSerialNumbersInterfaceDao.getAll(trx.getTransactionInterfaceId());
+                for (MtlSerialNumbersInterface serie : series) {
+                    writer.write("3;"
+                    + (serie.getTransactionInterfaceId() == null ? "null" : serie.getTransactionInterfaceId()) + ";"
+                    + (serie.getLastUpdateDate() == null ? "null" : (serie.getLastUpdateDate().isEmpty() ? "null" : serie.getLastUpdateDate())) + ";"
+                    + (serie.getLastUpdatedBy() == null ? "null" : serie.getLastUpdatedBy()) + ";"
+                    + (serie.getCreationDate() == null ? "null" : (serie.getCreationDate().isEmpty() ? "null" : serie.getCreationDate())) + ";"
+                    + (serie.getCreatedBy() == null ? "null" : serie.getCreatedBy()) + ";"
+                    + (serie.getFmSerialNumber() == null ? "null" : (serie.getFmSerialNumber().isEmpty() ? "null" : serie.getFmSerialNumber())) + ";"
+                    + "FIN\r\n");
+                }
+            }
+
             writer.flush();
             writer.close();
+
+            // Elimina datos de la BD
+            for (MtlTransactionsInterface trx : trxs) {
+                mtlSerialNumbersInterfaceDao.delete(trx.getTransactionInterfaceId());
+                mtlTransactionLotsInterfaceDao.delete(trx.getTransactionInterfaceId());
+                mtlTransactionsInterfaceDao.delete(trx.getTransactionInterfaceId());
+            }
 
         }catch (ServiceException e){
             throw e;
@@ -466,7 +504,7 @@ public class TransSubinvService implements ITransSubinvService {
 
     @Override
     public MtlSystemItems getMtlSystemItemsBySegment(String segment) throws ServiceException {
-        Log.d(TAG, "ConteoCiclicoService::getMtlSystemItemsBySegment");
+        Log.d(TAG, "TransSubninvService::getMtlSystemItemsBySegment");
 
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
         try {
@@ -587,5 +625,23 @@ public class TransSubinvService implements ITransSubinvService {
 
         }
         return null;
+    }
+
+    @Override
+    public void deleteTransactionsInterfaceById(Long transactionInterfaceId) throws ServiceException {
+        Log.d(TAG, "TransSubinvService::deleteTransactionsInterfaceById");
+        Log.d(TAG, "TransSubinvService::deleteTransactionsInterfaceById::transactionInterfaceId: " + transactionInterfaceId);
+
+        IMtlTransactionsInterfaceDao mtlTransactionsInterfaceDao = new MtlTransactionInterfaceDaoImpl();
+        IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
+        IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
+
+        try {
+            mtlTransactionsInterfaceDao.delete(transactionInterfaceId);
+            mtlTransactionLotsInterfaceDao.delete(transactionInterfaceId);
+            mtlSerialNumbersInterfaceDao.delete(transactionInterfaceId);
+        } catch (DaoException e) {
+            throw new ServiceException(2, e.getDescripcion());
+        }
     }
 }

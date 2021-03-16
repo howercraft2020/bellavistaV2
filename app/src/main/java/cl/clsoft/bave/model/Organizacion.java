@@ -4,9 +4,18 @@ public class Organizacion {
 
     private Long idOrganizacion;
     private String code;
+    private String transferencia;
 
     public Organizacion() {
 
+    }
+
+    public String getTransferencia() {
+        return transferencia;
+    }
+
+    public void setTransferencia(String transferencia) {
+        this.transferencia = transferencia;
     }
 
     public Long getIdOrganizacion() {

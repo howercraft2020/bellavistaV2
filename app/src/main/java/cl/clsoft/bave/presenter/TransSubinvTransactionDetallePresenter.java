@@ -49,4 +49,19 @@ public class TransSubinvTransactionDetallePresenter extends BasePresenter {
         }
         return null;
     }
+
+    public void deleteTransactionsInterfaceById(Long transactionInterfaceId) {
+        try {
+            this.mService.deleteTransactionsInterfaceById(transactionInterfaceId);
+            mview.resultadoOkDeleteTransaction();
+        } catch(ServiceException e) {
+            if (e.getCodigo() == 1) {
+                this.mview.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                this.mview.showError(e.getDescripcion());
+            }
+        } catch(Exception e){
+            this.mview.showError(e.getMessage());
+        }
+    }
 }

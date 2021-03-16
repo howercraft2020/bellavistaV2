@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.MtlTransactionsInterface;
 import cl.clsoft.bave.presenter.TransSubinvTransactionDetallePresenter;
 import cl.clsoft.bave.service.impl.TransSubinvService;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ActivityTransSubinvTransactionDetalle extends BaseActivity<TransSubinvTransactionDetallePresenter> implements ConfirmationDialog.ConfirmationDialogListener{
 
@@ -45,6 +47,7 @@ public class ActivityTransSubinvTransactionDetalle extends BaseActivity<TransSub
     private TextView textSeries;
     private RelativeLayout rlayoutLote;
     private RelativeLayout rlayoutSeries;
+    private SweetAlertDialog dialog;
 
 
     @NonNull
@@ -106,6 +109,18 @@ public class ActivityTransSubinvTransactionDetalle extends BaseActivity<TransSub
                     this.textSeries.setText(strSeries);
                 }
 
+                if (dto.isLote()) {
+                    this.rlayoutLote.setVisibility(View.VISIBLE);
+                } else {
+                    this.rlayoutLote.setVisibility(View.GONE);
+                }
+
+                if (dto.isSerie()) {
+                    this.rlayoutSeries.setVisibility(View.VISIBLE);
+                } else {
+                    this.rlayoutSeries.setVisibility(View.GONE);
+                }
+
             }
         }
 
@@ -138,7 +153,7 @@ public class ActivityTransSubinvTransactionDetalle extends BaseActivity<TransSub
     public void onDialogAceptarClick(DialogFragment dialog) {
         String tipo = dialog.getArguments().getString("tipo");
         if (tipo.equalsIgnoreCase("delete")) {
-            //mPresenter.closeInventory(this.inventarioId);
+            mPresenter.deleteTransactionsInterfaceById(this.transactionInterfaceId);
         }
     }
 
@@ -153,4 +168,21 @@ public class ActivityTransSubinvTransactionDetalle extends BaseActivity<TransSub
         inflater.inflate(R.menu.menu_trans_subinv_transaction_detalle, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    public void resultadoOkDeleteTransaction() {
+        dialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+        dialog.setTitleText("Éxito")
+                .setContentText("Eliminación exitosa")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        Log.d("CMFA", "CLICK");
+                        Intent i = new Intent(getApplicationContext(), ActivityTransSubinv.class);
+                        startActivity(i);
+                        finish();
+                    }
+                })
+                .show();
+    }
 }
+
