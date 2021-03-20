@@ -112,6 +112,11 @@
             android:name=".view.ActivityEntregaTransactionDetalle"
             android:label="Transacción"/>
 
+        <!-- ENTREGA ORGANIZACIONES -->
+        <activity
+            android:name=".view.ActivityEntregasOrgs"
+            android:label="Entregas Orgs"/>
+
         <!-- CONSULTA -->
         <activity
             android:name=".view.ActivityConsultaItem"

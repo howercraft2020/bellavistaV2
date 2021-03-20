@@ -12,5 +12,6 @@ public interface IBaveService {
     public void cargarArchivoFisico(File archivo) throws ServiceException;
     public void cargarArchivoRecepcion(File archivo) throws ServiceException;
     public void cargarArchivoEntrega(File archivo) throws ServiceException;
+    public void cargarArchivoEntregaOrgs(File archivo) throws ServiceException;
 
 }

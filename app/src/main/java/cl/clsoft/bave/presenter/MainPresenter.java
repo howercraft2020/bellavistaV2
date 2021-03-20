@@ -124,6 +124,17 @@ public class MainPresenter extends BasePresenter {
                         File archivoEntrega = new File(ruta.getPath() + "/" + listFile[i].getName());
                         baveService.cargarArchivoEntrega(archivoEntrega);
                     }
+
+                    // Archivo Entrega Orgs
+                    if (listFile[i].getName().startsWith("O_R_") || listFile[i].getName().startsWith("o_r_")) {
+                        mView.runOnUiThread(new Runnable() {
+                            public void run() {
+                                mView.showProgres("Cargando archivo Entrega Orgs");
+                            }
+                        });
+                        File archivoEntrega = new File(ruta.getPath() + "/" + listFile[i].getName());
+                        baveService.cargarArchivoEntregaOrgs(archivoEntrega);
+                    }
                 }
                 return 0L;
             } catch (ServiceException e) {
