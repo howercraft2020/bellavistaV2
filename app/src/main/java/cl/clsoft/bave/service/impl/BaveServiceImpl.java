@@ -674,11 +674,11 @@ public class BaveServiceImpl implements IBaveService {
                     if (extraccion.length >= 8)
                         mtlMaterialTransactions.setTransactionSourceName(extraccion[7]);
                     if (extraccion.length >= 9)
-                        mtlMaterialTransactions.setTransactionQuantity(extraccion[8].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[8]));
+                        mtlMaterialTransactions.setTransactionQuantity(extraccion[8].equalsIgnoreCase("") ? null : Double.valueOf(extraccion[8].replace(",", ".")));
                     if (extraccion.length >= 10)
                         mtlMaterialTransactions.setTransactionUom(extraccion[9]);
                     if (extraccion.length >= 11)
-                        mtlMaterialTransactions.setPrimaryQuantity(extraccion[10].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[10]));
+                        mtlMaterialTransactions.setPrimaryQuantity(extraccion[10].equalsIgnoreCase("") ? null : Double.valueOf(extraccion[10].replace(",", ".")));
                     if (extraccion.length >= 12)
                         mtlMaterialTransactions.setTransactionDate(extraccion[11]);
                     if (extraccion.length >= 13)

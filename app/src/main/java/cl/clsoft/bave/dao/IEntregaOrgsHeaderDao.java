@@ -8,5 +8,6 @@ import cl.clsoft.bave.model.EntregaOrgsHeader;
 public interface IEntregaOrgsHeaderDao {
 
     public List<EntregaOrgsHeader> getAll() throws DaoException;
+    public EntregaOrgsHeader get(Long shipmentHeaderId) throws DaoException;
 
 }

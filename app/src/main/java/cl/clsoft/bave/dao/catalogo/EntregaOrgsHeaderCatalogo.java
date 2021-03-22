@@ -18,4 +18,15 @@ public class EntregaOrgsHeaderCatalogo {
             + " ORDER BY "
             + "     shipment_number ";
 
+    public static final String SELECT =
+            " SELECT "
+            + "     shipment_number, "
+            + "     receipt_num as receipt_number, "
+            + "     shipment_header_id, "
+            + "     transaction_date as creation_date "
+            + " FROM "
+            + "     mtl_material_transactions "
+            + " WHERE "
+            + "     shipment_header_id = ? ";
+
 }

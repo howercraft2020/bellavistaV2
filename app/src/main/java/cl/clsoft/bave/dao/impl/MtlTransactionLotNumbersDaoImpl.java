@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import cl.clsoft.bave.dao.IMtlTransactionLotNumbersDao;
 import cl.clsoft.bave.dao.catalogo.MtlSerialNumbersCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlTransactionLotNumbersCatalogo;
+import cl.clsoft.bave.dao.rowmapper.MtlTransactionLotNumbersRowMapper;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlTransactionLotNumbers;
@@ -41,6 +42,11 @@ public class MtlTransactionLotNumbersDaoImpl extends GenericDao<MtlTransactionLo
         values.put(MtlTransactionLotNumbersCatalogo.COLUMN_C_ATTRIBUTE3, mtlTransactionLotNumbers.getcAttribute3());
         values.put(MtlTransactionLotNumbersCatalogo.COLUMN_SHIPMENT_HEADER_ID, mtlTransactionLotNumbers.getShipmentHeaderId());
         super.update(MtlTransactionLotNumbersCatalogo.TABLE, values, MtlTransactionLotNumbersCatalogo.UPDATE, mtlTransactionLotNumbers.getTransactionId());
+    }
+
+    @Override
+    public MtlTransactionLotNumbers get(Long transactionId) throws DaoException {
+        return super.selectOne(MtlTransactionLotNumbersCatalogo.SELECT, new MtlTransactionLotNumbersRowMapper(), transactionId);
     }
 
 }

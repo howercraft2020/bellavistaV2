@@ -22,6 +22,10 @@ public class MtlMaterialTransactionsCatalogo {
     public static final String COLUMN_SHIPMENT_NUMBER = "shipment_number";
     public static final String COLUMN_SHIPMENT_HEADER_ID = "shipment_header_id";
     public static final String COLUMN_SHIPMENT_LINE_ID = "shipment_line_id";
+    public static final String COLUMN_ENTREGA_CREATION_DATE = "entrega_creation_date";
+    public static final String COLUMN_ENTREGA_QUANTITY = "entrega_quantity";
+    public static final String COLUMN_SUBINVENTORY ="subinventory";
+    public static final String COLUMN_LOCATOR_ID ="locator_id";
 
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE + "(" +
@@ -32,9 +36,9 @@ public class MtlMaterialTransactionsCatalogo {
             COLUMN_TRANSACTION_ACTION_ID + " INTEGER, " +
             COLUMN_TRANSACTION_SOURCE_TYPE_ID + " INTEGER, " +
             COLUMN_TRANSACTION_SOURCE_NAME + " TEXT, " +
-            COLUMN_TRANSACTION_QUANTITY + " INTEGER, " +
+            COLUMN_TRANSACTION_QUANTITY + " REAL, " +
             COLUMN_TRANSACTION_UOM + " TEXT, " +
-            COLUMN_PRIMARY_QUANTITY + " INTEGER, " +
+            COLUMN_PRIMARY_QUANTITY + " REAL, " +
             COLUMN_TRANSACTION_DATE + " TEXT, " +
             COLUMN_ACTUAL_COST + " INTEGER, " +
             COLUMN_TRANSFER_ORGANIZATION_ID + " INTEGER, " +
@@ -44,6 +48,10 @@ public class MtlMaterialTransactionsCatalogo {
             COLUMN_SHIPMENT_NUMBER + " TEXT, " +
             COLUMN_SHIPMENT_HEADER_ID + " INTEGER, " +
             COLUMN_SHIPMENT_LINE_ID + " INTEGER, " +
+            COLUMN_ENTREGA_CREATION_DATE + " TEXT, " +
+            COLUMN_ENTREGA_QUANTITY + " REAL, " +
+            COLUMN_SUBINVENTORY + " TEXT, " +
+            COLUMN_LOCATOR_ID + " INTEGER, " +
             " PRIMARY KEY (" + COLUMN_ID + " )" +
             ")";
 
@@ -62,5 +70,20 @@ public class MtlMaterialTransactionsCatalogo {
             TABLE +
             " WHERE " +
             COLUMN_SHIPMENT_HEADER_ID + " = ? ";
+    public static  final String SELECT_ALL_BY_SHIPMENT_HEADER_ID__INVENTORY_ITEM_ID =
+            " SELECT * " +
+            " FROM " +
+            TABLE +
+            " WHERE " +
+            COLUMN_SHIPMENT_HEADER_ID + " = ? " +
+            " AND " + COLUMN_INVENTORY_ITEM_ID + " = ? ";
+
+    public static  final String SELECT_ALL_BY_SHIPMENT_HEADER_ID__ENTREGA =
+            " SELECT * " +
+                    " FROM " +
+                    TABLE +
+                    " WHERE " +
+                    COLUMN_SHIPMENT_HEADER_ID + " = ? " +
+                    " AND " + COLUMN_ENTREGA_CREATION_DATE + " is not null ";
 
 }

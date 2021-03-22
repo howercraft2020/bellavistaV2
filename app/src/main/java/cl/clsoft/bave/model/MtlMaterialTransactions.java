@@ -9,9 +9,9 @@ public class MtlMaterialTransactions {
     private Long transactionActionId;
     private Long transactionSourceTypeId;
     private String transactionSourceName;
-    private Long transactionQuantity;
+    private Double transactionQuantity;
     private String transactionUom;
-    private Long primaryQuantity;
+    private Double primaryQuantity;
     private String transactionDate;
     private Double actualCost;
     private Long transferOrganizationId;
@@ -21,6 +21,10 @@ public class MtlMaterialTransactions {
     private String shipmentNumber;
     private Long shipmentHeaderId;
     private Long shipmentLineId;
+    private String entregaCreationDate;
+    private Double entregaQuantity;
+    private String subinventory;
+    private Long locatorId;
 
     public MtlMaterialTransactions() {}
 
@@ -80,11 +84,11 @@ public class MtlMaterialTransactions {
         this.transactionSourceName = transactionSourceName;
     }
 
-    public Long getTransactionQuantity() {
+    public Double getTransactionQuantity() {
         return transactionQuantity;
     }
 
-    public void setTransactionQuantity(Long transactionQuantity) {
+    public void setTransactionQuantity(Double transactionQuantity) {
         this.transactionQuantity = transactionQuantity;
     }
 
@@ -96,11 +100,11 @@ public class MtlMaterialTransactions {
         this.transactionUom = transactionUom;
     }
 
-    public Long getPrimaryQuantity() {
+    public Double getPrimaryQuantity() {
         return primaryQuantity;
     }
 
-    public void setPrimaryQuantity(Long primaryQuantity) {
+    public void setPrimaryQuantity(Double primaryQuantity) {
         this.primaryQuantity = primaryQuantity;
     }
 
@@ -174,5 +178,37 @@ public class MtlMaterialTransactions {
 
     public void setShipmentLineId(Long shipmentLineId) {
         this.shipmentLineId = shipmentLineId;
+    }
+
+    public String getEntregaCreationDate() {
+        return entregaCreationDate;
+    }
+
+    public void setEntregaCreationDate(String entregaCreationDate) {
+        this.entregaCreationDate = entregaCreationDate;
+    }
+
+    public Double getEntregaQuantity() {
+        return entregaQuantity;
+    }
+
+    public void setEntregaQuantity(Double entregaQuantity) {
+        this.entregaQuantity = entregaQuantity;
+    }
+
+    public String getSubinventory() {
+        return subinventory;
+    }
+
+    public void setSubinventory(String subinventory) {
+        this.subinventory = subinventory;
+    }
+
+    public Long getLocatorId() {
+        return locatorId;
+    }
+
+    public void setLocatorId(Long locatorId) {
+        this.locatorId = locatorId;
     }
 }

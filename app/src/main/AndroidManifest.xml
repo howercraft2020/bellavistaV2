@@ -116,6 +116,24 @@
         <activity
             android:name=".view.ActivityEntregasOrgs"
             android:label="Entregas Orgs"/>
+        <activity
+            android:name=".view.ActivityEntregasOrgsDetalle"
+            android:label="Detalle"/>
+        <activity
+            android:name=".view.ActivityEntregaOrgsAgregar"
+            android:label="Agregar"/>
+        <activity
+            android:name=".view.ActivityEntregaOrgsAgregarLote"
+            android:label="Lote"/>
+        <activity
+            android:name=".view.ActivityEntregaOrgsAgregarSerie"
+            android:label="Serie"/>
+        <activity
+            android:name=".view.ActivityEntregaOrgsAgregarResumen"
+            android:label="Resumen"/>
+        <activity
+            android:name=".view.ActivityEntregaOrgsTransactionDetalle"
+            android:label="Transacción"/>
 
         <!-- CONSULTA -->
         <activity

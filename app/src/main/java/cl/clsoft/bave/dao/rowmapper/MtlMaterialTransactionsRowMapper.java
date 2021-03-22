@@ -18,9 +18,9 @@ public class MtlMaterialTransactionsRowMapper implements RowMapper<MtlMaterialTr
         entity.setTransactionActionId(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_TRANSACTION_ACTION_ID)));
         entity.setTransactionSourceTypeId(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_TRANSACTION_SOURCE_TYPE_ID)));
         entity.setTransactionSourceName(cursor.getString(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_TRANSACTION_SOURCE_NAME)));
-        entity.setTransactionQuantity(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_TRANSACTION_QUANTITY)));
+        entity.setTransactionQuantity(cursor.getDouble(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_TRANSACTION_QUANTITY)));
         entity.setTransactionUom(cursor.getString(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_TRANSACTION_UOM)));
-        entity.setPrimaryQuantity(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_PRIMARY_QUANTITY)));
+        entity.setPrimaryQuantity(cursor.getDouble(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_PRIMARY_QUANTITY)));
         entity.setTransactionDate(cursor.getString(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_TRANSACTION_DATE)));
         entity.setActualCost(cursor.getDouble(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_ACTUAL_COST)));
         entity.setTransferOrganizationId(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_TRANSFER_ORGANIZATION_ID)));
@@ -30,6 +30,10 @@ public class MtlMaterialTransactionsRowMapper implements RowMapper<MtlMaterialTr
         entity.setShipmentNumber(cursor.getString(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_SHIPMENT_NUMBER)));
         entity.setShipmentHeaderId(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_SHIPMENT_HEADER_ID)));
         entity.setShipmentLineId(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_SHIPMENT_LINE_ID)));
+        entity.setEntregaCreationDate(cursor.getString(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_ENTREGA_CREATION_DATE)));
+        entity.setEntregaQuantity(cursor.getDouble(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_ENTREGA_QUANTITY)));
+        entity.setSubinventory(cursor.getString(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_SUBINVENTORY)));
+        entity.setLocatorId(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_LOCATOR_ID)));
         return entity;
     }
 }

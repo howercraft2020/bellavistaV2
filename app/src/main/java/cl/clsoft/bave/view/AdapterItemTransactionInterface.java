@@ -67,7 +67,10 @@ public class AdapterItemTransactionInterface extends RecyclerView.Adapter<Adapte
 
         public void onBind(TransactionsDto dto) {
             if (dto != null) {
-                this.textLinea.setText(dto.getLineNum().toString());
+                if (dto.getLineNum() != null)
+                    this.textLinea.setText(dto.getLineNum().toString());
+                else
+                    this.textLinea.setText("");
                 this.textSigle.setText(dto.getSegment1());
                 this.textFechaCreacion.setText(dto.getCreationDate());
             }

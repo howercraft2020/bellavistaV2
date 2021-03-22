@@ -31,5 +31,11 @@ public class MtlTransactionLotNumbersCatalogo {
 
     public static final String UPDATE = COLUMN_ID + " = ?";
     public static final String DELETE = COLUMN_ID + " = ?";
+    public static final String SELECT =
+            " SELECT * "
+            + " FROM "
+            + "     mtl_transaction_lot_numbers "
+            + " WHERE "
+            + "     transaction_id = ? ";
 
 }
