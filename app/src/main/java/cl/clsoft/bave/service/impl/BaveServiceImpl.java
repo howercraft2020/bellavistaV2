@@ -654,6 +654,7 @@ public class BaveServiceImpl implements IBaveService {
             InputStreamReader abrirArchivo = new InputStreamReader(fis);
             BufferedReader leerArchivo = new BufferedReader(abrirArchivo);
             String linea = leerArchivo.readLine();
+            Long shipmentHeaderId = null;
             while(linea != null) {
                 String[] extraccion = linea.split("\\|", -1);
                 if (extraccion[0].equals("1")) {
@@ -694,8 +695,10 @@ public class BaveServiceImpl implements IBaveService {
                         mtlMaterialTransactions.setShipmentNumber(extraccion[17]);
                     if (extraccion.length >= 19)
                         mtlMaterialTransactions.setShipmentHeaderId(extraccion[18].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[18]));
-                    if (extraccion.length >= 20)
+                    if (extraccion.length >= 20) {
+                        shipmentHeaderId = Long.valueOf(extraccion[19]);
                         mtlMaterialTransactions.setShipmentLineId(extraccion[19].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[19]));
+                    }
                     mtlMaterialTransactionsDao.insert(mtlMaterialTransactions);
                 } else if (extraccion[0].equals("2")) {
                     MtlTransactionLotNumbers mtlTransactionLotNumbers = new MtlTransactionLotNumbers();
@@ -717,6 +720,7 @@ public class BaveServiceImpl implements IBaveService {
                         mtlTransactionLotNumbers.setcAttribute2(extraccion[8]);
                     if (extraccion.length >= 10)
                         mtlTransactionLotNumbers.setcAttribute3(extraccion[9]);
+                    mtlTransactionLotNumbers.setShipmentHeaderId(shipmentHeaderId);
                     mtlTransactionLotNumbersDao.insert(mtlTransactionLotNumbers);
                 } else if (extraccion[0].equals("3")) {
                     MtlSerialNumbers mtlSerialNumbers = new MtlSerialNumbers();

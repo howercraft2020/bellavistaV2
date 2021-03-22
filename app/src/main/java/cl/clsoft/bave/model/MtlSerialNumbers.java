@@ -10,6 +10,7 @@ public class MtlSerialNumbers {
     private Long createdBy;
     private String lotNumber;
     private Long currentOrganizationId;
+    private Long shipmentHeaderId;
 
     public MtlSerialNumbers() {}
 
@@ -77,4 +78,11 @@ public class MtlSerialNumbers {
         this.currentOrganizationId = currentOrganizationId;
     }
 
+    public Long getShipmentHeaderId() {
+        return shipmentHeaderId;
+    }
+
+    public void setShipmentHeaderId(Long shipmentHeaderId) {
+        this.shipmentHeaderId = shipmentHeaderId;
+    }
 }

@@ -11,6 +11,7 @@ public class MtlTransactionLotNumbers {
     private String cAttribute1;
     private String cAttribute2;
     private String cAttribute3;
+    private Long shipmentHeaderId;
 
     public MtlTransactionLotNumbers() {}
 
@@ -84,5 +85,13 @@ public class MtlTransactionLotNumbers {
 
     public void setcAttribute3(String cAttribute3) {
         this.cAttribute3 = cAttribute3;
+    }
+
+    public Long getShipmentHeaderId() {
+        return shipmentHeaderId;
+    }
+
+    public void setShipmentHeaderId(Long shipmentHeaderId) {
+        this.shipmentHeaderId = shipmentHeaderId;
     }
 }

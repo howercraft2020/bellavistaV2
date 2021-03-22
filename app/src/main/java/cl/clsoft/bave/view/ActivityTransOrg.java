@@ -51,6 +51,7 @@ public class ActivityTransOrg extends BaseActivity<TransOrgPresenter> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trans_org);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Bind Controls
         this.llProgressBar = findViewById(R.id.llProgressBar);

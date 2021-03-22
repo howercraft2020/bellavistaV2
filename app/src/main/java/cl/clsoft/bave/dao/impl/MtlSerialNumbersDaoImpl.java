@@ -21,6 +21,7 @@ public class MtlSerialNumbersDaoImpl extends GenericDao<MtlSerialNumbers> implem
         values.put(MtlSerialNumbersCatalogo.COLUMN_CREATED_BY, mtlSerialNumbers.getCreatedBy());
         values.put(MtlSerialNumbersCatalogo.COLUMN_LOT_NUMBER, mtlSerialNumbers.getLotNumber());
         values.put(MtlSerialNumbersCatalogo.COLUMN_CURRENT_ORGANIZATION_ID, mtlSerialNumbers.getCurrentOrganizationId());
+        values.put(MtlSerialNumbersCatalogo.COLUMN_SHIPMENT_HEADER_ID, mtlSerialNumbers.getShipmentHeaderId());
         super.insert(MtlSerialNumbersCatalogo.TABLE, values);
     }
 
@@ -33,6 +34,7 @@ public class MtlSerialNumbersDaoImpl extends GenericDao<MtlSerialNumbers> implem
         values.put(MtlSerialNumbersCatalogo.COLUMN_CREATED_BY, mtlSerialNumbers.getCreatedBy());
         values.put(MtlSerialNumbersCatalogo.COLUMN_LOT_NUMBER, mtlSerialNumbers.getLotNumber());
         values.put(MtlSerialNumbersCatalogo.COLUMN_CURRENT_ORGANIZATION_ID, mtlSerialNumbers.getCurrentOrganizationId());
+        values.put(MtlSerialNumbersCatalogo.COLUMN_SHIPMENT_HEADER_ID, mtlSerialNumbers.getShipmentHeaderId());
         super.update(MtlSerialNumbersCatalogo.TABLE, values, MtlSerialNumbersCatalogo.UPDATE,  mtlSerialNumbers.getInventoryItemId(), mtlSerialNumbers.getSerialNumber());
     }
 

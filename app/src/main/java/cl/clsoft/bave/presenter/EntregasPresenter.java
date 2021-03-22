@@ -62,4 +62,5 @@ public class EntregasPresenter extends BasePresenter {
             mView.fillEntregas(result);
         }
     }
+
 }

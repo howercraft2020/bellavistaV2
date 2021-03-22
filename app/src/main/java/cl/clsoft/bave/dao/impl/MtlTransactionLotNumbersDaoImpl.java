@@ -23,6 +23,7 @@ public class MtlTransactionLotNumbersDaoImpl extends GenericDao<MtlTransactionLo
         values.put(MtlTransactionLotNumbersCatalogo.COLUMN_C_ATTRIBUTE1, mtlTransactionLotNumbers.getcAttribute1());
         values.put(MtlTransactionLotNumbersCatalogo.COLUMN_C_ATTRIBUTE2, mtlTransactionLotNumbers.getcAttribute2());
         values.put(MtlTransactionLotNumbersCatalogo.COLUMN_C_ATTRIBUTE3, mtlTransactionLotNumbers.getcAttribute3());
+        values.put(MtlTransactionLotNumbersCatalogo.COLUMN_SHIPMENT_HEADER_ID, mtlTransactionLotNumbers.getShipmentHeaderId());
         super.insert(MtlTransactionLotNumbersCatalogo.TABLE, values);
     }
 
@@ -38,6 +39,7 @@ public class MtlTransactionLotNumbersDaoImpl extends GenericDao<MtlTransactionLo
         values.put(MtlTransactionLotNumbersCatalogo.COLUMN_C_ATTRIBUTE1, mtlTransactionLotNumbers.getcAttribute1());
         values.put(MtlTransactionLotNumbersCatalogo.COLUMN_C_ATTRIBUTE2, mtlTransactionLotNumbers.getcAttribute2());
         values.put(MtlTransactionLotNumbersCatalogo.COLUMN_C_ATTRIBUTE3, mtlTransactionLotNumbers.getcAttribute3());
+        values.put(MtlTransactionLotNumbersCatalogo.COLUMN_SHIPMENT_HEADER_ID, mtlTransactionLotNumbers.getShipmentHeaderId());
         super.update(MtlTransactionLotNumbersCatalogo.TABLE, values, MtlTransactionLotNumbersCatalogo.UPDATE, mtlTransactionLotNumbers.getTransactionId());
     }
 

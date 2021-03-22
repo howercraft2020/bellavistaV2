@@ -11,6 +11,7 @@ public class MtlSerialNumbersCatalogo {
     public static final String COLUMN_CREATED_BY = "created_by";
     public static final String COLUMN_LOT_NUMBER = "lot_number";
     public static final String COLUMN_CURRENT_ORGANIZATION_ID = "current_organization_id";
+    public static final String COLUMN_SHIPMENT_HEADER_ID = "shipment_header_id";
 
     public static final String CREATE_TABLE =
             " CREATE TABLE " + TABLE + "(" +
@@ -22,6 +23,7 @@ public class MtlSerialNumbersCatalogo {
                     COLUMN_CREATED_BY + " INTEGER, " +
                     COLUMN_LOT_NUMBER + " TEXT, " +
                     COLUMN_CURRENT_ORGANIZATION_ID + " INTEGER, " +
+                    COLUMN_SHIPMENT_HEADER_ID + " INTEGER, " +
                     " PRIMARY KEY (" + COLUMN_INVENTORY_ITEM_ID + ", " + COLUMN_SERIAL_NUMBER + " )" +
                     ")";
 

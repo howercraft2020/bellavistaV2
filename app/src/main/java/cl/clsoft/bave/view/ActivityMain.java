@@ -106,7 +106,7 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
                 }
 
                 if (seleccion.equals("Recepción entre Organizaciones")){
-                    Intent intent = new Intent(ActivityMain.this, ActivityTransOrg.class);
+                    Intent intent = new Intent(ActivityMain.this, ActivityEntregasOrgs.class);
                     startActivity(intent);
                 }
 
