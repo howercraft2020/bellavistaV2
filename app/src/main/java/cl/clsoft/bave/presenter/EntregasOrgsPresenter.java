@@ -10,20 +10,23 @@ import java.util.List;
 
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
+import cl.clsoft.bave.model.EntregaOrgsHeader;
 import cl.clsoft.bave.model.RcvShipmentHeaders;
+import cl.clsoft.bave.service.IEntregaOrgsService;
 import cl.clsoft.bave.service.IEntregaService;
 import cl.clsoft.bave.task.AppTask;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityEntregas;
+import cl.clsoft.bave.view.ActivityEntregasOrgs;
 
-public class EntregasPresenter extends BasePresenter {
+public class EntregasOrgsPresenter extends BasePresenter {
 
-    private static final String TAG = "EntregasPresenter";
-    private ActivityEntregas mView;
-    private IEntregaService mService;
+    private static final String TAG = "EntregasOrgsPresenter";
+    private ActivityEntregasOrgs mView;
+    private IEntregaOrgsService mService;
     private TaskExecutor mTaskExecutor;
 
-    public EntregasPresenter (@NonNull final ActivityEntregas view, @NonNull final TaskExecutor taskExecutor, @NonNull final IEntregaService service) {
+    public EntregasOrgsPresenter (@NonNull final ActivityEntregasOrgs view, @NonNull final TaskExecutor taskExecutor, @NonNull final IEntregaOrgsService service) {
         this.mView = view;
         this.mTaskExecutor = taskExecutor;
         this.mService = service;
@@ -31,17 +34,17 @@ public class EntregasPresenter extends BasePresenter {
 
     public void getEntregas() {
         this.mView.showProgres("Cargando Entregas...");
-        this.mTaskExecutor.async(new EntregasPresenter.Entregas());
+        this.mTaskExecutor.async(new EntregasOrgsPresenter.Entregas());
     }
 
-    private class Entregas implements AppTask<List<RcvShipmentHeaders>> {
+    private class Entregas implements AppTask<List<EntregaOrgsHeader>> {
 
         public Entregas() {}
 
         @Override
-        public List<RcvShipmentHeaders> execute() {
+        public List<EntregaOrgsHeader> execute() {
             Log.d(TAG, "Entregas::execute");
-            List<RcvShipmentHeaders> headers = new ArrayList<>();
+            List<EntregaOrgsHeader> headers = new ArrayList<>();
             try {
                 headers = mService.getEntregas();
             } catch (ServiceException e) {
@@ -57,7 +60,7 @@ public class EntregasPresenter extends BasePresenter {
         }
 
         @Override
-        public void onPostExecute(@Nullable List<RcvShipmentHeaders> result) {
+        public void onPostExecute(@Nullable List<EntregaOrgsHeader> result) {
             mView.hideProgres();
             mView.fillEntregas(result);
         }

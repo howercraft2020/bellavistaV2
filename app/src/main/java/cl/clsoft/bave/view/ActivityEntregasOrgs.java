@@ -16,26 +16,27 @@ import java.util.List;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
-import cl.clsoft.bave.model.MtlPhysicalInventories;
+import cl.clsoft.bave.model.EntregaOrgsHeader;
 import cl.clsoft.bave.model.RcvShipmentHeaders;
-import cl.clsoft.bave.presenter.EntregasPresenter;
+import cl.clsoft.bave.presenter.EntregasOrgsPresenter;
+import cl.clsoft.bave.service.impl.EntregaOrgsServiceImpl;
 import cl.clsoft.bave.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 
-public class ActivityEntregas extends BaseActivity<EntregasPresenter> {
+public class ActivityEntregasOrgs extends BaseActivity<EntregasOrgsPresenter> {
 
     // Variables
-    private String TAG = "ActivityEntregas";
-    private List<RcvShipmentHeaders> headers;
+    private String TAG = "ActivityEntregasOrgs";
+    private List<EntregaOrgsHeader> headers;
 
     // Controls
     private RecyclerView recyclerViewEntregas;
-    private AdapterItemEntrega adapter;
+    private AdapterItemEntregaOrgs adapter;
 
     @NonNull
     @Override
-    protected EntregasPresenter createPresenter(@NonNull Context context) {
-        return new EntregasPresenter(this, new AppTaskExecutor(this), new EntregaServiceImpl());
+    protected EntregasOrgsPresenter createPresenter(@NonNull Context context) {
+        return new EntregasOrgsPresenter(this, new AppTaskExecutor(this), new EntregaOrgsServiceImpl());
     }
 
     @Override
@@ -43,7 +44,7 @@ public class ActivityEntregas extends BaseActivity<EntregasPresenter> {
 
         // Instance Layout.
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_entregas);
+        setContentView(R.layout.activity_entregas_orgs);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Bind Controls
@@ -71,7 +72,7 @@ public class ActivityEntregas extends BaseActivity<EntregasPresenter> {
                     View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
                     if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
                         int position = recyclerView.getChildAdapterPosition(child);
-                        Intent i = new Intent(getApplicationContext(), ActivityEntregaDetalle.class);
+                        Intent i = new Intent(getApplicationContext(), ActivityEntregasOrgsDetalle.class);
                         i.putExtra("ShipmentHeaderId", headers.get(position).getShipmentHeaderId());
                         startActivity(i);
                         finish();
@@ -87,7 +88,6 @@ public class ActivityEntregas extends BaseActivity<EntregasPresenter> {
             public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
             }
         });
-
     }
 
     @Override
@@ -107,11 +107,12 @@ public class ActivityEntregas extends BaseActivity<EntregasPresenter> {
         }
     }
 
-    public void fillEntregas(List<RcvShipmentHeaders> headers) {
+    public void fillEntregas(List<EntregaOrgsHeader> headers) {
         if (headers != null) {
             this.headers = headers;
-            this.adapter = new AdapterItemEntrega(headers);
+            this.adapter = new AdapterItemEntregaOrgs(headers);
             this.recyclerViewEntregas.setAdapter(this.adapter);
         }
     }
+
 }

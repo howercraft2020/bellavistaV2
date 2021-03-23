@@ -9,6 +9,7 @@
         <item>Inventario Físico</item>
         <item>Transferencia Subinventario</item>
         <item>Transferencia Organización</item>
+        <item>Recepción entre Organizaciones</item>
         <item>Consulta Stock Item</item>
         <item>Consulta Stock Subinventario</item>
     </string-array>

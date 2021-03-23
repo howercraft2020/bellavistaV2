@@ -12,11 +12,14 @@ import java.io.InputStreamReader;
 import cl.clsoft.bave.dao.ILocalizadorDao;
 import cl.clsoft.bave.dao.IMtlCycleCountEntriesDao;
 import cl.clsoft.bave.dao.IMtlCycleCountHeadersDao;
+import cl.clsoft.bave.dao.IMtlMaterialTransactionsDao;
 import cl.clsoft.bave.dao.IMtlOnhandQuantitiesDao;
 import cl.clsoft.bave.dao.IMtlPhysicalInventoriesDao;
 import cl.clsoft.bave.dao.IMtlPhysicalInventoryTagsDao;
 import cl.clsoft.bave.dao.IMtlPhysicalSubinventoriesDao;
+import cl.clsoft.bave.dao.IMtlSerialNumbersDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
+import cl.clsoft.bave.dao.IMtlTransactionLotNumbersDao;
 import cl.clsoft.bave.dao.IOrganizacionDao;
 import cl.clsoft.bave.dao.IOrganizacionPrincipalDao;
 import cl.clsoft.bave.dao.IPoDistributionsAllDao;
@@ -29,11 +32,14 @@ import cl.clsoft.bave.dao.ISubinventarioDao;
 import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlCycleCountEntriesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlCycleCountHeadersDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlMaterialTransactionsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlOnhandQuantitiesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlPhysicalInventoriesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlPhysicalInventoryTagsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlPhysicalSubinventoriesDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlSerialNumbersDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlTransactionLotNumbersDaoImpl;
 import cl.clsoft.bave.dao.impl.OrganizacionDaoImpl;
 import cl.clsoft.bave.dao.impl.OrganizacionPrincipalDaoImpl;
 import cl.clsoft.bave.dao.impl.PoDistributionsAllDaoImpl;
@@ -48,11 +54,14 @@ import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
+import cl.clsoft.bave.model.MtlMaterialTransactions;
 import cl.clsoft.bave.model.MtlOnhandQuantities;
 import cl.clsoft.bave.model.MtlPhysicalInventories;
 import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 import cl.clsoft.bave.model.MtlPhysicalSubinventories;
+import cl.clsoft.bave.model.MtlSerialNumbers;
 import cl.clsoft.bave.model.MtlSystemItems;
+import cl.clsoft.bave.model.MtlTransactionLotNumbers;
 import cl.clsoft.bave.model.Organizacion;
 import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.PoDistributionsAll;
@@ -698,6 +707,157 @@ public class BaveServiceImpl implements IBaveService {
                         rcvShipmentHeaders.setGroupId(Long.valueOf(extraccion[3]));
                         rcvShipmentHeaders.setTransactionInterfaceId(Long.valueOf(extraccion[4]));
                         rcvShipmentHeadersDao.update(rcvShipmentHeaders);
+                    }
+                }
+                linea = leerArchivo.readLine();
+            }
+            archivo.delete();
+        } catch (DaoException e) {
+            Log.d(TAG, "DaoException");
+            e.printStackTrace();
+            throw new ServiceException(2, e.getDescripcion());
+        } catch (FileNotFoundException e) {
+            Log.d(TAG, "FileNotFoundException");
+            e.printStackTrace();
+            throw new ServiceException(2, e.getMessage());
+        } catch (IOException e) {
+            Log.d(TAG, "IOException");
+            e.printStackTrace();
+            throw new ServiceException(2, e.getMessage());
+        } catch (Exception e) {
+            Log.d(TAG, "Exception");
+            e.printStackTrace();
+            throw new ServiceException(2, e.getMessage());
+        }
+    }
+
+    @Override
+    public void cargarArchivoEntregaOrgs(File archivo) throws ServiceException {
+        IMtlMaterialTransactionsDao mtlMaterialTransactionsDao = new MtlMaterialTransactionsDaoImpl();
+        IMtlTransactionLotNumbersDao mtlTransactionLotNumbersDao = new MtlTransactionLotNumbersDaoImpl();
+        IMtlSerialNumbersDao mtlSerialNumbersDao = new MtlSerialNumbersDaoImpl();
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+
+        try {
+            FileInputStream fis = new FileInputStream(archivo);
+            InputStreamReader abrirArchivo = new InputStreamReader(fis);
+            BufferedReader leerArchivo = new BufferedReader(abrirArchivo);
+            String linea = leerArchivo.readLine();
+            Long shipmentHeaderId = null;
+            while(linea != null) {
+                String[] extraccion = linea.split("\\|", -1);
+                if (extraccion[0].equals("1")) {
+                    MtlMaterialTransactions mtlMaterialTransactions = new MtlMaterialTransactions();
+                    if (extraccion.length >= 2)
+                        mtlMaterialTransactions.setTransactionId(extraccion[1].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[1]));
+                    if (extraccion.length >= 3)
+                        mtlMaterialTransactions.setInventoryItemId(extraccion[2].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[2]));
+                    if (extraccion.length >= 4)
+                        mtlMaterialTransactions.setOrganizationId(extraccion[3].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[3]));
+                    if (extraccion.length >= 5)
+                        mtlMaterialTransactions.setTransactionTypeId(extraccion[4].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[4]));
+                    if (extraccion.length >= 6)
+                        mtlMaterialTransactions.setTransactionActionId(extraccion[5].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[5]));
+                    if (extraccion.length >= 7)
+                        mtlMaterialTransactions.setTransactionSourceTypeId(extraccion[6].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[6]));
+                    if (extraccion.length >= 8)
+                        mtlMaterialTransactions.setTransactionSourceName(extraccion[7]);
+                    if (extraccion.length >= 9)
+                        mtlMaterialTransactions.setTransactionQuantity(extraccion[8].equalsIgnoreCase("") ? null : Double.valueOf(extraccion[8].replace(",", ".")));
+                    if (extraccion.length >= 10)
+                        mtlMaterialTransactions.setTransactionUom(extraccion[9]);
+                    if (extraccion.length >= 11)
+                        mtlMaterialTransactions.setPrimaryQuantity(extraccion[10].equalsIgnoreCase("") ? null : Double.valueOf(extraccion[10].replace(",", ".")));
+                    if (extraccion.length >= 12)
+                        mtlMaterialTransactions.setTransactionDate(extraccion[11]);
+                    if (extraccion.length >= 13)
+                        mtlMaterialTransactions.setActualCost(extraccion[12].equalsIgnoreCase("") ? null : Double.valueOf(extraccion[12].replace(",", ".")));
+                    if (extraccion.length >= 14)
+                        mtlMaterialTransactions.setTransferOrganizationId(extraccion[13].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[13]));
+                    if (extraccion.length >= 15)
+                        mtlMaterialTransactions.setShipToLocationId(extraccion[14].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[14]));
+                    if (extraccion.length >= 16)
+                        mtlMaterialTransactions.setReceipNum(extraccion[15]);
+                    if (extraccion.length >= 17)
+                        mtlMaterialTransactions.setUserId(extraccion[16].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[16]));
+                    if (extraccion.length >= 18)
+                        mtlMaterialTransactions.setShipmentNumber(extraccion[17]);
+                    if (extraccion.length >= 19)
+                        mtlMaterialTransactions.setShipmentHeaderId(extraccion[18].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[18]));
+                    if (extraccion.length >= 20) {
+                        shipmentHeaderId = Long.valueOf(extraccion[19]);
+                        mtlMaterialTransactions.setShipmentLineId(extraccion[19].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[19]));
+                    }
+                    mtlMaterialTransactionsDao.insert(mtlMaterialTransactions);
+                } else if (extraccion[0].equals("2")) {
+                    MtlTransactionLotNumbers mtlTransactionLotNumbers = new MtlTransactionLotNumbers();
+                    if (extraccion.length >= 2)
+                        mtlTransactionLotNumbers.setTransactionId(extraccion[1].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[1]));
+                    if (extraccion.length >= 3)
+                        mtlTransactionLotNumbers.setInventoryItemId(extraccion[2].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[2]));
+                    if (extraccion.length >= 4)
+                        mtlTransactionLotNumbers.setOrganizationId(extraccion[3].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[3]));
+                    if (extraccion.length >= 5)
+                        mtlTransactionLotNumbers.setLotNumber(extraccion[4]);
+                    if (extraccion.length >= 6)
+                        mtlTransactionLotNumbers.setSerialTransactionId(extraccion[5].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[5]));
+                    if (extraccion.length >= 7)
+                        mtlTransactionLotNumbers.setLotAttributeCategory(extraccion[6]);
+                    if (extraccion.length >= 8)
+                        mtlTransactionLotNumbers.setcAttribute1(extraccion[7]);
+                    if (extraccion.length >= 9)
+                        mtlTransactionLotNumbers.setcAttribute2(extraccion[8]);
+                    if (extraccion.length >= 10)
+                        mtlTransactionLotNumbers.setcAttribute3(extraccion[9]);
+                    mtlTransactionLotNumbers.setShipmentHeaderId(shipmentHeaderId);
+                    mtlTransactionLotNumbersDao.insert(mtlTransactionLotNumbers);
+                } else if (extraccion[0].equals("3")) {
+                    MtlSerialNumbers mtlSerialNumbers = new MtlSerialNumbers();
+                    if (extraccion.length >= 2)
+                        mtlSerialNumbers.setInventoryItemId(extraccion[1].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[1]));
+                    if (extraccion.length >= 3)
+                        mtlSerialNumbers.setSerialNumber(extraccion[2]);
+                    if (extraccion.length >= 4)
+                        mtlSerialNumbers.setLastUpdateDate(extraccion[3]);
+                    if (extraccion.length >= 5)
+                        mtlSerialNumbers.setLastUpdateBy(extraccion[4].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[4]));
+                    if (extraccion.length >= 6)
+                        mtlSerialNumbers.setCreationDate(extraccion[5]);
+                    if (extraccion.length >= 7)
+                        mtlSerialNumbers.setCreatedBy(extraccion[6].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[6]));
+                    if (extraccion.length >= 8)
+                        mtlSerialNumbers.setLotNumber(extraccion[7]);
+                    if (extraccion.length >= 9)
+                        mtlSerialNumbers.setCurrentOrganizationId(extraccion[8].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[8]));
+                    mtlSerialNumbersDao.insert(mtlSerialNumbers);
+                } else if (extraccion[0].equals("4")) {
+                    boolean existe = true;
+                    Long inventoryItemId = Long.valueOf(extraccion[1]);
+                    MtlSystemItems mtlSystemItems = mtlSystemItemsDao.get(inventoryItemId);
+                    if (mtlSystemItems == null) {
+                        existe = false;
+                        mtlSystemItems = new MtlSystemItems();
+                    }
+                    mtlSystemItems.setInventoryItemId(inventoryItemId);
+                    if (extraccion.length >= 3)
+                        mtlSystemItems.setDescription(extraccion[2]);
+                    if (extraccion.length >= 4)
+                        mtlSystemItems.setLongDescription(extraccion[3]);
+                    if (extraccion.length >= 5)
+                        mtlSystemItems.setSegment1(extraccion[4]);
+                    if (extraccion.length >= 6)
+                       mtlSystemItems.setPrimaryUomCode(extraccion[5]);
+                    if (extraccion.length >= 7)
+                        mtlSystemItems.setLotControlCode(extraccion[6]);
+                    if (extraccion.length >= 8)
+                    mtlSystemItems.setShelfLifeCode(extraccion[7]);
+                    if (extraccion.length >= 9)
+                        mtlSystemItems.setSerialNumberControlCode(extraccion[8]);
+
+                    if (existe) {
+                        mtlSystemItemsDao.update(mtlSystemItems);
+                    } else {
+                        mtlSystemItemsDao.insert(mtlSystemItems);
                     }
                 }
                 linea = leerArchivo.readLine();

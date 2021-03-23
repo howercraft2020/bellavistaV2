@@ -10,12 +10,15 @@ import cl.clsoft.bave.InventarioApplication;
 import cl.clsoft.bave.dao.catalogo.LocalizadorCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlCycleCountEntriesCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlCycleCountHeadersCatalogo;
+import cl.clsoft.bave.dao.catalogo.MtlMaterialTransactionsCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlOnhandQuantitiesCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlPhysicalInventoriesCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlPhysicalInventoryTagsCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlPhysicalSubinventoriesCatalogo;
+import cl.clsoft.bave.dao.catalogo.MtlSerialNumbersCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlSerialNumbersInterfaceCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlSystemItemsCatalogo;
+import cl.clsoft.bave.dao.catalogo.MtlTransactionLotNumbersCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlTransactionsInterfaceCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlTransactionsLotsIfaceCatalogo;
 import cl.clsoft.bave.dao.catalogo.OrganizacionCatalogo;
@@ -29,6 +32,7 @@ import cl.clsoft.bave.dao.catalogo.RcvShipmentHeadersCatalogo;
 import cl.clsoft.bave.dao.catalogo.RcvTransactionsCatalogo;
 import cl.clsoft.bave.dao.catalogo.RcvTransactionsInterfaceCatalogo;
 import cl.clsoft.bave.dao.catalogo.SubinventarioCatalogo;
+import cl.clsoft.bave.model.MtlTransactionLotNumbers;
 import cl.clsoft.bave.model.OrganizacionPrincipal;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -73,8 +77,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(MtlPhysicalInventoryTagsCatalogo.CREATE_TABLE);
         db.execSQL(MtlTransactionsInterfaceCatalogo.CREATE_TABLE);
         db.execSQL(MtlSerialNumbersInterfaceCatalogo.CREATE_TABLE);
+        db.execSQL(MtlMaterialTransactionsCatalogo.CREATE_TABLE);
+        db.execSQL(MtlTransactionLotNumbersCatalogo.CREATE_TABLE);
+        db.execSQL(MtlSerialNumbersCatalogo.CREATE_TABLE);
         db.execSQL(OrganizacionPrincipalCatalogo.CREATE_TABLE);
-
     }
 
     @Override

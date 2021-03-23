@@ -105,6 +105,11 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
                     startActivity(intent);
                 }
 
+                if (seleccion.equals("Recepción entre Organizaciones")){
+                    Intent intent = new Intent(ActivityMain.this, ActivityEntregasOrgs.class);
+                    startActivity(intent);
+                }
+
                 if (seleccion.equals("Consulta Stock Item")){
                     Intent intent = new Intent(ActivityMain.this, ActivityConsultaItem.class);
                     startActivity(intent);

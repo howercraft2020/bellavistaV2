@@ -19,14 +19,15 @@ import java.util.List;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
+import cl.clsoft.bave.model.MtlMaterialTransactions;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.RcvTransactions;
-import cl.clsoft.bave.presenter.EntregaAgregarResumenPresenter;
-import cl.clsoft.bave.service.impl.EntregaServiceImpl;
+import cl.clsoft.bave.presenter.EntregaOrgsAgregarResumenPresenter;
+import cl.clsoft.bave.service.impl.EntregaOrgsServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarResumenPresenter> implements ConfirmationDialog.ConfirmationDialogListener {
+public class ActivityEntregaOrgsAgregarResumen extends BaseActivity<EntregaOrgsAgregarResumenPresenter> implements ConfirmationDialog.ConfirmationDialogListener  {
 
     // Variables
     private String TAG = "EntregaAgregar";
@@ -38,8 +39,6 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
     private boolean isLote = false;
     private boolean isSerie = false;
     private String lote;
-    private String loteProveedor;
-    private String vencimiento;
     private String categoria;
     private String atributo1;
     private String atributo2;
@@ -56,8 +55,6 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
     private TextView textSubinventoryCode;
     private TextView textLocatorCode;
     private TextView textLote;
-    private TextView textLoteProveedor;
-    private TextView textVencimiento;
     private TextView textCategoria;
     private TextView textAtributo1;
     private TextView textAtributo2;
@@ -69,8 +66,8 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
 
     @NonNull
     @Override
-    protected EntregaAgregarResumenPresenter createPresenter(@NonNull Context context) {
-        return new EntregaAgregarResumenPresenter(this, new AppTaskExecutor(this), new EntregaServiceImpl());
+    protected EntregaOrgsAgregarResumenPresenter createPresenter(@NonNull Context context) {
+        return new EntregaOrgsAgregarResumenPresenter(this, new AppTaskExecutor(this), new EntregaOrgsServiceImpl());
     }
 
     @Override
@@ -78,7 +75,7 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
 
         // Instance Layout.
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_entrega_agregar_resumen);
+        setContentView(R.layout.activity_entrega_orgs_agregar_resumen);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_highlight_off_white_36dp);
 
@@ -93,8 +90,6 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
         this.textSubinventoryCode = findViewById(R.id.textSubinventoryCode);
         this.textLocatorCode = findViewById(R.id.textLocatorCode);
         this.textLote = findViewById(R.id.textLote);
-        this.textLoteProveedor = findViewById(R.id.textLoteProveedor);
-        this.textVencimiento = findViewById(R.id.textVencimiento);
         this.textCategoria = findViewById(R.id.textCategoria);
         this.textAtributo1 = findViewById(R.id.textAtributo1);
         this.textAtributo2 = findViewById(R.id.textAtributo2);
@@ -112,8 +107,6 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
         this.subinventoryCode = this.getIntent().getStringExtra("SubinventoryCode");
         this.locatorCode = this.getIntent().getStringExtra("LocatorCode");
         this.lote = this.getIntent().getStringExtra("Lote");
-        this.loteProveedor = this.getIntent().getStringExtra("LoteProveedor");
-        this.vencimiento = this.getIntent().getStringExtra("Vencimiento");
         this.categoria = this.getIntent().getStringExtra("Categoria");
         this.atributo1 = this.getIntent().getStringExtra("Atributo1");
         this.atributo2 = this.getIntent().getStringExtra("Atributo2");
@@ -122,9 +115,9 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
         if (this.series == null)
             this.series = new ArrayList<>();
 
-        RcvTransactions transaction = mPresenter.getTransactionById(this.transactionId);
+        MtlMaterialTransactions transaction = mPresenter.getTransactionById(this.transactionId);
         if (transaction != null) {
-            MtlSystemItems item = mPresenter.getMtlSystemItemsById(transaction.getItemId());
+            MtlSystemItems item = mPresenter.getMtlSystemItemsById(transaction.getInventoryItemId());
             if (item != null) {
                 if (item.getLotControlCode().equalsIgnoreCase("2")) {
                     this.isLote = true;
@@ -137,10 +130,10 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
                     this.isSerie = false;
                 }
                 this.fillProducto(item.getDescription(), item.getSegment1(), this.cantidad,
-                        transaction.getLineNum(), this.isLote, this.isSerie, this.subinventoryCode, this.locatorCode);
+                        this.isLote, this.isSerie, this.subinventoryCode, this.locatorCode);
 
                 if (this.isLote) {
-                    this.fillLote(this.lote, this.loteProveedor, this.vencimiento, this.categoria, this.atributo1, this.atributo2, this.atributo3);
+                    this.fillLote(this.lote, this.categoria, this.atributo1, this.atributo2, this.atributo3);
                 }
                 if (this.isSerie) {
                     this.fillSeries(this.series);
@@ -184,15 +177,13 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
             case R.id.back:
                 Log.d(TAG, "back");
                 if (this.isSerie) {
-                    Intent iSerie = new Intent(this, ActivityEntregaAgregarSerie.class);
+                    Intent iSerie = new Intent(this, ActivityEntregaOrgsAgregarSerie.class);
                     iSerie.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
                     iSerie.putExtra("TransactionId", this.transactionId);
                     iSerie.putExtra("Cantidad", this.cantidad);
                     iSerie.putExtra("SubinventoryCode", this.subinventoryCode);
                     iSerie.putExtra("LocatorCode", this.locatorCode);
                     iSerie.putExtra("Lote", this.lote);
-                    iSerie.putExtra("LoteProveedor", this.loteProveedor);
-                    iSerie.putExtra("Vencimiento", this.vencimiento);
                     iSerie.putExtra("Categoria", this.categoria);
                     iSerie.putExtra("Atributo1", this.atributo1);
                     iSerie.putExtra("Atributo2", this.atributo2);
@@ -201,14 +192,13 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
                     startActivity(iSerie);
                     this.finish();
                 } else if (this.isLote) {
-                    Intent iLote = new Intent(this, ActivityEntregaAgregarLote.class);
+                    Intent iLote = new Intent(this, ActivityEntregaOrgsAgregarLote.class);
                     iLote.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
                     iLote.putExtra("TransactionId", this.transactionId);
                     iLote.putExtra("Cantidad", this.cantidad);
                     iLote.putExtra("SubinventoryCode", this.subinventoryCode);
                     iLote.putExtra("LocatorCode", this.locatorCode);
-                    iLote.putExtra("LoteProveedor", this.loteProveedor);
-                    iLote.putExtra("Vencimiento", this.vencimiento);
+                    iLote.putExtra("Lote", this.lote);
                     iLote.putExtra("Categoria", this.categoria);
                     iLote.putExtra("Atributo1", this.atributo1);
                     iLote.putExtra("Atributo2", this.atributo2);
@@ -217,15 +207,13 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
                     startActivity(iLote);
                     this.finish();
                 } else {
-                    Intent iAgregar = new Intent(this, ActivityEntregaAgregar.class);
+                    Intent iAgregar = new Intent(this, ActivityEntregaOrgsAgregar.class);
                     iAgregar.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
                     iAgregar.putExtra("TransactionId", this.transactionId);
                     iAgregar.putExtra("Cantidad", this.cantidad);
                     iAgregar.putExtra("SubinventoryCode", this.subinventoryCode);
                     iAgregar.putExtra("LocatorCode", this.locatorCode);
                     iAgregar.putExtra("Lote", this.lote);
-                    iAgregar.putExtra("LoteProveedor", this.loteProveedor);
-                    iAgregar.putExtra("Vencimiento", this.vencimiento);
                     iAgregar.putExtra("Categoria", this.categoria);
                     iAgregar.putExtra("Atributo1", this.atributo1);
                     iAgregar.putExtra("Atributo2", this.atributo2);
@@ -240,12 +228,11 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
         }
     }
 
-    private void fillProducto(String descripcion, String segment, Double cantidad, Long linea,
+    private void fillProducto(String descripcion, String segment, Double cantidad,
                               boolean isLote, boolean isSerie, String subinventoryCode, String locatorCode) {
         this.textProductoDescription.setText(descripcion);
         this.textProductoSigle.setText(segment);
         this.textProductoCantidad.setText(cantidad.toString());
-        this.textProductoLinea.setText(linea.toString());
         if (isLote)
             this.textProductoLote.setText("SI");
         else
@@ -258,10 +245,8 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
         this.textLocatorCode.setText(locatorCode);
     }
 
-    private void fillLote(String lote, String loteProveedor, String vencimiento, String categoria, String atributo1, String atributo2, String atributo3) {
+    private void fillLote(String lote, String categoria, String atributo1, String atributo2, String atributo3) {
         this.textLote.setText(lote);
-        this.textLoteProveedor.setText(loteProveedor);
-        this.textVencimiento.setText(vencimiento);
         this.textCategoria.setText(categoria);
         this.textAtributo1.setText(atributo1);
         this.textAtributo2.setText(atributo2);
@@ -281,28 +266,28 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
         this.rlayoutSeries.setVisibility(View.VISIBLE);
     }
 
+    private void confirmacionSalir() {
+        ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
+        dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
+    }
+
     @Override
     public void onDialogAceptarClick(DialogFragment dialog) {
         String tipo = dialog.getArguments().getString("tipo");
         if (tipo.equalsIgnoreCase("exit")) {
-            Intent i = new Intent(this, ActivityEntregaDetalle.class);
+            Intent i = new Intent(this, ActivityEntregasOrgsDetalle.class);
             i.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
             startActivity(i);
             this.finish();
         } else if (tipo.equalsIgnoreCase("save")) {
             this.mPresenter.addTransacctionInterface(this.shipmentHeaderId, this.transactionId, this.subinventoryCode,
-                    this.locatorCode, this.lote, this.loteProveedor, this.vencimiento, this.categoria, this.atributo1, this.atributo2, this.atributo3, this.series, this.cantidad);
+                    this.locatorCode, this.lote, this.categoria, this.atributo1, this.atributo2, this.atributo3, this.series, this.cantidad);
         }
     }
 
     @Override
     public void onDialogCancelarClick(DialogFragment dialog) {
 
-    }
-
-    private void confirmacionSalir() {
-        ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
-        dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
     }
 
     public void resultadoOkAddTransaction() {
@@ -313,7 +298,7 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
                 @Override
                 public void onClick(SweetAlertDialog sDialog) {
                     Log.d("CMFA", "CLICK");
-                    Intent i = new Intent(getApplicationContext(), ActivityEntregaDetalle.class);
+                    Intent i = new Intent(getApplicationContext(), ActivityEntregasOrgsDetalle.class);
                     i.putExtra("ShipmentHeaderId", shipmentHeaderId);
                     startActivity(i);
                     finish();
@@ -321,4 +306,5 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
             })
             .show();
     }
+
 }
