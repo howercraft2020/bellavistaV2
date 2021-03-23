@@ -18,42 +18,42 @@ public class DatosRecepcion {
     private String rateDate;
     private Long poDistributionId;
     private String vendorSiteCode;
-    private Long quantity;
-    private Long quantityReceived;
-    private Long quantityCancelled;
-    private Long qtyRcvTolerance;
+    private Double quantity;
+    private Double quantityReceived;
+    private Double quantityCancelled;
+    private Double qtyRcvTolerance;
 
     public DatosRecepcion() {}
 
-    public Long getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Long quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 
-    public Long getQuantityReceived() {
+    public Double getQuantityReceived() {
         return quantityReceived;
     }
 
-    public void setQuantityReceived(Long quantityReceived) {
+    public void setQuantityReceived(Double quantityReceived) {
         this.quantityReceived = quantityReceived;
     }
 
-    public Long getQuantityCancelled() {
+    public Double getQuantityCancelled() {
         return quantityCancelled;
     }
 
-    public void setQuantityCancelled(Long quantityCancelled) {
+    public void setQuantityCancelled(Double quantityCancelled) {
         this.quantityCancelled = quantityCancelled;
     }
 
-    public Long getQtyRcvTolerance() {
+    public Double getQtyRcvTolerance() {
         return qtyRcvTolerance;
     }
 
-    public void setQtyRcvTolerance(Long qtyRcvTolerance) {
+    public void setQtyRcvTolerance(Double qtyRcvTolerance) {
         this.qtyRcvTolerance = qtyRcvTolerance;
     }
 

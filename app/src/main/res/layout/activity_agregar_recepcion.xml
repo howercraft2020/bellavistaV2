@@ -1,48 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="6dip">
+    android:paddingTop="24dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
 
     <include
         android:id="@+id/llProgressBar"
         android:visibility="gone"
         layout="@layout/progress_bar"/>
 
-    <EditText
-        android:id="@+id/numeroParte"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Numero Parte"
-        android:inputType="textPersonName" />
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/codigoSigle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Codigo Sigle"
-        android:inputType="textPersonName" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutSigle"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="10dp"
+            android:hint="Sigle"
+            android:textColorHint="?attr/colorPrimary">
+            <cl.clsoft.bave.control.InstantAutoCompleteTextView
+                android:id="@+id/textSigle"
+                android:textColor="@android:color/black"
+                android:backgroundTint="?attr/colorPrimaryDark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:inputType="text">
+            </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/cantidad"
+        <ImageView
+            android:id="@+id/iconSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6dip"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:src="@mipmap/ic_search_black_36dp"
+            android:layout_toRightOf="@+id/layoutSigle"/>
+
+    </RelativeLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutNumerolinea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="Numero Linea"
+        android:textColorHint="?attr/colorPrimary">
+        <cl.clsoft.bave.control.InstantAutoCompleteTextView
+            android:id="@+id/textNumeroLinea"
+            android:textColor="@android:color/black"
+            android:backgroundTint="?attr/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:inputType="text">
+        </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutCantidad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:hint="Cantidad"
-        android:inputType="number" />
+        android:textColorHint="?attr/colorPrimary">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textCantidad"
+            android:textColor="@android:color/black"
+            android:backgroundTint="?attr/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:inputType="numberDecimal"
+            android:maxLength="20"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/udm"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutUdm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:hint="UDM"
-        android:inputType="textPersonName" />
+        android:textColorHint="?attr/colorPrimary">
 
+        <cl.clsoft.bave.control.InstantAutoCompleteTextView
+            android:id="@+id/textUdm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/colorPrimaryDark"
+            android:enabled="false"
+            android:inputType="text"
+            android:text=""
+            android:textColor="@android:color/black"></cl.clsoft.bave.control.InstantAutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

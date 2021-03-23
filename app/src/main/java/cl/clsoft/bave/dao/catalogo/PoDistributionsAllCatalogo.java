@@ -34,4 +34,8 @@ public class PoDistributionsAllCatalogo {
                     COLUMN_QUANTITY_CANCELLED + " INTEGER" +
             ")";
 
+    public static final String DELETE = COLUMN_PO_HEADER_ID + " = ?";
+
+    public static final String SELECT_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + COLUMN_PO_DISTRIBUTION_ID + " = ?";
+
 }

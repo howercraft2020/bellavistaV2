@@ -92,4 +92,9 @@ public class MtlSystemItemsDaoImpl extends GenericDao<MtlSystemItems> implements
         return super.selectMany(MtlSystemItemsCatalogo.SELECT_ALL_BY_DESCRIPTION, new MtlSystemItemsRowMapper(), pattern);
     }
 
+    @Override
+    public List<MtlSystemItems> getAllByOcReceipt(Long poHeaderId, Long receiptNum) throws DaoException {
+        return super.selectMany(MtlSystemItemsCatalogo.SELECT_BY_OC_RECEIPT, new MtlSystemItemsRowMapper(), poHeaderId, receiptNum);
+    }
+
 }

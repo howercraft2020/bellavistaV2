@@ -20,6 +20,7 @@ import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.IMtlTransactionLotsInterfaceDao;
 import cl.clsoft.bave.dao.IMtlTransactionsInterfaceDao;
 import cl.clsoft.bave.dao.IOrganizacionDao;
+import cl.clsoft.bave.dao.IOrganizacionPrincipalDao;
 import cl.clsoft.bave.dao.ISubinventarioDao;
 import cl.clsoft.bave.dao.impl.DatosTransOrgDetalleImpl;
 import cl.clsoft.bave.dao.impl.DatosTransOrgImpl;
@@ -30,6 +31,7 @@ import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionInterfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionLotsIfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.OrganizacionDaoImpl;
+import cl.clsoft.bave.dao.impl.OrganizacionPrincipalDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
 import cl.clsoft.bave.dto.MtlTransactionDetalleDto;
 import cl.clsoft.bave.dto.MtlTransactionOrgDto;
@@ -44,6 +46,7 @@ import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.MtlTransactionsInterface;
 import cl.clsoft.bave.model.MtlTransactionsLotsIface;
 import cl.clsoft.bave.model.Organizacion;
+import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.service.ITransOrgService;
 
@@ -155,6 +158,7 @@ public class TransOrgService  implements ITransOrgService {
         IOrganizacionDao organizacionDao = new OrganizacionDaoImpl();
         IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
         IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
+        IOrganizacionPrincipalDao organizacionPrincipalDao = new OrganizacionPrincipalDaoImpl();
 
         Long inventoryItemId;
         Long existe = 0L;
@@ -244,6 +248,9 @@ public class TransOrgService  implements ITransOrgService {
                 throw new ServiceException(1, "Faltan series");
             }
 
+            //Datos organizacion Principal
+            OrganizacionPrincipal organizacionPrincipal = organizacionPrincipalDao.get();
+
             //Inserta datos en mtlTransactionsInterface
             MtlTransactionsInterface mtlTransactionsInterface = new MtlTransactionsInterface();
             mtlTransactionsInterface.setTransactionInterfaceId(Long.parseLong(transactionInterfaceId));
@@ -264,7 +271,7 @@ public class TransOrgService  implements ITransOrgService {
             mtlTransactionsInterface.setTransactionActionId(21L);
             mtlTransactionsInterface.setTransactionTypeId(21L);
             mtlTransactionsInterface.setTransferOrganization(organizacionDestino.getIdOrganizacion());
-            mtlTransactionsInterface.setShipmentNumber("Q_01"+fechaId);
+            mtlTransactionsInterface.setShipmentNumber(organizacionPrincipal.getCode()+fechaId);
             mtlTransactionsInterfaceDao.insert(mtlTransactionsInterface);
 
             if(isControlLote) {

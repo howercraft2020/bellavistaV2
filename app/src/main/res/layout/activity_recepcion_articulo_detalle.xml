@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dip"
+        android:paddingTop="8dp"
+        android:paddingLeft="10dp"
+        android:src="@drawable/ciclico01_48dp" />
+
+    <TextView
+        android:id="@+id/TagId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:textStyle="bold"
+        android:text="Nº Oc :" />
+
+    <TextView
+        android:id="@+id/segment1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/TagId"
+        android:paddingLeft="10dp"
+        android:text="ID" />
+
+    <TextView
+        android:id="@+id/TagPoHeaderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/TagId"
+        android:layout_marginTop="2dp"
+        android:textStyle="bold"
+        android:text="ID : " />
+
+    <TextView
+        android:id="@+id/poHeaderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/TagPoHeaderId"
+        android:layout_below="@id/segment1"
+        android:layout_marginTop="1dp"
+        android:paddingLeft="10dp"
+        android:text="poheaderId" />
+
+    <TextView
+        android:id="@+id/TagReceiptNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/TagPoHeaderId"
+        android:text="Nº Recepcion : "
+        android:textStyle="bold"
+        android:paddingBottom="10dp"/>
+
+
+    <TextView
+        android:id="@+id/receiptNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/TagPoHeaderId"
+        android:layout_toRightOf="@+id/TagReceiptNum"
+        android:layout_marginTop="0dp"
+        android:text="NumeroRecep"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_alignBottom="@id/receiptNum" />
+
+</RelativeLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutCantidad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:hint="Cantidad"
+        android:textColorHint="?attr/colorPrimary">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textCantidad"
+            android:textColor="@android:color/black"
+            android:backgroundTint="?attr/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:inputType="numberDecimal"
+            android:maxLength="20"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>

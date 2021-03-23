@@ -30,4 +30,8 @@ public class PoLineLocationsAllCatalogo {
                     COLUMN_ORG_ID +" INTEGER" +
             ")";
 
+    public static final String DELETE = COLUMN_PO_HEADER_ID + " = ?";
+
+    public static final String SELECT_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + COLUMN_LINE_LOCATION_ID + " = ?";
+
 }

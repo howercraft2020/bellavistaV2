@@ -15,5 +15,6 @@ public interface IMtlSystemItemsDao {
     public MtlSystemItems getBySegment(String segment) throws DaoException;
     public List<MtlSystemItems> getAll() throws DaoException;
     public List<MtlSystemItems> getAllByDescription(String pattern) throws DaoException;
+    public List<MtlSystemItems> getAllByOcReceipt(Long poHeaderId, Long receiptNum) throws DaoException;
 
 }

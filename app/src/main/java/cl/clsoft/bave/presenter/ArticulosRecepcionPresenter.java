@@ -28,12 +28,18 @@ public class ArticulosRecepcionPresenter extends BasePresenter {
         return null;
     }
 
-    public void crearArchivo(Long interfaceheaderId, String numeroOc, Long receiptNum) {
+    public void crearArchivo(Long interfaceheaderId, String numeroOc, Long receiptNum, Long poHeaderId, String comentario, Long groupId) {
         try{
-             this.mService.crearArchivo(interfaceheaderId,numeroOc,receiptNum);
-             this.mview.showSuccess("Archivo creado correctamente");
+             this.mService.crearArchivo(interfaceheaderId,numeroOc,receiptNum, poHeaderId, comentario, groupId);
+            mview.resultadoOkCerrarRecepcion();
         }catch (ServiceException e) {
             e.printStackTrace();
+            if (e.getCodigo() == 1) {
+                mview.showError(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                mview.showError(e.getDescripcion());
+            }
         }
     }
 }
+

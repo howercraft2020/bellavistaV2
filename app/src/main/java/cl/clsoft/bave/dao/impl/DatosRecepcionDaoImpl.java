@@ -8,7 +8,7 @@ import cl.clsoft.bave.model.DatosRecepcion;
 
 public class DatosRecepcionDaoImpl extends GenericDao<DatosRecepcion> implements IDatosRecepcionDao {
     @Override
-    public DatosRecepcion get(String segment1, String oc, Long receiptNum) throws DaoException {
-        return super.selectOne(DatosRecepcionCatalogo.SELECT, new DatosRecepcionRowMapper(), segment1,oc,receiptNum);
+    public DatosRecepcion get(String segment1, String oc, Long receiptNum, Long poLineNum) throws DaoException {
+        return super.selectOne(DatosRecepcionCatalogo.SELECT, new DatosRecepcionRowMapper(), segment1,oc,receiptNum, poLineNum);
     }
 }

@@ -60,7 +60,7 @@ public class RcvTransactionsInterfaceRowMapper implements RowMapper<RcvTransacti
         entity.setReceiptSourceCode(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_RECEIPT_SOURCE_CODE)));
         entity.setValidationFlag(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_VALIDATION_FLAG)));
         entity.setOrgId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_ORG_ID)));
-        entity.setPrimaryQuantity(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_PRIMARY_QUANTITY)));
+        entity.setPrimaryQuantity(cursor.getDouble(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_PRIMARY_QUANTITY)));
         entity.setHeaderInterfaceId(cursor.getLong(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_HEADER_INTERFACE_ID)));
         entity.setVendorSiteCode(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_VENDOR_SITE_CODE)));
         entity.setComments(cursor.getString(cursor.getColumnIndex(RcvTransactionsInterfaceCatalogo.COLUMN_COMMENTS)));

@@ -27,10 +27,10 @@ public class  DatosRecepcionRowMapper implements RowMapper<DatosRecepcion> {
         entity.setRateDate(cursor.getString(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_RATE_DATE)));
         entity.setPoDistributionId(cursor.getLong(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_PO_DISTRIBUTION_ID)));
         entity.setVendorSiteCode(cursor.getString(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_VENDOR_SITE_CODE)));
-        entity.setQuantity(cursor.getLong(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_QUANTITY)));
-        entity.setQuantityReceived(cursor.getLong(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_QUANTITY_RECEIVED)));
-        entity.setQuantityCancelled(cursor.getLong(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_QUANTITY_CANCELLED)));
-        entity.setQtyRcvTolerance(cursor.getLong(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_QTY_RCV_TOLERANCE)));
+        entity.setQuantity(cursor.getDouble(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_QUANTITY)));
+        entity.setQuantityReceived(cursor.getDouble(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_QUANTITY_RECEIVED)));
+        entity.setQuantityCancelled(cursor.getDouble(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_QUANTITY_CANCELLED)));
+        entity.setQtyRcvTolerance(cursor.getDouble(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_QTY_RCV_TOLERANCE)));
 
         return entity;
 

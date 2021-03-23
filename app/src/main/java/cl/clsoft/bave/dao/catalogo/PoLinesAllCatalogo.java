@@ -26,4 +26,20 @@ public class PoLinesAllCatalogo {
                     CAMPO_BASE_UOM+" TEXT " +
             " ) ";
 
+    public static final String DELETE = CAMPO_PO_HEADER_ID + " = ?";
+
+    public static final String SELECT_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + CAMPO_PO_LINE_ID + " = ?";
+
+    public static String SELECT_LINES = "SELECT pla.* FROM po_lines_all pla, mtl_system_items msi " +
+                                        "WHERE pla.item_id = msi.inventory_item_id " +
+                                        "AND msi.inventory_item_id = ? "+
+                                        "AND pla.po_header_id = ?";
+
+    public static String SELECT_VALIDA_LINEA = "SELECT pla.* FROM po_lines_all pla, mtl_system_items msi " +
+            "WHERE pla.item_id = msi.inventory_item_id " +
+            "AND msi.inventory_item_id = ? "+
+            "AND pla.po_header_id = ? "+
+            "AND pla.line_num = ?";
+
+
 }

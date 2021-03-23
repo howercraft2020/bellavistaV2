@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
@@ -202,6 +203,20 @@ public class ActivitySeriesTransOrg extends BaseActivity<SeriesTransOrgPresenter
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    public void fillSerie(List<MtlOnhandQuantities> series) {
+        if (series != null) {
+            if (series.size() > 0){
+                String[] seriesArray = new String[series.size()];
+                for (int i = 0; i <series.size();i++){
+                    seriesArray[i] = series.get(i).getSerialNumber();
+                }
+                ArrayAdapter<String> adapterSeries = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, seriesArray);
+                this.textSerie.setAdapter(adapterSeries);
+                this.textSerie.setText("");
+            }
+        }
     }
 
     @Override

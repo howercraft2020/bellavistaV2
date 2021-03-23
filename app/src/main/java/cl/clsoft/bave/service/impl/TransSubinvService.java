@@ -19,6 +19,7 @@ import cl.clsoft.bave.dao.IMtlSerialNumbersInterfaceDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.IMtlTransactionLotsInterfaceDao;
 import cl.clsoft.bave.dao.IMtlTransactionsInterfaceDao;
+import cl.clsoft.bave.dao.IOrganizacionPrincipalDao;
 import cl.clsoft.bave.dao.IRcvTransactionsInterfaceDao;
 import cl.clsoft.bave.dao.ISubinventarioDao;
 import cl.clsoft.bave.dao.impl.DatosTransSubinvDetalleImpl;
@@ -30,6 +31,7 @@ import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionInterfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionLotsIfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionLotsIfaceDaoImpl;
+import cl.clsoft.bave.dao.impl.OrganizacionPrincipalDaoImpl;
 import cl.clsoft.bave.dao.impl.RcvTransactionsInterfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
 import cl.clsoft.bave.dto.MtlTransactionDetalleDto;
@@ -43,6 +45,7 @@ import cl.clsoft.bave.model.MtlSerialNumbersInterface;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.MtlTransactionsInterface;
 import cl.clsoft.bave.model.MtlTransactionsLotsIface;
+import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.RcvTransactionsInterface;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.service.ITransSubinvService;
@@ -119,6 +122,7 @@ public class TransSubinvService implements ITransSubinvService {
         ISubinventarioDao subinventarioDao = new SubinventarioDaoImpl();
         ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
         IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
+        IOrganizacionPrincipalDao organizacionPrincipalDao = new OrganizacionPrincipalDaoImpl();
 
         Long inventoryItemId;
         Long existe = 0L;
@@ -230,6 +234,9 @@ public class TransSubinvService implements ITransSubinvService {
                     throw new ServiceException(1, "Faltan series");
                 }
 
+                //Datos organizacion Principal
+                OrganizacionPrincipal organizacionPrincipal = organizacionPrincipalDao.get();
+
                 //Datos localizador
                 //locatorId = localizadorDao.get(localizador);
                 //transferLocatorId = localizadorDao.get(localizadorHasta);
@@ -253,9 +260,9 @@ public class TransSubinvService implements ITransSubinvService {
                 mtlTransactionsInterface.setTransactionSourceTypeId(13L);
                 mtlTransactionsInterface.setTransactionActionId(2L);
                 mtlTransactionsInterface.setTransactionTypeId(2L);
-                mtlTransactionsInterface.setTransactionReference("Q_01"+fechaId);
+                mtlTransactionsInterface.setTransactionReference(organizacionPrincipal.getCode()+fechaId);
                 mtlTransactionsInterface.setTransferSubinventory(subinventarioDestino.getCodSubinventario());
-                mtlTransactionsInterface.setTransferOrganization(288L);
+                mtlTransactionsInterface.setTransferOrganization(organizacionPrincipal.getIdOrganizacion());
                 mtlTransactionsInterface.setTransferLocator(localizadorDestino.getIdLocalizador());
                 mtlTransactionsInterface.setSourceCode("PDA TRANSF SUBINV");
                 mtlTransactionsInterface.setSourceLineId(1L);

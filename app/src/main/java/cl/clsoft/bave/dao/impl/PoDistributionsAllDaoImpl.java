@@ -2,9 +2,12 @@ package cl.clsoft.bave.dao.impl;
 
 import android.content.ContentValues;
 
+import java.util.List;
+
 import cl.clsoft.bave.dao.IPoDistributionsAllDao;
 import cl.clsoft.bave.dao.catalogo.PoDistributionsAllCatalogo;
 import cl.clsoft.bave.dao.catalogo.PoHeadersAllCatalogo;
+import cl.clsoft.bave.dao.rowmapper.PoDistributionsAllRowMapper;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.PoDistributionsAll;
 
@@ -28,5 +31,15 @@ public class PoDistributionsAllDaoImpl extends GenericDao<PoDistributionsAll> im
         values.put(PoDistributionsAllCatalogo.COLUMN_QUANTITY_CANCELLED, poDistributionsAll.getQuantityCancelled());
         super.insert(PoDistributionsAllCatalogo.TABLE, values);
 
+    }
+
+    @Override
+    public PoDistributionsAll getById(Long poDistributionId) throws DaoException {
+        return super.selectOne(PoDistributionsAllCatalogo.SELECT_BY_ID, new PoDistributionsAllRowMapper(), poDistributionId);
+    }
+
+    @Override
+    public void delete(Long poHeaderId) throws DaoException {
+        super.delete(PoDistributionsAllCatalogo.TABLE, PoDistributionsAllCatalogo.DELETE, poHeaderId);
     }
 }

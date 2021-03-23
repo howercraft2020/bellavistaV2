@@ -42,4 +42,14 @@ public class PoHeadersAllDaoImpl extends GenericDao<PoHeadersAll> implements IPo
     public List<PoHeadersAll> getAll() throws DaoException {
         return super.selectMany(PoHeadersAllCatalogo.SELECT_ALL, new PoHeadersAllRowMapper());
     }
+
+    @Override
+    public PoHeadersAll getbyId(Long poHeaderId) throws DaoException {
+        return super.selectOne(PoHeadersAllCatalogo.SELECT_BY_ID, new PoHeadersAllRowMapper(), poHeaderId);
+    }
+
+    @Override
+    public void delete(Long poHeaderId) throws DaoException {
+        super.delete(PoHeadersAllCatalogo.TABLE, PoHeadersAllCatalogo.DELETE, poHeaderId);
+    }
 }

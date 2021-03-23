@@ -49,7 +49,7 @@ public class RcvTransactionsInterface {
     private String receiptSourceCode;
     private String validationFlag;
     private Long orgId;
-    private Long primaryQuantity;
+    private Double primaryQuantity;
     private Long headerInterfaceId;
     private String vendorSiteCode;
     private String comments;
@@ -433,11 +433,11 @@ public class RcvTransactionsInterface {
         this.orgId = orgId;
     }
 
-    public Long getPrimaryQuantity() {
+    public Double getPrimaryQuantity() {
         return primaryQuantity;
     }
 
-    public void setPrimaryQuantity(Long primaryQuantity) {
+    public void setPrimaryQuantity(Double primaryQuantity) {
         this.primaryQuantity = primaryQuantity;
     }
 

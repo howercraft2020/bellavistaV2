@@ -50,6 +50,7 @@ public class ActivityTransOrg extends BaseActivity<TransOrgPresenter> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_trans_org);
 
         //Bind Controls

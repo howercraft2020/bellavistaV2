@@ -18,6 +18,7 @@ import cl.clsoft.bave.dao.IMtlPhysicalInventoryTagsDao;
 import cl.clsoft.bave.dao.IMtlPhysicalSubinventoriesDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.IOrganizacionDao;
+import cl.clsoft.bave.dao.IOrganizacionPrincipalDao;
 import cl.clsoft.bave.dao.IPoDistributionsAllDao;
 import cl.clsoft.bave.dao.IPoHeadersAllDao;
 import cl.clsoft.bave.dao.IPoLineLocationsAllDao;
@@ -34,6 +35,7 @@ import cl.clsoft.bave.dao.impl.MtlPhysicalInventoryTagsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlPhysicalSubinventoriesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.OrganizacionDaoImpl;
+import cl.clsoft.bave.dao.impl.OrganizacionPrincipalDaoImpl;
 import cl.clsoft.bave.dao.impl.PoDistributionsAllDaoImpl;
 import cl.clsoft.bave.dao.impl.PoHeadersAllDaoImpl;
 import cl.clsoft.bave.dao.impl.PoLineLocationsAllDaoImpl;
@@ -52,6 +54,7 @@ import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 import cl.clsoft.bave.model.MtlPhysicalSubinventories;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.Organizacion;
+import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.PoDistributionsAll;
 import cl.clsoft.bave.model.PoHeadersAll;
 import cl.clsoft.bave.model.PoLineLocationsAll;
@@ -72,6 +75,7 @@ public class BaveServiceImpl implements IBaveService {
         ISubinventarioDao subinventarioDao = new SubinventarioDaoImpl();
         ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
         IOrganizacionDao organizacionDao = new OrganizacionDaoImpl();
+        IOrganizacionPrincipalDao organizacionPrincipalDao = new OrganizacionPrincipalDaoImpl();
 
         FileInputStream fis = null;
         try {
@@ -82,7 +86,15 @@ public class BaveServiceImpl implements IBaveService {
             linea = leerArchivo.readLine();
             while(linea != null){
                 String [] extraccion = linea.split("\\|",-1);
-                if (extraccion[0].equals("2")) {
+                if (extraccion[0].equals("1")){
+                    OrganizacionPrincipal organizacionPrincipal = new OrganizacionPrincipal();
+                    organizacionPrincipal.setNombre(extraccion[1]);
+                    organizacionPrincipal.setNombreCorto(extraccion[2]);
+                    organizacionPrincipal.setCode(extraccion[3]);
+                    organizacionPrincipal.setIdOrganizacion(extraccion[4].equalsIgnoreCase("") ? null : new Long(extraccion[4]));
+                    organizacionPrincipalDao.insert(organizacionPrincipal);
+                }
+                else if (extraccion[0].equals("2")) {
                     Subinventario subinventario = new Subinventario();
                     subinventario.setOrganizationId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
                     subinventario.setCodSubinventario(extraccion[2]);
@@ -362,79 +374,156 @@ public class BaveServiceImpl implements IBaveService {
             while(linea != null){
                 String [] extraccion = linea.split("\\|", -1);
                 if (extraccion[0].equals("CAB")) {
-                    PoHeadersAll poHeadersAll = new PoHeadersAll();
-                    poHeadersAll.setCreatedBy(extraccion[4].equalsIgnoreCase("") ? null : new Long(extraccion[4]));
-                    poHeadersAll.setCreationDate(extraccion[5]);
-                    poHeadersAll.setVendorName(extraccion[6]);
-                    poHeadersAll.setVendorId(extraccion[7].equalsIgnoreCase("") ? null : new Long(extraccion[7]));
-                    poHeadersAll.setVendorSiteId(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
-                    poHeadersAll.setVendorSiteCode(extraccion[9]);
-                    poHeadersAll.setPoHeaderId(extraccion[10].equalsIgnoreCase("") ? null : new Long(extraccion[10]));
-                    poHeadersAll.setSegment1(extraccion[11]);
-                    poHeadersAll.setOrgId(extraccion[12].equalsIgnoreCase("") ? null : new Long(extraccion[12]));
-                    poHeadersAll.setApprovedDate(extraccion[13]);
-                    poHeadersAll.setOperatingUnit(extraccion[14]);
-                    poHeadersAll.setTermsId(extraccion[15].equalsIgnoreCase("") ? null : new Long(extraccion[15]));
-                    poHeadersAll.setCurrencyCode(extraccion[16]);
-                    poHeadersAll.setRateType(extraccion[17]);
-                    poHeadersAll.setRateDate(extraccion[18]);
-                    poHeadersAll.setRate(extraccion[19].equalsIgnoreCase("") ? null : new Long(extraccion[19]));
-                    poHeadersAll.setUserId(extraccion[20].equalsIgnoreCase("") ? null : new Long(extraccion[20]));
-                    poHeadersAll.setReceiptNum(extraccion[21].equalsIgnoreCase("") ? null : new Long(extraccion[21]));
-                    poHeadersAllDao.insert(poHeadersAll);
-
+                    PoHeadersAll poHeadersAll = poHeadersAllDao.getbyId(Long.valueOf(extraccion[10]));
+                    if (poHeadersAll == null) {
+                        poHeadersAll = new PoHeadersAll();
+                        if (extraccion.length >= 2)
+                        poHeadersAll.setCreatedBy(extraccion[4].equalsIgnoreCase("") ? null : new Long(extraccion[4]));
+                        if (extraccion.length >= 3)
+                        poHeadersAll.setCreationDate(extraccion[5]);
+                        if (extraccion.length >= 4)
+                        poHeadersAll.setVendorName(extraccion[6]);
+                        if (extraccion.length >= 5)
+                        poHeadersAll.setVendorId(extraccion[7].equalsIgnoreCase("") ? null : new Long(extraccion[7]));
+                        if (extraccion.length >= 6)
+                        poHeadersAll.setVendorSiteId(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
+                        if (extraccion.length >= 7)
+                        poHeadersAll.setVendorSiteCode(extraccion[9]);
+                        if (extraccion.length >= 8)
+                        poHeadersAll.setPoHeaderId(extraccion[10].equalsIgnoreCase("") ? null : new Long(extraccion[10]));
+                        if (extraccion.length >= 9)
+                        poHeadersAll.setSegment1(extraccion[11]);
+                        if (extraccion.length >= 10)
+                        poHeadersAll.setOrgId(extraccion[12].equalsIgnoreCase("") ? null : new Long(extraccion[12]));
+                        if (extraccion.length >= 11)
+                        poHeadersAll.setApprovedDate(extraccion[13]);
+                        if (extraccion.length >= 12)
+                        poHeadersAll.setOperatingUnit(extraccion[14]);
+                        if (extraccion.length >= 13)
+                        poHeadersAll.setTermsId(extraccion[15].equalsIgnoreCase("") ? null : new Long(extraccion[15]));
+                        if (extraccion.length >= 14)
+                        poHeadersAll.setCurrencyCode(extraccion[16]);
+                        if (extraccion.length >= 15)
+                        poHeadersAll.setRateType(extraccion[17]);
+                        if (extraccion.length >= 16)
+                        poHeadersAll.setRateDate(extraccion[18]);
+                        if (extraccion.length >= 17)
+                        poHeadersAll.setRate(extraccion[19].equalsIgnoreCase("") ? null : new Long(extraccion[19]));
+                        if (extraccion.length >= 18)
+                        poHeadersAll.setUserId(extraccion[20].equalsIgnoreCase("") ? null : new Long(extraccion[20]));
+                        if (extraccion.length >= 19)
+                        poHeadersAll.setReceiptNum(extraccion[21].equalsIgnoreCase("") ? null : new Long(extraccion[21]));
+                        poHeadersAllDao.insert(poHeadersAll);
+                    }
                 } else if (extraccion[0].equals("LIN")) {
-                    PoLinesAll poLinesAll = new PoLinesAll();
-                    poLinesAll.setPoLineId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
-                    poLinesAll.setPoHeaderId(extraccion[3].equalsIgnoreCase("") ? null : new Long(extraccion[3]));
-                    poLinesAll.setLineNum(extraccion[4]);
-                    poLinesAll.setItemId(extraccion[5].equalsIgnoreCase("") ? null : new Long(extraccion[5]));
-                    poLinesAll.setItemDescripcion(extraccion[6]);
-                    poLinesAll.setUnitPrice(extraccion[7].equalsIgnoreCase("") ? null : new Long(extraccion[7]));
-                    poLinesAll.setQuantity(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
-                    poLinesAll.setUnitMeasLookupCode(extraccion[9]);
-                    poLinesAll.setBaseUom(extraccion[10]);
-                    poLinesAllDao.insert(poLinesAll);
+                    PoLinesAll poLinesAll = poLinesAllDao.getById(Long.valueOf(extraccion[2]));
+                    if (poLinesAll == null) {
+                        poLinesAll = new PoLinesAll();
+                        if (extraccion.length >= 2)
+                        poLinesAll.setPoLineId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
+                        if (extraccion.length >= 3)
+                        poLinesAll.setPoHeaderId(extraccion[3].equalsIgnoreCase("") ? null : new Long(extraccion[3]));
+                        if (extraccion.length >= 4)
+                        poLinesAll.setLineNum(extraccion[4]);
+                        if (extraccion.length >= 5)
+                        poLinesAll.setItemId(extraccion[5].equalsIgnoreCase("") ? null : new Long(extraccion[5]));
+                        if (extraccion.length >= 6)
+                        poLinesAll.setItemDescripcion(extraccion[6]);
+                        if (extraccion.length >= 7)
+                        poLinesAll.setUnitPrice(extraccion[7].equalsIgnoreCase("") ? null : new Long(extraccion[7]));
+                        if (extraccion.length >= 8)
+                        poLinesAll.setQuantity(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
+                        if (extraccion.length >= 9)
+                        poLinesAll.setUnitMeasLookupCode(extraccion[9]);
+                        if (extraccion.length >= 10)
+                        poLinesAll.setBaseUom(extraccion[10]);
+                        poLinesAllDao.insert(poLinesAll);
+                    }
                 } else if (extraccion[0].equals("ENV")) {
-                    PoLineLocationsAll poLineLocationsAll = new PoLineLocationsAll();
-                    poLineLocationsAll.setLineLocationId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
-                    poLineLocationsAll.setPoLineId(extraccion[3].equalsIgnoreCase("") ? null : new Long(extraccion[3]));
-                    poLineLocationsAll.setPoHeaderId(extraccion[4].equalsIgnoreCase("") ? null : new Long(extraccion[4]));
-                    poLineLocationsAll.setQuantity(extraccion[5].equalsIgnoreCase("") ? null : new Long(extraccion[5]));
-                    poLineLocationsAll.setQuantityRecived(extraccion[6].equalsIgnoreCase("") ? null : new Long(extraccion[6]));
-                    poLineLocationsAll.setQuantityCancelled(extraccion[7].equalsIgnoreCase("") ? null : new Long(extraccion[7]));
-                    poLineLocationsAll.setQuantityBilled(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
-                    poLineLocationsAll.setShipmentNum(extraccion[9].equalsIgnoreCase("") ? null : new Long(extraccion[9]));
-                    poLineLocationsAll.setShipToLocationId(extraccion[10].equalsIgnoreCase("") ? null : new Long(extraccion[10]));
-                    poLineLocationsAll.setQtyRcvTolerance(extraccion[11].equalsIgnoreCase("") ? null : new Long(extraccion[11]));
-                    poLineLocationsAll.setOrgId(extraccion[12].equalsIgnoreCase("") ? null : new Long(extraccion[12]));
-                    poLineLocationsAllDao.insert(poLineLocationsAll);
+                    PoLineLocationsAll poLineLocationsAll = poLineLocationsAllDao.getById(Long.valueOf(extraccion[2]));
+                    if (poLineLocationsAll == null){
+                        poLineLocationsAll = new PoLineLocationsAll();
+                        if (extraccion.length >= 2)
+                        poLineLocationsAll.setLineLocationId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
+                        if (extraccion.length >= 3)
+                        poLineLocationsAll.setPoLineId(extraccion[3].equalsIgnoreCase("") ? null : new Long(extraccion[3]));
+                        if (extraccion.length >= 4)
+                        poLineLocationsAll.setPoHeaderId(extraccion[4].equalsIgnoreCase("") ? null : new Long(extraccion[4]));
+                        if (extraccion.length >= 5)
+                        poLineLocationsAll.setQuantity(extraccion[5].equalsIgnoreCase("") ? null : new Long(extraccion[5]));
+                        if (extraccion.length >= 6)
+                        poLineLocationsAll.setQuantityRecived(extraccion[6].equalsIgnoreCase("") ? null : new Long(extraccion[6]));
+                        if (extraccion.length >= 7)
+                        poLineLocationsAll.setQuantityCancelled(extraccion[7].equalsIgnoreCase("") ? null : new Long(extraccion[7]));
+                        if (extraccion.length >= 8)
+                        poLineLocationsAll.setQuantityBilled(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
+                        if (extraccion.length >= 9)
+                        poLineLocationsAll.setShipmentNum(extraccion[9].equalsIgnoreCase("") ? null : new Long(extraccion[9]));
+                        if (extraccion.length >= 10)
+                        poLineLocationsAll.setShipToLocationId(extraccion[10].equalsIgnoreCase("") ? null : new Long(extraccion[10]));
+                        if (extraccion.length >= 11)
+                        poLineLocationsAll.setQtyRcvTolerance(extraccion[11].equalsIgnoreCase("") ? null : new Long(extraccion[11]));
+                        if (extraccion.length >= 12)
+                        poLineLocationsAll.setOrgId(extraccion[12].equalsIgnoreCase("") ? null : new Long(extraccion[12]));
+                        poLineLocationsAllDao.insert(poLineLocationsAll);
+                    }
                 } else if (extraccion[0].equals("DIS")) {
-                    PoDistributionsAll poDistributionsAll = new PoDistributionsAll();
-                    poDistributionsAll.setPoDistributionId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
-                    poDistributionsAll.setLineLocationId(extraccion[3].equalsIgnoreCase("") ? null : new Long(extraccion[3]));
-                    poDistributionsAll.setPoLineId(extraccion[4].equalsIgnoreCase("") ? null : new Long(extraccion[4]));
-                    poDistributionsAll.setPoHeaderId(extraccion[5].equalsIgnoreCase("") ? null : new Long(extraccion[5]));
-                    poDistributionsAll.setDistributionNum(extraccion[6].equalsIgnoreCase("") ? null : new Long(extraccion[6]));
-                    poDistributionsAll.setRateDate(extraccion[7]);
-                    poDistributionsAll.setRate(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
-                    poDistributionsAll.setDestinationSubinventory(extraccion[9]);
-                    poDistributionsAll.setDeliverToLocationId(extraccion[10].equalsIgnoreCase("") ? null : new Long(extraccion[10]));
-                    poDistributionsAll.setQuantityOrdered(extraccion[11].equalsIgnoreCase("") ? null : new Long(extraccion[11]));
-                    poDistributionsAll.setQuantityBilled(extraccion[13].equalsIgnoreCase("") ? null : new Long(extraccion[13]));
-                    poDistributionsAll.setQuantityCancelled(extraccion[14].equalsIgnoreCase("") ? null : new Long(extraccion[14]));
-                    poDistributionsAllDao.insert(poDistributionsAll);
+                    PoDistributionsAll poDistributionsAll = poDistributionsAllDao.getById(Long.valueOf(extraccion[2]));
+                    if (poDistributionsAll == null) {
+                        poDistributionsAll = new PoDistributionsAll();
+                        if (extraccion.length >= 2)
+                        poDistributionsAll.setPoDistributionId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
+                        if (extraccion.length >= 3)
+                        poDistributionsAll.setLineLocationId(extraccion[3].equalsIgnoreCase("") ? null : new Long(extraccion[3]));
+                        if (extraccion.length >= 4)
+                        poDistributionsAll.setPoLineId(extraccion[4].equalsIgnoreCase("") ? null : new Long(extraccion[4]));
+                        if (extraccion.length >= 5)
+                        poDistributionsAll.setPoHeaderId(extraccion[5].equalsIgnoreCase("") ? null : new Long(extraccion[5]));
+                        if (extraccion.length >= 6)
+                        poDistributionsAll.setDistributionNum(extraccion[6].equalsIgnoreCase("") ? null : new Long(extraccion[6]));
+                        if (extraccion.length >= 7)
+                        poDistributionsAll.setRateDate(extraccion[7]);
+                        if (extraccion.length >= 8)
+                        poDistributionsAll.setRate(extraccion[8].equalsIgnoreCase("") ? null : new Long(extraccion[8]));
+                        if (extraccion.length >= 9)
+                        poDistributionsAll.setDestinationSubinventory(extraccion[9]);
+                        if (extraccion.length >= 10)
+                        poDistributionsAll.setDeliverToLocationId(extraccion[10].equalsIgnoreCase("") ? null : new Long(extraccion[10]));
+                        if (extraccion.length >= 11)
+                        poDistributionsAll.setQuantityOrdered(extraccion[11].equalsIgnoreCase("") ? null : new Long(extraccion[11]));
+                        if (extraccion.length >= 12)
+                        poDistributionsAll.setQuantityBilled(extraccion[13].equalsIgnoreCase("") ? null : new Long(extraccion[13]));
+                        if (extraccion.length >= 13)
+                        poDistributionsAll.setQuantityCancelled(extraccion[14].equalsIgnoreCase("") ? null : new Long(extraccion[14]));
+                        poDistributionsAllDao.insert(poDistributionsAll);
+                    }
                 } else if (extraccion[0].equals("ITM")) {
-                    MtlSystemItems mtlSystemItems = new MtlSystemItems();
+                    boolean existe = true;
+                    MtlSystemItems mtlSystemItems = mtlSystemItemsDao.get(Long.valueOf(extraccion[2]));
+                    if (mtlSystemItems == null) {
+                        mtlSystemItems = new MtlSystemItems();
+                        existe = false;
+                    }
                     mtlSystemItems.setInventoryItemId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
+                    if (extraccion.length >= 4)
                     mtlSystemItems.setDescription(extraccion[3]);
+                    if (extraccion.length >= 5)
                     mtlSystemItems.setLongDescription(extraccion[4]);
+                    if (extraccion.length >= 6)
                     mtlSystemItems.setSegment1(extraccion[5]);
+                    if (extraccion.length >= 7)
                     mtlSystemItems.setPrimaryUomCode(extraccion[6]);
+                    if (extraccion.length >= 8)
                     mtlSystemItems.setLotControlCode(extraccion[7]);
+                    if (extraccion.length >= 9)
                     mtlSystemItems.setShelfLifeCode(extraccion[8]);
+                    if (extraccion.length >= 10)
                     mtlSystemItems.setSerialNumberControlCode(extraccion[9]);
-                    mtlSystemItemsDao.insert(mtlSystemItems);
+                    if (existe) {
+                        mtlSystemItemsDao.update(mtlSystemItems);
+                    } else {
+                        mtlSystemItemsDao.insert(mtlSystemItems);
+                    }
                 }
                 linea = leerArchivo.readLine();
             }

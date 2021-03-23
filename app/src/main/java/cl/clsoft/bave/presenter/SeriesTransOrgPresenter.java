@@ -24,7 +24,7 @@ public class SeriesTransOrgPresenter extends BasePresenter {
         List<MtlOnhandQuantities> mtlOnhandQuantities;
         try{
             mtlOnhandQuantities = this.mService.getSeries(sigle, lote,subinventario, localizador);
-            //mView.fillSerie(mtlOnhandQuantities);
+            mView.fillSerie(mtlOnhandQuantities);
         }catch (ServiceException e) {
             e.printStackTrace();
         }

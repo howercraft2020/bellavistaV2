@@ -19,6 +19,7 @@ import cl.clsoft.bave.dao.catalogo.MtlSystemItemsCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlTransactionsInterfaceCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlTransactionsLotsIfaceCatalogo;
 import cl.clsoft.bave.dao.catalogo.OrganizacionCatalogo;
+import cl.clsoft.bave.dao.catalogo.OrganizacionPrincipalCatalogo;
 import cl.clsoft.bave.dao.catalogo.PoDistributionsAllCatalogo;
 import cl.clsoft.bave.dao.catalogo.PoHeadersAllCatalogo;
 import cl.clsoft.bave.dao.catalogo.PoLineLocationsAllCatalogo;
@@ -28,6 +29,7 @@ import cl.clsoft.bave.dao.catalogo.RcvShipmentHeadersCatalogo;
 import cl.clsoft.bave.dao.catalogo.RcvTransactionsCatalogo;
 import cl.clsoft.bave.dao.catalogo.RcvTransactionsInterfaceCatalogo;
 import cl.clsoft.bave.dao.catalogo.SubinventarioCatalogo;
+import cl.clsoft.bave.model.OrganizacionPrincipal;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -71,6 +73,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(MtlPhysicalInventoryTagsCatalogo.CREATE_TABLE);
         db.execSQL(MtlTransactionsInterfaceCatalogo.CREATE_TABLE);
         db.execSQL(MtlSerialNumbersInterfaceCatalogo.CREATE_TABLE);
+        db.execSQL(OrganizacionPrincipalCatalogo.CREATE_TABLE);
 
     }
 

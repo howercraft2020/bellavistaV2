@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -13,24 +14,43 @@ import java.util.Locale;
 
 import cl.clsoft.bave.dao.IDatosCabeceraRecepcionDao;
 import cl.clsoft.bave.dao.IDatosRecepcionDao;
+import cl.clsoft.bave.dao.IMtlCycleCountEntriesDao;
+import cl.clsoft.bave.dao.IMtlSystemItemsDao;
+import cl.clsoft.bave.dao.IOrganizacionPrincipalDao;
+import cl.clsoft.bave.dao.IPoDistributionsAllDao;
 import cl.clsoft.bave.dao.IPoHeadersAllDao;
+import cl.clsoft.bave.dao.IPoLineLocationsAllDao;
+import cl.clsoft.bave.dao.IPoLinesAllDao;
 import cl.clsoft.bave.dao.IRcvHeadersInterfaceDao;
 import cl.clsoft.bave.dao.IRcvTransactionsInterfaceDao;
 import cl.clsoft.bave.dao.impl.DatosCabeceraRecepcionImpl;
 import cl.clsoft.bave.dao.impl.DatosRecepcionDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlCycleCountEntriesDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
+import cl.clsoft.bave.dao.impl.OrganizacionPrincipalDaoImpl;
+import cl.clsoft.bave.dao.impl.PoDistributionsAllDaoImpl;
 import cl.clsoft.bave.dao.impl.PoHeadersAllDaoImpl;
+import cl.clsoft.bave.dao.impl.PoLineLocationsAllDaoImpl;
+import cl.clsoft.bave.dao.impl.PoLinesAllDaoImpl;
 import cl.clsoft.bave.dao.impl.RcvHeadersInterfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.RcvTransactionsInterfaceDaoImpl;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.DatosCabeceraRecepcion;
 import cl.clsoft.bave.model.DatosRecepcion;
+import cl.clsoft.bave.model.MtlCycleCountEntries;
+import cl.clsoft.bave.model.MtlSystemItems;
+import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.PoHeadersAll;
+import cl.clsoft.bave.model.PoLineLocationsAll;
+import cl.clsoft.bave.model.PoLinesAll;
 import cl.clsoft.bave.model.RcvHeadersInterface;
 import cl.clsoft.bave.model.RcvTransactionsInterface;
 import cl.clsoft.bave.service.IRecepcionOcService;
 
 public class RecepcionOcService implements IRecepcionOcService {
+
+    private static final String TAG = "RecepcionOcService";
 
     @Override
     public List<PoHeadersAll> getAllRecepcionesOc() throws ServiceException {
@@ -55,20 +75,27 @@ public class RecepcionOcService implements IRecepcionOcService {
     }
 
     @Override
-    public void cargaRecepcion(String segment1, Long poHeaderId, String oc, Long receiptNum, Long cantidad) throws ServiceException {
+    public void cargaRecepcion(String segment1, Long poHeaderId, String oc, Long receiptNum, Double cantidad, Long poLineNum) throws ServiceException {
         IRcvTransactionsInterfaceDao ircvTransactionsInterfaceDao = new RcvTransactionsInterfaceDaoImpl();
         IDatosRecepcionDao iDatosRecepcionDao = new DatosRecepcionDaoImpl();
         IDatosCabeceraRecepcionDao iDatosCabeceraRecepcionDao = new DatosCabeceraRecepcionImpl();
         IRcvHeadersInterfaceDao iRcvHeadersInterfaceDao = new RcvHeadersInterfaceDaoImpl();
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+        IPoLinesAllDao poLinesAllDao = new PoLinesAllDaoImpl();
+        IOrganizacionPrincipalDao organizacionPrincipalDao = new OrganizacionPrincipalDaoImpl();
 
+        Long inventoryItemId;
+        Long poLineId;
+        String udm;
         DatosRecepcion datosRecepcion;
         DatosCabeceraRecepcion datosCabeceraRecepcion;
-        Long quantity = 0L;
-        Long quantityReceived = 0L;
-        Long quantityCancelled = 0L;
-        Long qtyRcvTolerance = 0L;
-        Long qtyPending = 0L;
+        Double quantity = 0.0;
+        Double quantityReceived = 0.0;
+        Double quantityCancelled = 0.0;
+        Double qtyRcvTolerance = 0.0;
+        Double qtyPending = 0.0;
         Long headerInterfaceId = 0L;
+        Long groupId = 0L;
 
         String fecha = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
@@ -76,11 +103,12 @@ public class RecepcionOcService implements IRecepcionOcService {
 
             //Cabecera
             headerInterfaceId = Long.parseLong(poHeaderId + receiptNum.toString());
+            groupId = Long.parseLong(receiptNum.toString() + poHeaderId);
             RcvHeadersInterface rcvHeadersInterface = new RcvHeadersInterface();
             RcvTransactionsInterface rcvTransactionsInterface = new RcvTransactionsInterface();
 
             //Datos Recepcion
-            datosRecepcion = iDatosRecepcionDao.get(segment1, oc, receiptNum);
+            datosRecepcion = iDatosRecepcionDao.get(segment1, oc, receiptNum, poLineNum);
             if (datosRecepcion == null){
                 throw new ServiceException(1,"No existe información para articulo :"+segment1);
             }
@@ -89,6 +117,26 @@ public class RecepcionOcService implements IRecepcionOcService {
             if (rcvTransactionsInterface != null){
                 throw new ServiceException(1,"El articulo : "+segment1+ " ya ha sido ingresado anteriormente");
             }
+
+            //Validación de Articulo
+            MtlSystemItems sigle = mtlSystemItemsDao.getBySegment(segment1);
+            inventoryItemId = sigle.getInventoryItemId();
+            udm = sigle.getPrimaryUomCode();
+
+            if (inventoryItemId == null){
+                throw new ServiceException(1,"No se encuentra información para el articulo : " + segment1);
+            }
+
+            //Validacion Linea
+            PoLinesAll linea = poLinesAllDao.getLinea(inventoryItemId,poHeaderId,poLineNum);
+            poLineId = linea.getPoLineId();
+            if (linea == null){
+                throw new ServiceException(1,"Linea ingresada para articulo : " + segment1 + " no es valida.");
+            }
+
+            //Datos organizacion Principal
+            OrganizacionPrincipal organizacionPrincipal = organizacionPrincipalDao.get();
+
 
             rcvHeadersInterface = iRcvHeadersInterfaceDao.get(headerInterfaceId);
             if(rcvHeadersInterface == null){
@@ -99,32 +147,32 @@ public class RecepcionOcService implements IRecepcionOcService {
                 }
                 else
                 {
-                    RcvHeadersInterface rcvHeadersInterface1 = new RcvHeadersInterface();
-                    rcvHeadersInterface1.setHeaderInterfaceId(headerInterfaceId);
-                    rcvHeadersInterface1.setReciptSourceCode("PDA");
-                    rcvHeadersInterface1.setTransactionType("VENDOR");
-                    rcvHeadersInterface1.setLastUpdateDate(fecha);
-                    rcvHeadersInterface1.setLastUpdateBy(datosCabeceraRecepcion.getUserId());
-                    rcvHeadersInterface1.setCreatedBy(datosCabeceraRecepcion.getUserId());
-                    rcvHeadersInterface1.setReciptNum(datosCabeceraRecepcion.getReceiptNum());
-                    rcvHeadersInterface1.setVendorId(datosCabeceraRecepcion.getVendorId());
-                    rcvHeadersInterface1.setVendorSiteCode(datosCabeceraRecepcion.getVendorSiteCode());
-                    rcvHeadersInterface1.setVendorSiteId(datosCabeceraRecepcion.getVendorSiteId());
-                    rcvHeadersInterface1.setShipToOrganizationCode("Q01");
-                    rcvHeadersInterface1.setLocationId(248L);
-                    rcvHeadersInterface1.setReceiverId(datosCabeceraRecepcion.getUserId());
-                    rcvHeadersInterface1.setCurrencyCode(datosCabeceraRecepcion.getCurrencyCode());
-                    rcvHeadersInterface1.setConversionRateType(datosCabeceraRecepcion.getRateType());
-                    rcvHeadersInterface1.setConversionRate(datosCabeceraRecepcion.getRate());
-                    rcvHeadersInterface1.setConversionRateDate(datosCabeceraRecepcion.getRateDate());
-                    rcvHeadersInterface1.setPaymentTermsId(datosCabeceraRecepcion.getTermsId());
-                    rcvHeadersInterface1.setTransactionDate(fecha);
-                    rcvHeadersInterface1.setComments("");
-                    rcvHeadersInterface1.setOrgId(288L);
-                    rcvHeadersInterface1.setProcessingStatusCode("PENDING");
-                    rcvHeadersInterface1.setValidationFlag("Y");
-                    rcvHeadersInterface1.setGroupId(555555L);
-                    iRcvHeadersInterfaceDao.insert(rcvHeadersInterface1);
+                    rcvHeadersInterface = new RcvHeadersInterface();
+                    rcvHeadersInterface.setHeaderInterfaceId(headerInterfaceId);
+                    rcvHeadersInterface.setReciptSourceCode("PDA");
+                    rcvHeadersInterface.setTransactionType("VENDOR");
+                    rcvHeadersInterface.setLastUpdateDate(fecha);
+                    rcvHeadersInterface.setLastUpdateBy(datosCabeceraRecepcion.getUserId());
+                    rcvHeadersInterface.setCreatedBy(datosCabeceraRecepcion.getUserId());
+                    rcvHeadersInterface.setReciptNum(datosCabeceraRecepcion.getReceiptNum());
+                    rcvHeadersInterface.setVendorId(datosCabeceraRecepcion.getVendorId());
+                    rcvHeadersInterface.setVendorSiteCode(datosCabeceraRecepcion.getVendorSiteCode());
+                    rcvHeadersInterface.setVendorSiteId(datosCabeceraRecepcion.getVendorSiteId());
+                    rcvHeadersInterface.setShipToOrganizationCode(organizacionPrincipal.getCode());
+                    rcvHeadersInterface.setLocationId(248L);
+                    rcvHeadersInterface.setReceiverId(datosCabeceraRecepcion.getUserId());
+                    rcvHeadersInterface.setCurrencyCode(datosCabeceraRecepcion.getCurrencyCode());
+                    rcvHeadersInterface.setConversionRateType(datosCabeceraRecepcion.getRateType());
+                    rcvHeadersInterface.setConversionRate(datosCabeceraRecepcion.getRate());
+                    rcvHeadersInterface.setConversionRateDate(datosCabeceraRecepcion.getRateDate());
+                    rcvHeadersInterface.setPaymentTermsId(datosCabeceraRecepcion.getTermsId());
+                    rcvHeadersInterface.setTransactionDate(fecha);
+                    rcvHeadersInterface.setComments("");
+                    rcvHeadersInterface.setOrgId(organizacionPrincipal.getIdOrganizacion());
+                    rcvHeadersInterface.setProcessingStatusCode("PENDING");
+                    rcvHeadersInterface.setValidationFlag("Y");
+                    rcvHeadersInterface.setGroupId(groupId);
+                    iRcvHeadersInterfaceDao.insert(rcvHeadersInterface);
 
                 }
 
@@ -138,54 +186,54 @@ public class RecepcionOcService implements IRecepcionOcService {
             qtyRcvTolerance = datosRecepcion.getQtyRcvTolerance();
             qtyPending = (quantity-quantityReceived-quantityCancelled) * (1 + qtyRcvTolerance/100);
 
-            if (cantidad >= qtyPending){
+            if (cantidad > qtyPending){
                 throw new ServiceException(1,"Cantidad no puede ser mayor a : "+qtyPending);
             }
 
-            RcvTransactionsInterface rcvTransactionsInterface1 = new RcvTransactionsInterface();
-            rcvTransactionsInterface1.setInterfaceTransactionId(datosRecepcion.getPoLineId());
-            rcvTransactionsInterface1.setLastUpdatedDate(fecha);
-            rcvTransactionsInterface1.setCreationDate(fecha);
-            rcvTransactionsInterface1.setTransactionType("RECEIVE");
-            rcvTransactionsInterface1.setTransactionDate(fecha);
-            //rcvTransactionsInterface1.setQuantity(cantidad);
-            rcvTransactionsInterface1.setUomCode(datosRecepcion.getUnitMeasLookupCode());
-            rcvTransactionsInterface1.setItemId(datosRecepcion.getItemId());
-            rcvTransactionsInterface1.setItemDescription(datosRecepcion.getItemDescription());
-            rcvTransactionsInterface1.setUomCode(datosRecepcion.getUomCode());
-            rcvTransactionsInterface1.setShipToLocationId(248L);
-            rcvTransactionsInterface1.setPrimaryQuantity(cantidad);
-            rcvTransactionsInterface1.setReceiptSourceCode("VENDOR");
-            rcvTransactionsInterface1.setVendorId(datosRecepcion.getVendorId());
-            rcvTransactionsInterface1.setVendorSiteId(datosRecepcion.getVendorSiteId());
-            rcvTransactionsInterface1.setToOrganizationId(288L);
-            rcvTransactionsInterface1.setPoHeaderId(datosRecepcion.getPoHeaderId());
-            rcvTransactionsInterface1.setPoLineId(datosRecepcion.getPoLineId());
-            rcvTransactionsInterface1.setPoLineLocation(datosRecepcion.getLineLocationId());
-            rcvTransactionsInterface1.setPoUnitPrice(datosRecepcion.getUnitPrice());
-            rcvTransactionsInterface1.setCurrencyCode(datosRecepcion.getCurrencyCode());
-            rcvTransactionsInterface1.setSourceDocumentCode("PO");
-            rcvTransactionsInterface1.setCurrencyConversionType(datosRecepcion.getRateType());
-            rcvTransactionsInterface1.setCurrencyConversionRate(datosRecepcion.getRate());
-            rcvTransactionsInterface1.setCurrencyConversionDate(datosRecepcion.getRateDate());
-            rcvTransactionsInterface1.setPoDistributionId(datosRecepcion.getPoDistributionId());
-            rcvTransactionsInterface1.setDestinationTypeCode("RECEIVING");
-            rcvTransactionsInterface1.setLocationId(248L);
-            rcvTransactionsInterface1.setDeliverToLocationId(248L);
-            rcvTransactionsInterface1.setInspectionStatusCode("NOT INSPECTED");
-            rcvTransactionsInterface1.setHeaderInterfaceId(headerInterfaceId);
-            rcvTransactionsInterface1.setVendorSiteCode(datosRecepcion.getVendorSiteCode());
-            rcvTransactionsInterface1.setProcessingStatusCode("PENDING");
-            rcvTransactionsInterface1.setComments("P/N y S/N ingresado por recepctor en la PDA");
-            rcvTransactionsInterface1.setProcessingStatusCode("BATCH");
-            rcvTransactionsInterface1.setUseMtlLot(0L);
-            rcvTransactionsInterface1.setUseMtlSerial(0L);
-            rcvTransactionsInterface1.setTransactionStatusCode("PENDING");
-            rcvTransactionsInterface1.setValidationFlag("Y");
-            rcvTransactionsInterface1.setOrgId(288L);
-            rcvTransactionsInterface1.setGroupId(33444L);
-            rcvTransactionsInterface1.setAutoTransactCode("RECEIVE");
-            ircvTransactionsInterfaceDao.insert(rcvTransactionsInterface1);
+            rcvTransactionsInterface = new RcvTransactionsInterface();
+            rcvTransactionsInterface.setInterfaceTransactionId(datosRecepcion.getPoLineId());
+            rcvTransactionsInterface.setLastUpdatedDate(fecha);
+            rcvTransactionsInterface.setCreationDate(fecha);
+            rcvTransactionsInterface.setTransactionType("RECEIVE");
+            rcvTransactionsInterface.setTransactionDate(fecha);
+            rcvTransactionsInterface.setQuantity(cantidad);
+            rcvTransactionsInterface.setUomCode(datosRecepcion.getUnitMeasLookupCode());
+            rcvTransactionsInterface.setItemId(datosRecepcion.getItemId());
+            rcvTransactionsInterface.setItemDescription(datosRecepcion.getItemDescription());
+            rcvTransactionsInterface.setUomCode(datosRecepcion.getUomCode());
+            rcvTransactionsInterface.setShipToLocationId(248L);
+            rcvTransactionsInterface.setPrimaryQuantity(cantidad);
+            rcvTransactionsInterface.setReceiptSourceCode("VENDOR");
+            rcvTransactionsInterface.setVendorId(datosRecepcion.getVendorId());
+            rcvTransactionsInterface.setVendorSiteId(datosRecepcion.getVendorSiteId());
+            rcvTransactionsInterface.setToOrganizationId(organizacionPrincipal.getIdOrganizacion());
+            rcvTransactionsInterface.setPoHeaderId(datosRecepcion.getPoHeaderId());
+            rcvTransactionsInterface.setPoLineId(datosRecepcion.getPoLineId());
+            rcvTransactionsInterface.setPoLineLocation(datosRecepcion.getLineLocationId());
+            rcvTransactionsInterface.setPoUnitPrice(datosRecepcion.getUnitPrice());
+            rcvTransactionsInterface.setCurrencyCode(datosRecepcion.getCurrencyCode());
+            rcvTransactionsInterface.setSourceDocumentCode("PO");
+            rcvTransactionsInterface.setCurrencyConversionType(datosRecepcion.getRateType());
+            rcvTransactionsInterface.setCurrencyConversionRate(datosRecepcion.getRate());
+            rcvTransactionsInterface.setCurrencyConversionDate(datosRecepcion.getRateDate());
+            rcvTransactionsInterface.setPoDistributionId(datosRecepcion.getPoDistributionId());
+            rcvTransactionsInterface.setDestinationTypeCode("RECEIVING");
+            rcvTransactionsInterface.setLocationId(248L);
+            rcvTransactionsInterface.setDeliverToLocationId(248L);
+            rcvTransactionsInterface.setInspectionStatusCode("NOT INSPECTED");
+            rcvTransactionsInterface.setHeaderInterfaceId(headerInterfaceId);
+            rcvTransactionsInterface.setVendorSiteCode(datosRecepcion.getVendorSiteCode());
+            rcvTransactionsInterface.setProcessingStatusCode("PENDING");
+            rcvTransactionsInterface.setComments("");
+            rcvTransactionsInterface.setProcessingStatusCode("BATCH");
+            rcvTransactionsInterface.setUseMtlLot(0L);
+            rcvTransactionsInterface.setUseMtlSerial(0L);
+            rcvTransactionsInterface.setTransactionStatusCode("PENDING");
+            rcvTransactionsInterface.setValidationFlag("Y");
+            rcvTransactionsInterface.setOrgId(organizacionPrincipal.getIdOrganizacion());
+            rcvTransactionsInterface.setGroupId(groupId);
+            rcvTransactionsInterface.setAutoTransactCode("RECEIVE");
+            ircvTransactionsInterfaceDao.insert(rcvTransactionsInterface);
 
         }catch (ServiceException e){
             throw e;
@@ -197,10 +245,14 @@ public class RecepcionOcService implements IRecepcionOcService {
     }
 
     @Override
-    public void crearArchivo(Long interfaceheaderId, String numeroOc, Long receiptNum) throws ServiceException {
+    public void crearArchivo(Long interfaceheaderId, String numeroOc, Long receiptNum, Long poHeaderId, String comentario, Long groupId) throws ServiceException {
      String nomenclatura = "";
-     IRcvHeadersInterfaceDao iRcvHeadersInterfaceDao = new RcvHeadersInterfaceDaoImpl();
-     IRcvTransactionsInterfaceDao iRcvTransactionsInterfaceDao = new RcvTransactionsInterfaceDaoImpl();
+     IRcvHeadersInterfaceDao rcvHeadersInterfaceDao = new RcvHeadersInterfaceDaoImpl();
+     IRcvTransactionsInterfaceDao rcvTransactionsInterfaceDao = new RcvTransactionsInterfaceDaoImpl();
+     IPoHeadersAllDao poHeadersAllDao = new PoHeadersAllDaoImpl();
+     IPoLinesAllDao poLinesAllDao = new PoLinesAllDaoImpl();
+     IPoLineLocationsAllDao poLineLocationsAllDao = new PoLineLocationsAllDaoImpl();
+     IPoDistributionsAllDao poDistributionsAllDao = new PoDistributionsAllDaoImpl();
 
 
         nomenclatura = "I_1_"+numeroOc+"_"+receiptNum+".csv";
@@ -213,14 +265,14 @@ public class RecepcionOcService implements IRecepcionOcService {
             //Cabecera
             RcvHeadersInterface rcvHeadersInterface = new RcvHeadersInterface();
             List<RcvTransactionsInterface> rcvTransactionsInterface;
-            rcvHeadersInterface = iRcvHeadersInterfaceDao.get(interfaceheaderId);
-            rcvTransactionsInterface = iRcvTransactionsInterfaceDao.getArticulos(interfaceheaderId);
+            rcvHeadersInterface = rcvHeadersInterfaceDao.get(interfaceheaderId);
+            rcvTransactionsInterface = rcvTransactionsInterfaceDao.getArticulos(interfaceheaderId);
 
             if(rcvHeadersInterface == null){
                 throw new ServiceException(1,"No se encuentran datos cargados para esta recepcion");
             }
 
-            if(rcvTransactionsInterface == null){
+            if(rcvTransactionsInterface.size() == 0){
                 throw new ServiceException(1,"La recepción no tiene lineas agregadas");
             }
 
@@ -228,46 +280,98 @@ public class RecepcionOcService implements IRecepcionOcService {
             writer.write("RECIBO;FIN" +"\r\n");
 
 
-            writer.write("1;"+rcvHeadersInterface.getHeaderInterfaceId()+";"+rcvHeadersInterface.getReciptSourceCode() +
-                              ";"+rcvHeadersInterface.getTransactionType()+";"+rcvHeadersInterface.getLastUpdateDate() +
-                              ";"+rcvHeadersInterface.getLastUpdateBy()+";"+rcvHeadersInterface.getCreatedBy() +
-                              ";"+rcvHeadersInterface.getReciptNum()+";"+rcvHeadersInterface.getVendorId() +
-                              ";"+rcvHeadersInterface.getVendorSiteCode()+";"+rcvHeadersInterface.getVendorSiteId() +
-                              ";"+rcvHeadersInterface.getShipToOrganizationCode()+";"+rcvHeadersInterface.getLocationId() +
-                              ";"+rcvHeadersInterface.getReceiverId()+";"+rcvHeadersInterface.getCurrencyCode() +
-                              ";"+rcvHeadersInterface.getConversionRateType()+";"+rcvHeadersInterface.getConversionRate() +
-                              ";"+rcvHeadersInterface.getConversionRateDate()+";"+rcvHeadersInterface.getPaymentTermsId() +
-                              ";"+rcvHeadersInterface.getTransactionDate()+";"+rcvHeadersInterface.getComments() +
-                              ";"+rcvHeadersInterface.getOrgId()+";"+rcvHeadersInterface.getProcessingStatusCode() +
-                              ":"+rcvHeadersInterface.getValidationFlag()+";"+rcvHeadersInterface.getGroupId()+";FIN"+"\r\n");
+            writer.write("1;"
+                        + (rcvHeadersInterface.getHeaderInterfaceId() == null ? "null" : rcvHeadersInterface.getHeaderInterfaceId()) + ";"
+                        + (rcvHeadersInterface.getReciptSourceCode() == null ? "null" : (rcvHeadersInterface.getReciptSourceCode().isEmpty() ? "null" : rcvHeadersInterface.getReciptSourceCode())) + ";"
+                        + (rcvHeadersInterface.getTransactionType() == null ? "null" : (rcvHeadersInterface.getTransactionType().isEmpty() ? "null" : rcvHeadersInterface.getTransactionType())) + ";"
+                        + (rcvHeadersInterface.getLastUpdateDate() == null ? "null" : (rcvHeadersInterface.getLastUpdateDate().isEmpty() ? "null" : rcvHeadersInterface.getLastUpdateDate())) + ";"
+                        + (rcvHeadersInterface.getLastUpdateBy() == null ? "null" : rcvHeadersInterface.getLastUpdateBy()) + ";"
+                        + (rcvHeadersInterface.getCreatedBy() == null ? "null" : rcvHeadersInterface.getCreatedBy()) + ";"
+                        + (rcvHeadersInterface.getReciptNum() == null ? "null" : rcvHeadersInterface.getReciptNum()) + ";"
+                        + (rcvHeadersInterface.getVendorId() == null ? "null" : rcvHeadersInterface.getVendorId()) + ";"
+                        + (rcvHeadersInterface.getVendorSiteCode() == null ? "null" : (rcvHeadersInterface.getVendorSiteCode().isEmpty() ? "null" : rcvHeadersInterface.getVendorSiteCode())) + ";"
+                        + (rcvHeadersInterface.getVendorSiteId() == null ? "null" : rcvHeadersInterface.getVendorSiteId()) + ";"
+                        + (rcvHeadersInterface.getShipToOrganizationCode() == null ? "null" : (rcvHeadersInterface.getShipToOrganizationCode().isEmpty() ? "null" : rcvHeadersInterface.getShipToOrganizationCode())) + ";"
+                        + (rcvHeadersInterface.getLocationId() == null ? "null" : rcvHeadersInterface.getLocationId()) + ";"
+                        + (rcvHeadersInterface.getReceiverId() == null ? "null" : rcvHeadersInterface.getReceiverId()) + ";"
+                        + (rcvHeadersInterface.getCurrencyCode() == null ? "null" : (rcvHeadersInterface.getCurrencyCode().isEmpty() ? "null" : rcvHeadersInterface.getCurrencyCode())) + ";"
+                        + (rcvHeadersInterface.getConversionRateType() == null ? "null" : (rcvHeadersInterface.getConversionRateType().isEmpty() ? "null" : rcvHeadersInterface.getConversionRateType())) + ";"
+                        + (rcvHeadersInterface.getConversionRate() == null ? "null" : rcvHeadersInterface.getConversionRate()) + ";"
+                        + (rcvHeadersInterface.getConversionRateDate() == null ? "null" : (rcvHeadersInterface.getConversionRateDate().isEmpty() ? "null" : rcvHeadersInterface.getConversionRateDate())) + ";"
+                        + (rcvHeadersInterface.getPaymentTermsId() == null ? "null" : rcvHeadersInterface.getPaymentTermsId()) + ";"
+                        + (rcvHeadersInterface.getTransactionDate() == null ? "null" : (rcvHeadersInterface.getTransactionDate().isEmpty() ? "null" : rcvHeadersInterface.getTransactionDate())) + ";"
+                        + (comentario == null ? "null" : (comentario.isEmpty() ? "null" : comentario)) + ";"
+                        + (rcvHeadersInterface.getOrgId() == null ? "null" : rcvHeadersInterface.getOrgId()) + ";"
+                        + (rcvHeadersInterface.getProcessingStatusCode() == null ? "null" : (rcvHeadersInterface.getProcessingStatusCode().isEmpty() ? "null" : rcvHeadersInterface.getProcessingStatusCode())) + ";"
+                        + (rcvHeadersInterface.getValidationFlag() == null ? "null" : (rcvHeadersInterface.getValidationFlag().isEmpty() ? "null" : rcvHeadersInterface.getValidationFlag())) + ";"
+                        + (groupId == null ? "null" : groupId) + ";"
+                        + (numeroOc == null ? "null" : (numeroOc.isEmpty() ? "null" : numeroOc)) + ";"
+                        + "FIN\r\n");
+
 
             for(int i = 0; i <rcvTransactionsInterface.size(); i++)
             {
-                writer.write("2;"+rcvTransactionsInterface.get(i).getHeaderInterfaceId()+";"+rcvTransactionsInterface.get(i).getLastUpdatedDate() +
-                                  ";"+rcvTransactionsInterface.get(i).getLastUpdatedBy()+";"+rcvTransactionsInterface.get(i).getCreatedBy() +
-                                  ";"+rcvTransactionsInterface.get(i).getTransactionType()+";"+rcvTransactionsInterface.get(i).getTransactionDate() +
-                                  ";"+rcvTransactionsInterface.get(i).getQuantity()+";"+rcvTransactionsInterface.get(i).getUnitOfMeasure() +
-                                  ";"+rcvTransactionsInterface.get(i).getItemId()+";"+rcvTransactionsInterface.get(i).getItemDescription() +
-                                  ";"+rcvTransactionsInterface.get(i).getUomCode()+";"+rcvTransactionsInterface.get(i).getShipToLocationId() +
-                                  ";"+rcvTransactionsInterface.get(i).getPrimaryQuantity()+";"+rcvTransactionsInterface.get(i).getReceiptSourceCode() +
-                                  ";"+rcvTransactionsInterface.get(i).getVendorId()+";"+rcvTransactionsInterface.get(i).getVendorSiteId() +
-                                  ";"+rcvTransactionsInterface.get(i).getToOrganizationId()+";"+rcvTransactionsInterface.get(i).getPoHeaderId() +
-                                  ";"+rcvTransactionsInterface.get(i).getPoLineId()+";"+rcvTransactionsInterface.get(i).getPoLineLocation() +
-                                  ";"+rcvTransactionsInterface.get(i).getPoUnitPrice()+";"+rcvTransactionsInterface.get(i).getCurrencyCode() +
-                                  ";"+rcvTransactionsInterface.get(i).getSourceDocumentCode()+";"+rcvTransactionsInterface.get(i).getCurrencyConversionType() +
-                                  ";"+rcvTransactionsInterface.get(i).getCurrencyConversionRate()+";"+rcvTransactionsInterface.get(i).getCurrencyConversionDate() +
-                                  ";"+rcvTransactionsInterface.get(i).getPoDistributionId()+";"+rcvTransactionsInterface.get(i).getDestinationTypeCode() +
-                                  ";"+rcvTransactionsInterface.get(i).getLocationId()+";"+rcvTransactionsInterface.get(i).getDeliverToLocationId() +
-                                  ";"+rcvTransactionsInterface.get(i).getInspectionStatusCode()+";"+rcvTransactionsInterface.get(i).getHeaderInterfaceId() +
-                                  ";"+rcvTransactionsInterface.get(i).getVendorSiteCode()+";"+rcvTransactionsInterface.get(i).getProcessingStatusCode() +
-                                  ";"+rcvTransactionsInterface.get(i).getUseMtlLot()+";"+rcvTransactionsInterface.get(i).getUseMtlSerial() +
-                                  ";"+rcvTransactionsInterface.get(i).getTransactionStatusCode()+";"+rcvTransactionsInterface.get(i).getValidationFlag() +
-                                  ";"+rcvTransactionsInterface.get(i).getOrgId()+";"+rcvTransactionsInterface.get(i).getGroupId() +
-                                  ";"+rcvTransactionsInterface.get(i).getAutoTransactCode()+";FIN"+"\r\n");
+                writer.write("2;"
+                        + (rcvTransactionsInterface.get(i).getInterfaceTransactionId() == null ? "null" : rcvTransactionsInterface.get(i).getInterfaceTransactionId()) + ";"
+                        + (rcvTransactionsInterface.get(i).getLastUpdatedDate() == null ? "null" : (rcvTransactionsInterface.get(i).getLastUpdatedDate().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getLastUpdatedDate())) + ";"
+                        + (rcvTransactionsInterface.get(i).getLastUpdatedBy() == null ? "null" : rcvTransactionsInterface.get(i).getLastUpdatedBy()) + ";"
+                        + (rcvTransactionsInterface.get(i).getCreationDate() == null ? "null" : (rcvTransactionsInterface.get(i).getCreationDate().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getCreationDate())) + ";"
+                        + (rcvTransactionsInterface.get(i).getCreatedBy() == null ? "null" : rcvTransactionsInterface.get(i).getCreatedBy()) + ";"
+                        + (rcvTransactionsInterface.get(i).getTransactionType() == null ? "null" : (rcvTransactionsInterface.get(i).getTransactionType().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getTransactionType())) + ";"
+                        + (rcvTransactionsInterface.get(i).getTransactionDate() == null ? "null" : (rcvTransactionsInterface.get(i).getTransactionDate().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getTransactionDate())) + ";"
+                        + (rcvTransactionsInterface.get(i).getQuantity() == null ? "null" : rcvTransactionsInterface.get(i).getQuantity()) + ";"
+                        + (rcvTransactionsInterface.get(i).getUnitOfMeasure() == null ? "null" : (rcvTransactionsInterface.get(i).getUnitOfMeasure().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getUnitOfMeasure())) + ";"
+                        + (rcvTransactionsInterface.get(i).getItemId() == null ? "null" : rcvTransactionsInterface.get(i).getItemId()) + ";"
+                        + (rcvTransactionsInterface.get(i).getItemDescription() == null ? "null" : (rcvTransactionsInterface.get(i).getItemDescription().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getItemDescription())) + ";"
+                        + (rcvTransactionsInterface.get(i).getUomCode() == null ? "null" : (rcvTransactionsInterface.get(i).getUomCode().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getUomCode())) + ";"
+                        + (rcvTransactionsInterface.get(i).getShipToLocationId() == null ? "null" : rcvTransactionsInterface.get(i).getShipToLocationId()) + ";"
+                        + (rcvTransactionsInterface.get(i).getPrimaryQuantity() == null ? "null" : rcvTransactionsInterface.get(i).getPrimaryQuantity()) + ";"
+                        + (rcvTransactionsInterface.get(i).getReceiptSourceCode() == null ? "null" : (rcvTransactionsInterface.get(i).getReceiptSourceCode().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getReceiptSourceCode())) + ";"
+                        + (rcvTransactionsInterface.get(i).getVendorId() == null ? "null" : rcvTransactionsInterface.get(i).getVendorId()) + ";"
+                        + (rcvTransactionsInterface.get(i).getVendorSiteId() == null ? "null" : rcvTransactionsInterface.get(i).getVendorSiteId()) + ";"
+                        + (rcvTransactionsInterface.get(i).getToOrganizationId() == null ? "null" : rcvTransactionsInterface.get(i).getToOrganizationId()) + ";"
+                        + (rcvTransactionsInterface.get(i).getPoHeaderId() == null ? "null" : rcvTransactionsInterface.get(i).getPoHeaderId()) + ";"
+                        + (rcvTransactionsInterface.get(i).getPoLineId() == null ? "null" : rcvTransactionsInterface.get(i).getPoLineId()) + ";"
+                        + (rcvTransactionsInterface.get(i).getPoLineLocation() == null ? "null" : rcvTransactionsInterface.get(i).getPoLineLocation()) + ";"
+                        + (rcvTransactionsInterface.get(i).getPoUnitPrice() == null ? "null" : rcvTransactionsInterface.get(i).getPoUnitPrice()) + ";"
+                        + (rcvTransactionsInterface.get(i).getCurrencyCode() == null ? "null" : (rcvTransactionsInterface.get(i).getCurrencyCode().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getCurrencyCode())) + ";"
+                        + (rcvTransactionsInterface.get(i).getSourceDocumentCode() == null ? "null" : (rcvTransactionsInterface.get(i).getSourceDocumentCode().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getSourceDocumentCode())) + ";"
+                        + (rcvTransactionsInterface.get(i).getCurrencyConversionType() == null ? "null" : (rcvTransactionsInterface.get(i).getCurrencyConversionType().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getCurrencyConversionType())) + ";"
+                        + (rcvTransactionsInterface.get(i).getCurrencyConversionRate() == null ? "null" : rcvTransactionsInterface.get(i).getCurrencyConversionRate()) + ";"
+                        + (rcvTransactionsInterface.get(i).getCurrencyConversionDate() == null ? "null" : (rcvTransactionsInterface.get(i).getCurrencyConversionDate().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getCurrencyConversionDate())) + ";"
+                        + (rcvTransactionsInterface.get(i).getPoDistributionId() == null ? "null" : rcvTransactionsInterface.get(i).getPoDistributionId()) + ";"
+                        + (rcvTransactionsInterface.get(i).getDestinationTypeCode() == null ? "null" : (rcvTransactionsInterface.get(i).getDestinationTypeCode().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getDestinationTypeCode())) + ";"
+                        + (rcvTransactionsInterface.get(i).getLocationId() == null ? "null" : rcvTransactionsInterface.get(i).getLocationId()) + ";"
+                        + (rcvTransactionsInterface.get(i).getDeliverToLocationId() == null ? "null" : rcvTransactionsInterface.get(i).getDeliverToLocationId()) + ";"
+                        + (rcvTransactionsInterface.get(i).getInspectionStatusCode() == null ? "null" : (rcvTransactionsInterface.get(i).getInspectionStatusCode().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getInspectionStatusCode())) + ";"
+                        + (rcvTransactionsInterface.get(i).getHeaderInterfaceId() == null ? "null" : rcvTransactionsInterface.get(i).getHeaderInterfaceId()) + ";"
+                        + (rcvTransactionsInterface.get(i).getVendorSiteCode() == null ? "null" : (rcvTransactionsInterface.get(i).getVendorSiteCode().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getVendorSiteCode())) + ";"
+                        + (rcvTransactionsInterface.get(i).getProcessingStatusCode() == null ? "null" : (rcvTransactionsInterface.get(i).getProcessingStatusCode().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getProcessingStatusCode())) + ";"
+                        + (rcvTransactionsInterface.get(i).getComments() == null ? "null" : (rcvTransactionsInterface.get(i).getComments().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getComments())) + ";"
+                        + (rcvTransactionsInterface.get(i).getProcessingModeCode() == null ? "null" : (rcvTransactionsInterface.get(i).getProcessingModeCode().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getProcessingModeCode())) + ";"
+                        + (rcvTransactionsInterface.get(i).getUseMtlLot() == null ? "null" : rcvTransactionsInterface.get(i).getUseMtlLot()) + ";"
+                        + (rcvTransactionsInterface.get(i).getUseMtlSerial() == null ? "null" : rcvTransactionsInterface.get(i).getUseMtlSerial()) + ";"
+                        + (rcvTransactionsInterface.get(i).getTransactionStatusCode() == null ? "null" : (rcvTransactionsInterface.get(i).getTransactionStatusCode().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getTransactionStatusCode())) + ";"
+                        + (rcvTransactionsInterface.get(i).getValidationFlag() == null ? "null" : (rcvTransactionsInterface.get(i).getValidationFlag().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getValidationFlag())) + ";"
+                        + (rcvTransactionsInterface.get(i).getOrgId() == null ? "null" : rcvTransactionsInterface.get(i).getOrgId()) + ";"
+                        + (groupId == null ? "null" : groupId) + ";"
+                        + (rcvTransactionsInterface.get(i).getAutoTransactCode() == null ? "null" : (rcvTransactionsInterface.get(i).getAutoTransactCode().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getAutoTransactCode())) + ";"
+                        + "FIN\r\n");
             }
 
             writer.flush();
             writer.close();
+
+            // Elimina datos de la BD
+            for (RcvTransactionsInterface trx : rcvTransactionsInterface) {
+                rcvHeadersInterfaceDao.delete(trx.getHeaderInterfaceId());
+                rcvTransactionsInterfaceDao.deletebyHeaderInterface(trx.getHeaderInterfaceId());
+            }
+
+            poHeadersAllDao.delete(poHeaderId);
+            poLinesAllDao.delete(poHeaderId);
+            poLineLocationsAllDao.delete(poHeaderId);
+            poDistributionsAllDao.delete(poHeaderId);
 
         }catch (ServiceException e){
             throw e;
@@ -275,6 +379,89 @@ public class RecepcionOcService implements IRecepcionOcService {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public MtlSystemItems getMtlSystemItemsBySegment(String segment) throws ServiceException {
+        Log.d(TAG, "RecepcionOcService::getMtlSystemItemsBySegment");
+
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+        try {
+            return mtlSystemItemsDao.getBySegment(segment);
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<MtlSystemItems> getArticulosByOcReceipt(Long poHeaderId, Long receiptNum) throws ServiceException {
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+        try{
+            return mtlSystemItemsDao.getAllByOcReceipt(poHeaderId, receiptNum);
+        }catch (Exception e){
+
+        }
+        return null;
+    }
+
+    @Override
+    public void updateEntry(Long entryId, Double cantidad, Long lineLocationId) throws ServiceException {
+        Log.d(TAG, "RecepcionOcService::updateEntry");
+        Log.d(TAG, "RecepcionOcService::updateEntry::entryId: " + entryId);
+        Log.d(TAG, "RecepcionOcService::updateEntry::cantidad: " + cantidad);
+
+        Double quantity = 0.0;
+        Double quantityReceived = 0.0;
+        Double quantityCancelled = 0.0;
+        Double qtyRcvTolerance = 0.0;
+        Double qtyPending = 0.0;
+
+
+        IRcvTransactionsInterfaceDao rcvTransactionsInterfaceDao = new RcvTransactionsInterfaceDaoImpl();
+        IPoLineLocationsAllDao poLineLocationsAllDao = new PoLineLocationsAllDaoImpl();
+        try {
+
+            RcvTransactionsInterface entry = rcvTransactionsInterfaceDao.getByInterfaceTransactionId(entryId);
+            if (entry == null) {
+                throw new ServiceException(1, "Entry " + entryId + " no existe.");
+            }
+
+            PoLineLocationsAll poLineLocationsAll = poLineLocationsAllDao.getById(lineLocationId);
+            if (poLineLocationsAll == null) {
+                throw new ServiceException(1, "No se encuentra información para esta linea");
+            }
+
+            quantity = poLineLocationsAll.getQuantity().doubleValue();
+            quantityReceived = poLineLocationsAll.getQuantityRecived().doubleValue();
+            quantityCancelled = poLineLocationsAll.getQuantityCancelled().doubleValue();
+            qtyRcvTolerance = poLineLocationsAll.getQtyRcvTolerance().doubleValue();
+            qtyPending = (quantity-quantityReceived-quantityCancelled) * (1 + qtyRcvTolerance/100);
+
+            if (cantidad > qtyPending){
+                throw new ServiceException(1,"Cantidad no puede ser mayor a : "+qtyPending);
+            }
+
+
+            entry.setQuantity(cantidad);
+            entry.setPrimaryQuantity(cantidad);
+            DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
+            String strLastUpdate = dateFormat.format(new Date());
+            entry.setLastUpdatedDate(strLastUpdate.toUpperCase());
+            rcvTransactionsInterfaceDao.update(entry);
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<PoLinesAll> getLines(Long inventoryItemId, Long poHeaderId) throws ServiceException {
+        IPoLinesAllDao poLinesAllDao = new PoLinesAllDaoImpl();
+        try {
+            return poLinesAllDao.getLines(inventoryItemId,poHeaderId);
+        }catch (Exception e){
+
+        }
+        return null;
     }
 
 

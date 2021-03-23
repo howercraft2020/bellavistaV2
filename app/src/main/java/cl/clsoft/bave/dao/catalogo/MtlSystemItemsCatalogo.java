@@ -42,4 +42,12 @@ public class MtlSystemItemsCatalogo {
             " WHERE " +
             "     description || long_description like ? ";
 
+    public static final String SELECT_BY_OC_RECEIPT =
+            "SELECT msi.* FROM PO_HEADERS_ALL pha, " +
+            "PO_LINES_ALL pla, MTL_SYSTEM_ITEMS msi " +
+            "WHERE pha.PO_HEADER_ID = pla.PO_HEADER_ID " +
+            "AND pla.ITEM_ID = msi.INVENTORY_ITEM_ID " +
+            "AND pha.PO_HEADER_ID = ? " +
+            "AND pha.RECEIPT_NUM = ? ";
+
 }

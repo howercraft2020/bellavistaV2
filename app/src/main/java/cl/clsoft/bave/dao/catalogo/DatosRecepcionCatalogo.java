@@ -30,7 +30,7 @@ public class DatosRecepcionCatalogo {
                                         "FROM PO_HEADERS_ALL pha, PO_LINES_ALL pla, PO_LINE_LOCATIONS_ALL pll, MTL_SYSTEM_ITEMS msi, PO_DISTRIBUTIONS_ALL pda "+
                                         "WHERE pla.ITEM_ID = msi.INVENTORY_ITEM_ID AND pha.po_header_id = pla.po_header_id AND pha.po_header_id = pll.po_header_id "+
                                         "AND pla.po_line_id = pll.po_line_id AND pll.line_location_id = pda.line_location_id AND pla.po_line_id = pda.po_line_id "+
-                                        "AND pha.po_header_id = pda.po_header_id AND msi.segment1 = ? AND pha.segment1 = ? AND pha.receipt_num = ?";
+                                        "AND pha.po_header_id = pda.po_header_id AND msi.segment1 = ? AND pha.segment1 = ? AND pha.receipt_num = ? AND pla.line_num = ?";
 
 
 

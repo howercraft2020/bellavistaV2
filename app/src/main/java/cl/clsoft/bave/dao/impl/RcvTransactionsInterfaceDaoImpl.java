@@ -137,6 +137,11 @@ public class RcvTransactionsInterfaceDaoImpl extends GenericDao<RcvTransactionsI
     }
 
     @Override
+    public void deletebyHeaderInterface(Long headerInterfaceId) throws DaoException {
+        super.delete(RcvTransactionsInterfaceCatalogo.TABLE, RcvTransactionsInterfaceCatalogo.DELETE_HEADER_INTERFACE, headerInterfaceId);
+    }
+
+    @Override
     public RcvTransactionsInterface get(Long headerInterfaceId, String codigoSigle) throws DaoException {
         return super.selectOne(RcvTransactionsInterfaceCatalogo.SELECT_EXISTE_LINEA,new RcvTransactionsInterfaceRowMapper(),headerInterfaceId,codigoSigle);
     }

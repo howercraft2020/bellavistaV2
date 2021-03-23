@@ -2,8 +2,11 @@ package cl.clsoft.bave.dao.impl;
 
 import android.content.ContentValues;
 
+import java.util.List;
+
 import cl.clsoft.bave.dao.IPoLineLocationsAllDao;
 import cl.clsoft.bave.dao.catalogo.PoLineLocationsAllCatalogo;
+import cl.clsoft.bave.dao.rowmapper.PoLineLocationsAllRowMapper;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.PoLineLocationsAll;
 
@@ -24,5 +27,15 @@ public class PoLineLocationsAllDaoImpl extends GenericDao<PoLineLocationsAll> im
         values.put(PoLineLocationsAllCatalogo.COLUMN_QTY_RCV_TOLERANCE, poLineLocationsAll.getQtyRcvTolerance());
         values.put(PoLineLocationsAllCatalogo.COLUMN_ORG_ID, poLineLocationsAll.getOrgId());
         super.insert(PoLineLocationsAllCatalogo.TABLE, values);
+    }
+
+    @Override
+    public PoLineLocationsAll getById(Long lineLocationId) throws DaoException {
+        return super.selectOne(PoLineLocationsAllCatalogo.SELECT_BY_ID, new PoLineLocationsAllRowMapper(), lineLocationId);
+    }
+
+    @Override
+    public void delete(Long poHeaderId) throws DaoException {
+        super.delete(PoLineLocationsAllCatalogo.TABLE, PoLineLocationsAllCatalogo.DELETE, poHeaderId);
     }
 }
