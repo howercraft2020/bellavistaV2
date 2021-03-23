@@ -44,6 +44,8 @@ public class MtlMaterialTransactionsDaoImpl extends GenericDao<MtlMaterialTransa
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_ENTREGA_QUANTITY, mtlMaterialTransactions.getEntregaQuantity());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_SUBINVENTORY, mtlMaterialTransactions.getSubinventory());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_LOCATOR_ID, mtlMaterialTransactions.getLocatorId());
+        values.put(MtlMaterialTransactionsCatalogo.COLUMN_USE_MTL_LOT, mtlMaterialTransactions.getUseMtlLot());
+        values.put(MtlMaterialTransactionsCatalogo.COLUMN_USE_MTL_SERIAL, mtlMaterialTransactions.getUseMtlSerial());
         super.insert(MtlMaterialTransactionsCatalogo.TABLE, values);
     }
 
@@ -74,6 +76,8 @@ public class MtlMaterialTransactionsDaoImpl extends GenericDao<MtlMaterialTransa
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_ENTREGA_QUANTITY, mtlMaterialTransactions.getEntregaQuantity());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_SUBINVENTORY, mtlMaterialTransactions.getSubinventory());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_LOCATOR_ID, mtlMaterialTransactions.getLocatorId());
+        values.put(MtlMaterialTransactionsCatalogo.COLUMN_USE_MTL_LOT, mtlMaterialTransactions.getUseMtlLot());
+        values.put(MtlMaterialTransactionsCatalogo.COLUMN_USE_MTL_SERIAL, mtlMaterialTransactions.getUseMtlSerial());
         super.update(MtlMaterialTransactionsCatalogo.TABLE, values, MtlMaterialTransactionsCatalogo.UPDATE, mtlMaterialTransactions.getTransactionId());
     }
 
@@ -83,6 +87,11 @@ public class MtlMaterialTransactionsDaoImpl extends GenericDao<MtlMaterialTransa
         Log.d(TAG, "MtlMaterialTransactionsDaoImpl::delete::transactionId: " + transactionId);
 
         super.delete(MtlMaterialTransactionsCatalogo.TABLE, MtlMaterialTransactionsCatalogo.DELETE, transactionId);
+    }
+
+    @Override
+    public void deleteByShipmentHeaderId(Long shipmentHeaderId) throws DaoException {
+        super.delete(MtlMaterialTransactionsCatalogo.TABLE, MtlMaterialTransactionsCatalogo.DELETE_BY_SHIPMENT_HEADER_ID, shipmentHeaderId);
     }
 
     @Override

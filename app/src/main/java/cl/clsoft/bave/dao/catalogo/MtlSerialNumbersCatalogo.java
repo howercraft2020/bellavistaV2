@@ -12,6 +12,7 @@ public class MtlSerialNumbersCatalogo {
     public static final String COLUMN_LOT_NUMBER = "lot_number";
     public static final String COLUMN_CURRENT_ORGANIZATION_ID = "current_organization_id";
     public static final String COLUMN_SHIPMENT_HEADER_ID = "shipment_header_id";
+    public static final String COLUMN_ENTREGA_CREATION_DATE = "entrega_creation_date";
 
     public static final String CREATE_TABLE =
             " CREATE TABLE " + TABLE + "(" +
@@ -24,10 +25,17 @@ public class MtlSerialNumbersCatalogo {
                     COLUMN_LOT_NUMBER + " TEXT, " +
                     COLUMN_CURRENT_ORGANIZATION_ID + " INTEGER, " +
                     COLUMN_SHIPMENT_HEADER_ID + " INTEGER, " +
+                    COLUMN_ENTREGA_CREATION_DATE + " TEXT, " +
                     " PRIMARY KEY (" + COLUMN_INVENTORY_ITEM_ID + ", " + COLUMN_SERIAL_NUMBER + " )" +
                     ")";
 
     public static final String UPDATE = COLUMN_INVENTORY_ITEM_ID + " = ? AND " + COLUMN_SERIAL_NUMBER  + " = ?" ;
-
+    public static final String DELETE_BY_SHIPMENT_HEADER_ID = COLUMN_SHIPMENT_HEADER_ID + " = ?";
+    public static final String SELECT_BY_SHIPMENT_HEADER_ID =
+                    " SELECT * "
+                    + " FROM "
+                    + "     mtl_serial_numbers "
+                    + " WHERE "
+                    + "     shipment_header_id = ? ";
 
 }

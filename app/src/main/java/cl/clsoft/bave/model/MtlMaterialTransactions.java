@@ -25,6 +25,8 @@ public class MtlMaterialTransactions {
     private Double entregaQuantity;
     private String subinventory;
     private Long locatorId;
+    private Long useMtlLot;
+    private Long UseMtlSerial;
 
     public MtlMaterialTransactions() {}
 
@@ -211,4 +213,21 @@ public class MtlMaterialTransactions {
     public void setLocatorId(Long locatorId) {
         this.locatorId = locatorId;
     }
+
+    public Long getUseMtlLot() {
+        return useMtlLot;
+    }
+
+    public void setUseMtlLot(Long useMtlLot) {
+        this.useMtlLot = useMtlLot;
+    }
+
+    public Long getUseMtlSerial() {
+        return UseMtlSerial;
+    }
+
+    public void setUseMtlSerial(Long useMtlSerial) {
+        UseMtlSerial = useMtlSerial;
+    }
+
 }

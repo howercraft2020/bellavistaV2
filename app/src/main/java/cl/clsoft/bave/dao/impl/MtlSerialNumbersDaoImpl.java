@@ -2,9 +2,12 @@ package cl.clsoft.bave.dao.impl;
 
 import android.content.ContentValues;
 
+import java.util.List;
+
 import cl.clsoft.bave.dao.IMtlSerialNumbersDao;
 import cl.clsoft.bave.dao.catalogo.MtlMaterialTransactionsCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlSerialNumbersCatalogo;
+import cl.clsoft.bave.dao.rowmapper.MtlSerialNumbersRowMapper;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.MtlSerialNumbers;
 
@@ -36,6 +39,16 @@ public class MtlSerialNumbersDaoImpl extends GenericDao<MtlSerialNumbers> implem
         values.put(MtlSerialNumbersCatalogo.COLUMN_CURRENT_ORGANIZATION_ID, mtlSerialNumbers.getCurrentOrganizationId());
         values.put(MtlSerialNumbersCatalogo.COLUMN_SHIPMENT_HEADER_ID, mtlSerialNumbers.getShipmentHeaderId());
         super.update(MtlSerialNumbersCatalogo.TABLE, values, MtlSerialNumbersCatalogo.UPDATE,  mtlSerialNumbers.getInventoryItemId(), mtlSerialNumbers.getSerialNumber());
+    }
+
+    @Override
+    public void deleteBySHipmentHeaderId(Long shipmentHeaderId) throws DaoException {
+        super.delete(MtlSerialNumbersCatalogo.TABLE, MtlSerialNumbersCatalogo.DELETE_BY_SHIPMENT_HEADER_ID, shipmentHeaderId);
+    }
+
+    @Override
+    public List<MtlSerialNumbers> getAllByShipmentHeaderId(Long shipmentHeaderId) throws DaoException {
+        return super.selectMany(MtlSerialNumbersCatalogo.SELECT_BY_SHIPMENT_HEADER_ID, new MtlSerialNumbersRowMapper(), shipmentHeaderId);
     }
 
 }

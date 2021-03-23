@@ -26,6 +26,8 @@ public class MtlMaterialTransactionsCatalogo {
     public static final String COLUMN_ENTREGA_QUANTITY = "entrega_quantity";
     public static final String COLUMN_SUBINVENTORY ="subinventory";
     public static final String COLUMN_LOCATOR_ID ="locator_id";
+    public static final String COLUMN_USE_MTL_LOT = "use_mtl_lot";
+    public static final String COLUMN_USE_MTL_SERIAL = "use_mtl_serial";
 
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE + "(" +
@@ -52,6 +54,8 @@ public class MtlMaterialTransactionsCatalogo {
             COLUMN_ENTREGA_QUANTITY + " REAL, " +
             COLUMN_SUBINVENTORY + " TEXT, " +
             COLUMN_LOCATOR_ID + " INTEGER, " +
+            COLUMN_USE_MTL_LOT + " INTEGER, " +
+            COLUMN_USE_MTL_SERIAL + " INTEGER, " +
             " PRIMARY KEY (" + COLUMN_ID + " )" +
             ")";
 

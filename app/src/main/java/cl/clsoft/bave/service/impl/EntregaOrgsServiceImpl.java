@@ -1,7 +1,11 @@
 package cl.clsoft.bave.service.impl;
 
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,12 +16,14 @@ import java.util.Locale;
 import cl.clsoft.bave.dao.IEntregaOrgsHeaderDao;
 import cl.clsoft.bave.dao.ILocalizadorDao;
 import cl.clsoft.bave.dao.IMtlMaterialTransactionsDao;
+import cl.clsoft.bave.dao.IMtlSerialNumbersDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.IMtlTransactionLotNumbersDao;
 import cl.clsoft.bave.dao.ISubinventarioDao;
 import cl.clsoft.bave.dao.impl.EntregaOrgsHeaderDaoImpl;
 import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlMaterialTransactionsDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlSerialNumbersDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionLotNumbersDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
@@ -28,6 +34,7 @@ import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.EntregaOrgsHeader;
 import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlMaterialTransactions;
+import cl.clsoft.bave.model.MtlSerialNumbers;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.MtlTransactionLotNumbers;
 import cl.clsoft.bave.model.Subinventario;
@@ -233,6 +240,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                     mtlTransactionLotNumbers.setcAttribute1(atributo1);
                     mtlTransactionLotNumbers.setcAttribute2(atributo2);
                     mtlTransactionLotNumbers.setcAttribute3(atributo3);
+                    mtlTransactionLotNumbers.setEntregaCreationDate(sysDate);
                 }
             }
 
@@ -241,6 +249,15 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
             transaction.setSubinventory(subinventoryCode);
             if (localizador != null)
                 transaction.setLocatorId(localizador.getIdLocalizador());
+            if (isControlLote)
+                transaction.setUseMtlLot(1L);
+            else
+                transaction.setUseMtlLot(0L);
+            if (isControlSerie)
+                transaction.setUseMtlSerial(1L);
+            else
+                transaction.setUseMtlSerial(0L);
+
             mtlMaterialTransactionsDao.update(transaction);
             if (isControlLote) {
                 mtlTransactionLotNumbersDao.update(mtlTransactionLotNumbers);
@@ -357,6 +374,176 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
             mtlMaterialTransactionsDao.update(transaction);
         } catch (DaoException e) {
             throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public void closeEntrega(Long shipmentHeaderId) throws ServiceException {
+        Log.d(TAG, "EntregaOrgsServiceImpl::closeEntrega");
+        Log.d(TAG, "EntregaOrgsServiceImpl::closeEntrega::shipmentHeaderId: " + shipmentHeaderId);
+
+        IMtlMaterialTransactionsDao mtlMaterialTransactionsDao = new MtlMaterialTransactionsDaoImpl();
+        IMtlTransactionLotNumbersDao mtlTransactionLotNumbersDao = new MtlTransactionLotNumbersDaoImpl();
+        IMtlSerialNumbersDao mtlSerialNumbersDao = new MtlSerialNumbersDaoImpl();
+        try {
+            // SYSDATE
+            DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
+            String sysDate = dateFormat.format(new Date());
+
+            List <MtlMaterialTransactions> transactions = mtlMaterialTransactionsDao.getAllByShipmentEntrega(shipmentHeaderId);
+            if (transactions.size() > 0) {
+
+                String shipmentNumber = transactions.get(0).getShipmentNumber();
+                Long userId = transactions.get(0).getUserId();
+                String receiptNum = transactions.get(0).getReceipNum();
+                Long organizationId = transactions.get(0).getOrganizationId();
+                Long shipToLocationId = transactions.get(0).getShipToLocationId();
+                String transactionDate = transactions.get(0).getTransactionDate();
+                Long groupId = transactions.get(0).getShipmentLineId();
+
+                // Genera archivo Conteo
+                String nombreArchivo = "I_R_" + shipmentNumber + ".csv";
+                File tarjetaSD = Environment.getExternalStorageDirectory();
+                File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
+                File archivo = new File(Dir, nombreArchivo);
+                FileWriter writer = new FileWriter(archivo);
+                writer.write(
+                        "HDR;"
+                        + shipmentHeaderId.toString() + ";"  // HEADER_INTERFACE_ID
+                        + "PENDING;"                         // PROCESSING_STATUS_CODE
+                        + "INVENTORY;"                       // RECEIPT_SOURCE_CODE
+                        + "NEW;"                             // TRANSACTION_TYPE
+                        + sysDate + ";"                      // LAST_UPDATE_DATE
+                        + userId.toString() + ";"            // LAST_UPDATED_BY
+                        + sysDate + ";"                      // CREATION_DATE
+                        + userId.toString() + ";"            // CREATED_BY
+                        + shipmentNumber + ";"               // SHIPMENT_NUM
+                        + receiptNum + ";"                   // RECEIPT_NUM
+                        + organizationId.toString()          // FROM_ORGANIZATION_ID
+                        + "288;"                             // SHIP_TO_ORGANIZATION_ID
+                        + shipToLocationId.toString() + ";"  // LOCATION_ID
+                        + transactionDate + ";"              // SHIPPED_DATE
+                        + ";"                                // COMMENTS
+                        + sysDate + ";"                      // TRANSACTION_DATE
+                        + "288;"                             // ORG_ID
+                        + groupId.toString() + ";"           // GROUP_ID
+                        + "Y;"                               // VALIDATION_FLAG
+                        + "FIN\r\n"
+                );
+                for (MtlMaterialTransactions transaction : transactions) {
+                    if (transaction.getEntregaCreationDate() != null) {
+                        writer.write(
+                                "TRX;"
+                                        + transaction.getTransactionId(). toString() + ";"     // INTERFACE_TRANSACTION_ID
+                                        + sysDate + ";"                                        // LAST_UPDATE_DATE
+                                        + userId + ";"                                         // LAST_UPDATED_BY
+                                        + sysDate + ";"                                        // CREATION_DATE
+                                        + userId + ";"                                         // CREATED_BY
+                                        + "RECEIVE;"                                           // TRANSACTION_TYPE
+                                        + sysDate + ";"                                        // TRANSACTION_DATE
+                                        + "PENDING;"                                           // PROCESSING_STATUS_CODE
+                                        + "BATCH;"                                             // PROCESSING_MODE_CODE
+                                        + "PENDING;"                                           // TRANSACTION_STATUS_CODE
+                                        + transaction.getEntregaQuantity().toString() + ";"    // QUANTITY
+                                        + transaction.getTransactionUom() + ";"                // UNIT_OF_MEASURE
+                                        + "RCV;"                                               // INTERFACE_SOURCE_CODE
+                                        + "DELIVER;"                                           // AUTO_TRANSACT_CODE
+                                        + "INVENTORY;"                                         // RECEIPT_SOURCE_CODE
+                                        + transaction.getOrganizationId() + ";"                // FROM_ORGANIZATION_ID
+                                        + "CLP;"                                               // CURRENCY_CODE
+                                        + "NOT INSPECTED;"                                     // INSPECTION_STATUS_CODE
+                                        + transaction.getSubinventory() + ";"                  // SUBINVENTORY
+                                        + transaction.getLocatorId() + ";"                     // LOCATOR_ID
+                                        + shipmentNumber + ";"                                 // SHIPMENT_NUM
+                                        + transaction.getActualCost().toString() + ";"         // ACTUAL_COST
+                                        + transaction.getUseMtlLot().toString() + ";"          // USE_MTL_LOT
+                                        + transaction.getUseMtlSerial() + ";"                  // USE_MTL_SERIAL
+                                        + groupId.toString() + ";"                             // GROUP_ID
+                                        + "Y;"                                                 // VALIDATION_FLAG
+                                        + transaction.getInventoryItemId().toString() + ";"    // ITEM_ID
+                                        + transaction.getTransactionUom() + ";"                // UOM_CODE
+                                        + userId.toString() + ";"                              // EMPLOYEE_ID
+                                        + "INVENTORY;"                                         // SOURCE_DOCUMENT_CODE
+                                        + "0;"                                                 // HEADER_INTERFACE_ID
+                                        + shipmentHeaderId.toString() + ";"                    // SHIPMENT_HEADER_ID
+                                        + "0;"                                                 // SHIPMENT_LINE_ID
+                                        + "N;"                                                 // SERIE_RANGO
+                                        + "FIN\r\n"
+                        );
+                    }
+                }
+
+                // Lotes
+                List<MtlTransactionLotNumbers> lotes = mtlTransactionLotNumbersDao.getAllByShipmentHeaderId(shipmentHeaderId);
+                for (MtlTransactionLotNumbers lote : lotes) {
+                    if (lote.getEntregaCreationDate() != null) {
+                        Double cantidadLote = 0D;
+                        for (MtlMaterialTransactions transaction : transactions) {
+                            if (transaction.getTransactionId().longValue() == lote.getTransactionId().longValue()) {
+                                cantidadLote = transaction.getEntregaQuantity();
+                            }
+                        }
+                        writer.write(
+                                "LOT;"
+                                + lote.getTransactionId() + ";"                       // TRANSACTION_INTERFACE_ID
+                                + sysDate + ";"                                       // LAST_UPDATE_DATE
+                                + userId + ";"                                        // LAST_UPDATED_BY
+                                + sysDate + ";"                                       // CREATION_DATE
+                                + "-1;"                                               // LAST_UPDATE_LOGIN
+                                + lote.getLotNumber() + ";"                           // LOT_NUMBER
+                                + cantidadLote + ";"                                  // TRANSACTION_QUANTITY
+                                + cantidadLote + ";"                                  // PRIMARY_QUANTITY
+                                + "NULL;"                                             // SERIAL_TRANSACTION_TEMP_ID
+                                + "RCV;"                                              // PRODUCT_CODE
+                                + lote.getTransactionId() + ";"                       // PRODUCT_TRANSACTION_ID
+                                + ";"                                                 // SUPPLIER_LOT_NUMBER
+                                + ";"                                                 // LOT_EXPIRATION_DATE
+                                + lote.getLotAttributeCategory() + ";"                // ATTRIBUTE_CATEGORY
+                                + lote.getcAttribute1() + ";"                         // ATTRIBUTE1
+                                + lote.getcAttribute2() + ";"                         // ATTRIBUTE2
+                                + lote.getcAttribute3() + ";"                         // ATTRIBUTE3
+                                + "FIN\r\n"
+                        );
+                    }
+                }
+
+                // Series
+                List<MtlSerialNumbers> serials = mtlSerialNumbersDao.getAllByShipmentHeaderId(shipmentHeaderId);
+                for (MtlSerialNumbers serial : serials) {
+                    if (serial.getEntregaCreationDate() != null) {
+                        Long serialTransactionId = 0L;
+                        for (MtlMaterialTransactions transaction : transactions) {
+                            if (transaction.getInventoryItemId().longValue() == serial.getInventoryItemId().longValue()) {
+                                serialTransactionId = transaction.getTransactionId();
+                            }
+                        }
+                        writer.write(
+                                "SER;"
+                                + serialTransactionId + ";"                            // TRANSACTION_INTERFACE_ID
+                                + sysDate + ";"                                        // LAST_UPDATE_DATE
+                                + userId + ";"                                         // LAST_UPDATED_BY
+                                + sysDate + ";"                                        // CREATION_DATE
+                                + userId + ";"                                         // CREATED_BY
+                                + "-1;"                                                // LAST_UPDATE_LOGIN
+                                + serial.getSerialNumber() + ";"                       // FM_SERIAL_NUMBER
+                                + serial.getSerialNumber() + ";"                       // TO_SERIAL_NUMBER
+                                + "RCV;"                                               // PRODUCT_CODE
+                                + serialTransactionId + ";"                            // PRODUCT_TRANSACTION_ID
+                        );
+                    }
+                }
+
+                // Elimina registros
+                mtlSerialNumbersDao.deleteBySHipmentHeaderId(shipmentHeaderId);
+                mtlTransactionLotNumbersDao.deleteByShipmentHeaderId(shipmentHeaderId);
+                mtlMaterialTransactionsDao.deleteByShipmentHeaderId(shipmentHeaderId);
+
+            }
+
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        } catch(IOException e){
+            throw new ServiceException(2, e.getMessage());
         }
     }
 

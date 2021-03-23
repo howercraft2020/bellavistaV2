@@ -10,6 +10,7 @@ public interface IMtlMaterialTransactionsDao {
     void insert(MtlMaterialTransactions mtlMaterialTransactions) throws DaoException;
     void update(MtlMaterialTransactions mtlMaterialTransactions) throws DaoException;
     void delete(Long transactionId) throws DaoException;
+    void deleteByShipmentHeaderId(Long shipmentHeaderId) throws DaoException;
     MtlMaterialTransactions get(Long transactionId) throws DaoException;
     List<MtlMaterialTransactions> getAllByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws DaoException;
     List<MtlMaterialTransactions> getAllByShipmentEntrega(Long shipmentHeaderId) throws DaoException;

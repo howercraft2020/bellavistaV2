@@ -34,6 +34,8 @@ public class MtlMaterialTransactionsRowMapper implements RowMapper<MtlMaterialTr
         entity.setEntregaQuantity(cursor.getDouble(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_ENTREGA_QUANTITY)));
         entity.setSubinventory(cursor.getString(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_SUBINVENTORY)));
         entity.setLocatorId(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_LOCATOR_ID)));
+        entity.setUseMtlLot(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_USE_MTL_LOT)));
+        entity.setUseMtlSerial(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_USE_MTL_SERIAL)));
         return entity;
     }
 }

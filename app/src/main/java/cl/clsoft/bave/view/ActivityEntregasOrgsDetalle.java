@@ -162,4 +162,20 @@ public class ActivityEntregasOrgsDetalle extends BaseActivity<EntregasOrgsDetall
     public void onDialogCancelarClick(DialogFragment dialog) {
 
     }
+
+    public void resultadoOkCerrarEntrega() {
+        dialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+        dialog.setTitleText("Éxito")
+            .setContentText("Cierre exitoso")
+            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sDialog) {
+                    Intent i = new Intent(getApplicationContext(), ActivityEntregasOrgs.class);
+                    startActivity(i);
+                    finish();
+                }
+            })
+            .show();
+    }
+
 }

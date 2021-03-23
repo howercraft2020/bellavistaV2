@@ -12,6 +12,7 @@ public class MtlTransactionLotNumbers {
     private String cAttribute2;
     private String cAttribute3;
     private Long shipmentHeaderId;
+    private String entregaCreationDate;
 
     public MtlTransactionLotNumbers() {}
 
@@ -93,5 +94,13 @@ public class MtlTransactionLotNumbers {
 
     public void setShipmentHeaderId(Long shipmentHeaderId) {
         this.shipmentHeaderId = shipmentHeaderId;
+    }
+
+    public String getEntregaCreationDate() {
+        return entregaCreationDate;
+    }
+
+    public void setEntregaCreationDate(String entregaCreationDate) {
+        this.entregaCreationDate = entregaCreationDate;
     }
 }

@@ -27,5 +27,6 @@ public interface IEntregaOrgsService {
     public List<TransactionsDto> getTransactionsInterfaceByShipmentHeader(Long shipmentHeaderId) throws ServiceException;
     public TransactionDetalleDto getTransactionDetalleById(Long transactionId) throws ServiceException;
     public void deleteTransactionsById(Long transactionId) throws ServiceException;
+    public void closeEntrega(Long shipmentHeaderId) throws ServiceException;
 
 }
