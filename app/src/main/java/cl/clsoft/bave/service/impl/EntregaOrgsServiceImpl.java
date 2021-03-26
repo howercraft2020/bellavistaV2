@@ -532,6 +532,8 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                         );
                     }
                 }
+                writer.flush();
+                writer.close();
 
                 // Elimina registros
                 mtlSerialNumbersDao.deleteBySHipmentHeaderId(shipmentHeaderId);
