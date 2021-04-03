@@ -34,6 +34,11 @@ public class SigleSearchPresenter extends BasePresenter {
         mTaskExecutor.async(new SigleSearchPresenter.SearchSigle(pattern));
     }
 
+    public void getItemsEntrega(String pattern, Long shipmentHeaderId) {
+        mView.showProgres("Cargando productos...");
+        mTaskExecutor.async(new SigleSearchPresenter.SearchSigleEntrega(pattern, shipmentHeaderId));
+    }
+
     private class SearchSigle implements AppTask<List<MtlSystemItems>> {
 
         private String pattern;
@@ -48,6 +53,42 @@ public class SigleSearchPresenter extends BasePresenter {
             List<MtlSystemItems> salida = new ArrayList<>();
             try {
                 salida = mService.getItemsByDescription(this.pattern);
+            } catch (ServiceException e) {
+                Log.d(TAG, "SearchSigle::execute::ServiceException");
+                e.printStackTrace();
+                mView.runOnUiThread(new Runnable() {
+                    public void run() {
+                        mView.showError(e.getDescripcion());
+                    }
+                });
+            }
+            return salida;
+        }
+
+        @Override
+        public void onPostExecute(@Nullable List<MtlSystemItems> result) {
+            mView.hideProgres();
+            mView.fillItem(result);
+
+        }
+    }
+
+    private class SearchSigleEntrega implements AppTask<List<MtlSystemItems>> {
+
+        private String pattern;
+        private Long shipmentHeaderId;
+
+        public SearchSigleEntrega(String pattern, Long shipmentHeaderId) {
+            this.pattern = pattern;
+            this.shipmentHeaderId = shipmentHeaderId;
+        }
+
+        @Override
+        public List<MtlSystemItems> execute() {
+            Log.d(TAG, "SearchSigle::execute");
+            List<MtlSystemItems> salida = new ArrayList<>();
+            try {
+                salida = mService.getItemsEntregaByDescription(this.pattern, this.shipmentHeaderId);
             } catch (ServiceException e) {
                 Log.d(TAG, "SearchSigle::execute::ServiceException");
                 e.printStackTrace();

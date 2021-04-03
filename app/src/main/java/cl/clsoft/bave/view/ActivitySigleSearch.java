@@ -34,6 +34,8 @@ public class ActivitySigleSearch extends BaseActivity<SigleSearchPresenter> {
 
     // Variables
     private String TAG = "SigleSearch";
+    private String tipo = "";
+    private Long shipmentHeaderId;
     List<MtlSystemItems> items;
 
     // Controls
@@ -59,6 +61,8 @@ public class ActivitySigleSearch extends BaseActivity<SigleSearchPresenter> {
         this.recyclerViewSigles = findViewById(R.id.recyclerViewSigles);
 
         // set controls
+        this.tipo = this.getIntent().getStringExtra("Tipo");
+        this.shipmentHeaderId = this.getIntent().getLongExtra("ShipmentHeaderId", 0);
         this.inputTexto.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
         this.inputTexto.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -72,7 +76,10 @@ public class ActivitySigleSearch extends BaseActivity<SigleSearchPresenter> {
                 {
                     if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
                         String pattern = "%" + textView.getText().toString().toUpperCase() + "%";
-                        mPresenter.getItems(pattern);
+                        if (tipo.equalsIgnoreCase("E"))
+                            mPresenter.getItemsEntrega(pattern, shipmentHeaderId);
+                        else
+                            mPresenter.getItems(pattern);
                     }
                     action = true;
                 }

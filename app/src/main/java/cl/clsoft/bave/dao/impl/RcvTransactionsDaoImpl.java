@@ -149,4 +149,13 @@ public class RcvTransactionsDaoImpl extends GenericDao<RcvTransactions> implemen
 
         return super.selectMany(RcvTransactionsCatalogo.SELECT_ALL_DISPONIBLES_BY_SHIPMENT_INVENTORY, new RcvTransactionsRowMapper(), shipmentHeaderId, inventoryItemId, shipmentHeaderId);
     }
+
+    @Override
+    public List<String> getSegmentsByShipment(Long shipmentHeaderId) throws DaoException {
+        Log.d(TAG, "RcvTransactionsDaoImpl::getSegmentsByShipment");
+        Log.d(TAG, "RcvTransactionsDaoImpl::getSegmentsByShipment::shipmentHeaderId: " + shipmentHeaderId);
+
+        return super.selectManyString(RcvTransactionsCatalogo.SELECT_SEGMENT_BY_SHIPMENT, shipmentHeaderId);
+    }
+
 }

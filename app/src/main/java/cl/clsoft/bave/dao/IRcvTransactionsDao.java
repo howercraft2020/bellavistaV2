@@ -16,5 +16,6 @@ public interface IRcvTransactionsDao {
     public List<RcvTransactions> getAllByShipment(Long shipmentHeaderId) throws DaoException;
     public List<RcvTransactions> getAllByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws DaoException;
     public List<RcvTransactions> getAllDisponiblesByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws DaoException;
+    public List<String> getSegmentsByShipment(Long shipmentHeaderId) throws DaoException;
 
 }

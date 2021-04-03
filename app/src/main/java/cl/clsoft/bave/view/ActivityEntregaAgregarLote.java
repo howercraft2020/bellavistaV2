@@ -367,22 +367,41 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
             case R.id.next:
                 Log.d(TAG, "next");
                 if (this.validaDatos()) {
-                    Intent iSerie = new Intent(this, ActivityEntregaAgregarSerie.class);
-                    iSerie.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
-                    iSerie.putExtra("TransactionId", this.transactionId);
-                    iSerie.putExtra("Cantidad", this.cantidad);
-                    iSerie.putExtra("SubinventoryCode", this.subinventoryCode);
-                    iSerie.putExtra("LocatorCode", this.locatorCode);
-                    iSerie.putExtra("Lote", this.lote);
-                    iSerie.putExtra("LoteProveedor", this.loteProveedor);
-                    iSerie.putExtra("Vencimiento", this.vencimiento);
-                    iSerie.putExtra("Categoria", this.categoria);
-                    iSerie.putExtra("Atributo1", this.atributo1);
-                    iSerie.putExtra("Atributo2", this.atributo2);
-                    iSerie.putExtra("Atributo3", this.atributo3);
-                    iSerie.putStringArrayListExtra("series", (ArrayList<String>) this.series);
-                    startActivity(iSerie);
-                    this.finish();
+                    if (this.isSerie) {
+                        Intent iSerie = new Intent(this, ActivityEntregaAgregarSerie.class);
+                        iSerie.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+                        iSerie.putExtra("TransactionId", this.transactionId);
+                        iSerie.putExtra("Cantidad", this.cantidad);
+                        iSerie.putExtra("SubinventoryCode", this.subinventoryCode);
+                        iSerie.putExtra("LocatorCode", this.locatorCode);
+                        iSerie.putExtra("Lote", this.lote);
+                        iSerie.putExtra("LoteProveedor", this.loteProveedor);
+                        iSerie.putExtra("Vencimiento", this.vencimiento);
+                        iSerie.putExtra("Categoria", this.categoria);
+                        iSerie.putExtra("Atributo1", this.atributo1);
+                        iSerie.putExtra("Atributo2", this.atributo2);
+                        iSerie.putExtra("Atributo3", this.atributo3);
+                        iSerie.putStringArrayListExtra("series", (ArrayList<String>) this.series);
+                        startActivity(iSerie);
+                        this.finish();
+                    } else {
+                        Intent iResumen = new Intent(this, ActivityEntregaAgregarResumen.class);
+                        iResumen.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+                        iResumen.putExtra("TransactionId", this.transactionId);
+                        iResumen.putExtra("Cantidad", this.cantidad);
+                        iResumen.putExtra("SubinventoryCode", this.subinventoryCode);
+                        iResumen.putExtra("LocatorCode", this.locatorCode);
+                        iResumen.putExtra("Lote", this.lote);
+                        iResumen.putExtra("LoteProveedor", this.loteProveedor);
+                        iResumen.putExtra("Vencimiento", this.vencimiento);
+                        iResumen.putExtra("Categoria", this.categoria);
+                        iResumen.putExtra("Atributo1", this.atributo1);
+                        iResumen.putExtra("Atributo2", this.atributo2);
+                        iResumen.putExtra("Atributo3", this.atributo3);
+                        //iResumen.putStringArrayListExtra("series", (ArrayList<String>) adapter.getSeries());
+                        startActivity(iResumen);
+                        this.finish();
+                    }
                 }
                 return true;
             case R.id.back:
@@ -510,7 +529,9 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
             this.vencimiento = this.textVencimiento.getText().toString();
         }
 
+        // 03-04-2021: Se solicita eliminar las validaciones de categoria
         // Valida categoria
+        /*
         if (categoria == null) {
             this.spinnerCategoria.setError("Seleccione categoría");
             return false;
@@ -527,6 +548,8 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
             // Asigna Atributo 3
             this.atributo3 = this.textAtributo3.getText().toString();
         }
+         */
+
         return true;
     }
 

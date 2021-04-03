@@ -107,6 +107,21 @@ public class EntregaAgregarPresenter extends BasePresenter {
         return null;
     }
 
+    public List<String> getSegmentosByShipment(Long shipmentHeaderId) {
+        try {
+            return mService.getSegmentsByShipment(shipmentHeaderId);
+        } catch(ServiceException e) {
+            if (e.getCodigo() == 1) {
+                this.mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                this.mView.showError(e.getDescripcion());
+            }
+        } catch(Exception e){
+            this.mView.showError(e.getMessage());
+        }
+        return null;
+    }
+
     public void getLocalizadoresBySubinventario(String subinventarioCodigo) {
         mView.showProgres("Cargando localizadores...");
         mTaskExecutor.async(new EntregaAgregarPresenter.LocalizadoresBySubinventario(subinventarioCodigo));

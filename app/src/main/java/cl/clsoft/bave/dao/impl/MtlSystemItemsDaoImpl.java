@@ -93,6 +93,15 @@ public class MtlSystemItemsDaoImpl extends GenericDao<MtlSystemItems> implements
     }
 
     @Override
+    public List<MtlSystemItems> getAllByDescriptionShipment(String pattern, Long shipmentHeaderId) throws DaoException {
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionShipment");
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionShipment::pattern: " + pattern);
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionShipment::shipmentHeaderId: " + shipmentHeaderId);
+
+        return super.selectMany(MtlSystemItemsCatalogo.SELECT_ALL_BY_DESCRIPTION_SHIPMENT, new MtlSystemItemsRowMapper(), pattern, shipmentHeaderId);
+    }
+
+    @Override
     public List<MtlSystemItems> getAllByOcReceipt(Long poHeaderId, Long receiptNum) throws DaoException {
         return super.selectMany(MtlSystemItemsCatalogo.SELECT_BY_OC_RECEIPT, new MtlSystemItemsRowMapper(), poHeaderId, receiptNum);
     }

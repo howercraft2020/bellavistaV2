@@ -99,7 +99,8 @@
             android:label="Detalle"/>
         <activity
             android:name=".view.ActivityEntregaAgregar"
-            android:label="Agregar"/>
+            android:label="Agregar"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".view.ActivityEntregaAgregarLote"
             android:label="Lote"/>

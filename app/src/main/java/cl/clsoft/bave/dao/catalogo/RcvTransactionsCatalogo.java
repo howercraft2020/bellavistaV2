@@ -116,4 +116,14 @@ public class RcvTransactionsCatalogo {
                     "     AND item_id = ? " +
                     "     AND transaction_id NOT IN ( SELECT parent_transaction_id from rcv_transactions WHERE header_interface_ID = ?)";
 
+    public static final String SELECT_SEGMENT_BY_SHIPMENT =
+            " SELECT " +
+            "     segment1 " +
+            " FROM " +
+            "     mtl_system_items " +
+            " WHERE " +
+            "     inventory_item_id in ( SELECT distinct(item_id) FROM rcv_transactions WHERE shipment_header_id = ?) " +
+            " ORDER BY " +
+            "     segment1 ";
+
 }

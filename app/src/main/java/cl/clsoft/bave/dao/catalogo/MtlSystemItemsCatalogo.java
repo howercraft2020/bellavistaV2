@@ -42,6 +42,14 @@ public class MtlSystemItemsCatalogo {
             " WHERE " +
             "     description || long_description like ? ";
 
+    public static final String SELECT_ALL_BY_DESCRIPTION_SHIPMENT =
+            " SELECT * " +
+            " FROM " +
+            "     mtl_system_items " +
+            " WHERE " +
+            "     description || long_description like ? " +
+            "     AND inventory_item_id in (SELECT distinct(item_id) FROM rcv_transactions WHERE shipment_header_id = ?)";
+
     public static final String SELECT_BY_OC_RECEIPT =
             "SELECT msi.* FROM PO_HEADERS_ALL pha, " +
             "PO_LINES_ALL pla, MTL_SYSTEM_ITEMS msi " +

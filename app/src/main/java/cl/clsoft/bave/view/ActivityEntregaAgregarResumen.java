@@ -207,6 +207,7 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
                     iLote.putExtra("Cantidad", this.cantidad);
                     iLote.putExtra("SubinventoryCode", this.subinventoryCode);
                     iLote.putExtra("LocatorCode", this.locatorCode);
+                    iLote.putExtra("Lote", this.lote);
                     iLote.putExtra("LoteProveedor", this.loteProveedor);
                     iLote.putExtra("Vencimiento", this.vencimiento);
                     iLote.putExtra("Categoria", this.categoria);
