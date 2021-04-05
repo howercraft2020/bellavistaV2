@@ -548,14 +548,14 @@ public class TransOrgService  implements ITransOrgService {
                 throw new ServiceException(1,"No se encuentran datos para este numero de traspaso");
             }
 
-            nomenclatura = "I_O_"+transactionReference+".csv";
+            nomenclatura = "I_O_"+transactionReference+".txt";
 
             File tarjetaSD = Environment.getExternalStorageDirectory();
             File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
             File rutaArchivo = new File(Dir, nomenclatura);
 
             FileWriter writer = new FileWriter(rutaArchivo);
-            writer.write("SUBINV;FIN" +"\r\n");
+            writer.write("INTERORG_ENVIO;FIN" +"\r\n");
 
             for (MtlTransactionsInterface trx : trxs) {
                 writer.write("1;"

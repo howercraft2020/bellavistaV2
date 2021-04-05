@@ -335,7 +335,7 @@ public class TransSubinvService implements ITransSubinvService {
                 throw new ServiceException(1,"No se encuentran datos para este numero de traspaso");
             }
 
-            nomenclatura = "I_"+transactionReference+".csv";
+            nomenclatura = "I_"+transactionReference+".txt";
 
             File tarjetaSD = Environment.getExternalStorageDirectory();
             File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");

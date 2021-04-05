@@ -255,7 +255,7 @@ public class RecepcionOcService implements IRecepcionOcService {
      IPoDistributionsAllDao poDistributionsAllDao = new PoDistributionsAllDaoImpl();
 
 
-        nomenclatura = "I_1_"+numeroOc+"_"+receiptNum+".csv";
+        nomenclatura = "I_1_"+numeroOc+"_"+receiptNum+".txt";
 
         File tarjetaSD = Environment.getExternalStorageDirectory();
         File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");

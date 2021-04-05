@@ -77,12 +77,12 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
             @Override
             public void onClick(View v) {
                 String seleccion = comboAcciones.getSelectedItem().toString();
-                if (seleccion.equals("Recepcion")){
+                if (seleccion.equals("Recepcion OC")){
                     Intent intent = new Intent(ActivityMain.this, ActivityRecepcionOc.class);
                     intent.putExtra("paso", "1");
                     startActivity(intent);
                 }
-                if (seleccion.equals("Entrega")){
+                if (seleccion.equals("Entrega OC")){
                     Intent intent = new Intent(ActivityMain.this, ActivityEntregas.class);
                     startActivity(intent);
                 }

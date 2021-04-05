@@ -32,12 +32,13 @@ import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.PoLinesAll;
+import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.presenter.AgregarRecepcionPresenter;
 import cl.clsoft.bave.service.impl.RecepcionOcService;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPresenter> implements ConfirmationDialog.ConfirmationDialogListener{
+public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPresenter> implements ConfirmationDialog.ConfirmationDialogListener, DialogSeleccionLinea.DialogSeleccionLineaListener{
 
     //Variables
     private String codigoSigle;
@@ -47,7 +48,9 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
     String poHeaderId;
     Long numeroRecep;
     private String segment;
+    private Long inventoryItemId;
     private int LAUNCH_SEARCHSINGLE_ACTIVITY = 2;
+    CharSequence[] items;
 
 
     //Controls
@@ -111,7 +114,9 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                     textCantidad.setEnabled(true);
                     layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                     textUdm.setText(item.getPrimaryUomCode());
-                    mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
+                    inventoryItemId = item.getInventoryItemId();
+                    //mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
+                    validaLinea();
                 }
                 else {
                     showWarning("Item " + segment + " no se ha encontrado en la maestra.");
@@ -282,5 +287,38 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                     }
                 })
                 .show();
+    }
+
+    private void validaLinea() {
+        if (this.inventoryItemId != null) {
+            List<PoLinesAll> lines = mPresenter.getLines(inventoryItemId,Long.parseLong(poHeaderId));
+            if (lines.size() == 0) {
+                this.textSigle.setText("");
+                showWarning("Sigle " + segment + " no encontrado en OC");
+                this.inventoryItemId = null;
+            } else if (lines.size() > 1) {
+                items = new CharSequence[lines.size()];
+                int index = 0;
+                for (PoLinesAll line : lines) {
+                    Log.d(TAG, "items add " + line.getLineNum().toString());
+                    items[index] = line.getLineNum().toString();
+                    index++;
+                }
+                DialogSeleccionLinea dialogLinea =new DialogSeleccionLinea();
+                Bundle args = new Bundle();
+                args.putCharSequenceArray("items", items);
+                dialogLinea.setArguments(args);
+                dialogLinea.show(getSupportFragmentManager(), "DialogLinea");
+            } else {
+                this.textNumeroLinea.setText(lines.get(0).getLineNum());
+            }
+        }
+    }
+
+    @Override
+    public void onDialogLineaPositiveClick(DialogFragment dialog) {
+        Log.d(TAG, "salida " + ((DialogSeleccionLinea) dialog).selectedItem);
+        String linea = ((DialogSeleccionLinea) dialog).selectedItem;
+        this.textNumeroLinea.setText(linea);
     }
 }

@@ -96,7 +96,7 @@ public class MtlCycleCountEntriesCatalogo {
             " WHERE " +
             "     a.cycle_count_header_id = ? " +
             "     AND a.subinventory = ? " +
-            "     AND a.locator_id = ?" +
+            "     AND a.locator_id = ? " +
             "     AND a.segment1 = ? " +
             "     AND ifnull(a.lot_number, '') = ? " +
             "     AND ifnull(a.serial_number, '') = ? ";

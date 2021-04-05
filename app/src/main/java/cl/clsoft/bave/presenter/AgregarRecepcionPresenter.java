@@ -73,14 +73,18 @@ public class AgregarRecepcionPresenter extends BasePresenter {
         }
     }
 
-    public void getLines(Long inventoryItemId, Long poHeaderId){
-        List<PoLinesAll> lineas;
+    public List<PoLinesAll> getLines(Long inventoryItemId, Long poHeaderId){
         try{
-            lineas = this.mService.getLines(inventoryItemId,poHeaderId);
-            mview.fillLines(lineas);
-        }catch (ServiceException e) {
-            e.printStackTrace();
+            return this.mService.getLines(inventoryItemId,poHeaderId);
+            //mview.fillLines(lineas);
+        } catch(ServiceException e){
+            if (e.getCodigo() == 1) {
+                this.mview.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                this.mview.showError(e.getDescripcion());
+            }
         }
+        return null;
     }
 
 

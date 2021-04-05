@@ -2,9 +2,8 @@
 <resources>
     
     <string-array name="combo_acciones">
-        <item>Recepcion</item>
-        <item>Entrega</item>
-        <item>Mantención</item>
+        <item>Recepcion OC</item>
+        <item>Entrega OC</item>
         <item>Conteo Cíclico</item>
         <item>Inventario Físico</item>
         <item>Transferencia Subinventario</item>

@@ -41,5 +41,4 @@ public class PoLinesAllCatalogo {
             "AND pla.po_header_id = ? "+
             "AND pla.line_num = ?";
 
-
 }
