@@ -225,6 +225,7 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                         layoutAtributo1.setVisibility(View.GONE);
                         layoutAtributo2.setVisibility(View.GONE);
                         layoutAtributo3.setVisibility(View.VISIBLE);
+                        spinnerAtributo1.performClick();
 
                     } else if (categoria.equalsIgnoreCase("LIQUIDOS Y LUBRICANTES")) {
                         spinnerAtributo1.setVisibility(View.GONE);
@@ -233,6 +234,7 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                         layoutAtributo1.setVisibility(View.VISIBLE);
                         layoutAtributo2.setVisibility(View.VISIBLE);
                         layoutAtributo3.setVisibility(View.GONE);
+                        textAtributo1.requestFocus();
                     } else {
                         spinnerAtributo1.setVisibility(View.GONE);
                         spinnerAtributo2.setVisibility(View.GONE);
@@ -295,6 +297,7 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 {
                     if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
                         atributo1 = textView.getText().toString();
+                        textAtributo2.requestFocus();
                     }
                     action = true;
                 }
@@ -315,6 +318,7 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 {
                     if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
                         atributo2 = textView.getText().toString();
+                        textAtributo3.requestFocus();
                     }
                     action = true;
                 }

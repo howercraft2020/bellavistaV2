@@ -49,4 +49,14 @@ public class LocalizadorCatalogo {
             " ORDER BY " +
             "     cod_localizador";
 
+    public static final String SELECT_ALL_BY_SUBINVENTORY_COUNTHEADERID =
+            " SELECT * " +
+            " FROM " +
+            "     localizador " +
+            " WHERE " +
+            "     cod_subinventario = ? " +
+            "     AND id_localizador IN (SELECT locator_id FROM mtl_cycle_count_entries WHERE cycle_count_header_id = ? ) " +
+            " ORDER BY " +
+            "     cod_localizador";
+
 }

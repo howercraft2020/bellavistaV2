@@ -8,6 +8,7 @@ import java.util.List;
 import cl.clsoft.bave.dao.IMtlMaterialTransactionsDao;
 import cl.clsoft.bave.dao.catalogo.MtlCycleCountHeadersCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlMaterialTransactionsCatalogo;
+import cl.clsoft.bave.dao.catalogo.RcvTransactionsCatalogo;
 import cl.clsoft.bave.dao.rowmapper.MtlMaterialTransactionsRowMapper;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.model.MtlMaterialTransactions;
@@ -117,6 +118,14 @@ public class MtlMaterialTransactionsDaoImpl extends GenericDao<MtlMaterialTransa
         Log.d(TAG, "MtlMaterialTransactionsDaoImpl::getAllByShipmentEntrega::shipmentHeaderId: " + shipmentHeaderId);
 
         return super.selectMany(MtlMaterialTransactionsCatalogo.SELECT_ALL_BY_SHIPMENT_HEADER_ID__ENTREGA, new MtlMaterialTransactionsRowMapper(), shipmentHeaderId);
+    }
+
+    @Override
+    public List<String> getSegmentsByShipment(Long shipmentHeaderId) throws DaoException {
+        Log.d(TAG, "MtlMaterialTransactionsDaoImpl::getSegmentsByShipment");
+        Log.d(TAG, "MtlMaterialTransactionsDaoImpl::getSegmentsByShipment::shipmentHeaderId: " + shipmentHeaderId);
+
+        return super.selectManyString(MtlMaterialTransactionsCatalogo.SELECT_SEGMENT_BY_SHIPMENT, shipmentHeaderId);
     }
 
 }

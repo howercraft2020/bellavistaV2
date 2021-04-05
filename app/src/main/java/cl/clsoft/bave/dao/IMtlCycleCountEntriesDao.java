@@ -17,4 +17,7 @@ public interface IMtlCycleCountEntriesDao {
     public List<MtlCycleCountEntries> getAllBySubinventarioLocatorSegmentLoteSerie(Long countHeaderId, String subinventory, Long locatorId, String segment, String serie, String lote) throws DaoException;
     public List<MtlCycleCountEntries> getAllInventariadosByHeader(Long countHeaderId) throws DaoException;
     public List<MtlCycleCountEntries> getAllInventariadosBySubinventario(Long countHeaderId, String subinventory) throws DaoException;
+    public List<String> getSegmentsByCountHeaderLocator(Long countHeaderId, Long locatorId) throws DaoException;
+    public List<String> getLoteByCountHeaderLocatorSegment(Long cycleCountHeaderId, Long locatorId, String segment) throws DaoException;
+
 }

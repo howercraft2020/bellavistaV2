@@ -20,6 +20,8 @@ public interface IInventarioFisicoService {
     public List<MtlSystemItems> getAllItems() throws ServiceException;
     public List<MtlSystemItems> getItemsByDescription(String pattern) throws ServiceException;
     public List<MtlSystemItems> getItemsEntregaByDescription(String pattern, Long shipmentHeaderId) throws ServiceException;
+    public List<MtlSystemItems> getItemsEntregaOrganizacionesByDescription(String pattern, Long shipmentHeaderId) throws ServiceException;
+    public List<MtlSystemItems> getItemsCiclicoByDescription(String pattern, Long countHeaderId, Long locatorId) throws ServiceException;
 
     public List<MtlPhysicalInventoryTags> getAllTagsByInventory(Long physicalInventoryId) throws ServiceException;
     public List<MtlPhysicalInventoryTags> getAllTagsByInventorySubinventory(Long physicalInventoryId, String subinventory) throws ServiceException;

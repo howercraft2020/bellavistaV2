@@ -149,6 +149,39 @@ public class InventarioFisicoService implements IInventarioFisicoService {
     }
 
     @Override
+    public List<MtlSystemItems> getItemsEntregaOrganizacionesByDescription(String pattern, Long shipmentHeaderId) throws ServiceException {
+        Log.d(TAG, "InventarioFisicoService::getItemsEntregaOrganizacionesByDescription");
+        Log.d(TAG, "InventarioFisicoService::getItemsEntregaOrganizacionesByDescription::pattern: " + pattern);
+        Log.d(TAG, "InventarioFisicoService::getItemsEntregaOrganizacionesByDescription::shipmentHeaderId: " + shipmentHeaderId);
+
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+        try {
+            List<MtlSystemItems> items = mtlSystemItemsDao.getAllByDescriptionShipmentOrganizacion(pattern, shipmentHeaderId);
+            Log.d(TAG, "size" + items.size());
+            return items;
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<MtlSystemItems> getItemsCiclicoByDescription(String pattern, Long countHeaderId, Long locatorId) throws ServiceException {
+        Log.d(TAG, "InventarioFisicoService::getItemsCiclicoByDescription");
+        Log.d(TAG, "InventarioFisicoService::getItemsCiclicoByDescription::pattern: " + pattern);
+        Log.d(TAG, "InventarioFisicoService::getItemsCiclicoByDescription::countHeaderId: " + countHeaderId);
+        Log.d(TAG, "InventarioFisicoService::getItemsCiclicoByDescription::locatorId: " + locatorId);
+
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+        try {
+            List<MtlSystemItems> items = mtlSystemItemsDao.getAllByDescriptionCountHeaderLocator(pattern, countHeaderId, locatorId);
+            Log.d(TAG, "size" + items.size());
+            return items;
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
     public List<MtlPhysicalInventoryTags> getAllTagsByInventory(Long physicalInventoryId) throws ServiceException {
         IMtlPhysicalInventoryTagsDao mtlPhysicalInventoryTagsDao = new MtlPhysicalInventoryTagsDaoImpl();
         try {

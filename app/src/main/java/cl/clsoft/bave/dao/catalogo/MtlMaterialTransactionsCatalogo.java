@@ -90,4 +90,14 @@ public class MtlMaterialTransactionsCatalogo {
                     COLUMN_SHIPMENT_HEADER_ID + " = ? " +
                     " AND " + COLUMN_ENTREGA_CREATION_DATE + " is not null ";
 
+    public static final String SELECT_SEGMENT_BY_SHIPMENT =
+            " SELECT " +
+            "     segment1 " +
+            " FROM " +
+            "     mtl_system_items " +
+            " WHERE " +
+            "     inventory_item_id in ( SELECT distinct(inventory_item_id) FROM mtl_material_transactions WHERE shipment_header_id = ?) " +
+            " ORDER BY " +
+            "     segment1 ";
+
 }

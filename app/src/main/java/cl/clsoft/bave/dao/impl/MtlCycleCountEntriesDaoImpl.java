@@ -89,4 +89,14 @@ public class MtlCycleCountEntriesDaoImpl extends GenericDao<MtlCycleCountEntries
         return super.selectMany(MtlCycleCountEntriesCatalogo.SELECT_ALL_INVENTARIADOS_BY_CYCLECOUNT_SUBINVENTORY, new MtlCycleCountEntriesRowMapper(), countHeaderId, subinventory);
     }
 
+    @Override
+    public List<String> getSegmentsByCountHeaderLocator(Long countHeaderId, Long locatorId) throws DaoException {
+        return super.selectManyString(MtlCycleCountEntriesCatalogo.SELECT_SEGMENT_BY_CYCLECOUNTEHEADER_LOCATOR, countHeaderId, locatorId);
+    }
+
+    @Override
+    public List<String> getLoteByCountHeaderLocatorSegment(Long cycleCountHeaderId, Long locatorId, String segment) throws DaoException {
+        return super.selectManyString(MtlCycleCountEntriesCatalogo.SELECT_LOTE_BY_CYCLECOUNTEHEADER_LOCATOR_SEGMENT, cycleCountHeaderId, locatorId, segment);
+    }
+
 }

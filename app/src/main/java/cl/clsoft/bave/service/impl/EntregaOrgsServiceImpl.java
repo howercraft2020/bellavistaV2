@@ -19,6 +19,7 @@ import cl.clsoft.bave.dao.IMtlMaterialTransactionsDao;
 import cl.clsoft.bave.dao.IMtlSerialNumbersDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.IMtlTransactionLotNumbersDao;
+import cl.clsoft.bave.dao.IRcvTransactionsDao;
 import cl.clsoft.bave.dao.ISubinventarioDao;
 import cl.clsoft.bave.dao.impl.EntregaOrgsHeaderDaoImpl;
 import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
@@ -26,6 +27,7 @@ import cl.clsoft.bave.dao.impl.MtlMaterialTransactionsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSerialNumbersDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionLotNumbersDaoImpl;
+import cl.clsoft.bave.dao.impl.RcvTransactionsDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
 import cl.clsoft.bave.dto.TransactionDetalleDto;
 import cl.clsoft.bave.dto.TransactionsDto;
@@ -546,6 +548,19 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
             throw new ServiceException(2, e.getDescripcion());
         } catch(IOException e){
             throw new ServiceException(2, e.getMessage());
+        }
+    }
+
+    @Override
+    public List<String> getSegmentsByShipment(Long shipmentHeaderId) throws ServiceException {
+        Log.d(TAG, "EntregaServiceImpl::getSegmentsByShipment");
+        Log.d(TAG, "EntregaServiceImpl::getSegmentsByShipment::shipmentHeaderId: " + shipmentHeaderId);
+
+        IMtlMaterialTransactionsDao mtlMaterialTransactionsDao = new MtlMaterialTransactionsDaoImpl();
+        try {
+            return mtlMaterialTransactionsDao.getSegmentsByShipment(shipmentHeaderId);
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
         }
     }
 

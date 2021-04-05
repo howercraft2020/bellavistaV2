@@ -31,9 +31,9 @@ public class CiclicoAgregarPresenter extends BasePresenter {
         this.mService = service;
     }
 
-    public void getLocalizadoresBySubinventario(String subinventarioCodigo) {
+    public void getLocalizadoresBySubinventario(String subinventarioCodigo, Long countHeaderId) {
         mView.showProgres("Cargando localizadores...");
-        mTaskExecutor.async(new CiclicoAgregarPresenter.LocalizadoresBySubinventario(subinventarioCodigo));
+        mTaskExecutor.async(new CiclicoAgregarPresenter.LocalizadoresBySubinventario(subinventarioCodigo, countHeaderId));
     }
 
     public MtlSystemItems getMtlSystemItemsBySegment(String segment) {
@@ -62,6 +62,32 @@ public class CiclicoAgregarPresenter extends BasePresenter {
         return null;
     }
 
+    public List<String> getSegmentosByCountHeaderIdLocatorId(Long countHeaderId, Long locatorId) {
+        try {
+            return this.mService.getSegmentsByCountHeaderIdLocatorId(countHeaderId, locatorId);
+        } catch(ServiceException e){
+            if (e.getCodigo() == 1) {
+                this.mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                this.mView.showError(e.getDescripcion());
+            }
+        }
+        return null;
+    }
+
+    public List<String> getLotes(Long cycleCountHeaderId, Long locatorId, String segment) {
+        try {
+            return this.mService.getLotesByCountHeaderIdLocatorIdSegment(cycleCountHeaderId, locatorId, segment);
+        } catch(ServiceException e){
+            if (e.getCodigo() == 1) {
+                this.mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                this.mView.showError(e.getDescripcion());
+            }
+        }
+        return null;
+    }
+
     public void grabarInventario(Long inventarioCiclicoId, String subinventarioId, Long locatorId, String segment, String serie, String lote, Double cantidad) {
         try {
             this.mService.grabarInventario(inventarioCiclicoId, subinventarioId, locatorId, segment, serie, lote, cantidad);
@@ -79,9 +105,11 @@ public class CiclicoAgregarPresenter extends BasePresenter {
     private class LocalizadoresBySubinventario implements AppTask<List<Localizador>> {
 
         private String subinventarioCodigo;
+        private Long countHeaderId;
 
-        public LocalizadoresBySubinventario(String subinventarioCodigo) {
+        public LocalizadoresBySubinventario(String subinventarioCodigo, Long countHeaderId) {
             this.subinventarioCodigo = subinventarioCodigo;
+            this.countHeaderId = countHeaderId;
         }
 
         @Override
@@ -89,7 +117,7 @@ public class CiclicoAgregarPresenter extends BasePresenter {
             Log.d(TAG, "LocalizadoresBySubinventario::execute");
             List<Localizador> localizadores = new ArrayList<>();
             try {
-                localizadores = mService.getLocalizadoresBySubinventario(subinventarioCodigo);
+                localizadores = mService.getLocalizadoresBySubinventarioCountheaderId(this.subinventarioCodigo, this.countHeaderId);
             } catch (ServiceException e) {
                 Log.d(TAG, "LocalizadoresBySubinventario::execute::ServiceException");
                 e.printStackTrace();

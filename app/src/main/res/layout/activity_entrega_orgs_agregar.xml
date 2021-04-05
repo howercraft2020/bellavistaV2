@@ -27,7 +27,7 @@
             android:layout_marginRight="10dp"
             android:hint="Sigle"
             android:textColorHint="?attr/colorPrimary">
-            <com.google.android.material.textfield.TextInputEditText
+            <cl.clsoft.bave.control.InstantAutoCompleteTextView
                 android:id="@+id/textSigle"
                 android:textColor="@android:color/black"
                 android:backgroundTint="?attr/colorPrimaryDark"
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:inputType="text">
-            </com.google.android.material.textfield.TextInputEditText>
+            </cl.clsoft.bave.control.InstantAutoCompleteTextView>
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView

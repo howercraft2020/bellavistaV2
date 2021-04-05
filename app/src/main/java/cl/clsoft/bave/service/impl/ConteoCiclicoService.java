@@ -96,6 +96,22 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
     }
 
     @Override
+    public List<Localizador> getLocalizadoresBySubinventarioCountheaderId(String subinventarioCodigo, Long countHeaderId) throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::getLocalizadoresBySubinventarioCountheaderId");
+        Log.d(TAG, "ConteoCiclicoService::getLocalizadoresBySubinventarioCountheaderId::subinventarioCodigo: " + subinventarioCodigo);
+        Log.d(TAG, "ConteoCiclicoService::getLocalizadoresBySubinventarioCountheaderId::countHeaderId: " + countHeaderId);
+
+        ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
+        try {
+            List<Localizador> salida = localizadorDao.getAllBySubinventarioCountheaderId(subinventarioCodigo, countHeaderId);
+            return salida;
+        } catch(DaoException e){
+            e.printStackTrace();
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
     public MtlSystemItems getMtlSystemItemsBySegment(String segment) throws ServiceException {
         Log.d(TAG, "ConteoCiclicoService::getMtlSystemItemsBySegment");
 
@@ -281,6 +297,26 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
         IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
         try{
             return mtlCycleCountEntriesDao.get(cycleCountEntrieId);
+        }catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<String> getSegmentsByCountHeaderIdLocatorId(Long cycleCountEntrieId, Long locatorId) throws ServiceException {
+        IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
+        try{
+            return mtlCycleCountEntriesDao.getSegmentsByCountHeaderLocator(cycleCountEntrieId, locatorId);
+        }catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<String> getLotesByCountHeaderIdLocatorIdSegment(Long cycleCountHeaderId, Long locatorId, String segment) throws ServiceException {
+        IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
+        try{
+            return mtlCycleCountEntriesDao.getLoteByCountHeaderLocatorSegment(cycleCountHeaderId, locatorId, segment);
         }catch(DaoException e){
             throw new ServiceException(2, e.getDescripcion());
         }

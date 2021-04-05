@@ -107,6 +107,15 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                     Localizador localizador = mPresenter.getLocalizadorbyCodigo(locatorCodigo);
                     if (localizador != null) {
                         locatorId = localizador.getIdLocalizador();
+                        List<String> segmentosLocalizador = mPresenter.getSegmentosByCountHeaderIdLocatorId(inventarioCiclicoId, locatorId);
+                        if (segmentosLocalizador != null) {
+                            String[] segmentos = new String[segmentosLocalizador.size()];
+                            for (int i = 0; i < segmentosLocalizador.size(); i++) {
+                                segmentos[i] = segmentosLocalizador.get(i);
+                            }
+                            ArrayAdapter<String> adapterSegmentos = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.select_dialog_item, segmentos);
+                            textSigle.setAdapter(adapterSegmentos);
+                        }
                         layoutSigle.setHintEnabled(true);
                         textSigle.setEnabled(true);
                         textSigle.requestFocus();
@@ -133,9 +142,7 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                             textSigle.setEnabled(false);
 
                             if (item.getLotControlCode().equalsIgnoreCase("2")) {
-                                textLote.setEnabled(true);
-                                layoutLote.setHintEnabled(true);
-                                //fillLote();
+                                fillLote();
                             } else {
                                 textLote.setEnabled(false);
                                 layoutLote.setHintEnabled(false);
@@ -161,14 +168,52 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
             }
         });
 
+        this.textSigle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                segment = parent.getAdapter().getItem(pos).toString();
+                Log.d(TAG, "sigle: " + segment);
+
+                MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
+                if (item != null) {
+
+                    textSigle.setEnabled(false);
+
+                    if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                        fillLote();
+                    } else {
+                        textLote.setEnabled(false);
+                        layoutLote.setHintEnabled(false);
+                    }
+                    if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                        textSerie.setEnabled(true);
+                        layoutSerie.setHintEnabled(true);
+                        //fillSerie();
+                    } else {
+                        textSerie.setEnabled(false);
+                        layoutSerie.setHintEnabled(false);
+                    }
+                    layoutCantidad.setHintEnabled(true);
+                    textCantidad.setEnabled(true);
+                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
+                } else {
+                    showWarning("Item " + segment + " no encontrado en tabla maestra");
+                }
+            }
+        });
 
         this.iconSearch.setOnClickListener(v -> {
-            Intent i = new Intent(this, ActivitySigleSearch.class);
-            startActivityForResult(i, LAUNCH_SEARCHSINGLE_ACTIVITY);
+            Intent iSearch = new Intent(this, ActivitySigleSearch.class);
+            iSearch.putExtra("Tipo", "C");
+            iSearch.putExtra("CountHeaderId", this.inventarioCiclicoId);
+            iSearch.putExtra("LocatorId", this.locatorId);
+            startActivityForResult(iSearch, LAUNCH_SEARCHSINGLE_ACTIVITY);
         });
 
         this.cleanScreen();
-        this.mPresenter.getLocalizadoresBySubinventario(this.subinventarioId);
+        this.mPresenter.getLocalizadoresBySubinventario(this.subinventarioId, this.inventarioCiclicoId);
     }
 
     @Override
@@ -271,6 +316,25 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                 this.textSigle.setEnabled(false);
                 this.hayLocalizador = false;
                 //this.loadSigle();
+            }
+        }
+    }
+
+    public void fillLote() {
+        List<String> listLotes = this.mPresenter.getLotes(inventarioCiclicoId, locatorId, segment);
+        if (listLotes != null) {
+            if (listLotes.size() > 0) {
+                String[] lotes = new String[listLotes.size()];
+                for (int i = 0; i < listLotes.size(); i++) {
+                    lotes[i] = listLotes.get(i);
+                }
+                ArrayAdapter<String> adapterLote = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, lotes);
+                this.textLote.setAdapter(adapterLote);
+                this.textLote.setEnabled(true);
+                this.layoutLote.setHintEnabled(true);
+            } else {
+                this.textLote.setEnabled(false);
+                this.layoutLote.setHintEnabled(false);
             }
         }
     }
