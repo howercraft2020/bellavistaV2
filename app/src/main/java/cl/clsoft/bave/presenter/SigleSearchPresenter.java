@@ -34,6 +34,21 @@ public class SigleSearchPresenter extends BasePresenter {
         mTaskExecutor.async(new SigleSearchPresenter.SearchSigle(pattern));
     }
 
+    public void getItemsEntrega(String pattern, Long shipmentHeaderId) {
+        mView.showProgres("Cargando productos...");
+        mTaskExecutor.async(new SigleSearchPresenter.SearchSigleEntrega(pattern, shipmentHeaderId));
+    }
+
+    public void getItemsEntregaOrganizacion(String pattern, Long shipmentHeaderId) {
+        mView.showProgres("Cargando productos...");
+        mTaskExecutor.async(new SigleSearchPresenter.SearchSigleEntregaOrganizaciones(pattern, shipmentHeaderId));
+    }
+
+    public void getItemsCiclico(String pattern, Long countHeaderId, Long locatorId) {
+        mView.showProgres("Cargando productos...");
+        mTaskExecutor.async(new SigleSearchPresenter.SearchSigleCiclico(pattern, countHeaderId, locatorId));
+    }
+
     private class SearchSigle implements AppTask<List<MtlSystemItems>> {
 
         private String pattern;
@@ -48,6 +63,116 @@ public class SigleSearchPresenter extends BasePresenter {
             List<MtlSystemItems> salida = new ArrayList<>();
             try {
                 salida = mService.getItemsByDescription(this.pattern);
+            } catch (ServiceException e) {
+                Log.d(TAG, "SearchSigle::execute::ServiceException");
+                e.printStackTrace();
+                mView.runOnUiThread(new Runnable() {
+                    public void run() {
+                        mView.showError(e.getDescripcion());
+                    }
+                });
+            }
+            return salida;
+        }
+
+        @Override
+        public void onPostExecute(@Nullable List<MtlSystemItems> result) {
+            mView.hideProgres();
+            mView.fillItem(result);
+
+        }
+    }
+
+    private class SearchSigleEntrega implements AppTask<List<MtlSystemItems>> {
+
+        private String pattern;
+        private Long shipmentHeaderId;
+
+        public SearchSigleEntrega(String pattern, Long shipmentHeaderId) {
+            this.pattern = pattern;
+            this.shipmentHeaderId = shipmentHeaderId;
+        }
+
+        @Override
+        public List<MtlSystemItems> execute() {
+            Log.d(TAG, "SearchSigle::execute");
+            List<MtlSystemItems> salida = new ArrayList<>();
+            try {
+                salida = mService.getItemsEntregaByDescription(this.pattern, this.shipmentHeaderId);
+            } catch (ServiceException e) {
+                Log.d(TAG, "SearchSigle::execute::ServiceException");
+                e.printStackTrace();
+                mView.runOnUiThread(new Runnable() {
+                    public void run() {
+                        mView.showError(e.getDescripcion());
+                    }
+                });
+            }
+            return salida;
+        }
+
+        @Override
+        public void onPostExecute(@Nullable List<MtlSystemItems> result) {
+            mView.hideProgres();
+            mView.fillItem(result);
+
+        }
+    }
+
+    private class SearchSigleEntregaOrganizaciones implements AppTask<List<MtlSystemItems>> {
+
+        private String pattern;
+        private Long shipmentHeaderId;
+
+        public SearchSigleEntregaOrganizaciones(String pattern, Long shipmentHeaderId) {
+            this.pattern = pattern;
+            this.shipmentHeaderId = shipmentHeaderId;
+        }
+
+        @Override
+        public List<MtlSystemItems> execute() {
+            Log.d(TAG, "SearchSigle::execute");
+            List<MtlSystemItems> salida = new ArrayList<>();
+            try {
+                salida = mService.getItemsEntregaOrganizacionesByDescription(this.pattern, this.shipmentHeaderId);
+            } catch (ServiceException e) {
+                Log.d(TAG, "SearchSigle::execute::ServiceException");
+                e.printStackTrace();
+                mView.runOnUiThread(new Runnable() {
+                    public void run() {
+                        mView.showError(e.getDescripcion());
+                    }
+                });
+            }
+            return salida;
+        }
+
+        @Override
+        public void onPostExecute(@Nullable List<MtlSystemItems> result) {
+            mView.hideProgres();
+            mView.fillItem(result);
+
+        }
+    }
+
+    private class SearchSigleCiclico implements AppTask<List<MtlSystemItems>> {
+
+        private String pattern;
+        private Long countHeaderId;
+        private Long locatorId;
+
+        public SearchSigleCiclico(String pattern, Long countHeaderId, Long locatorId) {
+            this.pattern = pattern;
+            this.countHeaderId = countHeaderId;
+            this.locatorId = locatorId;
+        }
+
+        @Override
+        public List<MtlSystemItems> execute() {
+            Log.d(TAG, "SearchSigle::execute");
+            List<MtlSystemItems> salida = new ArrayList<>();
+            try {
+                salida = mService.getItemsCiclicoByDescription(this.pattern, this.countHeaderId, this.locatorId);
             } catch (ServiceException e) {
                 Log.d(TAG, "SearchSigle::execute::ServiceException");
                 e.printStackTrace();

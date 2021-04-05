@@ -16,6 +16,7 @@ public interface IConteoCiclicoService {
     public List<Subinventario> getAllSubinventariosByConteoCiclico(Long cycleCountHeaderId) throws ServiceException;
     public List<MtlCycleCountEntries> getAllEntriesInventariadas(Long countHeaderId, String subinventory) throws ServiceException;
     public List<Localizador> getLocalizadoresBySubinventario(String subinventarioCodigo) throws ServiceException;
+    public List<Localizador> getLocalizadoresBySubinventarioCountheaderId(String subinventarioCodigo, Long countHeaderId) throws ServiceException;
     public MtlSystemItems getMtlSystemItemsBySegment(String segment) throws ServiceException;
     public Localizador getLocalizadorByCodigo(String codigo) throws ServiceException;
     public void grabarInventario(Long cycleCountEntrieId, String subinventarioId, Long locatorId, String segment, String serie, String lote, Double cantidad) throws ServiceException;
@@ -29,4 +30,7 @@ public interface IConteoCiclicoService {
     public List<MtlCycleCountEntries> getAllSigleDetalle() throws ServiceException;
 
     public MtlCycleCountEntries getCiclicoSigleDetalle(Long cycleCountEntrieId) throws ServiceException;
+    public List<String> getSegmentsByCountHeaderIdLocatorId(Long cycleCountEntrieId, Long locatorId) throws ServiceException;
+    public List<String> getLotesByCountHeaderIdLocatorIdSegment(Long cycleCountHeaderId, Long locatorId, String segment) throws ServiceException;
+
 }

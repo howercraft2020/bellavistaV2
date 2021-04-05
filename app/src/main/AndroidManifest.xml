@@ -99,13 +99,16 @@
             android:label="Detalle"/>
         <activity
             android:name=".view.ActivityEntregaAgregar"
-            android:label="Agregar"/>
+            android:label="Agregar"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".view.ActivityEntregaAgregarLote"
-            android:label="Lote"/>
+            android:label="Lote"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".view.ActivityEntregaAgregarSerie"
-            android:label="Serie"/>
+            android:label="Serie"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".view.ActivityEntregaAgregarResumen"
             android:label="Resumen"/>

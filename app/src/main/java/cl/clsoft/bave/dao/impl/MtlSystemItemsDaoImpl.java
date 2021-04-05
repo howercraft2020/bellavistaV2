@@ -93,6 +93,34 @@ public class MtlSystemItemsDaoImpl extends GenericDao<MtlSystemItems> implements
     }
 
     @Override
+    public List<MtlSystemItems> getAllByDescriptionShipment(String pattern, Long shipmentHeaderId) throws DaoException {
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionShipment");
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionShipment::pattern: " + pattern);
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionShipment::shipmentHeaderId: " + shipmentHeaderId);
+
+        return super.selectMany(MtlSystemItemsCatalogo.SELECT_ALL_BY_DESCRIPTION_SHIPMENT, new MtlSystemItemsRowMapper(), pattern, shipmentHeaderId);
+    }
+
+    @Override
+    public List<MtlSystemItems> getAllByDescriptionShipmentOrganizacion(String pattern, Long shipmentHeaderId) throws DaoException {
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionShipmentOrganizacion");
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionShipmentOrganizacion::pattern: " + pattern);
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionShipmentOrganizacion::shipmentHeaderId: " + shipmentHeaderId);
+
+        return super.selectMany(MtlSystemItemsCatalogo.SELECT_ALL_BY_DESCRIPTION_SHIPMENT_ORGANIZACION, new MtlSystemItemsRowMapper(), pattern, shipmentHeaderId);
+    }
+
+    @Override
+    public List<MtlSystemItems> getAllByDescriptionCountHeaderLocator(String pattern, Long countHeaderId, Long locatorId) throws DaoException {
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionCountHeaderLocator");
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionCountHeaderLocator::pattern: " + pattern);
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionCountHeaderLocator::countHeaderId: " + countHeaderId);
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionCountHeaderLocator::locatorId: " + locatorId);
+
+        return super.selectMany(MtlSystemItemsCatalogo.SELECT_ALL_BY_DESCRIPTION_COUNTEHEADER_LOCATOR, new MtlSystemItemsRowMapper(), pattern, countHeaderId, locatorId);
+    }
+
+    @Override
     public List<MtlSystemItems> getAllByOcReceipt(Long poHeaderId, Long receiptNum) throws DaoException {
         return super.selectMany(MtlSystemItemsCatalogo.SELECT_BY_OC_RECEIPT, new MtlSystemItemsRowMapper(), poHeaderId, receiptNum);
     }

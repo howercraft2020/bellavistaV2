@@ -14,5 +14,6 @@ public interface IMtlMaterialTransactionsDao {
     MtlMaterialTransactions get(Long transactionId) throws DaoException;
     List<MtlMaterialTransactions> getAllByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws DaoException;
     List<MtlMaterialTransactions> getAllByShipmentEntrega(Long shipmentHeaderId) throws DaoException;
+    List<String> getSegmentsByShipment(Long shipmentHeaderId) throws DaoException;
 
 }

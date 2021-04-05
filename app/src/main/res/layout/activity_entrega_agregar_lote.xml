@@ -14,180 +14,196 @@
         android:visibility="gone"
         layout="@layout/progress_bar"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutLote"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Lote"
-        android:textColorHint="?attr/colorPrimary">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textLote"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
+        android:layout_height="wrap_content">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="textPhonetic"
-            android:imeOptions="actionNext"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="0dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutLoteProveedor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Lote Proveedor"
-        android:textColorHint="?attr/colorPrimary">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textLoteProveedor"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="textPhonetic"
-            android:imeOptions="actionNext"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutLote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Lote"
+                android:textColorHint="?attr/colorPrimary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textLote"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="textPhonetic"
+                    android:imeOptions="actionNext"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutVencimiento"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Vencimiento (dd-mm-aaaa)"
-        android:textColorHint="?attr/colorPrimary">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textVencimiento"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="date" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutLoteProveedor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Lote Proveedor"
+                android:textColorHint="?attr/colorPrimary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textLoteProveedor"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="textPhonetic"
+                    android:imeOptions="actionNext"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <fr.ganfra.materialspinner.MaterialSpinner
-        android:id="@+id/spinnerCategoria"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="?attr/colorPrimaryDark"
-        android:textColor="@android:color/black"
-        app:ms_alignLabels="false"
-        app:ms_arrowSize="14dp"
-        app:ms_baseColor="?attr/colorPrimaryDark"
-        app:ms_enableErrorLabel="true"
-        app:ms_enableFloatingLabel="true"
-        app:ms_floatingLabelText="Categoría"
-        app:ms_hint="Categoría"
-        app:ms_hintColor="?attr/colorPrimaryDark"
-        app:ms_hintTextSize="18dp"
-        app:ms_multiline="false"
-        app:ms_thickness="1dp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutVencimiento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Vencimiento (dd-mm-aaaa)"
+                android:textColorHint="?attr/colorPrimary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textVencimiento"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="date" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <fr.ganfra.materialspinner.MaterialSpinner
-        android:id="@+id/spinnerAtributo1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="?attr/colorPrimaryDark"
-        android:textColor="@android:color/black"
-        app:ms_alignLabels="false"
-        app:ms_arrowSize="14dp"
-        app:ms_baseColor="?attr/colorPrimaryDark"
-        app:ms_enableErrorLabel="true"
-        app:ms_enableFloatingLabel="true"
-        app:ms_floatingLabelText="Atributo 1"
-        app:ms_hint="Atributo 1"
-        app:ms_hintColor="?attr/colorPrimaryDark"
-        app:ms_hintTextSize="18dp"
-        app:ms_multiline="false"
-        app:ms_thickness="1dp" />
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinnerCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorPrimaryDark"
+                android:textColor="@android:color/black"
+                android:focusable="true"
+                app:ms_alignLabels="false"
+                app:ms_arrowSize="14dp"
+                app:ms_baseColor="?attr/colorPrimaryDark"
+                app:ms_enableErrorLabel="true"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelText="Categoría"
+                app:ms_hint="Categoría"
+                app:ms_hintColor="?attr/colorPrimaryDark"
+                app:ms_hintTextSize="18dp"
+                app:ms_multiline="false"
+                app:ms_thickness="1dp" />
 
-    <fr.ganfra.materialspinner.MaterialSpinner
-        android:id="@+id/spinnerAtributo2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="?attr/colorPrimaryDark"
-        android:textColor="@android:color/black"
-        app:ms_alignLabels="false"
-        app:ms_arrowSize="14dp"
-        app:ms_baseColor="?attr/colorPrimaryDark"
-        app:ms_enableErrorLabel="true"
-        app:ms_enableFloatingLabel="true"
-        app:ms_floatingLabelText="Atributo 2"
-        app:ms_hint="Atributo 2"
-        app:ms_hintColor="?attr/colorPrimaryDark"
-        app:ms_hintTextSize="18dp"
-        app:ms_multiline="false"
-        app:ms_thickness="1dp" />
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinnerAtributo1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorPrimaryDark"
+                android:textColor="@android:color/black"
+                android:focusable="true"
+                app:ms_alignLabels="false"
+                app:ms_arrowSize="14dp"
+                app:ms_baseColor="?attr/colorPrimaryDark"
+                app:ms_enableErrorLabel="true"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelText="Atributo 1"
+                app:ms_hint="Atributo 1"
+                app:ms_hintColor="?attr/colorPrimaryDark"
+                app:ms_hintTextSize="18dp"
+                app:ms_multiline="false"
+                app:ms_thickness="1dp" />
 
-    <fr.ganfra.materialspinner.MaterialSpinner
-        android:id="@+id/spinnerAtributo3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="?attr/colorPrimaryDark"
-        android:textColor="@android:color/black"
-        app:ms_alignLabels="false"
-        app:ms_arrowSize="14dp"
-        app:ms_baseColor="?attr/colorPrimaryDark"
-        app:ms_enableErrorLabel="true"
-        app:ms_enableFloatingLabel="true"
-        app:ms_floatingLabelText="Atributo 3"
-        app:ms_hint="Atributo 3"
-        app:ms_hintColor="?attr/colorPrimaryDark"
-        app:ms_hintTextSize="18dp"
-        app:ms_multiline="false"
-        app:ms_thickness="1dp" />
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinnerAtributo2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorPrimaryDark"
+                android:textColor="@android:color/black"
+                app:ms_alignLabels="false"
+                app:ms_arrowSize="14dp"
+                app:ms_baseColor="?attr/colorPrimaryDark"
+                app:ms_enableErrorLabel="true"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelText="Atributo 2"
+                app:ms_hint="Atributo 2"
+                app:ms_hintColor="?attr/colorPrimaryDark"
+                app:ms_hintTextSize="18dp"
+                app:ms_multiline="false"
+                app:ms_thickness="1dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutAtributo1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Atributo 1"
-        android:textColorHint="?attr/colorPrimary">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textAtributo1"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="textPhonetic" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinnerAtributo3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorPrimaryDark"
+                android:textColor="@android:color/black"
+                app:ms_alignLabels="false"
+                app:ms_arrowSize="14dp"
+                app:ms_baseColor="?attr/colorPrimaryDark"
+                app:ms_enableErrorLabel="true"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelText="Atributo 3"
+                app:ms_hint="Atributo 3"
+                app:ms_hintColor="?attr/colorPrimaryDark"
+                app:ms_hintTextSize="18dp"
+                app:ms_multiline="false"
+                app:ms_thickness="1dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutAtributo2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Atributo 2"
-        android:textColorHint="?attr/colorPrimary">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textAtributo2"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="textPhonetic" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutAtributo1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Atributo 1"
+                android:textColorHint="?attr/colorPrimary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textAtributo1"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="textPhonetic" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutAtributo3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Atributo 3"
-        android:textColorHint="?attr/colorPrimary">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textAtributo3"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="textPhonetic"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutAtributo2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Atributo 2"
+                android:textColorHint="?attr/colorPrimary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textAtributo2"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="textPhonetic" />
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutAtributo3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Atributo 3"
+                android:textColorHint="?attr/colorPrimary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textAtributo3"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="textPhonetic"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

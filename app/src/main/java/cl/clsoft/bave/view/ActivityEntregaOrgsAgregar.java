@@ -61,7 +61,7 @@ public class ActivityEntregaOrgsAgregar extends BaseActivity<EntregaOrgsAgregarP
 
     // Controls
     private TextInputLayout layoutSigle;
-    private TextInputEditText textSigle;
+    private InstantAutoCompleteTextView textSigle;
     private ImageView iconSearch;
     private RelativeLayout rlayoutSigle;
     private RelativeLayout rlayoutItem;
@@ -154,9 +154,34 @@ public class ActivityEntregaOrgsAgregar extends BaseActivity<EntregaOrgsAgregarP
             this.layoutLocator.setVisibility(View.GONE);
         }
 
+        this.textSigle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                segment = parent.getAdapter().getItem(pos).toString();
+                Log.d(TAG, "sigle: " + segment);
+                Log.d(TAG, "currentSigle: " + currentSigle);
+
+                if (!segment.equalsIgnoreCase(currentSigle)) {
+                    currentSigle = segment;
+                    MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
+                    if (item != null) {
+                        inventoryItemId = item.getInventoryItemId();
+                    } else {
+                        textSigle.setText("");
+                        currentSigle = "";
+                    }
+                    validaSigle();
+                }
+            }
+        });
+
         this.iconSearch.setOnClickListener(v -> {
-            Intent i = new Intent(this, ActivitySigleSearch.class);
-            startActivityForResult(i, LAUNCH_SEARCHSINGLE_ACTIVITY);
+            Intent iSearch = new Intent(this, ActivitySigleSearch.class);
+            iSearch.putExtra("Tipo", "EO");
+            iSearch.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+            startActivityForResult(iSearch, LAUNCH_SEARCHSINGLE_ACTIVITY);
         });
 
         this.textSubinventory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -190,6 +215,20 @@ public class ActivityEntregaOrgsAgregar extends BaseActivity<EntregaOrgsAgregarP
 
         this.textCantidad.setText(this.cantidad.toString());
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        List<String> segmentosShipment = mPresenter.getSegmentosByShipment(this.shipmentHeaderId);
+        if (segmentosShipment.size() > 0) {
+            String[] segmentos = new String[segmentosShipment.size()];
+            for (int i = 0; i < segmentosShipment.size(); i++) {
+                segmentos[i] = segmentosShipment.get(i);
+            }
+            ArrayAdapter<String> adapterSegmentos = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, segmentos);
+            this.textSigle.setAdapter(adapterSegmentos);
+        }
     }
 
     @Override

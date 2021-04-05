@@ -3,6 +3,7 @@ package cl.clsoft.bave.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -109,6 +110,9 @@ public class ActivityEntregasOrgs extends BaseActivity<EntregasOrgsPresenter> {
 
     public void fillEntregas(List<EntregaOrgsHeader> headers) {
         if (headers != null) {
+            if (headers.size() == 1 && headers.get(0).getShipmentNumber() == null)
+                return;
+            Log.d(TAG, "headers size: " + headers.size());
             this.headers = headers;
             this.adapter = new AdapterItemEntregaOrgs(headers);
             this.recyclerViewEntregas.setAdapter(this.adapter);

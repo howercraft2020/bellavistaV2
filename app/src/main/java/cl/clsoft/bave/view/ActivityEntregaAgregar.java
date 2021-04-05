@@ -48,6 +48,7 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
     private String subinventoryCode;
     private String locatorCode;
     private Double cantidad;
+    private Double cantidadTransaccion;
     private String lote;
     private String loteProveedor;
     private String vencimiento;
@@ -66,7 +67,7 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
 
     // Controls
     private TextInputLayout layoutSigle;
-    private TextInputEditText textSigle;
+    private InstantAutoCompleteTextView textSigle;
     private ImageView iconSearch;
     private RelativeLayout rlayoutSigle;
     private RelativeLayout rlayoutItem;
@@ -196,9 +197,35 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
             }
         });
 
+        this.textSigle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                segment = parent.getAdapter().getItem(pos).toString();
+                Log.d(TAG, "sigle: " + segment);
+                Log.d(TAG, "currentSigle: " + currentSigle);
+
+                if (!segment.equalsIgnoreCase(currentSigle)) {
+                    currentSigle = segment;
+                    MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
+                    if (item != null) {
+                        inventoryItemId = item.getInventoryItemId();
+                    } else {
+                        textSigle.setText("");
+                        currentSigle = "";
+                    }
+                    validaSigle();
+                }
+            }
+        });
+
+
         this.iconSearch.setOnClickListener(v -> {
-            Intent i = new Intent(this, ActivitySigleSearch.class);
-            startActivityForResult(i, LAUNCH_SEARCHSINGLE_ACTIVITY);
+            Intent iSearch = new Intent(this, ActivitySigleSearch.class);
+            iSearch.putExtra("Tipo", "E");
+            iSearch.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+            startActivityForResult(iSearch, LAUNCH_SEARCHSINGLE_ACTIVITY);
         });
 
         this.textSubinventory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -210,6 +237,7 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                 Log.d(TAG, "subinventoryCode: " + subinventoryCode);
                 if (subinventoryCode != null) {
                     mPresenter.getLocalizadoresBySubinventario(subinventoryCode);
+                    textLocator.requestFocus();
                 }
             }
         });
@@ -221,6 +249,31 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                                     long id) {
                 locatorCode = parent.getAdapter().getItem(pos).toString();
                 Log.d(TAG, "locatorCode: " + locatorCode);
+            }
+        });
+
+
+        this.textCantidad.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event)
+            {
+                Log.d(TAG, "onEditorAction: " + textView.getText());
+                Log.d(TAG, "actionId: " + actionId);
+                //Log.d(TAG, "Key Code: " + event.getKeyCode());
+                boolean action = false;
+                action = true;
+                if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+                {
+                    if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
+                        Double nuevaCantidad = Double.valueOf(textView.getText().toString());
+                        if (nuevaCantidad > cantidadTransaccion) {
+                            showWarning("Cantidad no puede ser superior a " + cantidadTransaccion);
+                            textCantidad.setText(cantidadTransaccion.toString());
+                        }
+                    }
+                    action = true;
+                }
+                return action;
             }
         });
 
@@ -241,6 +294,20 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
         }
 
         this.textCantidad.setText(this.cantidad.toString());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        List<String> segmentosShipment = mPresenter.getSegmentosByShipment(this.shipmentHeaderId);
+        if (segmentosShipment.size() > 0) {
+            String[] segmentos = new String[segmentosShipment.size()];
+            for (int i = 0; i < segmentosShipment.size(); i++) {
+                segmentos[i] = segmentosShipment.get(i);
+            }
+            ArrayAdapter<String> adapterSegmentos = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, segmentos);
+            this.textSigle.setAdapter(adapterSegmentos);
+        }
     }
 
     @Override
@@ -382,6 +449,8 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
             this.layoutSubinventory.setVisibility(View.VISIBLE);
             this.layoutLocator.setVisibility(View.VISIBLE);
             this.textCantidad.setText(transaction.getQuantity().toString());
+            this.textSubinventory.requestFocus();
+            this.cantidadTransaccion = transaction.getQuantity();
         }
     }
 
@@ -397,6 +466,10 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                 this.textLocator.setText(this.locatorCode);
                 //this.hayLocalizador = true;
             } else {
+                ArrayAdapter<String> adapterLocator = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, new String[0]);
+                this.textLocator.setAdapter(adapterLocator);
+                this.textLocator.setText("");
+                this.locatorCode = "";
                 //this.textLocator.setVisibility(View.GONE);
                 //this.layoutLocator.setVisibility(View.GONE);
                 //this.textSigle.setEnabled(false);
@@ -421,6 +494,7 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
             this.textProductoSerie.setText("SI");
         else
             this.textProductoSerie.setText("NO");
+        this.cantidadTransaccion = cantidad;
     }
 
     @Override
@@ -474,15 +548,19 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
         this.subinventoryCode = this.textSubinventory.getText().toString();
 
         // Valida Localizador
-        if (this.textLocator.getText() == null) {
-            this.textLocator.setError("ingrese el localizador");
-            return false;
+        if (this.textLocator.getAdapter().getCount() > 0) {
+            if (this.textLocator.getText() == null) {
+                this.textLocator.setError("ingrese el localizador");
+                return false;
+            }
+            if (this.textLocator.getText().toString().isEmpty()) {
+                this.textLocator.setError("ingrese el localizador");
+                return false;
+            }
+            this.locatorCode = this.textLocator.getText().toString();
+        } else {
+            this.locatorCode = "";
         }
-        if (this.textLocator.getText().toString().isEmpty()) {
-            this.textLocator.setError("ingrese el localizador");
-            return false;
-        }
-        this.locatorCode = this.textLocator.getText().toString();
 
         return true;
     }

@@ -28,5 +28,6 @@ public interface IEntregaOrgsService {
     public TransactionDetalleDto getTransactionDetalleById(Long transactionId) throws ServiceException;
     public void deleteTransactionsById(Long transactionId) throws ServiceException;
     public void closeEntrega(Long shipmentHeaderId) throws ServiceException;
+    public List<String> getSegmentsByShipment(Long shipmentHeaderId) throws ServiceException;
 
 }

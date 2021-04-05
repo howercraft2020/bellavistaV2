@@ -582,11 +582,12 @@ public class EntregaServiceImpl implements IEntregaService {
             }
 
             // Genera archivo Conteo
-            String nombreArchivo = "I_2_" + shipmentHeaderId + ".csv";
+            String nombreArchivo = "I_2_" + shipmentHeaderId + ".txt";
             File tarjetaSD = Environment.getExternalStorageDirectory();
             File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
             File archivo = new File(Dir, nombreArchivo);
             FileWriter writer = new FileWriter(archivo);
+            writer.write("RECIBO;FIN" +"\r\n");
             writer.write(
                     "HDR;"
                     + (rcvHeadersInterface.getHeaderInterfaceId() == null ? "null" : rcvHeadersInterface.getHeaderInterfaceId()) + ";"
@@ -720,6 +721,19 @@ public class EntregaServiceImpl implements IEntregaService {
             throw new ServiceException(2, e.getDescripcion());
         } catch(IOException e){
             throw new ServiceException(2, e.getMessage());
+        }
+    }
+
+    @Override
+    public List<String> getSegmentsByShipment(Long shipmentHeaderId) throws ServiceException {
+        Log.d(TAG, "EntregaServiceImpl::getSegmentsByShipment");
+        Log.d(TAG, "EntregaServiceImpl::getSegmentsByShipment::shipmentHeaderId: " + shipmentHeaderId);
+
+        IRcvTransactionsDao rcvTransactionsDao = new RcvTransactionsDaoImpl();
+        try {
+            return rcvTransactionsDao.getSegmentsByShipment(shipmentHeaderId);
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
         }
     }
 
