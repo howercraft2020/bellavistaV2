@@ -18,6 +18,7 @@ public interface IMtlSystemItemsDao {
     public List<MtlSystemItems> getAllByDescriptionShipment(String pattern, Long shipmentHeaderId) throws DaoException;
     public List<MtlSystemItems> getAllByDescriptionShipmentOrganizacion(String pattern, Long shipmentHeaderId) throws DaoException;
     public List<MtlSystemItems> getAllByDescriptionCountHeaderLocator(String pattern, Long countHeaderId, Long locatorId) throws DaoException;
+    public List<MtlSystemItems> getAllByDescriptionInventoryLocator(String pattern, Long inventoryId, Long locatorId) throws DaoException;
     public List<MtlSystemItems> getAllByOcReceipt(Long poHeaderId, Long receiptNum) throws DaoException;
 
 }

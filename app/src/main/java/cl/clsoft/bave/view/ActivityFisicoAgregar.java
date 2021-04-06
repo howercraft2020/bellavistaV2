@@ -147,8 +147,13 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
         });
 
         this.iconSearch.setOnClickListener(v -> {
-            Intent i = new Intent(this, ActivitySigleSearch.class);
-            startActivityForResult(i, LAUNCH_SEARCHSINGLE_ACTIVITY);
+            if (locatorId != null && locatorId.longValue() > 0) {
+                Intent iSearch = new Intent(this, ActivitySigleSearch.class);
+                iSearch.putExtra("Tipo", "F");
+                iSearch.putExtra("InventoryId", this.inventarioId);
+                iSearch.putExtra("LocatorId", this.locatorId);
+                startActivityForResult(iSearch, LAUNCH_SEARCHSINGLE_ACTIVITY);
+            }
         });
 
         this.layoutSigle.setHintEnabled(false);

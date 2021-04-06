@@ -66,6 +66,14 @@ public class MtlSystemItemsCatalogo {
                     "     description || long_description like ? " +
                     "     AND inventory_item_id in (SELECT distinct(inventory_item_id) FROM mtl_cycle_count_entries WHERE cycle_count_header_id = ? and locator_id = ? )";
 
+    public static final String SELECT_ALL_BY_DESCRIPTION_INVENTORY_LOCATOR =
+            " SELECT * " +
+                    " FROM " +
+                    "     mtl_system_items " +
+                    " WHERE " +
+                    "     description || long_description like ? " +
+                    "     AND inventory_item_id in (SELECT distinct(inventory_item_id) FROM mtl_physical_inventory_tags WHERE physical_inventory_id = ? and locator_id = ? )";
+
     public static final String SELECT_BY_OC_RECEIPT =
             "SELECT msi.* FROM PO_HEADERS_ALL pha, " +
             "PO_LINES_ALL pla, MTL_SYSTEM_ITEMS msi " +

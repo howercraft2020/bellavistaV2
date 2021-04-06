@@ -17,11 +17,15 @@ import cl.clsoft.bave.dao.IMtlPhysicalInventoriesDao;
 import cl.clsoft.bave.dao.IMtlPhysicalInventoryTagsDao;
 import cl.clsoft.bave.dao.IMtlPhysicalSubinventoriesDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
+import cl.clsoft.bave.dao.IOrganizacionDao;
+import cl.clsoft.bave.dao.IOrganizacionPrincipalDao;
 import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlPhysicalInventoriesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlPhysicalInventoryTagsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlPhysicalSubinventoriesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
+import cl.clsoft.bave.dao.impl.OrganizacionDaoImpl;
+import cl.clsoft.bave.dao.impl.OrganizacionPrincipalDaoImpl;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.Localizador;
@@ -29,6 +33,7 @@ import cl.clsoft.bave.model.MtlPhysicalInventories;
 import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 import cl.clsoft.bave.model.MtlPhysicalSubinventories;
 import cl.clsoft.bave.model.MtlSystemItems;
+import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.service.IInventarioFisicoService;
 
 public class InventarioFisicoService implements IInventarioFisicoService {
@@ -174,6 +179,23 @@ public class InventarioFisicoService implements IInventarioFisicoService {
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
         try {
             List<MtlSystemItems> items = mtlSystemItemsDao.getAllByDescriptionCountHeaderLocator(pattern, countHeaderId, locatorId);
+            Log.d(TAG, "size" + items.size());
+            return items;
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<MtlSystemItems> getItemsFisicoByDescription(String pattern, Long inventoryId, Long locatorId) throws ServiceException {
+        Log.d(TAG, "InventarioFisicoService::getItemsFisicoByDescription");
+        Log.d(TAG, "InventarioFisicoService::getItemsFisicoByDescription::pattern: " + pattern);
+        Log.d(TAG, "InventarioFisicoService::getItemsFisicoByDescription::inventoryId: " + inventoryId);
+        Log.d(TAG, "InventarioFisicoService::getItemsFisicoByDescription::locatorId: " + locatorId);
+
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+        try {
+            List<MtlSystemItems> items = mtlSystemItemsDao.getAllByDescriptionInventoryLocator(pattern, inventoryId, locatorId);
             Log.d(TAG, "size" + items.size());
             return items;
         } catch(DaoException e){
@@ -419,7 +441,15 @@ public class InventarioFisicoService implements IInventarioFisicoService {
         IMtlPhysicalInventoriesDao mtlPhysicalInventoriesDao = new MtlPhysicalInventoriesDaoImpl();
         IMtlPhysicalSubinventoriesDao mtlPhysicalSubinventoriesDao = new MtlPhysicalSubinventoriesDaoImpl();
         IMtlPhysicalInventoryTagsDao mtlPhysicalInventoryTagsDao = new MtlPhysicalInventoryTagsDaoImpl();
+        IOrganizacionPrincipalDao organizacionPrincipalDao = new OrganizacionPrincipalDaoImpl();
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
         try {
+            // Recupera Organizacion
+            OrganizacionPrincipal organizacionPrincipal = organizacionPrincipalDao.get();
+            if (organizacionPrincipal == null) {
+                throw new ServiceException(1, "Organizacion Principal no existe");
+            }
+
             // Valida la existencia inventario
             MtlPhysicalInventories inventory = mtlPhysicalInventoriesDao.get(inventoryId);
             if (inventory == null) {
@@ -433,30 +463,35 @@ public class InventarioFisicoService implements IInventarioFisicoService {
             }
 
             // Genera archivo Conteo
-            String nombreArchivo = "I_F_" + inventoryId + "_conteo.csv";
+            String nombreArchivo = "I_F_" + inventoryId + ".txt";
 
             File tarjetaSD = Environment.getExternalStorageDirectory();
             File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
             File archivo = new File(Dir, nombreArchivo);
             FileWriter writer = new FileWriter(archivo);
+            writer.write("RECIBO;FIN" +"\r\n");
             for (MtlPhysicalInventoryTags tag : tagsInventariados) {
-                writer.write(tag.getPhysicalInventoryId() + ";" +tag.getOrganizationId() + ";" +
-                        tag.getTagId() + ";" + tag.getInventoryItemId() + ";" + tag.getCount() + ";U;" +
-                        tag.getPrimaryUomCode() + ";" + tag.getSubinventory() + ";" + (tag.getLocatorId() == null ? "" : tag.getLocatorId()) + ";" +
-                        tag.getLotNumber() + ";" + tag.getSerialNum() + ";FIN\r\n");
-            }
-            writer.flush();
-            writer.close();
-
-            // Genera archivo Estado Aprobacion
-            nombreArchivo = "I_F_" + inventoryId + "_aprobacion.csv";
-            tarjetaSD = Environment.getExternalStorageDirectory();
-            Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
-            archivo = new File(Dir, nombreArchivo);
-            writer = new FileWriter(archivo);
-            for (MtlPhysicalInventoryTags tag : tagsInventariados) {
-                writer.write(inventory.getOrganizationId() + ";" + inventoryId + ";" +
-                        tag.getTagId() + ";1;" + inventory.getEmployeeId() + ";FIN\r\n");
+                MtlSystemItems mtlSystemItems = mtlSystemItemsDao.get(tag.getInventoryItemId());
+                if (mtlSystemItems != null) {
+                    writer.write(
+                            tag.getPhysicalInventoryId() + ";"                                              // PHYSICAL_INVENTORY_ID
+                                    + tag.getOrganizationId() + ";"                                             // ORG
+                                    + organizacionPrincipal.getCode() + ";"                                     // ORGANIZATION_CODE
+                                    + tag.getTagId() + ";"                                                      // TAG_NUMBER
+                                    + tag.getInventoryItemId() + ";"                                            // INVENTORY_ITEM_ID
+                                    + mtlSystemItems.getSegment1() + ";"                                        // SEGMENT1
+                                    + mtlSystemItems.getDescription() + ";"                                     // DESCRIPTION
+                                    + tag.getCount() + ";"                                                      // COUNT
+                                    + "U;"                                                                      // ACTION
+                                    + tag.getPrimaryUomCode() + ";"                                             // TAG_UOM
+                                    + tag.getSubinventory() + ";"                                               // SUBINVENTORY
+                                    + (tag.getLocatorId() == null ? "null" : tag.getLocatorId()) + ";"          // LOCATOR_ID
+                                    + (tag.getLocatorCode() == null ? "null" : (tag.getLocatorCode().isEmpty() ? "null" : tag.getLocatorCode())) + ";"  // LOCATOR
+                                    + (tag.getLotNumber() == null ? "null" : (tag.getLotNumber().isEmpty() ? "null" : tag.getLotNumber())) + ";"        // LOT_NUMBER
+                                    + (tag.getSerialNum() == null ? "null" : (tag.getSerialNum().isEmpty() ? "null" : tag.getSerialNum()))              // SERIAL_NUM
+                                    + ";FIN\r\n"
+                    );
+                }
             }
             writer.flush();
             writer.close();

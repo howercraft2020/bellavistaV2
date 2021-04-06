@@ -121,6 +121,16 @@ public class MtlSystemItemsDaoImpl extends GenericDao<MtlSystemItems> implements
     }
 
     @Override
+    public List<MtlSystemItems> getAllByDescriptionInventoryLocator(String pattern, Long inventoryId, Long locatorId) throws DaoException {
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionInventoryLocator");
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionInventoryLocator::pattern: " + pattern);
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionInventoryLocator::inventoryId: " + inventoryId);
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionInventoryLocator::locatorId: " + locatorId);
+
+        return super.selectMany(MtlSystemItemsCatalogo.SELECT_ALL_BY_DESCRIPTION_INVENTORY_LOCATOR, new MtlSystemItemsRowMapper(), pattern, inventoryId, locatorId);
+    }
+
+    @Override
     public List<MtlSystemItems> getAllByOcReceipt(Long poHeaderId, Long receiptNum) throws DaoException {
         return super.selectMany(MtlSystemItemsCatalogo.SELECT_BY_OC_RECEIPT, new MtlSystemItemsRowMapper(), poHeaderId, receiptNum);
     }
