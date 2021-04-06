@@ -54,6 +54,11 @@ public class SigleSearchPresenter extends BasePresenter {
         mTaskExecutor.async(new SigleSearchPresenter.SearchSigleCiclico(pattern, countHeaderId, locatorId));
     }
 
+    public void getItemsFisico(String pattern, Long inventoryId, Long locatorId) {
+        mView.showProgres("Cargando productos...");
+        mTaskExecutor.async(new SigleSearchPresenter.SearchSigleFisico(pattern, inventoryId, locatorId));
+    }
+
     private class SearchSigle implements AppTask<List<MtlSystemItems>> {
 
         private String pattern;
@@ -213,6 +218,44 @@ public class SigleSearchPresenter extends BasePresenter {
             List<MtlSystemItems> salida = new ArrayList<>();
             try {
                 salida = mService.getItemsCiclicoByDescription(this.pattern, this.countHeaderId, this.locatorId);
+            } catch (ServiceException e) {
+                Log.d(TAG, "SearchSigle::execute::ServiceException");
+                e.printStackTrace();
+                mView.runOnUiThread(new Runnable() {
+                    public void run() {
+                        mView.showError(e.getDescripcion());
+                    }
+                });
+            }
+            return salida;
+        }
+
+        @Override
+        public void onPostExecute(@Nullable List<MtlSystemItems> result) {
+            mView.hideProgres();
+            mView.fillItem(result);
+
+        }
+    }
+
+    private class SearchSigleFisico implements AppTask<List<MtlSystemItems>> {
+
+        private String pattern;
+        private Long inventoryId;
+        private Long locatorId;
+
+        public SearchSigleFisico(String pattern, Long inventoryId, Long locatorId) {
+            this.pattern = pattern;
+            this.inventoryId = inventoryId;
+            this.locatorId = locatorId;
+        }
+
+        @Override
+        public List<MtlSystemItems> execute() {
+            Log.d(TAG, "SearchSigle::execute");
+            List<MtlSystemItems> salida = new ArrayList<>();
+            try {
+                salida = mService.getItemsFisicoByDescription(this.pattern, this.inventoryId, this.locatorId);
             } catch (ServiceException e) {
                 Log.d(TAG, "SearchSigle::execute::ServiceException");
                 e.printStackTrace();

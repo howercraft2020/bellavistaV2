@@ -269,6 +269,9 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                         if (nuevaCantidad > cantidadTransaccion) {
                             showWarning("Cantidad no puede ser superior a " + cantidadTransaccion);
                             textCantidad.setText(cantidadTransaccion.toString());
+                        } else if (nuevaCantidad <= 0D) {
+                            showWarning("Cantidad no puede ser 0 o menor");
+                            textCantidad.setText(cantidadTransaccion.toString());
                         }
                     }
                     action = true;

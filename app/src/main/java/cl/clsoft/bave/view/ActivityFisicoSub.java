@@ -42,6 +42,7 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> implemen
     private TextView textFechaCreacion;
     private RecyclerView recyclerViewFisicoSub;
     private AdapterInventarioFisicoSub adapter;
+    private SweetAlertDialog dialog;
 
     @Override
     protected FisicoSubPresenter createPresenter(@NonNull Context context){
@@ -126,6 +127,14 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> implemen
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_inventario_subinventario, menu);
@@ -164,8 +173,8 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> implemen
     }
 
     public void mensajeOkCloseInventory() {
-        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-        .setTitleText("Éxito")
+        dialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+        dialog.setTitleText("Éxito")
         .setContentText("Inventario cerrado con éxito")
         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
