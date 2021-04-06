@@ -102,6 +102,15 @@ public class MtlSystemItemsDaoImpl extends GenericDao<MtlSystemItems> implements
     }
 
     @Override
+    public List<MtlSystemItems> getAllByDescriptionPoHeaderId(String pattern, Long poHeaderId) throws DaoException {
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionPoHeaderId");
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionPoHeaderId::pattern: " + pattern);
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionPoHeaderId::poHeaderId: " + poHeaderId);
+
+        return super.selectMany(MtlSystemItemsCatalogo.SELECT_ALL_BY_DESCRIPTION_POHEADERID, new MtlSystemItemsRowMapper(), pattern, poHeaderId);
+    }
+
+    @Override
     public List<MtlSystemItems> getAllByDescriptionShipmentOrganizacion(String pattern, Long shipmentHeaderId) throws DaoException {
         Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionShipmentOrganizacion");
         Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionShipmentOrganizacion::pattern: " + pattern);

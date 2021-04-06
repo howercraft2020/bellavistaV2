@@ -50,6 +50,15 @@ public class MtlSystemItemsCatalogo {
             "     description || long_description like ? " +
             "     AND inventory_item_id in (SELECT distinct(item_id) FROM rcv_transactions WHERE shipment_header_id = ?)";
 
+    public static final String SELECT_ALL_BY_DESCRIPTION_POHEADERID =
+            " SELECT * " +
+                    " FROM " +
+                    "     mtl_system_items " +
+                    " WHERE " +
+                    "     description || long_description like ? " +
+                    "     AND inventory_item_id in (SELECT distinct(item_id) FROM po_lines_all WHERE po_header_id = ?)";
+
+
     public static final String SELECT_ALL_BY_DESCRIPTION_SHIPMENT_ORGANIZACION =
             " SELECT * " +
                     " FROM " +
