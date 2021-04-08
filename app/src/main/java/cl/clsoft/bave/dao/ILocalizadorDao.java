@@ -15,4 +15,5 @@ public interface ILocalizadorDao {
     public Localizador getByCodigo(String codigo) throws DaoException;
     public List<Localizador> getAllBySubinventario(String subinventarioCodigo) throws DaoException;
     public List<Localizador> getAllBySubinventarioCountheaderId(String subinventarioCodigo, Long cycleCountHeaderId) throws DaoException;
+    public List<Localizador> getAllBySubinventarioInventarioId(String subinventarioCodigo, Long inventarioId) throws DaoException;
 }

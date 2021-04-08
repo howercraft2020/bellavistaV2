@@ -171,7 +171,7 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
         this.layoutCantidad.setHintEnabled(false);
         this.textCantidad.setEnabled(false);
         //this.fillLocator();
-        this.mPresenter.getLocalizadoresBySubinventario(this.subinventarioCodigo);
+        this.mPresenter.getLocalizadoresBySubinventario(this.subinventarioCodigo, this.inventarioId);
     }
 
     @Override

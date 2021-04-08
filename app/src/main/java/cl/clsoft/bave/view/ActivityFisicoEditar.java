@@ -43,6 +43,7 @@ public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> im
     private TextView textVencimiento;
     private TextInputLayout layoutCantidad;
     private TextInputEditText textCantidad;
+    private SweetAlertDialog dialog;
 
     @NonNull
     @Override
@@ -84,20 +85,32 @@ public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> im
             }
             this.textSubinventario.setText(tag.getSubinventory());
             if (tag.getLocatorId() != null) {
-                this.textLocalizador.setText(tag.getLocatorId().toString());
+                String[] localizadorArr = tag.getLocatorCode().split("\\.");
+                this.textLocalizador.setText(localizadorArr[0]);
             } else {
                 this.textLocalizador.setText("");
             }
             this.textNumeroParte.setText(tag.getDescription());
             this.textCodigoSigle.setText(tag.getSegment1());
             this.textNumeroSerie.setText(tag.getSerialNum());
-            this.textNumeroLote.setText(tag.getLocatorCode());
+            if (tag.getSerialNum() != null && !tag.getSerialNum().isEmpty()) {
+                this.textCantidad.setEnabled(false);
+            }
+            this.textNumeroLote.setText(tag.getLotNumber());
             this.textVencimiento.setText(tag.getLotExpirationDate());
             if (tag.getCount() != null)
                 this.textCantidad.setText(tag.getCount().toString());
             this.inventarioId = tag.getPhysicalInventoryId();
             this.subinventarioId = tag.getSubinventory();
             layoutCantidad.setHint("Cantidad (" + tag.getPrimaryUomCode() + ")");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialog != null) {
+            dialog.dismiss();
         }
     }
 
@@ -145,13 +158,12 @@ public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> im
     }
 
     public void mensajeOkDelete() {
-        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-        .setTitleText("Éxito")
+        dialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+        dialog.setTitleText("Éxito")
         .setContentText("Eliminación exitosa")
         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sDialog) {
-                Log.d("CMFA", "CLICK");
                 Intent i = new Intent(getApplicationContext(), ActivityFisicoDetalle.class);
                 i.putExtra("InventarioId", inventarioId);
                 i.putExtra("SubinventarioId", subinventarioId);

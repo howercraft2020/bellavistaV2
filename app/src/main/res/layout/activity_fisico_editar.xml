@@ -79,21 +79,12 @@
             android:text="textLocalizador" />
 
         <TextView
-            android:id="@+id/labelNumeroParte"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/icon"
-            android:layout_below="@id/labelLocalizador"
-            android:textStyle="bold"
-            android:text="N° DE PARTE:" />
-
-        <TextView
             android:id="@+id/textNumeroParte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/labelLocalizador"
-            android:layout_toRightOf="@+id/labelNumeroParte"
-            android:paddingLeft="5dp"
+            android:layout_toRightOf="@+id/icon"
+            android:paddingLeft="0dp"
             android:text="textNumeroParte" />
 
         <TextView
@@ -101,7 +92,7 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/icon"
-            android:layout_below="@id/labelNumeroParte"
+            android:layout_below="@id/textNumeroParte"
             android:layout_marginTop="0dp"
             android:textStyle="bold"
             android:text="CODIGO SIGLE:" />
@@ -110,7 +101,7 @@
             android:id="@+id/textCodigoSigle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/labelNumeroParte"
+            android:layout_below="@id/textNumeroParte"
             android:layout_toRightOf="@+id/labelCodigoSigle"
             android:paddingLeft="5dp"
             android:text="textCodigoSigle" />

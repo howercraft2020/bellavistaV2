@@ -442,6 +442,22 @@ public class InventarioFisicoService implements IInventarioFisicoService {
     }
 
     @Override
+    public List<Localizador> getLocalizadoresBySubinventarioInventario(String subinventarioCodigo, Long inventarioId) throws ServiceException {
+        Log.d(TAG, "InventarioFisicoService::getLocalizadoresBySubinventarioInventario");
+        Log.d(TAG, "InventarioFisicoService::getLocalizadoresBySubinventarioInventario::subinventarioCodigo: " + subinventarioCodigo);
+        Log.d(TAG, "InventarioFisicoService::getLocalizadoresBySubinventarioInventario::inventarioId: " + inventarioId);
+
+        ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
+        try {
+            List<Localizador> salida = localizadorDao.getAllBySubinventarioInventarioId(subinventarioCodigo, inventarioId);
+            return salida;
+        } catch(DaoException e){
+            e.printStackTrace();
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
     public Long closeInventory(Long inventoryId) throws ServiceException {
         Log.d(TAG, "InventarioFisicoService::closeInventory");
         Log.d(TAG, "InventarioFisicoService::closeInventory::inventoryId: " + inventoryId);

@@ -87,4 +87,13 @@ public class LocalizadorDaoImpl extends GenericDao<Localizador> implements ILoca
 
         return super.selectMany(LocalizadorCatalogo.SELECT_ALL_BY_SUBINVENTORY_COUNTHEADERID, new LocalizadorRowMapper(), subinventarioCodigo, cycleCountHeaderId);
     }
+
+    @Override
+    public List<Localizador> getAllBySubinventarioInventarioId(String subinventarioCodigo, Long inventarioId) throws DaoException {
+        Log.d(TAG, "LocalizadorDaoImpl::getAllBySubinventarioInventarioId");
+        Log.d(TAG, "LocalizadorDaoImpl::getAllBySubinventarioInventarioId::subinventarioCodigo: " + subinventarioCodigo);
+        Log.d(TAG, "LocalizadorDaoImpl::getAllBySubinventarioInventarioId::inventarioId: " + inventarioId);
+
+        return super.selectMany(LocalizadorCatalogo.SELECT_ALL_BY_SUBINVENTORY_INVENTARIOID, new LocalizadorRowMapper(), subinventarioCodigo, inventarioId);
+    }
 }

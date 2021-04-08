@@ -69,7 +69,8 @@ public class AdapterInventarioFisicoDetalleNoInventariado extends RecyclerView.A
         public void onBind(MtlPhysicalInventoryTags mtlPhysicalInventoryTags) {
 
             if (mtlPhysicalInventoryTags.getLocatorId() != null) {
-                this.textLocalizador.setText(mtlPhysicalInventoryTags.getLocatorCode());
+                String[] localizadorArr = mtlPhysicalInventoryTags.getLocatorCode().split("\\.");
+                this.textLocalizador.setText(localizadorArr[0]);
             } else {
                 this.textLocalizador.setText("");
             }

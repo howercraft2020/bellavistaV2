@@ -40,6 +40,7 @@ public interface IInventarioFisicoService {
     public void grabarInventario(Long inventarioId, String subinventarioId, Long locatorId, String segment, String serie, String lote, String vencimiento, Double cantidad) throws ServiceException;
     public Localizador getLocalizadorByCodigo(String codigo) throws ServiceException;
     public List<Localizador> getLocalizadoresBySubinventario(String subinventarioCodigo) throws ServiceException;
+    public List<Localizador> getLocalizadoresBySubinventarioInventario(String subinventarioCodigo, Long inventarioId) throws ServiceException;
 
     public Long closeInventory(Long inventoryId) throws ServiceException;
 

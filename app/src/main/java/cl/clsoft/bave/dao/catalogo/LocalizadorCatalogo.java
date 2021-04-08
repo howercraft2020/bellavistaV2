@@ -60,4 +60,14 @@ public class LocalizadorCatalogo {
             " ORDER BY " +
             "     cod_localizador";
 
+    public static final String SELECT_ALL_BY_SUBINVENTORY_INVENTARIOID =
+            " SELECT * " +
+                    " FROM " +
+                    "     localizador " +
+                    " WHERE " +
+                    "     cod_subinventario = ? " +
+                    "     AND id_localizador IN (SELECT locator_id FROM mtl_physical_inventory_tags WHERE physical_inventory_id = ? ) " +
+                    " ORDER BY " +
+                    "     cod_localizador";
+
 }
