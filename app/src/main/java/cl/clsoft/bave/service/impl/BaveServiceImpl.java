@@ -94,24 +94,52 @@ public class BaveServiceImpl implements IBaveService {
             String linea = null;
             linea = leerArchivo.readLine();
             while(linea != null){
+                boolean existe = false;
                 String [] extraccion = linea.split("\\|",-1);
                 if (extraccion[0].equals("1")){
-                    OrganizacionPrincipal organizacionPrincipal = new OrganizacionPrincipal();
+                    Long organizacionPrincipalId = new Long(extraccion[4]);
+                    OrganizacionPrincipal organizacionPrincipal = organizacionPrincipalDao.get(organizacionPrincipalId);
+                    if (organizacionPrincipal == null) {
+                        organizacionPrincipal = new OrganizacionPrincipal();
+                    } else {
+                        existe = true;
+                    }
                     organizacionPrincipal.setNombre(extraccion[1]);
                     organizacionPrincipal.setNombreCorto(extraccion[2]);
                     organizacionPrincipal.setCode(extraccion[3]);
                     organizacionPrincipal.setIdOrganizacion(extraccion[4].equalsIgnoreCase("") ? null : new Long(extraccion[4]));
-                    organizacionPrincipalDao.insert(organizacionPrincipal);
+                    if (existe) {
+                        organizacionPrincipalDao.update(organizacionPrincipal);
+                    } else {
+                        organizacionPrincipalDao.insert(organizacionPrincipal);
+                    }
                 }
                 else if (extraccion[0].equals("2")) {
-                    Subinventario subinventario = new Subinventario();
+                    Long organizacionId = new Long(extraccion[1]);
+                    String subinventarioCodigo = extraccion[2];
+                    Subinventario subinventario = subinventarioDao.get(organizacionId, subinventarioCodigo);
+                    if (subinventario == null) {
+                        subinventario = new Subinventario();
+                    } else {
+                        existe = true;
+                    }
                     subinventario.setOrganizationId(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
                     subinventario.setCodSubinventario(extraccion[2]);
                     subinventario.setDescription(extraccion[3]);
                     subinventario.setCodLocalizador(extraccion[4]);
-                    subinventarioDao.insert(subinventario);
+                    if (existe) {
+                        subinventarioDao.update(subinventario);
+                    } else {
+                        subinventarioDao.insert(subinventario);
+                    }
                 } else if (extraccion[0].equals("3")) {
-                    Localizador localizador = new Localizador();
+                    Long localizadorId = new Long(extraccion[1]);
+                    Localizador localizador = localizadorDao.get(localizadorId);
+                    if (localizador == null) {
+                        localizador = new Localizador();
+                    } else {
+                        existe = true;
+                    }
                     localizador.setIdLocalizador(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
                     localizador.setOrganizationId(extraccion[2].equalsIgnoreCase("") ? null : new Long(extraccion[2]));
                     if (extraccion.length >= 4)
@@ -130,13 +158,23 @@ public class BaveServiceImpl implements IBaveService {
                         localizador.setCodSeg5(extraccion[9]);
                     if (extraccion.length >= 11)
                         localizador.setCodSeg6(extraccion[10]);
-                    localizadorDao.insert(localizador);
+                    if (existe) {
+                        localizadorDao.update(localizador);
+                    } else {
+                        localizadorDao.insert(localizador);
+                    }
                 } else if (extraccion[0].equals("4")) {
-                    Organizacion organizacion = new Organizacion();
-                    organizacion.setIdOrganizacion(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
-                    organizacion.setCode(extraccion[2]);
-                    organizacion.setTransferencia(extraccion[3]);
-                    organizacionDao.insert(organizacion);
+                    Long idOrganizacion = new Long(extraccion[1]);
+                    String code = extraccion[2];
+                    String transferencia = extraccion[3];
+                    Organizacion organizacion = organizacionDao.get(idOrganizacion, code, transferencia);
+                    if (organizacion == null) {
+                        organizacion = new Organizacion();
+                        organizacion.setIdOrganizacion(extraccion[1].equalsIgnoreCase("") ? null : new Long(extraccion[1]));
+                        organizacion.setCode(extraccion[2]);
+                        organizacion.setTransferencia(extraccion[3]);
+                        organizacionDao.insert(organizacion);
+                    }
                 }
                 linea = leerArchivo.readLine();
             }

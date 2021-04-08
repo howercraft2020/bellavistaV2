@@ -77,7 +77,7 @@ public class InventarioFisicoService implements IInventarioFisicoService {
     }
 
     @Override
-    public void updateTag(Long tagId, long cantidad) throws ServiceException {
+    public void updateTag(Long tagId, Double cantidad) throws ServiceException {
         Log.d(TAG, "InventarioFisicoService::updateTag");
         Log.d(TAG, "InventarioFisicoService::updateTag::tagId : " + tagId);
 
@@ -372,8 +372,16 @@ public class InventarioFisicoService implements IInventarioFisicoService {
     }
 
     @Override
-    public void grabarInventario(Long inventarioId, String subinventarioId, Long locatorId, String segment, String serie, String lote, String vencimiento, Long cantidad) throws ServiceException {
+    public void grabarInventario(Long inventarioId, String subinventarioId, Long locatorId, String segment, String serie, String lote, String vencimiento, Double cantidad) throws ServiceException {
         Log.d(TAG, "InventarioFisicoService::grabarInventario");
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::inventarioId: " + inventarioId);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::subinventarioId: " + subinventarioId);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::locatorId: " + locatorId);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::segment: " + segment);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::serie: " + serie);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::lote: " + lote);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::vencimiento: " + vencimiento);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::cantidad: " + cantidad);
 
         IMtlPhysicalInventoryTagsDao mtlPhysicalInventoryTagsDao = new MtlPhysicalInventoryTagsDaoImpl();
         try {

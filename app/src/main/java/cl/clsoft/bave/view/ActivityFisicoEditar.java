@@ -29,7 +29,7 @@ public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> im
     private Long tagId;
     private Long inventarioId;
     private String subinventarioId;
-    private Long cantidad;
+    private Double cantidad;
     private MtlPhysicalInventoryTags tag;
 
     // Controls
@@ -123,7 +123,7 @@ public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> im
                     this.textCantidad.setError("Ingrese la cantidad");
                     return true;
                 }
-                cantidad = Long.valueOf(strCantidad);
+                cantidad = Double.valueOf(strCantidad);
                 if (cantidad < 0) {
                     this.textCantidad.setError("Ingrese una cantidad válida");
                     return true;

@@ -187,16 +187,17 @@
         android:paddingRight="40dp"
         android:hint="Cantidad"
         android:textColorHint="?attr/colorPrimary">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textCantidad"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:inputType="number"
-            android:maxLength="20"/>
+            android:backgroundTint="?attr/colorPrimaryDark"
+            android:inputType="numberDecimal"
+            android:maxLength="20"
+            android:textColor="@android:color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

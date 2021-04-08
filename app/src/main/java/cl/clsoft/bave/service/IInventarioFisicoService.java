@@ -14,7 +14,7 @@ public interface IInventarioFisicoService {
     public List<MtlPhysicalInventories> getAllInventariosFisicos() throws ServiceException;
     public MtlPhysicalInventories getInventarioFisico(Long physicalInventoryId) throws ServiceException;
     public MtlPhysicalInventoryTags getTag(Long tagId) throws ServiceException;
-    public void updateTag(Long tagId, long cantidad) throws ServiceException;
+    public void updateTag(Long tagId, Double cantidad) throws ServiceException;
     public void deleteTag(Long tagId) throws ServiceException;
 
     public List<MtlSystemItems> getAllItems() throws ServiceException;
@@ -37,7 +37,7 @@ public interface IInventarioFisicoService {
     public List<String> getVencimientos(Long physicalInventoryId, String subinventory, Long locatorId, String segment) throws ServiceException;
 
     public MtlSystemItems getMtlSystemItemsBySegment(String segment) throws ServiceException;
-    public void grabarInventario(Long inventarioId, String subinventarioId, Long locatorId, String segment, String serie, String lote, String vencimiento, Long cantidad) throws ServiceException;
+    public void grabarInventario(Long inventarioId, String subinventarioId, Long locatorId, String segment, String serie, String lote, String vencimiento, Double cantidad) throws ServiceException;
     public Localizador getLocalizadorByCodigo(String codigo) throws ServiceException;
     public List<Localizador> getLocalizadoresBySubinventario(String subinventarioCodigo) throws ServiceException;
 

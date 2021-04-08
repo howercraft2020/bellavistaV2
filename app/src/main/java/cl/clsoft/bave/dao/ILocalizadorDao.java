@@ -9,6 +9,7 @@ import cl.clsoft.bave.model.Localizador;
 public interface ILocalizadorDao {
 
     public void insert(Localizador localizador) throws DaoException;
+    public void update(Localizador localizador) throws DaoException;
     public Long get(String localizador) throws DaoException;
     public Localizador get(Long id) throws DaoException;
     public Localizador getByCodigo(String codigo) throws DaoException;

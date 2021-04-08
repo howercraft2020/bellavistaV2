@@ -17,6 +17,16 @@ public class SubinventarioCatalogo {
             " PRIMARY KEY (" + COLUMN_ORG_ID + "," + COLUMN_COD_SUB + " )" +
             " ) ";
 
+    public static final String UPDATE = COLUMN_ORG_ID + " = ? AND " + COLUMN_COD_SUB + " = ? ";
+
+    public static final String SELECT =
+            " SELECT * " +
+            " FROM " +
+            "     subinventario " +
+            " WHERE " +
+            "     organization_id = ? " +
+            "     AND cod_subinventario = ? ";
+
     public static final String SELECT_BY_CODIGO =
             " SELECT * " +
             " FROM " +

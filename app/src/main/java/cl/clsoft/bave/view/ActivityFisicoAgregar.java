@@ -21,6 +21,7 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import cl.clsoft.bave.R;
@@ -44,7 +45,7 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
     private String serie;
     private String lote;
     private String vencimiento;
-    private Long cantidad;
+    private Double cantidad;
     private List<MtlPhysicalInventoryTags> tags;
     private boolean hayLocalizador = false;
     private int LAUNCH_SEARCHSINGLE_ACTIVITY = 2;
@@ -128,6 +129,9 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                 segment = parent.getAdapter().getItem(pos).toString();
                 MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
                 if (item != null) {
+                    layoutCantidad.setHintEnabled(true);
+                    textCantidad.setEnabled(true);
+                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                     if (item.getLotControlCode().equalsIgnoreCase("2")) {
                         fillLote();
                     }
@@ -136,10 +140,10 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                     }
                     if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
                         fillSerie();
+                        textCantidad.setText("1.0");
+                        textCantidad.setEnabled(false);
+
                     }
-                    layoutCantidad.setHintEnabled(true);
-                    textCantidad.setEnabled(true);
-                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                 } else {
                     showWarning("Item " + segment + " no encontrado en tabla maestra");
                 }
@@ -225,6 +229,9 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                 Log.d(TAG, "sigle: " + segment);
                 MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
                 if (item != null) {
+                    layoutCantidad.setHintEnabled(true);
+                    textCantidad.setEnabled(true);
+                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                     if (item.getLotControlCode().equalsIgnoreCase("2")) {
                         fillLote();
                     }
@@ -233,10 +240,9 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                     }
                     if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
                         fillSerie();
+                        textCantidad.setText("1.0");
+                        textCantidad.setEnabled(false);
                     }
-                    layoutCantidad.setHintEnabled(true);
-                    textCantidad.setEnabled(true);
-                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                 } else {
                     showWarning("Item " + segment + " no encontrado en tabla maestra");
                 }
@@ -361,7 +367,7 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
             this.textCantidad.setError("Ingrese la cantidad");
             return;
         }
-        Long cantidad = Long.valueOf(strCantidad);
+        Double cantidad = Double.valueOf(strCantidad);
         if (cantidad < 0) {
             this.textCantidad.setError("Ingrese una cantidad válida");
             return;

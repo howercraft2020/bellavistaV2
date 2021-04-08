@@ -114,7 +114,7 @@ public class FisicoAgregarPresenter extends BasePresenter {
         return null;
     }
 
-    public void grabarInventario(Long inventarioId, String subinventarioId, Long locatorId, String segment, String serie, String lote, String vencimiento, Long cantidad) {
+    public void grabarInventario(Long inventarioId, String subinventarioId, Long locatorId, String segment, String serie, String lote, String vencimiento, Double cantidad) {
         try {
             this.mService.grabarInventario(inventarioId, subinventarioId, locatorId, segment, serie, lote, vencimiento,cantidad);
             mView.cleanScreen();

@@ -25,11 +25,12 @@ public class LocalizadorCatalogo {
                     COLUMN_COD_SEG3 + " TEXT, " +
                     COLUMN_COD_SEG4 + " TEXT, " +
                     COLUMN_COD_SEG5 + " TEXT, " +
-                    COLUMN_COD_SEG6 + " TEXT " +
+                    COLUMN_COD_SEG6 + " TEXT, " +
+                    " PRIMARY KEY (" + COLUMN_ID + ", " + COLUMN_ORG_ID + " )" +
             ")";
 
-    public static final String UPDATE = " WHERE " + COLUMN_ID + " = ?";
-    public static final String DELETE = " WHERE " + COLUMN_ID + " = ?";
+    public static final String UPDATE = COLUMN_ID + " = ?";
+    public static final String DELETE = COLUMN_ID + " = ?";
     public static final String SELECT = " SELECT * FROM " + TABLE + " WHERE " + COLUMN_ID + " = ? ";
     public static final String SELECT_CODE_LOCALIZADOR = " SELECT " + COLUMN_ID + " FROM " + TABLE + " WHERE " + COLUMN_COD_LOC + " = ?";
 
