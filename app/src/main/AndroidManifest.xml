@@ -126,7 +126,8 @@
             android:label="Detalle"/>
         <activity
             android:name=".view.ActivityEntregaOrgsAgregar"
-            android:label="Agregar"/>
+            android:label="Agregar"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".view.ActivityEntregaOrgsAgregarLote"
             android:label="Lote"/>

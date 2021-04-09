@@ -471,22 +471,29 @@ public class ActivityEntregaOrgsAgregarLote extends BaseActivity<EntregaOrgsAgre
         }
         this.lote = this.textLote.getText().toString();
 
+        // 03-04-2021: Se solicita eliminar las validaciones de categoria
+        // Valida categoria
+        /*
+
         // Valida categoria
         if (categoria == null) {
             this.spinnerCategoria.setError("Seleccione categoría");
             return false;
         }
+        */
 
-        if (this.categoria.equalsIgnoreCase("REPUESTOS")) {
-            // Asigna Atributo 3
-            this.atributo3 = this.textAtributo3.getText().toString();
-        } else if (this.categoria.equalsIgnoreCase("LIQUIDOS Y LUBRICANTES")) {
-            // Asigna Atributo 1
-            this.atributo1 = this.textAtributo1.getText().toString();
-            // Asigna Atributo 2
-            this.atributo2 = this.textAtributo2.getText().toString();
-            // Asigna Atributo 3
-            this.atributo3 = this.textAtributo3.getText().toString();
+        if (this.categoria != null) {
+            if (this.categoria.equalsIgnoreCase("REPUESTOS")) {
+                // Asigna Atributo 3
+                this.atributo3 = this.textAtributo3.getText().toString();
+            } else if (this.categoria.equalsIgnoreCase("LIQUIDOS Y LUBRICANTES")) {
+                // Asigna Atributo 1
+                this.atributo1 = this.textAtributo1.getText().toString();
+                // Asigna Atributo 2
+                this.atributo2 = this.textAtributo2.getText().toString();
+                // Asigna Atributo 3
+                this.atributo3 = this.textAtributo3.getText().toString();
+            }
         }
         return true;
     }

@@ -12,206 +12,222 @@
         android:visibility="gone"
         layout="@layout/progress_bar"/>
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rlayoutSigle">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutSigle"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="10dp"
-            android:hint="Sigle"
-            android:textColorHint="?attr/colorPrimary">
-            <cl.clsoft.bave.control.InstantAutoCompleteTextView
-                android:id="@+id/textSigle"
-                android:textColor="@android:color/black"
-                android:backgroundTint="?attr/colorPrimaryDark"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="0dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp">
+
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:inputType="text">
-            </cl.clsoft.bave.control.InstantAutoCompleteTextView>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:id="@+id/rlayoutSigle">
 
-        <ImageView
-            android:id="@+id/iconSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="6dip"
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp"
-            android:src="@mipmap/ic_search_black_36dp"
-            android:layout_toRightOf="@+id/layoutSigle"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutSigle"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="10dp"
+                    android:hint="Sigle"
+                    android:textColorHint="?attr/colorPrimary">
+                    <cl.clsoft.bave.control.InstantAutoCompleteTextView
+                        android:id="@+id/textSigle"
+                        android:textColor="@android:color/black"
+                        android:backgroundTint="?attr/colorPrimaryDark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:inputType="text">
+                    </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+                </com.google.android.material.textfield.TextInputLayout>
 
-    </RelativeLayout>
+                <ImageView
+                    android:id="@+id/iconSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dip"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:src="@mipmap/ic_search_black_36dp"
+                    android:layout_toRightOf="@+id/layoutSigle"/>
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="6dip"
-        android:id="@+id/rlayoutItem">
+            </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="6dip"
-            android:paddingTop="8dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:src="@drawable/inventario05_48dp" />
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="6dip"
+                android:id="@+id/rlayoutItem">
 
-        <TextView
-            android:id="@+id/textProductoDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/icon"
-            android:layout_marginBottom="10dp"
-            android:textStyle="bold"
-            android:text="textProductoDescription" />
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dip"
+                    android:paddingTop="8dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/inventario05_48dp" />
 
-        <TextView
-            android:id="@+id/labelProductoSigle"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textProductoDescription"
-            android:layout_toRightOf="@+id/icon"
-            android:textStyle="bold"
-            android:text="SIGLE:" />
+                <TextView
+                    android:id="@+id/textProductoDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/icon"
+                    android:layout_marginBottom="10dp"
+                    android:textStyle="bold"
+                    android:text="textProductoDescription" />
 
-        <TextView
-            android:id="@+id/textProductoSigle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textProductoDescription"
-            android:layout_toRightOf="@+id/labelProductoSigle"
-            android:paddingLeft="10dp"
-            android:text="textShipmentHeaderId" />
+                <TextView
+                    android:id="@+id/labelProductoSigle"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textProductoDescription"
+                    android:layout_toRightOf="@+id/icon"
+                    android:textStyle="bold"
+                    android:text="SIGLE:" />
 
-        <TextView
-            android:id="@+id/labelProductoCantidad"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/icon"
-            android:layout_below="@+id/labelProductoSigle"
-            android:textStyle="bold"
-            android:text="Cantidad:" />
+                <TextView
+                    android:id="@+id/textProductoSigle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textProductoDescription"
+                    android:layout_toRightOf="@+id/labelProductoSigle"
+                    android:paddingLeft="10dp"
+                    android:text="textShipmentHeaderId" />
 
-        <TextView
-            android:id="@+id/textProductoCantidad"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/labelProductoSigle"
-            android:layout_toRightOf="@+id/labelProductoCantidad"
-            android:paddingLeft="5dp"
-            android:text="1000"  />
+                <TextView
+                    android:id="@+id/labelProductoCantidad"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/icon"
+                    android:layout_below="@+id/labelProductoSigle"
+                    android:textStyle="bold"
+                    android:text="Cantidad:" />
 
-        <TextView
-            android:id="@+id/labelProductoLote"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/icon"
-            android:layout_below="@+id/labelProductoCantidad"
-            android:textStyle="bold"
-            android:text="Lote:" />
+                <TextView
+                    android:id="@+id/textProductoCantidad"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/labelProductoSigle"
+                    android:layout_toRightOf="@+id/labelProductoCantidad"
+                    android:paddingLeft="5dp"
+                    android:text="1000"  />
 
-        <TextView
-            android:id="@+id/textProductoLote"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/labelProductoCantidad"
-            android:layout_toRightOf="@+id/labelProductoLote"
-            android:paddingLeft="5dp"
-            android:paddingBottom="10dp"
-            android:text="SI"  />
+                <TextView
+                    android:id="@+id/labelProductoLote"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/icon"
+                    android:layout_below="@+id/labelProductoCantidad"
+                    android:textStyle="bold"
+                    android:text="Lote:" />
 
-        <TextView
-            android:id="@+id/labelProductoSerie"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/textProductoLote"
-            android:layout_below="@+id/labelProductoCantidad"
-            android:textStyle="bold"
-            android:text="Serie:" />
+                <TextView
+                    android:id="@+id/textProductoLote"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/labelProductoCantidad"
+                    android:layout_toRightOf="@+id/labelProductoLote"
+                    android:paddingLeft="5dp"
+                    android:paddingBottom="10dp"
+                    android:text="SI"  />
 
-        <TextView
-            android:id="@+id/textProductoSerie"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/labelProductoCantidad"
-            android:layout_toRightOf="@+id/labelProductoSerie"
-            android:paddingLeft="5dp"
-            android:text="NO"  />
+                <TextView
+                    android:id="@+id/labelProductoSerie"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/textProductoLote"
+                    android:layout_below="@+id/labelProductoCantidad"
+                    android:textStyle="bold"
+                    android:text="Serie:" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?attr/colorPrimaryDark"
-            android:layout_alignBottom="@id/textProductoLote" />
+                <TextView
+                    android:id="@+id/textProductoSerie"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/labelProductoCantidad"
+                    android:layout_toRightOf="@+id/labelProductoSerie"
+                    android:paddingLeft="5dp"
+                    android:text="NO"  />
 
-    </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorPrimaryDark"
+                    android:layout_alignBottom="@id/textProductoLote" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutCantidad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:hint="Cantidad"
-        android:textColorHint="?attr/colorPrimary">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textCantidad"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="numberDecimal">
-        </com.google.android.material.textfield.TextInputEditText>
-    </com.google.android.material.textfield.TextInputLayout>
+            </RelativeLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutSubinventory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:hint="Subinventario"
-        android:textColorHint="?attr/colorPrimary">
-        <cl.clsoft.bave.control.InstantAutoCompleteTextView
-            android:id="@+id/textSubinventory"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="textPhonetic">
-        </cl.clsoft.bave.control.InstantAutoCompleteTextView>
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutCantidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:hint="Cantidad"
+                android:textColorHint="?attr/colorPrimary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textCantidad"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="numberDecimal">
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutLocator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:hint="Localizador"
-        android:textColorHint="?attr/colorPrimary">
-        <cl.clsoft.bave.control.InstantAutoCompleteTextView
-            android:id="@+id/textLocator"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="textPhonetic">
-        </cl.clsoft.bave.control.InstantAutoCompleteTextView>
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutSubinventory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:hint="Subinventario"
+                android:textColorHint="?attr/colorPrimary">
+                <cl.clsoft.bave.control.InstantAutoCompleteTextView
+                    android:id="@+id/textSubinventory"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="textPhonetic">
+                </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutLocator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:hint="Localizador"
+                android:textColorHint="?attr/colorPrimary">
+                <cl.clsoft.bave.control.InstantAutoCompleteTextView
+                    android:id="@+id/textLocator"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="textPhonetic">
+                </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

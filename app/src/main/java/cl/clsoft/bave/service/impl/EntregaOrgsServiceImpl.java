@@ -201,7 +201,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
             }
 
             // Locator
-            if (locatorCode != null) {
+            if (locatorCode != null && !locatorCode.isEmpty()) {
                 localizador = localizadorDao.getByCodigo(locatorCode);
                 if (localizador == null) {
                     throw new ServiceException(1, "Localizador " + locatorCode + " no existe en el sistema");
