@@ -28,4 +28,11 @@ public class ConsultaItemDaoImpl extends GenericDao<ConsultaItem> implements ICo
         return super.selectMany(ConsultaItemCatalogo.SELECT_ALL_BY_SUBINVENTORY, new ConsultaItemRowMapper(), subinventoryCode);
     }
 
+    @Override
+    public List<ConsultaItem> getAllBySubinventoryItem(String subinventoryCode, Long inventoryItemId) throws DaoException {
+        Log.d(TAG, "ConsultaItemDaoImpl::getAllBySubinventoryItem");
+
+        return super.selectMany(ConsultaItemCatalogo.SELECT_ALL_BY_SUBINVENTORY_ITEM, new ConsultaItemRowMapper(), subinventoryCode, inventoryItemId);
+    }
+
 }

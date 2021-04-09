@@ -9,6 +9,7 @@ import cl.clsoft.bave.model.EntregaOrgsHeader;
 import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlMaterialTransactions;
 import cl.clsoft.bave.model.MtlSystemItems;
+import cl.clsoft.bave.model.MtlTransactionLotNumbers;
 import cl.clsoft.bave.model.Subinventario;
 
 public interface IEntregaOrgsService {
@@ -29,5 +30,6 @@ public interface IEntregaOrgsService {
     public void deleteTransactionsById(Long transactionId) throws ServiceException;
     public void closeEntrega(Long shipmentHeaderId) throws ServiceException;
     public List<String> getSegmentsByShipment(Long shipmentHeaderId) throws ServiceException;
+    public List<MtlTransactionLotNumbers> getLotesByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws ServiceException;
 
 }

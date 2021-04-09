@@ -5,14 +5,17 @@ import android.util.Log;
 import java.util.List;
 
 import cl.clsoft.bave.dao.IConsultaItemDao;
+import cl.clsoft.bave.dao.IConsultaResumenItemDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.ISubinventarioDao;
 import cl.clsoft.bave.dao.impl.ConsultaItemDaoImpl;
+import cl.clsoft.bave.dao.impl.ConsultaResumenItemDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.ConsultaItem;
+import cl.clsoft.bave.model.ConsultaResumenItem;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.service.IConsultaService;
@@ -42,6 +45,33 @@ public class ConsultaServiceImpl implements IConsultaService {
         IConsultaItemDao consultaItemDao = new ConsultaItemDaoImpl();
         try {
             return consultaItemDao.getAllBySubinventory(subinventoryCode);
+        } catch (DaoException e) {
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<ConsultaItem> getAllBySubinventoryInventoryItem(String subinventoryCode, Long inventoryItemId) throws ServiceException {
+        Log.d(TAG, "ConsultaServiceImpl::getAllBySubinventoryInventoryItem");
+        Log.d(TAG, "ConsultaServiceImpl::getAllBySubinventoryInventoryItem::subinventoryCode: " + subinventoryCode);
+        Log.d(TAG, "ConsultaServiceImpl::getAllBySubinventoryInventoryItem::inventoryItemId: " + inventoryItemId);
+
+        IConsultaItemDao consultaItemDao = new ConsultaItemDaoImpl();
+        try {
+            return consultaItemDao.getAllBySubinventoryItem(subinventoryCode, inventoryItemId);
+        } catch (DaoException e) {
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<ConsultaResumenItem> getAllResumenBySubinventory(String subinventoryCode) throws ServiceException {
+        Log.d(TAG, "ConsultaServiceImpl::getAllResumenBySubinventory");
+        Log.d(TAG, "ConsultaServiceImpl::getAllResumenBySubinventory::subinventoryCode: " + subinventoryCode);
+
+        IConsultaResumenItemDao consultaResumenItemDao = new ConsultaResumenItemDaoImpl();
+        try {
+            return consultaResumenItemDao.getAllBySubinventory(subinventoryCode);
         } catch (DaoException e) {
             throw new ServiceException(2, e.getDescripcion());
         }

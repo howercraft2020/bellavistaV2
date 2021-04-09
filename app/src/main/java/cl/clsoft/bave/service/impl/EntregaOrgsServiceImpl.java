@@ -251,6 +251,8 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
             transaction.setSubinventory(subinventoryCode);
             if (localizador != null)
                 transaction.setLocatorId(localizador.getIdLocalizador());
+            else
+                transaction.setLocatorId(null);
             if (isControlLote)
                 transaction.setUseMtlLot(1L);
             else
@@ -279,14 +281,17 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
         Log.d(TAG, "EntregaOrgsServiceImpl::getTransactionsInterfaceByShipmentHeader::shipmentHeaderId: " + shipmentHeaderId);
 
         IMtlMaterialTransactionsDao mtlMaterialTransactionsDao = new MtlMaterialTransactionsDaoImpl();
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
         try {
             List<TransactionsDto> salida = new ArrayList<>();
             List<MtlMaterialTransactions> transactions = mtlMaterialTransactionsDao.getAllByShipmentEntrega(shipmentHeaderId);
             Log.d(TAG, "transactions size: " + transactions.size());
             for (MtlMaterialTransactions transaction : transactions) {
+                MtlSystemItems mtlSystemItems = mtlSystemItemsDao.get(transaction.getInventoryItemId());
                 TransactionsDto dto = new TransactionsDto();
+                dto.setLineNum(transaction.getShipmentLineId());
                 dto.setInterfaceTransactionId(transaction.getTransactionId());
-                dto.setSegment1(transaction.getInventoryItemId().toString());
+                dto.setSegment1(mtlSystemItems.getSegment1());
                 dto.setCreationDate(transaction.getEntregaCreationDate());
                 salida.add(dto);
             }
@@ -326,7 +331,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
             }
 
             // Locator
-            if (transaction.getLocatorId() != null) {
+            if (transaction.getLocatorId() != null && transaction.getLocatorId().longValue() > 0) {
                 localizador = localizadorDao.get(transaction.getLocatorId());
                 if (localizador == null) {
                     throw new ServiceException(1, "Localizador " + transaction.getLocatorId() + " no existe en el sistema");
@@ -562,6 +567,20 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
         IMtlMaterialTransactionsDao mtlMaterialTransactionsDao = new MtlMaterialTransactionsDaoImpl();
         try {
             return mtlMaterialTransactionsDao.getSegmentsByShipment(shipmentHeaderId);
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<MtlTransactionLotNumbers> getLotesByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws ServiceException {
+        Log.d(TAG, "EntregaServiceImpl::getLotesByShipmentInventory");
+        Log.d(TAG, "EntregaServiceImpl::getLotesByShipmentInventory::shipmentHeaderId: " + shipmentHeaderId);
+        Log.d(TAG, "EntregaServiceImpl::getLotesByShipmentInventory::inventoryItemId: " + inventoryItemId);
+
+        IMtlTransactionLotNumbersDao mtlTransactionLotNumbersDao = new MtlTransactionLotNumbersDaoImpl();
+        try {
+            return mtlTransactionLotNumbersDao.getAllByShipmentHeaderIdInventoryItemId(shipmentHeaderId, inventoryItemId);
         } catch(DaoException e){
             throw new ServiceException(2, e.getDescripcion());
         }

@@ -63,4 +63,9 @@ public class MtlTransactionLotNumbersDaoImpl extends GenericDao<MtlTransactionLo
         return super.selectMany(MtlTransactionLotNumbersCatalogo.SELECT_ALL_BY_SHIPMENT_HEADER_ID, new MtlTransactionLotNumbersRowMapper(), shipmentHeaderId);
     }
 
+    @Override
+    public List<MtlTransactionLotNumbers> getAllByShipmentHeaderIdInventoryItemId(Long shipmentHeaderId, Long inventoryItemId) throws DaoException {
+        return super.selectMany(MtlTransactionLotNumbersCatalogo.SELECT_ALL_BY_SHIPMENT_HEADER_ID_INVENTORY_ITEM_ID, new MtlTransactionLotNumbersRowMapper(), shipmentHeaderId, inventoryItemId);
+    }
+
 }

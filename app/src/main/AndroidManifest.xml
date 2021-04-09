@@ -148,6 +148,9 @@
         <activity
             android:name=".view.ActivityConsultaSubinventario"
             android:label="Stock"/>
+        <activity
+            android:name=".view.ActivityConsultaSubinventarioDetalle"
+            android:label="Stock Detalle"/>
 
         <!-- GENERICO -->
         <activity

@@ -820,10 +820,11 @@ public class BaveServiceImpl implements IBaveService {
                         mtlMaterialTransactions.setUserId(extraccion[16].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[16]));
                     if (extraccion.length >= 18)
                         mtlMaterialTransactions.setShipmentNumber(extraccion[17]);
-                    if (extraccion.length >= 19)
+                    if (extraccion.length >= 19) {
                         mtlMaterialTransactions.setShipmentHeaderId(extraccion[18].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[18]));
+                        shipmentHeaderId = Long.valueOf(extraccion[18]);
+                    }
                     if (extraccion.length >= 20) {
-                        shipmentHeaderId = Long.valueOf(extraccion[19]);
                         mtlMaterialTransactions.setShipmentLineId(extraccion[19].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[19]));
                     }
                     mtlMaterialTransactionsDao.insert(mtlMaterialTransactions);
