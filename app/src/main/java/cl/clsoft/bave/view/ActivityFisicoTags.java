@@ -4,17 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.List;
@@ -22,20 +17,22 @@ import java.util.List;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlPhysicalInventories;
 import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
-import cl.clsoft.bave.presenter.FisicoDetallePresenter;
+import cl.clsoft.bave.presenter.FisicoTagsPresenter;
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.service.impl.InventarioFisicoService;
-import cn.pedant.SweetAlert.SweetAlertDialog;
+import cl.clsoft.bave.task.AppTaskExecutor;
 
-public class ActivityFisicoDetalle extends BaseActivity<FisicoDetallePresenter> {
+public class ActivityFisicoTags extends BaseActivity<FisicoTagsPresenter> {
 
     // Variables
-    private String TAG = "ActivityFisicoDetalle";
+    private String TAG = "FISICO_TAGS";
     private Long inventarioId;
     private String subinventarioId;
-    MtlPhysicalInventories inventario;
+    private MtlPhysicalInventories inventario;
     private List<MtlPhysicalInventoryTags> tagsInventariados;
     private List<MtlPhysicalInventoryTags> tagsNoInventariados;
+    private boolean cargandoTagsInventariado = false;
+    private boolean cargandoTagsNoInventariado = false;
 
     //Controls
     private TextView textId;
@@ -47,8 +44,8 @@ public class ActivityFisicoDetalle extends BaseActivity<FisicoDetallePresenter> 
     private FragmentPagerAdapterTags fragmentPagerAdapterTags;
 
     @Override
-    protected FisicoDetallePresenter createPresenter(@NonNull Context context) {
-        return new FisicoDetallePresenter(this, new InventarioFisicoService());
+    protected FisicoTagsPresenter createPresenter(@NonNull Context context) {
+        return new FisicoTagsPresenter(this, new AppTaskExecutor(this), new InventarioFisicoService());
     }
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,17 +79,13 @@ public class ActivityFisicoDetalle extends BaseActivity<FisicoDetallePresenter> 
         this.fragmentPagerAdapterTags = new FragmentPagerAdapterTags(getSupportFragmentManager());
         this.viewPagerDetalle.setAdapter(this.fragmentPagerAdapterTags);
 
+        mPresenter.getTagsInventariados(this.inventarioId, this.subinventarioId);
+        mPresenter.getTagsNoInventariados(this.inventarioId, this.subinventarioId);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        this.tagsInventariados = mPresenter.getTagsInventariados(inventarioId, subinventarioId);
-        this.tagsNoInventariados = mPresenter.getTagsNoInventariados(inventarioId, subinventarioId);
-        this.fragmentPagerAdapterTags.setTagsInventariados(this.tagsInventariados);
-        this.fragmentPagerAdapterTags.setTagsNoInventariados(this.tagsNoInventariados);
-        //this.adapter = new AdapterInventarioFisicoDetalle(tagsInventariados);
-        //this.recyclerViewFisicoDetalle.setAdapter(this.adapter);
     }
 
     @Override
@@ -124,8 +117,38 @@ public class ActivityFisicoDetalle extends BaseActivity<FisicoDetallePresenter> 
         }
     }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+    public void fillTags(List<MtlPhysicalInventoryTags> tags) {
+        Log.d(TAG, "fillTags");
 
+        if (tags != null) {
+            this.tagsInventariados = tags;
+            this.fragmentPagerAdapterTags.setTagsInventariados(this.tagsInventariados);
+        }
     }
+
+    public void fillTagsNoInventariados(List<MtlPhysicalInventoryTags> tags) {
+        Log.d(TAG, "fillTagsNoInventariados");
+
+        if (tags != null) {
+            this.tagsNoInventariados = tags;
+            this.fragmentPagerAdapterTags.setTagsNoInventariados(this.tagsNoInventariados);
+        }
+    }
+
+    public boolean getCargandoTagsInventariado() {
+        return cargandoTagsInventariado;
+    }
+
+    public void setCargandoTagsInventariado(boolean cargandoTagsInventariado) {
+        this.cargandoTagsInventariado = cargandoTagsInventariado;
+    }
+
+    public boolean getCargandoTagsNoInventariado() {
+        return cargandoTagsNoInventariado;
+    }
+
+    public void setCargandoTagsNoInventariado(boolean cargandoTagsNoInventariado) {
+        this.cargandoTagsNoInventariado = cargandoTagsNoInventariado;
+    }
+
 }

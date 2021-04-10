@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
@@ -20,8 +21,20 @@ public class AdapterInventarioFisicoDetalle extends RecyclerView.Adapter<Adapter
     private static final String TAG = "InventarioFisicoDetalle";
     private List<MtlPhysicalInventoryTags> tags;
 
+    public AdapterInventarioFisicoDetalle(){
+        this.tags = new ArrayList<>();
+    }
+
     public AdapterInventarioFisicoDetalle(List<MtlPhysicalInventoryTags> tags){
         this.tags = tags;
+    }
+
+    public void setTags(List<MtlPhysicalInventoryTags> tags) {
+        this.tags.clear();
+        this.tags.addAll(tags);
+        Log.d(TAG, "size: " +  tags.size());
+        this.notifyItemRangeInserted(0, tags.size() -1);
+        this.notifyDataSetChanged();
     }
 
     @NonNull
@@ -46,7 +59,7 @@ public class AdapterInventarioFisicoDetalle extends RecyclerView.Adapter<Adapter
         return 0;
     }
 
-    public class InventarioFisicoDetalleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class InventarioFisicoDetalleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView textLocalizador;
         private TextView textNumeroParte;

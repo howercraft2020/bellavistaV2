@@ -16,11 +16,13 @@ import cl.clsoft.bave.dao.ILocalizadorDao;
 import cl.clsoft.bave.dao.IMtlCycleCountEntriesDao;
 import cl.clsoft.bave.dao.IMtlCycleCountHeadersDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
+import cl.clsoft.bave.dao.IOrganizacionPrincipalDao;
 import cl.clsoft.bave.dao.ISubinventarioDao;
 import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlCycleCountEntriesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlCycleCountHeadersDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
+import cl.clsoft.bave.dao.impl.OrganizacionPrincipalDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
@@ -28,6 +30,7 @@ import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
 import cl.clsoft.bave.model.MtlSystemItems;
+import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.service.IConteoCiclicoService;
 
@@ -229,7 +232,15 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
 
         IMtlCycleCountHeadersDao mtlCycleCountHeadersDao = new MtlCycleCountHeadersDaoImpl();
         IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
+        IOrganizacionPrincipalDao organizacionPrincipalDao = new OrganizacionPrincipalDaoImpl();
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
         try {
+            // Recupera Organizacion
+            OrganizacionPrincipal organizacionPrincipal = organizacionPrincipalDao.get();
+            if (organizacionPrincipal == null) {
+                throw new ServiceException(1, "Organizacion Principal no existe");
+            }
+
             MtlCycleCountHeaders header = mtlCycleCountHeadersDao.get(cycleCountHeaderId);
             if (header == null) {
                 throw new ServiceException(1, "Conteo Ciclico " + cycleCountHeaderId + " no existe en el sistema");
@@ -243,19 +254,42 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
             // Genera archivo Conteo
             DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
             String strLastUpdate = dateFormat.format(new Date());
-            String nombreArchivo = "I_C_" + cycleCountHeaderId + ".csv";
+            String nombreArchivo = "I_C_" + cycleCountHeaderId + ".txt";
 
             File tarjetaSD = Environment.getExternalStorageDirectory();
             File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
             File archivo = new File(Dir, nombreArchivo);
             FileWriter writer = new FileWriter(archivo);
+            writer.write("RECIBO;FIN" +"\r\n");
             for (MtlCycleCountEntries entry : entries) {
-                writer.write(header.getOrganizationId() + ";" + header.getLastUpdateDate() + ";" + header.getLastUpdatedBy() + ";" +
-                        header.getCreationDate() + ";" + header.getCreatedBy() + ";" + entry.getCycleCountEntryId() + ";2;" +
-                        header.getCycleCountHeaderId() + ";" + header.getCycleCountHeaderName() + ";" + entry.getInventoryItemId() + ";" +
-                        entry.getSubinventory() + ";" + entry.getLocatorId() + ";" + entry.getLotNumber() + ";" +
-                        entry.getSerialNumber() + ";" + entry.getPrimaryUomCode() + ";" + entry.getCount() + ";" +
-                        entry.getLastUpdated() + ";" + header.getEmployeeId() + ";1;1;FIN\r\n");
+                MtlSystemItems mtlSystemItems = mtlSystemItemsDao.get(entry.getInventoryItemId());
+                writer.write(
+                        header.getOrganizationId() + ";" +              // ORGANIZATION_ID
+                                organizacionPrincipal.getCode() + ";" +     // ORGANIZATION_CODE
+                                header.getLastUpdateDate() + ";" +          // LAST_UPDATE_DATE
+                                header.getLastUpdatedBy() + ";" +           // LAST_UPDATED_BY
+                                header.getCreationDate() + ";" +            // CREATION_DATE
+                                header.getCreatedBy() + ";" +               // CREATED_BY
+                                entry.getCycleCountEntryId() + ";" +        // CYCLE_COUNT_ENTRY_ID
+                                "2;" +                                      // ACTION_CODE
+                                header.getCycleCountHeaderId() + ";" +      // CYCLE_COUNT_HEADER_ID
+                                header.getCycleCountHeaderName() + ";" +    // CYCLE_COUNT_HEADER_NAME
+                                entry.getInventoryItemId() + ";" +          // INVENTORY_ITEM_ID
+                                mtlSystemItems.getSegment1() + ";" +        // SEGMENT1
+                                mtlSystemItems.getDescription() + ";" +     // DESCRIPTION
+                                entry.getSubinventory() + ";" +             // SUBINVENTORY
+                                entry.getLocatorId() + ";" +                // LOCATOR_ID
+                                entry.getLocatorCode() + ";" +              // LOCATOR
+                                entry.getLotNumber() + ";" +                // LOT_NUMBER
+                                entry.getSerialNumber() + ";" +             // SERIAL_NUMBER
+                                entry.getCount() + ";" +                    // PRIMARY_UOM_QUANTITY
+                                entry.getPrimaryUomCode() + ";" +           // COUNT_UOM
+                                entry.getCount() + ";" +                    // COUNT_QUANTITY
+                                entry.getLastUpdated() + ";" +              // COUNT_DATE
+                                header.getEmployeeId() + ";" + "" +         // EMPLOYEE_ID
+                                "1;" +                                      // LOCK_FLAG
+                                "1;" +                                      // DELETE_FLAG
+                                "FIN\r\n");
             }
             writer.flush();
             writer.close();

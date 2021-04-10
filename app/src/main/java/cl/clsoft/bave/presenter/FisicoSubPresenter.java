@@ -82,6 +82,7 @@ public class FisicoSubPresenter extends BasePresenter {
                 salida = mService.closeInventory(this.inventoryId);
             } catch (ServiceException e) {
                 Log.d(TAG, "CloseInventory::execute::ServiceException");
+                salida = 1L;
                 e.printStackTrace();
                 mView.runOnUiThread(new Runnable() {
                     public void run() {
@@ -97,8 +98,6 @@ public class FisicoSubPresenter extends BasePresenter {
             mView.hideProgres();
             if (result.longValue() == 0) {
                 mView.mensajeOkCloseInventory();
-            } else {
-                mView.mensajeErrorCloseInventory();
             }
         }
     }

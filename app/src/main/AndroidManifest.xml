@@ -62,10 +62,14 @@
             android:name=".view.ActivityFisicoSub"
             android:label="Subinventarios"/>
         <activity
-            android:name=".view.ActivityFisicoDetalle"
+            android:name=".view.ActivityFisicoTags"
             android:label="Tags"/>
         <activity
             android:name=".view.ActivityFisicoAgregar"
+            android:label="Agregar Inventario"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".view.ActivityFisicoAgregarDisponible"
             android:label="Agregar Inventario"
             android:windowSoftInputMode="adjustResize"/>
         <activity

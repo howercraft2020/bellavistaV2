@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -21,7 +20,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.EnumSet;
 import java.util.List;
 
 import cl.clsoft.bave.R;
@@ -76,6 +74,7 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fisico_agregar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_highlight_off_white_36dp);
 
         // bind controls
         this.llProgressBar = findViewById(R.id.llProgressBar);
@@ -175,6 +174,11 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
     }
 
     @Override
+    public void onBackPressed() {
+        this.confirmacionSalir();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
     }
@@ -196,22 +200,8 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                 this.grabarInventario();
                 return true;
             case android.R.id.home:
-                if(inventarioId != null && subinventarioCodigo != null){
-                    Log.d(TAG, "Agregar inventario tag");
-                    Intent i = new Intent(this, ActivityFisicoDetalle.class);
-                    i.putExtra("InventarioId", inventarioId);
-                    i.putExtra("SubinventarioId", subinventarioCodigo);
-                    startActivity(i);
-                    this.finish();
-                    return true;
-                }else if(inventarioId != null && subinventarioCodigo == null){
-                    Log.d(TAG, "Agregar inventario subinventario");
-                    Intent i = new Intent(this, ActivityFisicoSub.class);
-                    i.putExtra("InventarioId", inventarioId);
-                    startActivity(i);
-                    this.finish();
-                    return true;
-                }
+                this.confirmacionSalir();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -421,11 +411,24 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
         String tipo = dialog.getArguments().getString("tipo");
         if (tipo.equalsIgnoreCase("grabar")) {
             mPresenter.grabarInventario(this.inventarioId, this.subinventarioCodigo, this.locatorId, this.segment, this.serie, this.lote, this.vencimiento, this.cantidad);
+        } else  if (tipo.equalsIgnoreCase("exit")) {
+            Intent i = new Intent(this, ActivityFisicoTags.class);
+            i.putExtra("InventarioId", inventarioId);
+            i.putExtra("SubinventarioId", subinventarioCodigo);
+            startActivity(i);
+            this.finish();
         }
+
     }
 
     @Override
     public void onDialogCancelarClick(DialogFragment dialog) {
 
     }
+
+    private void confirmacionSalir() {
+        ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
+        dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
+    }
+
 }

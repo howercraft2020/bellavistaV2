@@ -409,13 +409,14 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                 Long groupId = transactions.get(0).getShipmentLineId();
 
                 // Genera archivo Conteo
-                String nombreArchivo = "I_R_" + shipmentNumber + ".csv";
+                String nombreArchivo = "I_R_" + shipmentNumber + ".txt";
                 File tarjetaSD = Environment.getExternalStorageDirectory();
                 File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
                 File archivo = new File(Dir, nombreArchivo);
                 FileWriter writer = new FileWriter(archivo);
+                writer.write("INTERORG_RECIBO;FIN" +"\r\n");
                 writer.write(
-                        "HDR;"
+                        "1;"
                         + shipmentHeaderId.toString() + ";"  // HEADER_INTERFACE_ID
                         + "PENDING;"                         // PROCESSING_STATUS_CODE
                         + "INVENTORY;"                       // RECEIPT_SOURCE_CODE
@@ -440,7 +441,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                 for (MtlMaterialTransactions transaction : transactions) {
                     if (transaction.getEntregaCreationDate() != null) {
                         writer.write(
-                                "TRX;"
+                                "2;"
                                         + transaction.getTransactionId(). toString() + ";"     // INTERFACE_TRANSACTION_ID
                                         + sysDate + ";"                                        // LAST_UPDATE_DATE
                                         + userId + ";"                                         // LAST_UPDATED_BY
@@ -491,7 +492,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                             }
                         }
                         writer.write(
-                                "LOT;"
+                                "3;"
                                 + lote.getTransactionId() + ";"                       // TRANSACTION_INTERFACE_ID
                                 + sysDate + ";"                                       // LAST_UPDATE_DATE
                                 + userId + ";"                                        // LAST_UPDATED_BY
@@ -525,7 +526,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                             }
                         }
                         writer.write(
-                                "SER;"
+                                "4;"
                                 + serialTransactionId + ";"                            // TRANSACTION_INTERFACE_ID
                                 + sysDate + ";"                                        // LAST_UPDATE_DATE
                                 + userId + ";"                                         // LAST_UPDATED_BY
@@ -539,8 +540,6 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                         );
                     }
                 }
-                writer.flush();
-                writer.close();
 
                 writer.flush();
                 writer.close();

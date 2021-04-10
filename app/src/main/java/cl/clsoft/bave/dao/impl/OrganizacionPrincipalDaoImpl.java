@@ -47,6 +47,6 @@ public class OrganizacionPrincipalDaoImpl extends GenericDao<OrganizacionPrincip
     public OrganizacionPrincipal get() throws DaoException {
         Log.d(TAG, "OrganizacionPrincipalDaoImpl::get");
 
-        return super.selectOne(OrganizacionPrincipalCatalogo.SELECT, new OrganizacionPrincipalRowMapper());
+        return super.selectOne(OrganizacionPrincipalCatalogo.SELECT_ALL, new OrganizacionPrincipalRowMapper());
     }
 }

@@ -15,8 +15,8 @@ public class FragmentPagerAdapterTags extends FragmentPagerAdapter {
 
     private static final String TAG = "FPAdapterTags";
     private static int NUM_ITEMS = 2;
-    private AdapterInventarioFisicoDetalle adapterTagsInventariados;
-    private AdapterInventarioFisicoDetalleNoInventariado adapterTagsNoInventariados;
+    private AdapterInventarioFisicoDetalle adapterTagsInventariados = new AdapterInventarioFisicoDetalle();
+    private AdapterInventarioFisicoDetalleNoInventariado adapterTagsNoInventariados = new AdapterInventarioFisicoDetalleNoInventariado();
     FragmentTagsInventariados fragmentTagsInventariados = null;
     FragmentTagsNoInventariados fragmentTagsNoInventariados = null;
 
@@ -26,11 +26,13 @@ public class FragmentPagerAdapterTags extends FragmentPagerAdapter {
     }
 
     public void setTagsInventariados(List<MtlPhysicalInventoryTags> tags) {
-        adapterTagsInventariados = new AdapterInventarioFisicoDetalle(tags);
+        //adapterTagsInventariados = new AdapterInventarioFisicoDetalle(tags);
+        adapterTagsInventariados.setTags(tags);
     }
 
     public void setTagsNoInventariados(List<MtlPhysicalInventoryTags> tags) {
-        adapterTagsNoInventariados = new AdapterInventarioFisicoDetalleNoInventariado(tags);
+        //adapterTagsNoInventariados = new AdapterInventarioFisicoDetalleNoInventariado(tags);
+        adapterTagsNoInventariados.setTags(tags);
     }
 
     @NonNull

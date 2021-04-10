@@ -101,7 +101,8 @@
         android:layout_toRightOf="@+id/icon"
         android:layout_below="@id/labelNumeroLote"
         android:textStyle="bold"
-        android:text="VENCIMIENTO:" />
+        android:text="VENCIMIENTO:"
+        android:paddingBottom="10dp"/>
 
     <TextView
         android:id="@+id/textVencimiento"
@@ -112,39 +113,10 @@
         android:paddingLeft="10dp"
         android:text="loteText" />
 
-    <TextView
-        android:id="@+id/labelCantidad"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/icon"
-        android:layout_below="@id/labelVencimiento"
-        android:textStyle="bold"
-        android:text="CANTIDAD:" />
-
-    <TextView
-        android:id="@+id/textCantidad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/labelVencimiento"
-        android:layout_toRightOf="@+id/labelCantidad"
-        android:paddingLeft="10dp"
-        android:text="cantidadText" />
-
-    <TextView
-        android:id="@+id/textUdm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/labelVencimiento"
-        android:layout_toRightOf="@+id/textCantidad"
-        android:paddingLeft="10dp"
-        android:paddingBottom="10dp"
-        android:textStyle="bold"
-        android:text="stoclText" />
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_alignBottom="@id/textUdm"
+        android:layout_alignBottom="@id/labelVencimiento"
         android:background="?attr/colorPrimaryDark" />
 
 </RelativeLayout>
