@@ -403,6 +403,9 @@ public class InventarioFisicoService implements IInventarioFisicoService {
 
             // Update Tag Count
             MtlPhysicalInventoryTags tag = tags.get(0);
+            if (tag.getCount().doubleValue() > 0 && tag.getLastUpdated() == null) {
+                throw new ServiceException(1, "Tag ya se encuentra ingresado.");
+            }
             tag.setCount(cantidad);
 
             DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
@@ -493,7 +496,6 @@ public class InventarioFisicoService implements IInventarioFisicoService {
             File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
             File archivo = new File(Dir, nombreArchivo);
             FileWriter writer = new FileWriter(archivo);
-            writer.write("RECIBO;FIN" +"\r\n");
             for (MtlPhysicalInventoryTags tag : tagsInventariados) {
                 MtlSystemItems mtlSystemItems = mtlSystemItemsDao.get(tag.getInventoryItemId());
                 if (mtlSystemItems != null) {

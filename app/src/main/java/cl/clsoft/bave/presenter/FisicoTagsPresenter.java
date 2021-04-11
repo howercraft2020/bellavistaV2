@@ -32,13 +32,13 @@ public class FisicoTagsPresenter extends BasePresenter {
     }
 
     public void getTagsInventariados(Long physicalInventoryId, String subinventory) {
-        this.mView.showProgres("Cargando...");
+        this.mView.showProgres("Cargando Tags...");
         this.mView.setCargandoTagsInventariado(true);
         this.mTaskExecutor.async(new FisicoTagsPresenter.TagsInventariados(physicalInventoryId, subinventory));
     }
 
     public void getTagsNoInventariados(Long physicalInventoryId, String subinventory) {
-        this.mView.showProgres("Cargando...");
+        this.mView.showProgres("Cargando Tags...");
         this.mView.setCargandoTagsNoInventariado(true);
         this.mTaskExecutor.async(new FisicoTagsPresenter.TagsNoInventariados(physicalInventoryId, subinventory));
     }

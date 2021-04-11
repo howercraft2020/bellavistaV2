@@ -260,7 +260,6 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
             File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
             File archivo = new File(Dir, nombreArchivo);
             FileWriter writer = new FileWriter(archivo);
-            writer.write("RECIBO;FIN" +"\r\n");
             for (MtlCycleCountEntries entry : entries) {
                 MtlSystemItems mtlSystemItems = mtlSystemItemsDao.get(entry.getInventoryItemId());
                 writer.write(
