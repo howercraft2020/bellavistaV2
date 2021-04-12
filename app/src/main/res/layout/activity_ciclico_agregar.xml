@@ -12,117 +12,133 @@
         android:visibility="gone"
         layout="@layout/progress_bar"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutLocator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:hint="Localizador"
-        android:textColorHint="?attr/colorPrimary">
-        <cl.clsoft.bave.control.InstantAutoCompleteTextView
-            android:id="@+id/textLocator"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="textPhonetic">
-        </cl.clsoft.bave.control.InstantAutoCompleteTextView>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutSigle"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="10dp"
-            android:hint="Sigle"
-            android:textColorHint="?attr/colorPrimary">
-            <cl.clsoft.bave.control.InstantAutoCompleteTextView
-                android:id="@+id/textSigle"
-                android:textColor="@android:color/black"
-                android:backgroundTint="?attr/colorPrimaryDark"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="0dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutLocator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:inputType="text">
-            </cl.clsoft.bave.control.InstantAutoCompleteTextView>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:hint="Localizador"
+                android:textColorHint="?attr/colorPrimary">
+                <cl.clsoft.bave.control.InstantAutoCompleteTextView
+                    android:id="@+id/textLocator"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="textPhonetic">
+                </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/iconSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="6dip"
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp"
-            android:src="@mipmap/ic_search_black_36dp"
-            android:layout_toRightOf="@+id/layoutSigle"/>
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </RelativeLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutSigle"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="10dp"
+                    android:hint="Sigle"
+                    android:textColorHint="?attr/colorPrimary">
+                    <cl.clsoft.bave.control.InstantAutoCompleteTextView
+                        android:id="@+id/textSigle"
+                        android:textColor="@android:color/black"
+                        android:backgroundTint="?attr/colorPrimaryDark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:inputType="text">
+                    </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+                </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutLote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:hint="Lote"
-        android:textColorHint="?attr/colorPrimary">
-        <cl.clsoft.bave.control.InstantAutoCompleteTextView
-            android:id="@+id/textLote"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="text">
-        </cl.clsoft.bave.control.InstantAutoCompleteTextView>
-    </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:id="@+id/iconSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dip"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:src="@mipmap/ic_search_black_36dp"
+                    android:layout_toRightOf="@+id/layoutSigle"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutSerie"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:hint="Número Serie"
-        android:textColorHint="?attr/colorPrimary">
-        <cl.clsoft.bave.control.InstantAutoCompleteTextView
-            android:id="@+id/textSerie"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="text">
-        </cl.clsoft.bave.control.InstantAutoCompleteTextView>
-    </com.google.android.material.textfield.TextInputLayout>
+            </RelativeLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutCantidad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:hint="Cantidad"
-        android:textColorHint="?attr/colorPrimary">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textCantidad"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:inputType="numberDecimal"
-            android:maxLength="20"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutLote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:hint="Lote"
+                android:textColorHint="?attr/colorPrimary">
+                <cl.clsoft.bave.control.InstantAutoCompleteTextView
+                    android:id="@+id/textLote"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="text">
+                </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutSerie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:hint="Número Serie"
+                android:textColorHint="?attr/colorPrimary">
+                <cl.clsoft.bave.control.InstantAutoCompleteTextView
+                    android:id="@+id/textSerie"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="text">
+                </cl.clsoft.bave.control.InstantAutoCompleteTextView>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutCantidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:hint="Cantidad"
+                android:textColorHint="?attr/colorPrimary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textCantidad"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:inputType="numberDecimal"
+                    android:maxLength="20"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

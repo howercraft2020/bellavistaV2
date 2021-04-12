@@ -49,10 +49,11 @@
             android:label="Conteos"/>
         <activity
             android:name=".view.ActivityCiclicoAgregar"
-            android:label="Agregar Inventario"/>
+            android:label="Agregar Conteo"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".view.ActivityCiclicoEditar"
-            android:label="Editar Inventario"/>
+            android:label="Editar Conteo"/>
 
         <!-- INVENTARIO FISICO -->
         <activity

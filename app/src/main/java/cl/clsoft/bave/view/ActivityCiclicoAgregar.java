@@ -92,7 +92,7 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
         this.inventarioCiclicoId = this.getIntent().getLongExtra("ciclicosId",0);
         this.subinventarioId = this.getIntent().getStringExtra("subinventarioId");
         this.textLocator.setThreshold(1);
-        this.textSigle.setThreshold(1);
+        this.textSigle.setThreshold(0);
         this.textSerie.setThreshold(1);
         this.textLote.setThreshold(1);
 
@@ -107,7 +107,7 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                     Localizador localizador = mPresenter.getLocalizadorbyCodigo(locatorCodigo);
                     if (localizador != null) {
                         locatorId = localizador.getIdLocalizador();
-                        List<String> segmentosLocalizador = mPresenter.getSegmentosByCountHeaderIdLocatorId(inventarioCiclicoId, locatorId);
+                        List<String> segmentosLocalizador = mPresenter.getSegmentosByCountHeaderIdSubinventoryLocatorId(inventarioCiclicoId, subinventarioId, locatorId);
                         if (segmentosLocalizador != null) {
                             String[] segmentos = new String[segmentosLocalizador.size()];
                             for (int i = 0; i < segmentosLocalizador.size(); i++) {
@@ -118,6 +118,7 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                         }
                         layoutSigle.setHintEnabled(true);
                         textSigle.setEnabled(true);
+                        textSigle.setText("");
                         textSigle.requestFocus();
                     }
                 }
@@ -140,7 +141,9 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                         if (item != null) {
 
                             textSigle.setEnabled(false);
-
+                            layoutCantidad.setHintEnabled(true);
+                            textCantidad.setEnabled(true);
+                            layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                             if (item.getLotControlCode().equalsIgnoreCase("2")) {
                                 fillLote();
                             } else {
@@ -151,13 +154,12 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                                 textSerie.setEnabled(true);
                                 layoutSerie.setHintEnabled(true);
                                 //fillSerie();
+                                textCantidad.setText("1.0");
+                                textCantidad.setEnabled(false);
                             } else {
                                 textSerie.setEnabled(false);
                                 layoutSerie.setHintEnabled(false);
                             }
-                            layoutCantidad.setHintEnabled(true);
-                            textCantidad.setEnabled(true);
-                            layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                         } else {
                             showWarning("Item " + segment + " no encontrado en tabla maestra");
                         }
@@ -180,6 +182,9 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                 if (item != null) {
 
                     textSigle.setEnabled(false);
+                    layoutCantidad.setHintEnabled(true);
+                    textCantidad.setEnabled(true);
+                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
 
                     if (item.getLotControlCode().equalsIgnoreCase("2")) {
                         fillLote();
@@ -190,17 +195,26 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                     if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
                         textSerie.setEnabled(true);
                         layoutSerie.setHintEnabled(true);
-                        //fillSerie();
+                        fillSerie();
+                        textCantidad.setText("1.0");
+                        textCantidad.setEnabled(false);
                     } else {
                         textSerie.setEnabled(false);
                         layoutSerie.setHintEnabled(false);
                     }
-                    layoutCantidad.setHintEnabled(true);
-                    textCantidad.setEnabled(true);
-                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                 } else {
                     showWarning("Item " + segment + " no encontrado en tabla maestra");
                 }
+            }
+        });
+
+        this.textLote.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                Log.d(TAG, "lote: " + parent.getAdapter().getItem(pos).toString());
+                textCantidad.requestFocus();
             }
         });
 
@@ -214,6 +228,11 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
 
         this.cleanScreen();
         this.mPresenter.getLocalizadoresBySubinventario(this.subinventarioId, this.inventarioCiclicoId);
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.confirmacionSalir();
     }
 
     @Override
@@ -233,11 +252,12 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                 this.grabarInventario();
                 return true;
             case android.R.id.home:
-                Intent i = new Intent(this, ActivityCiclicoDetalle.class);
-                i.putExtra("ciclicosId", this.inventarioCiclicoId);
-                i.putExtra("subinventarioId", this.subinventarioId);
-                startActivity(i);
-                this.finish();
+                //Intent i = new Intent(this, ActivityCiclicoDetalle.class);
+                //i.putExtra("ciclicosId", this.inventarioCiclicoId);
+                //i.putExtra("subinventarioId", this.subinventarioId);
+                //startActivity(i);
+                //this.finish();
+                this.confirmacionSalir();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -291,6 +311,12 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
         String tipo = dialog.getArguments().getString("tipo");
         if (tipo.equalsIgnoreCase("grabar")) {
             mPresenter.grabarInventario(this.inventarioCiclicoId, this.subinventarioId, this.locatorId, this.segment, this.serie, this.lote, this.cantidad);
+        } else  if (tipo.equalsIgnoreCase("exit")) {
+            Intent i = new Intent(this, ActivityCiclicoDetalle.class);
+            i.putExtra("ciclicosId", this.inventarioCiclicoId);
+            i.putExtra("subinventarioId", this.subinventarioId);
+            startActivity(i);
+            this.finish();
         }
     }
 
@@ -309,19 +335,32 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                 ArrayAdapter<String> adapterLocator = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, locators);
                 this.textLocator.setAdapter(adapterLocator);
                 this.textLocator.setText("");
+                this.textLocator.requestFocus();
                 this.hayLocalizador = true;
             } else {
                 this.textLocator.setVisibility(View.GONE);
                 this.layoutLocator.setVisibility(View.GONE);
-                this.textSigle.setEnabled(false);
                 this.hayLocalizador = false;
+                List<String> segmentosLocalizador = mPresenter.getSegmentosByCountHeaderIdSubinventoryLocatorId(inventarioCiclicoId, subinventarioId, locatorId);
+                if (segmentosLocalizador != null) {
+                    String[] segmentos = new String[segmentosLocalizador.size()];
+                    for (int i = 0; i < segmentosLocalizador.size(); i++) {
+                        segmentos[i] = segmentosLocalizador.get(i);
+                    }
+                    ArrayAdapter<String> adapterSegmentos = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.select_dialog_item, segmentos);
+                    textSigle.setAdapter(adapterSegmentos);
+                }
+                this.layoutSigle.setHintEnabled(true);
+                this.textSigle.setEnabled(true);
+                this.textSigle.setText("");
+                this.textSigle.requestFocus();
                 //this.loadSigle();
             }
         }
     }
 
     public void fillLote() {
-        List<String> listLotes = this.mPresenter.getLotes(inventarioCiclicoId, locatorId, segment);
+        List<String> listLotes = this.mPresenter.getLotes(inventarioCiclicoId, subinventarioId, locatorId, segment);
         if (listLotes != null) {
             if (listLotes.size() > 0) {
                 String[] lotes = new String[listLotes.size()];
@@ -332,9 +371,29 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                 this.textLote.setAdapter(adapterLote);
                 this.textLote.setEnabled(true);
                 this.layoutLote.setHintEnabled(true);
+                this.textLote.requestFocus();
             } else {
                 this.textLote.setEnabled(false);
                 this.layoutLote.setHintEnabled(false);
+            }
+        }
+    }
+
+    public void fillSerie() {
+        List<String> listSeries = this.mPresenter.getSeries(inventarioCiclicoId, subinventarioId, locatorId, segment);
+        if (listSeries != null) {
+            if (listSeries.size() > 0) {
+                String[] series = new String[listSeries.size()];
+                for (int i = 0; i < listSeries.size(); i++) {
+                    series[i] = listSeries.get(i);
+                }
+                ArrayAdapter<String> adapterSerie = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, series);
+                this.textSerie.setAdapter(adapterSerie);
+                this.textSerie.setEnabled(true);
+                this.layoutSerie.setHintEnabled(true);
+            } else {
+                this.textSerie.setEnabled(false);
+                this.layoutSerie.setHintEnabled(false);
             }
         }
     }
@@ -365,14 +424,24 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
         String[] vencimientos = new String[0];
         ArrayAdapter<String> adapterClear = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, vencimientos);
 
-        this.textLocator.setText("");
-        this.locatorCodigo = null;
-        this.locatorId = null;
+        if (this.hayLocalizador) {
 
-        this.layoutSigle.setHintEnabled(false);
-        this.textSigle.setEnabled(false);
-        this.textSigle.setAdapter(adapterClear);
-        this.textSigle.setText("");
+            this.layoutSigle.setHintEnabled(false);
+            this.textSigle.setEnabled(false);
+            this.textSigle.setAdapter(adapterClear);
+            this.textSigle.setText("");
+
+            this.textLocator.setText("");
+            this.textLocator.requestFocus();
+            this.locatorCodigo = null;
+            this.locatorId = null;
+        } else {
+            this.layoutSigle.setHintEnabled(true);
+            this.textSigle.setEnabled(true);
+            //this.textSigle.setAdapter(adapterClear);
+            this.textSigle.setText("");
+            this.textSigle.requestFocus();
+        }
 
         this.layoutSerie.setHintEnabled(false);
         this.textSerie.setEnabled(false);
@@ -388,4 +457,10 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
         this.textCantidad.setEnabled(false);
         this.textCantidad.setText("");
     }
+
+    private void confirmacionSalir() {
+        ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
+        dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
+    }
+
 }

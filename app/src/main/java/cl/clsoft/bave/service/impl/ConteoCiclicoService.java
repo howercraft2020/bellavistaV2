@@ -36,10 +36,12 @@ import cl.clsoft.bave.service.IConteoCiclicoService;
 
 public class ConteoCiclicoService implements IConteoCiclicoService {
 
-    private static final String TAG = "ConteoCiclicoService";
+    private static final String TAG = "SERVICE";
 
     @Override
     public List<MtlCycleCountHeaders> getAllConteosCiclicos() throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::getAllConteosCiclicos");
+
         IMtlCycleCountHeadersDao mtlCycleCountHeadersDao = new MtlCycleCountHeadersDaoImpl();
         try {
             return mtlCycleCountHeadersDao.getAll();
@@ -50,6 +52,8 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
 
     @Override
     public MtlCycleCountHeaders getConteoCiclico(Long cycleCountHeaderId) throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::getConteoCiclico");
+
         IMtlCycleCountHeadersDao mtlCycleCountHeadersDao = new MtlCycleCountHeadersDaoImpl();
         try{
             return mtlCycleCountHeadersDao.get(cycleCountHeaderId);
@@ -60,6 +64,8 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
 
     @Override
     public List<Subinventario> getAllSubinventariosByConteoCiclico(Long cycleCountHeaderId) throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::getAllSubinventariosByConteoCiclico");
+
         ISubinventarioDao subinventarioDao = new SubinventarioDaoImpl();
         try {
             return subinventarioDao.getAllByCiclico(cycleCountHeaderId);
@@ -70,6 +76,7 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
 
     @Override
     public List<MtlCycleCountEntries> getAllEntriesInventariadas(Long countHeaderId, String subinventory) throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::getAllEntriesInventariadas");
         Log.d(TAG, "ConteoCiclicoService::getAllEntriesInventariadas::countHeaderId: " + countHeaderId);
         Log.d(TAG, "ConteoCiclicoService::getAllEntriesInventariadas::subinventory: " + subinventory);
 
@@ -144,8 +151,12 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
         Log.d(TAG, "ConteoCiclicoService::grabarInventario");
 
         IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
+        List<MtlCycleCountEntries> entries;
         try {
-            List<MtlCycleCountEntries> entries = mtlCycleCountEntriesDao.getAllBySubinventarioLocatorSegmentLoteSerie(cycleCountEntrieId, subinventarioId, locatorId, segment, serie, lote);
+            if (locatorId != null && locatorId.longValue() > 0)
+                entries = mtlCycleCountEntriesDao.getAllBySubinventarioLocatorSegmentLoteSerie(cycleCountEntrieId, subinventarioId, locatorId, segment, serie, lote);
+            else
+                entries = mtlCycleCountEntriesDao.getAllBySubinventarioSegmentLoteSerie(cycleCountEntrieId, subinventarioId, segment, serie, lote);
             // Valida tag
             if (entries == null) {
                 throw new ServiceException(1, "Entrada no encontrada en conteo");
@@ -161,6 +172,9 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
 
             // Update Entry
             MtlCycleCountEntries entry = entries.get(0);
+            if (entry.getCount().doubleValue() > 0 && entry.getLastUpdated() != null) {
+                throw new ServiceException(1, "Conteo ya se encuentra ingresado.");
+            }
             entry.setCount(cantidad);
 
             DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
@@ -307,6 +321,8 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
 
     @Override
     public List<MtlCycleCountEntries> getAllSigleInformation(Long idSigle) throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::getAllSigleInformation");
+
         IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
         try{
             return mtlCycleCountEntriesDao.getSigle(idSigle);
@@ -317,6 +333,8 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
 
     @Override
     public List<MtlCycleCountEntries> getAllSigleDetalle() throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::getAllSigleDetalle");
+
         IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
         try{
             return mtlCycleCountEntriesDao.getAll();
@@ -327,6 +345,8 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
 
     @Override
     public MtlCycleCountEntries getCiclicoSigleDetalle(Long cycleCountEntrieId) throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::getCiclicoSigleDetalle");
+
         IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
         try{
             return mtlCycleCountEntriesDao.get(cycleCountEntrieId);
@@ -337,6 +357,8 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
 
     @Override
     public List<String> getSegmentsByCountHeaderIdLocatorId(Long cycleCountEntrieId, Long locatorId) throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::getSegmentsByCountHeaderIdLocatorId");
+
         IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
         try{
             return mtlCycleCountEntriesDao.getSegmentsByCountHeaderLocator(cycleCountEntrieId, locatorId);
@@ -346,10 +368,53 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
     }
 
     @Override
-    public List<String> getLotesByCountHeaderIdLocatorIdSegment(Long cycleCountHeaderId, Long locatorId, String segment) throws ServiceException {
+    public List<String> getSegmentsByCountHeaderIdSubinventoryLocator(Long cycleCountEntrieId, String subinventory, Long locatorId) throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::getSegmentsByCountHeaderIdSubinventoryLocator");
+
         IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
         try{
-            return mtlCycleCountEntriesDao.getLoteByCountHeaderLocatorSegment(cycleCountHeaderId, locatorId, segment);
+            if (locatorId == null)
+                return mtlCycleCountEntriesDao.getSegmentsByCountHeaderSubinventory(cycleCountEntrieId, subinventory);
+            else
+                return mtlCycleCountEntriesDao.getSegmentsByCountHeaderSubinventoryLocator(cycleCountEntrieId, subinventory, locatorId);
+        }catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<String> getLotesByCountHeaderIdSubinventoryLocatorIdSegment(Long cycleCountHeaderId, String subinventory, Long locatorId, String segment) throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::getLotesByCountHeaderIdSubinventoryLocatorIdSegment");
+        Log.d(TAG, "ConteoCiclicoService::getLotesByCountHeaderIdSubinventoryLocatorIdSegment::cycleCountHeaderId: " + cycleCountHeaderId);
+        Log.d(TAG, "ConteoCiclicoService::getLotesByCountHeaderIdSubinventoryLocatorIdSegment::subinventory: " + subinventory);
+        Log.d(TAG, "ConteoCiclicoService::getLotesByCountHeaderIdSubinventoryLocatorIdSegment::locatorId: " + locatorId);
+        Log.d(TAG, "ConteoCiclicoService::getLotesByCountHeaderIdSubinventoryLocatorIdSegment::segment: " + segment);
+
+        IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
+        try{
+            if (locatorId != null && locatorId.longValue() > 0)
+                return mtlCycleCountEntriesDao.getLoteByCountHeaderSubinventoryLocatorSegment(cycleCountHeaderId, subinventory, locatorId, segment);
+            else
+                return mtlCycleCountEntriesDao.getLoteByCountHeaderSubinventorySegment(cycleCountHeaderId, subinventory, segment);
+        }catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<String> getSerialByCountHeaderIdSubinventoryLocatorIdSegment(Long cycleCountHeaderId, String subinventory, Long locatorId, String segment) throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::getSeriesByCountHeaderIdSubinventoryLocatorIdSegment");
+        Log.d(TAG, "ConteoCiclicoService::getSeriesByCountHeaderIdSubinventoryLocatorIdSegment::cycleCountHeaderId: " + cycleCountHeaderId);
+        Log.d(TAG, "ConteoCiclicoService::getSeriesByCountHeaderIdSubinventoryLocatorIdSegment::subinventory: " + subinventory);
+        Log.d(TAG, "ConteoCiclicoService::getSeriesByCountHeaderIdSubinventoryLocatorIdSegment::locatorId: " + locatorId);
+        Log.d(TAG, "ConteoCiclicoService::getSeriesByCountHeaderIdSubinventoryLocatorIdSegment::segment: " + segment);
+
+        IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
+        try{
+            if (locatorId != null && locatorId.longValue() > 0)
+                return mtlCycleCountEntriesDao.getSerialByCountHeaderSubinventoryLocatorSegment(cycleCountHeaderId, subinventory, locatorId, segment);
+            else
+                return mtlCycleCountEntriesDao.getSerialByCountHeaderSubinventorySegment(cycleCountHeaderId, subinventory, segment);
         }catch(DaoException e){
             throw new ServiceException(2, e.getDescripcion());
         }

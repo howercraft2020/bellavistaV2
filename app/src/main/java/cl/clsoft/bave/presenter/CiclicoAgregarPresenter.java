@@ -62,9 +62,9 @@ public class CiclicoAgregarPresenter extends BasePresenter {
         return null;
     }
 
-    public List<String> getSegmentosByCountHeaderIdLocatorId(Long countHeaderId, Long locatorId) {
+    public List<String> getSegmentosByCountHeaderIdSubinventoryLocatorId(Long countHeaderId, String subinventory, Long locatorId) {
         try {
-            return this.mService.getSegmentsByCountHeaderIdLocatorId(countHeaderId, locatorId);
+            return this.mService.getSegmentsByCountHeaderIdSubinventoryLocator(countHeaderId, subinventory, locatorId);
         } catch(ServiceException e){
             if (e.getCodigo() == 1) {
                 this.mView.showWarning(e.getDescripcion());
@@ -75,9 +75,22 @@ public class CiclicoAgregarPresenter extends BasePresenter {
         return null;
     }
 
-    public List<String> getLotes(Long cycleCountHeaderId, Long locatorId, String segment) {
+    public List<String> getLotes(Long cycleCountHeaderId, String subinventory, Long locatorId, String segment) {
         try {
-            return this.mService.getLotesByCountHeaderIdLocatorIdSegment(cycleCountHeaderId, locatorId, segment);
+            return this.mService.getLotesByCountHeaderIdSubinventoryLocatorIdSegment(cycleCountHeaderId, subinventory, locatorId, segment);
+        } catch(ServiceException e){
+            if (e.getCodigo() == 1) {
+                this.mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                this.mView.showError(e.getDescripcion());
+            }
+        }
+        return null;
+    }
+
+    public List<String> getSeries(Long inventarioCiclicoId, String subinventarioId, Long locatorId, String segment) {
+        try {
+            return this.mService.getSerialByCountHeaderIdSubinventoryLocatorIdSegment(inventarioCiclicoId, subinventarioId, locatorId, segment);
         } catch(ServiceException e){
             if (e.getCodigo() == 1) {
                 this.mView.showWarning(e.getDescripcion());
