@@ -40,6 +40,7 @@ public class ActivitySigleSearch extends BaseActivity<SigleSearchPresenter> {
     private Long countHeaderId;
     private Long inventoryId;
     private Long locatorId;
+    private String subinventario;
     List<MtlSystemItems> items;
 
     // Controls
@@ -72,6 +73,7 @@ public class ActivitySigleSearch extends BaseActivity<SigleSearchPresenter> {
         this.countHeaderId = this.getIntent().getLongExtra("CountHeaderId", 0);
         this.inventoryId = this.getIntent().getLongExtra("InventoryId", 0);
         this.locatorId = this.getIntent().getLongExtra("LocatorId", 0);
+        this.subinventario = this.getIntent().getStringExtra("Subinventario");
         this.inputTexto.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
         this.inputTexto.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -95,6 +97,8 @@ public class ActivitySigleSearch extends BaseActivity<SigleSearchPresenter> {
                             mPresenter.getItemsCiclico(pattern,countHeaderId, locatorId);
                         else if (tipo.equalsIgnoreCase("F"))
                             mPresenter.getItemsFisico(pattern, inventoryId, locatorId);
+                        else if (tipo.equalsIgnoreCase("TS"))
+                            mPresenter.getItemsTransSubinv(pattern, subinventario, locatorId);
                         else
                             mPresenter.getItems(pattern);
                     }

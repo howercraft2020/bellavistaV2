@@ -166,6 +166,18 @@ public class InventarioFisicoService implements IInventarioFisicoService {
     }
 
     @Override
+    public List<MtlSystemItems> getItemsTransSubinbByDescription(String pattern, String subinventario, Long locatorId) throws ServiceException {
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+        try {
+            List<MtlSystemItems> items = mtlSystemItemsDao.getAllByDescriptionSubinvLocator(pattern, subinventario, locatorId);
+            Log.d(TAG, "size" + items.size());
+            return items;
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
     public List<MtlSystemItems> getItemsEntregaOrganizacionesByDescription(String pattern, Long shipmentHeaderId) throws ServiceException {
         Log.d(TAG, "InventarioFisicoService::getItemsEntregaOrganizacionesByDescription");
         Log.d(TAG, "InventarioFisicoService::getItemsEntregaOrganizacionesByDescription::pattern: " + pattern);
@@ -214,6 +226,7 @@ public class InventarioFisicoService implements IInventarioFisicoService {
             throw new ServiceException(2, e.getDescripcion());
         }
     }
+
 
     @Override
     public List<MtlPhysicalInventoryTags> getAllTagsByInventory(Long physicalInventoryId) throws ServiceException {

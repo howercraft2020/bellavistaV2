@@ -48,6 +48,8 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
     private String codigoSigle;
     private String subinvDesde;
     private String localizador;
+    private Long locatorId;
+    private String locatorCodigo;
     private String nroLote;
     private String subinvHasta;
     private String localHasta;
@@ -113,16 +115,13 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         this.glosaEt = (EditText) findViewById(R.id.glosaEditText);
         this.nroTraspasoEt = (EditText) findViewById(R.id.traspasoEditText);
 
-
-
-
         this.numeroTraspaso = getIntent().getStringExtra("numeroTraspaso");
         this.glosa = getIntent().getStringExtra("glosa");
         this.codigoSigle = getIntent().getStringExtra("codigoSigle");
         this.subinvDesde = getIntent().getStringExtra("subinvDesde");
         this.localizador = getIntent().getStringExtra("localizador");
         this.nroLote = getIntent().getStringExtra("nroLote");
-        this.cantidad = getIntent().getDoubleExtra("cantidad",0.0);
+        this.cantidad = getIntent().getDoubleExtra("cantidad",0);
         this.subinvHasta = getIntent().getStringExtra("subinvHasta");
         this.localHasta = getIntent().getStringExtra("localHasta");
         this.id = getIntent().getStringExtra("id");
@@ -134,7 +133,27 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         textSubinventario.setText(subinvDesde);
         textLocator.setText(localizador);
         textLote.setText(nroLote);
-        textCantidad.setText(String.valueOf(cantidad));
+
+        if (cantidad > 0) {
+            textCantidad.setText(String.valueOf(cantidad));
+        }
+        else{
+            textCantidad.setText("");
+        }
+
+        if(localizador != null){
+            textLocator.setEnabled(false);
+            textSubinventario.setEnabled(false);
+        }
+
+        if(codigoSigle != null){
+            textSigle.setEnabled(false);
+        }
+
+        if(nroLote != null){
+            textLote.setEnabled(false);
+        }
+
 
         this.textSubinventario.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -144,8 +163,57 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
                 if (codSubinventario != null && !codSubinventario.equalsIgnoreCase("SIN LOCALIZADOR")) {
                     mPresenter.getLocalizadoresBySubinventario(codSubinventario);
                 }
+
+                loadSigle();
+                textLocator.requestFocus();
             }
         });
+
+        /*
+        this.textLote.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+        */
+
+        this.textLocator.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                locatorCodigo = parent.getAdapter().getItem(pos).toString();
+                Log.d(TAG, "locatorCodigo: " + locatorCodigo);
+                if (locatorCodigo != null && !locatorCodigo.equalsIgnoreCase("SIN LOCALIZADOR")) {
+                    Localizador localizador = mPresenter.getLocalizadorbyCodigo(locatorCodigo);
+                    if (localizador != null) {
+                        locatorId = localizador.getIdLocalizador();
+                    }
+                }
+                loadSigle();
+            }
+        });
+
+        this.textSigle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+                textSigle.setEnabled(false);
+                segment = parent.getAdapter().getItem(pos).toString();
+                MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
+                if (item != null) {
+                    if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                        fillLote();
+                    }
+                    layoutCantidad.setHintEnabled(true);
+                    textCantidad.setEnabled(true);
+                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
+                } else {
+                    showWarning("Item " + segment + " no encontrado en tabla maestra");
+                }
+            }
+        });
+
 
         this.textSigle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -168,6 +236,7 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
                                 textLote.setEnabled(true);
                                 layoutLote.setHintEnabled(true);
                                 isLote = true;
+                                fillLote();
                             }
                             else {
                                 textLote.setEnabled(false);
@@ -179,9 +248,11 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
                             } else {
                                 isSerie = false;
                             }
+                            textSigle.setEnabled(false);
                             layoutCantidad.setHintEnabled(true);
                             textCantidad.setEnabled(true);
-                            layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode());
+                            layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() +")");
+                            //mPresenter
 
                         }
                         else {
@@ -195,12 +266,16 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         });
 
         this.iconSearch.setOnClickListener(v -> {
-            Intent i = new Intent(this, ActivitySigleSearch.class);
-            startActivityForResult(i, LAUNCH_SEARCHSINGLE_ACTIVITY);
+            Intent iSearch = new Intent(this, ActivitySigleSearch.class);
+            iSearch.putExtra("Tipo", "TS");
+            iSearch.putExtra("Subinventario", this.codSubinventario);
+            iSearch.putExtra("LocatorId", this.locatorId);
+            startActivityForResult(iSearch, LAUNCH_SEARCHSINGLE_ACTIVITY);
         });
 
         this.mPresenter.getSubinventarios();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -225,6 +300,9 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         glosa = this.glosaEt.getText().toString();
 
         switch (item.getItemId()) {
+            case R.id.clean:
+                this.cleanScreen();
+                return true;
             case R.id.action_more:
                 if( mPresenter.cargaTransferencia(articulo, lote, subinventario, localizador, cantidad)) {
                     Intent i = new Intent(this, ActivityTransSubinvDest.class);
@@ -277,11 +355,61 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
                 this.textLocator.setAdapter(adapterLocator);
                 this.textLocator.setText("");
             } else {
-                this.textLocator.setVisibility(View.GONE);
-                this.layoutLocator.setVisibility(View.GONE);
-                //this.textSigle.setEnabled(false); JP
-                //this.hayLocalizador = false; JP
-                //this.loadSigle();
+                this.loadSigle();
+            }
+        }
+    }
+
+    public void loadSigle() {
+        this.mPresenter.getSegment1(codSubinventario, locatorCodigo);
+    }
+
+
+    public void fillSigle(List<String> listSigles) {
+        if (listSigles != null) {
+            if (listSigles.size() > 0) {
+                String[] sigles = new String[listSigles.size()];
+                for (int i = 0; i < listSigles.size(); i++) {
+                    sigles[i] = listSigles.get(i);
+                }
+                ArrayAdapter<String> adapterSerie = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, sigles);
+
+                if (!textLocator.getText().toString().equals("")) {
+                    textLocator.setEnabled(false);
+                    textSubinventario.setEnabled(false);
+                }
+
+                this.textSigle.setAdapter(adapterSerie);
+                this.textSigle.setEnabled(true);
+                this.layoutSigle.setHintEnabled(true);
+                //this.textSigle.requestFocus();
+            } else {
+                this.showWarning("No se encontraron productos");
+                this.textLocator.setText("");
+                this.textLocator.requestFocus();
+            }
+        } else {
+            this.showWarning("No se encontraron productos");
+            this.textLocator.setText("");
+            this.textLocator.requestFocus();
+        }
+    }
+
+    public void fillLote() {
+        List<String> listLotes = this.mPresenter.getLotesBySubinvLoc(codSubinventario, locatorId, segment);
+        if (listLotes != null) {
+            if (listLotes.size() > 0) {
+                String[] lotes = new String[listLotes.size()];
+                for (int i = 0; i < listLotes.size(); i++) {
+                    lotes[i] = listLotes.get(i);
+                }
+                ArrayAdapter<String> adapterLote = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, lotes);
+                this.textLote.setAdapter(adapterLote);
+                this.textLote.setEnabled(true);
+                this.layoutLote.setHintEnabled(true);
+            } else {
+                this.textLote.setEnabled(false);
+                this.layoutLote.setHintEnabled(false);
             }
         }
     }
@@ -342,5 +470,22 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
     @Override
     public void onDialogCancelarClick(DialogFragment dialog) {
 
+    }
+
+    public void cleanScreen() {
+        String[] vencimientos = new String[0];
+        ArrayAdapter<String> adapterClear = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, vencimientos);
+
+        this.textSubinventario.requestFocus();
+        this.textLocator.setEnabled(true);
+        this.textSubinventario.setEnabled(true);
+        this.textSubinventario.setText("");
+        this.codSubinventario = null;
+        this.textLocator.setText("");
+        this.locatorCodigo = null;
+        this.locatorId = null;
+        this.textSigle.setText("");
+        this.textLote.setText("");
+        this.textCantidad.setText("");
     }
 }

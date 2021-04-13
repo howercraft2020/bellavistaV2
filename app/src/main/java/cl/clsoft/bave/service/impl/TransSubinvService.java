@@ -15,6 +15,7 @@ import cl.clsoft.bave.dao.IDatosTransSubInvDao;
 import cl.clsoft.bave.dao.IDatosTransSubinvDetalleDao;
 import cl.clsoft.bave.dao.ILocalizadorDao;
 import cl.clsoft.bave.dao.IMtlOnhandQuantitiesDao;
+import cl.clsoft.bave.dao.IMtlPhysicalInventoryTagsDao;
 import cl.clsoft.bave.dao.IMtlSerialNumbersInterfaceDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.IMtlTransactionLotsInterfaceDao;
@@ -26,6 +27,7 @@ import cl.clsoft.bave.dao.impl.DatosTransSubinvDetalleImpl;
 import cl.clsoft.bave.dao.impl.DatosTransSubinvImpl;
 import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlOnhandQuantitiesDaoImpl;
+import cl.clsoft.bave.dao.impl.MtlPhysicalInventoryTagsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSerialNumbersInterfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlTransactionInterfaceDaoImpl;
@@ -88,14 +90,14 @@ public class TransSubinvService implements ITransSubinvService {
             }
 
             //Validación datos en mtlonhandquantities
-            MtlOnhandQuantities cantidades = mtlOnhandQuantitiesDao.get(articulo,lote, subinventario, localizador);
-            if(cantidades == null){
+            MtlOnhandQuantities datos = mtlOnhandQuantitiesDao.get(articulo,lote, subinventario, localizador);
+            if(datos == null){
                 throw new ServiceException(1,"No se encuentra información de cantidad de stock");
             }
 
 
             //Validación Cantidad en Mano
-            cantidadEnMano = cantidades.getPrimaryTransactionQuantity();
+            cantidadEnMano = mtlOnhandQuantitiesDao.getCantidad(articulo,lote, subinventario, localizador);
 
             if (cantidadEnMano < cantidad) {
                 throw new ServiceException(1,"Cantidad no puede ser mayor a : " + cantidadEnMano);
@@ -141,11 +143,15 @@ public class TransSubinvService implements ITransSubinvService {
 
         try{
 
+                //Datos organizacion Principal
+                OrganizacionPrincipal organizacionPrincipal = organizacionPrincipalDao.get();
+
                 transactionInterfaceId = id;
                 String fecha = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
                 if(nroTraspaso.equals("")) {
-                    fechaId = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault()).format(new Date());
+
+                    fechaId = organizacionPrincipal.getCode() + new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault()).format(new Date());
                 }
                 else {
                     fechaId = nroTraspaso;
@@ -234,9 +240,6 @@ public class TransSubinvService implements ITransSubinvService {
                     throw new ServiceException(1, "Faltan series");
                 }
 
-                //Datos organizacion Principal
-                OrganizacionPrincipal organizacionPrincipal = organizacionPrincipalDao.get();
-
                 //Datos localizador
                 //locatorId = localizadorDao.get(localizador);
                 //transferLocatorId = localizadorDao.get(localizadorHasta);
@@ -260,7 +263,7 @@ public class TransSubinvService implements ITransSubinvService {
                 mtlTransactionsInterface.setTransactionSourceTypeId(13L);
                 mtlTransactionsInterface.setTransactionActionId(2L);
                 mtlTransactionsInterface.setTransactionTypeId(2L);
-                mtlTransactionsInterface.setTransactionReference(organizacionPrincipal.getCode()+fechaId);
+                mtlTransactionsInterface.setTransactionReference(fechaId);
                 mtlTransactionsInterface.setTransferSubinventory(subinventarioDestino.getCodSubinventario());
                 mtlTransactionsInterface.setTransferOrganization(organizacionPrincipal.getIdOrganizacion());
                 mtlTransactionsInterface.setTransferLocator(localizadorDestino.getIdLocalizador());
@@ -648,6 +651,64 @@ public class TransSubinvService implements ITransSubinvService {
             mtlTransactionLotsInterfaceDao.delete(transactionInterfaceId);
             mtlSerialNumbersInterfaceDao.delete(transactionInterfaceId);
         } catch (DaoException e) {
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public Localizador getLocalizadorByCodigo(String codigo) throws ServiceException {
+        ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
+
+        try {
+            Localizador localizador = localizadorDao.getByCodigo(codigo);
+            return localizador;
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<String> getSegment1(String subinventory, String locatorCodigo) throws ServiceException {
+        Log.d(TAG, "TransSubinvServide::getSegment1");
+        Log.d(TAG, "TransSubinvServide::getSegment1::subinventory: " + subinventory);
+        Log.d(TAG, "TransSubinvServide::getSegment1::locatorCodigo: " + locatorCodigo);
+
+        IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
+        ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
+        try {
+            List<String> segments;
+            if (locatorCodigo == null) {
+                segments = mtlOnhandQuantitiesDao.getSegment1BySubinventory(subinventory);
+            } else {
+                Localizador localizador = localizadorDao.getByCodigo(locatorCodigo);
+                if (localizador != null) {
+                    segments = mtlOnhandQuantitiesDao.getSegment1BySubinventoryLocator(subinventory, localizador.getIdLocalizador());
+                } else {
+                    segments = mtlOnhandQuantitiesDao.getSegment1BySubinventoryLocator(subinventory, null);
+                }
+            }
+            return segments;
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<String> getLote(String subinventory, Long locatorCodigo, String segment1) throws ServiceException {
+        Log.d(TAG, "TransSubinvServide::getLote");
+        Log.d(TAG, "TransSubinvServide::getLote::subinventory: " + subinventory);
+        Log.d(TAG, "TransSubinvServide::getLote::locatorCodigo: " + locatorCodigo);
+
+        IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
+        try {
+            List<String> lotes;
+            if (locatorCodigo == null) {
+                lotes = mtlOnhandQuantitiesDao.getLoteBySubinventory(subinventory, segment1);
+            } else {
+                lotes = mtlOnhandQuantitiesDao.getLoteBySubinventoryLocator(subinventory, locatorCodigo, segment1);
+            }
+            return lotes;
+        } catch(DaoException e){
             throw new ServiceException(2, e.getDescripcion());
         }
     }
