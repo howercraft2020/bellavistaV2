@@ -430,6 +430,7 @@ public class ActivityEntregaOrgsAgregarLote extends BaseActivity<EntregaOrgsAgre
 
         }
     }
+
     private void fillCategorias(Long position) {
         List<String> categorias = new ArrayList<>();
 

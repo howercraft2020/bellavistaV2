@@ -868,6 +868,7 @@ public class BaveServiceImpl implements IBaveService {
                         mtlSerialNumbers.setLotNumber(extraccion[7]);
                     if (extraccion.length >= 9)
                         mtlSerialNumbers.setCurrentOrganizationId(extraccion[8].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[8]));
+                    mtlSerialNumbers.setShipmentHeaderId(shipmentHeaderId);
                     mtlSerialNumbersDao.insert(mtlSerialNumbers);
                 } else if (extraccion[0].equals("4")) {
                     boolean existe = true;

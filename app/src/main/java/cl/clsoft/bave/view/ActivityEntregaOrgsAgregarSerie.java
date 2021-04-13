@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,8 +25,11 @@ import java.util.List;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
+import cl.clsoft.bave.control.InstantAutoCompleteTextView;
 import cl.clsoft.bave.model.MtlMaterialTransactions;
+import cl.clsoft.bave.model.MtlSerialNumbers;
 import cl.clsoft.bave.model.MtlSystemItems;
+import cl.clsoft.bave.model.MtlTransactionLotNumbers;
 import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.presenter.EntregaOrgsAgregarSeriePresenter;
 import cl.clsoft.bave.service.impl.EntregaOrgsServiceImpl;
@@ -49,10 +53,11 @@ public class ActivityEntregaOrgsAgregarSerie extends BaseActivity<EntregaOrgsAgr
     private String currentSerie = "";
     private boolean isLote = false;
     private boolean isSerie = false;
+    private Long inventoryItemId;
 
     // Controls
     private TextInputLayout layoutSerie;
-    private TextInputEditText textSerie;
+    private InstantAutoCompleteTextView textSerie;
     private RecyclerView recyclerViewSeries;
     private AdapterItemSerie adapter;
 
@@ -106,6 +111,7 @@ public class ActivityEntregaOrgsAgregarSerie extends BaseActivity<EntregaOrgsAgr
                 } else {
                     this.isSerie = false;
                 }
+                this.inventoryItemId = item.getInventoryItemId();
             }
         }
 
@@ -157,6 +163,14 @@ public class ActivityEntregaOrgsAgregarSerie extends BaseActivity<EntregaOrgsAgr
         adapter = new AdapterItemSerie(this.series);
         this.recyclerViewSeries.setAdapter(adapter);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.fillSeries();
+        this.textSerie.setText("");
+        this.textSerie.requestFocus();
     }
 
     @Override
@@ -266,4 +280,18 @@ public class ActivityEntregaOrgsAgregarSerie extends BaseActivity<EntregaOrgsAgr
     public void onDialogCancelarClick(DialogFragment dialog) {
 
     }
+
+    private void fillSeries() {
+        List<MtlSerialNumbers> serials = mPresenter.getSerialsByShipmentInventory(this.shipmentHeaderId, this.inventoryItemId);
+        if (serials != null && serials.size() > 0) {
+            String[] serialsStr = new String[serials.size()];
+            for (int i = 0; i < serials.size(); i++) {
+                serialsStr[i] = serials.get(i).getSerialNumber();
+            }
+            ArrayAdapter<String> adapterSerials = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, serialsStr);
+            this.textSerie.setAdapter(adapterSerials);
+
+        }
+    }
+
 }

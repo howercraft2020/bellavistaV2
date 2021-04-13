@@ -73,6 +73,7 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ciclico_agregar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_highlight_off_white_36dp);
 
         // bind controls
         this.llProgressBar = findViewById(R.id.llProgressBar);
@@ -153,7 +154,7 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                             if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
                                 textSerie.setEnabled(true);
                                 layoutSerie.setHintEnabled(true);
-                                //fillSerie();
+                                fillSerie();
                                 textCantidad.setText("1.0");
                                 textCantidad.setEnabled(false);
                             } else {
@@ -391,6 +392,7 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                 this.textSerie.setAdapter(adapterSerie);
                 this.textSerie.setEnabled(true);
                 this.layoutSerie.setHintEnabled(true);
+                this.textSerie.requestFocus();
             } else {
                 this.textSerie.setEnabled(false);
                 this.layoutSerie.setHintEnabled(false);

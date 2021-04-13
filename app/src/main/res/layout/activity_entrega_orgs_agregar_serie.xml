@@ -20,7 +20,7 @@
         android:layout_marginTop="8dp"
         android:hint="Serie"
         android:textColorHint="?attr/colorPrimary">
-        <com.google.android.material.textfield.TextInputEditText
+        <cl.clsoft.bave.control.InstantAutoCompleteTextView
             android:id="@+id/textSerie"
             android:textColor="@android:color/black"
             android:backgroundTint="?attr/colorPrimaryDark"
