@@ -2,10 +2,14 @@ package cl.clsoft.bave.presenter;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
+
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlMaterialTransactions;
+import cl.clsoft.bave.model.MtlSerialNumbers;
 import cl.clsoft.bave.model.MtlSystemItems;
+import cl.clsoft.bave.model.MtlTransactionLotNumbers;
 import cl.clsoft.bave.service.IEntregaOrgsService;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityEntregaOrgsAgregarSerie;
@@ -41,6 +45,21 @@ public class EntregaOrgsAgregarSeriePresenter extends BasePresenter {
     public MtlSystemItems getMtlSystemItemsById(Long inventoryItemId) {
         try {
             return this.mService.getMtlSystemItemsById(inventoryItemId);
+        } catch(ServiceException e) {
+            if (e.getCodigo() == 1) {
+                this.mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                this.mView.showError(e.getDescripcion());
+            }
+        } catch(Exception e){
+            this.mView.showError(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<MtlSerialNumbers> getSerialsByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) {
+        try {
+            return this.mService.getSerialsByShipmentInventory(shipmentHeaderId, inventoryItemId);
         } catch(ServiceException e) {
             if (e.getCodigo() == 1) {
                 this.mView.showWarning(e.getDescripcion());

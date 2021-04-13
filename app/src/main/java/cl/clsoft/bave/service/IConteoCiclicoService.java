@@ -31,6 +31,8 @@ public interface IConteoCiclicoService {
 
     public MtlCycleCountEntries getCiclicoSigleDetalle(Long cycleCountEntrieId) throws ServiceException;
     public List<String> getSegmentsByCountHeaderIdLocatorId(Long cycleCountEntrieId, Long locatorId) throws ServiceException;
-    public List<String> getLotesByCountHeaderIdLocatorIdSegment(Long cycleCountHeaderId, Long locatorId, String segment) throws ServiceException;
+    public List<String> getSegmentsByCountHeaderIdSubinventoryLocator(Long cycleCountEntrieId, String subinventory, Long locatorId) throws ServiceException;
+    public List<String> getLotesByCountHeaderIdSubinventoryLocatorIdSegment(Long cycleCountHeaderId, String subinventory, Long locatorId, String segment) throws ServiceException;
+    public List<String> getSerialByCountHeaderIdSubinventoryLocatorIdSegment(Long cycleCountHeaderId, String subinventory, Long locatorId, String segment) throws ServiceException;
 
 }

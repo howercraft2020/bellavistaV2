@@ -49,10 +49,11 @@
             android:label="Conteos"/>
         <activity
             android:name=".view.ActivityCiclicoAgregar"
-            android:label="Agregar Inventario"/>
+            android:label="Agregar Conteo"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".view.ActivityCiclicoEditar"
-            android:label="Editar Inventario"/>
+            android:label="Editar Conteo"/>
 
         <!-- INVENTARIO FISICO -->
         <activity
@@ -62,11 +63,16 @@
             android:name=".view.ActivityFisicoSub"
             android:label="Subinventarios"/>
         <activity
-            android:name=".view.ActivityFisicoDetalle"
+            android:name=".view.ActivityFisicoTags"
             android:label="Tags"/>
         <activity
             android:name=".view.ActivityFisicoAgregar"
-            android:label="Agregar Inventario"/>
+            android:label="Agregar Inventario"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".view.ActivityFisicoAgregarDisponible"
+            android:label="Agregar Inventario"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".view.ActivityFisicoEditar"
             android:label="Editar Inventario"/>
@@ -125,7 +131,8 @@
             android:label="Detalle"/>
         <activity
             android:name=".view.ActivityEntregaOrgsAgregar"
-            android:label="Agregar"/>
+            android:label="Agregar"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".view.ActivityEntregaOrgsAgregarLote"
             android:label="Lote"/>
@@ -146,6 +153,9 @@
         <activity
             android:name=".view.ActivityConsultaSubinventario"
             android:label="Stock"/>
+        <activity
+            android:name=".view.ActivityConsultaSubinventarioDetalle"
+            android:label="Stock Detalle"/>
 
         <!-- GENERICO -->
         <activity

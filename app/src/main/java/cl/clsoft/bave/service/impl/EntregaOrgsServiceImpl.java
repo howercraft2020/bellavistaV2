@@ -166,6 +166,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
         ISubinventarioDao subinventarioDao = new SubinventarioDaoImpl();
         ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
         IMtlTransactionLotNumbersDao mtlTransactionLotNumbersDao = new MtlTransactionLotNumbersDaoImpl();
+        IMtlSerialNumbersDao mtlSerialNumbersDao = new MtlSerialNumbersDaoImpl();
         try {
             boolean isControlLote = false;
             boolean isControlSerie = false;
@@ -201,7 +202,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
             }
 
             // Locator
-            if (locatorCode != null) {
+            if (locatorCode != null && !locatorCode.isEmpty()) {
                 localizador = localizadorDao.getByCodigo(locatorCode);
                 if (localizador == null) {
                     throw new ServiceException(1, "Localizador " + locatorCode + " no existe en el sistema");
@@ -251,6 +252,8 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
             transaction.setSubinventory(subinventoryCode);
             if (localizador != null)
                 transaction.setLocatorId(localizador.getIdLocalizador());
+            else
+                transaction.setLocatorId(null);
             if (isControlLote)
                 transaction.setUseMtlLot(1L);
             else
@@ -263,6 +266,19 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
             mtlMaterialTransactionsDao.update(transaction);
             if (isControlLote) {
                 mtlTransactionLotNumbersDao.update(mtlTransactionLotNumbers);
+            }
+
+            // Actualiza series.
+            if (isControlSerie) {
+                List<MtlSerialNumbers> serials = mtlSerialNumbersDao.getAllByShipmentHeaderIdInventoryItemId(shipmentHeaderId, transaction.getInventoryItemId());
+                for (MtlSerialNumbers serial : serials) {
+                    for (String serie : series) {
+                        if (serial.getSerialNumber().equalsIgnoreCase(serie)) {
+                            serial.setEntregaCreationDate(sysDate);
+                            mtlSerialNumbersDao.update(serial);
+                        }
+                    }
+                }
             }
         } catch (DaoException e) {
             throw new ServiceException(2, e.getDescripcion());
@@ -279,14 +295,17 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
         Log.d(TAG, "EntregaOrgsServiceImpl::getTransactionsInterfaceByShipmentHeader::shipmentHeaderId: " + shipmentHeaderId);
 
         IMtlMaterialTransactionsDao mtlMaterialTransactionsDao = new MtlMaterialTransactionsDaoImpl();
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
         try {
             List<TransactionsDto> salida = new ArrayList<>();
             List<MtlMaterialTransactions> transactions = mtlMaterialTransactionsDao.getAllByShipmentEntrega(shipmentHeaderId);
             Log.d(TAG, "transactions size: " + transactions.size());
             for (MtlMaterialTransactions transaction : transactions) {
+                MtlSystemItems mtlSystemItems = mtlSystemItemsDao.get(transaction.getInventoryItemId());
                 TransactionsDto dto = new TransactionsDto();
+                dto.setLineNum(transaction.getShipmentLineId());
                 dto.setInterfaceTransactionId(transaction.getTransactionId());
-                dto.setSegment1(transaction.getInventoryItemId().toString());
+                dto.setSegment1(mtlSystemItems.getSegment1());
                 dto.setCreationDate(transaction.getEntregaCreationDate());
                 salida.add(dto);
             }
@@ -305,7 +324,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
         ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
         IMtlTransactionLotNumbersDao mtlTransactionLotNumbersDao = new MtlTransactionLotNumbersDaoImpl();
-
+        IMtlSerialNumbersDao mtlSerialNumbersDao = new MtlSerialNumbersDaoImpl();
         try {
             TransactionDetalleDto dto = new TransactionDetalleDto();
             Localizador localizador = null;
@@ -326,7 +345,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
             }
 
             // Locator
-            if (transaction.getLocatorId() != null) {
+            if (transaction.getLocatorId() != null && transaction.getLocatorId().longValue() > 0) {
                 localizador = localizadorDao.get(transaction.getLocatorId());
                 if (localizador == null) {
                     throw new ServiceException(1, "Localizador " + transaction.getLocatorId() + " no existe en el sistema");
@@ -351,6 +370,15 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                     dto.setAtributo3(lote.getcAttribute3());
                 }
             }
+
+            if (isControlSerie) {
+                List<MtlSerialNumbers> serials = mtlSerialNumbersDao.getAllByShipmentHeaderIdInventoryItemId(transaction.getShipmentHeaderId(), transaction.getInventoryItemId());
+                for (MtlSerialNumbers serial : serials) {
+                    if (serial.getEntregaCreationDate() != null) {
+                        dto.getSeries().add(serial.getSerialNumber());
+                    }
+                }
+            }
             return dto;
 
         } catch (DaoException e) {
@@ -364,6 +392,8 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
         Log.d(TAG, "EntregaOrgsServiceImpl::deleteTransactionsById::transactionId: " + transactionId);
 
         IMtlMaterialTransactionsDao mtlMaterialTransactionsDao = new MtlMaterialTransactionsDaoImpl();
+        IMtlSerialNumbersDao mtlSerialNumbersDao = new MtlSerialNumbersDaoImpl();
+        IMtlTransactionLotNumbersDao mtlTransactionLotNumbersDao = new MtlTransactionLotNumbersDaoImpl();
         try {
             MtlMaterialTransactions transaction = mtlMaterialTransactionsDao.get(transactionId);
             if (transaction == null) {
@@ -374,6 +404,27 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
             transaction.setSubinventory(null);
             transaction.setLocatorId(null);
             mtlMaterialTransactionsDao.update(transaction);
+
+            // Elimina Lotes
+            MtlTransactionLotNumbers mtlTransactionLotNumbers = mtlTransactionLotNumbersDao.get(transactionId);
+            if (mtlTransactionLotNumbers != null) {
+                mtlTransactionLotNumbers.setLotAttributeCategory(null);
+                mtlTransactionLotNumbers.setcAttribute1(null);
+                mtlTransactionLotNumbers.setcAttribute2(null);
+                mtlTransactionLotNumbers.setcAttribute3(null);
+                mtlTransactionLotNumbers.setEntregaCreationDate(null);
+                mtlTransactionLotNumbersDao.update(mtlTransactionLotNumbers);
+            }
+
+            // Elimina series
+            List<MtlSerialNumbers> serials = mtlSerialNumbersDao.getAllByShipmentHeaderIdInventoryItemId(transaction.getShipmentHeaderId(), transaction.getInventoryItemId());
+            if (serials != null) {
+                for (MtlSerialNumbers serial : serials) {
+                    serial.setEntregaCreationDate(null);
+                    mtlSerialNumbersDao.update(serial);
+                }
+            }
+
         } catch (DaoException e) {
             throw new ServiceException(2, e.getDescripcion());
         }
@@ -404,13 +455,14 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                 Long groupId = transactions.get(0).getShipmentLineId();
 
                 // Genera archivo Conteo
-                String nombreArchivo = "I_R_" + shipmentNumber + ".csv";
+                String nombreArchivo = "I_R_" + shipmentNumber + ".txt";
                 File tarjetaSD = Environment.getExternalStorageDirectory();
                 File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
                 File archivo = new File(Dir, nombreArchivo);
                 FileWriter writer = new FileWriter(archivo);
+                writer.write("INTERORG_RECIBO;FIN" +"\r\n");
                 writer.write(
-                        "HDR;"
+                        "1;"
                         + shipmentHeaderId.toString() + ";"  // HEADER_INTERFACE_ID
                         + "PENDING;"                         // PROCESSING_STATUS_CODE
                         + "INVENTORY;"                       // RECEIPT_SOURCE_CODE
@@ -435,7 +487,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                 for (MtlMaterialTransactions transaction : transactions) {
                     if (transaction.getEntregaCreationDate() != null) {
                         writer.write(
-                                "TRX;"
+                                "2;"
                                         + transaction.getTransactionId(). toString() + ";"     // INTERFACE_TRANSACTION_ID
                                         + sysDate + ";"                                        // LAST_UPDATE_DATE
                                         + userId + ";"                                         // LAST_UPDATED_BY
@@ -486,7 +538,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                             }
                         }
                         writer.write(
-                                "LOT;"
+                                "3;"
                                 + lote.getTransactionId() + ";"                       // TRANSACTION_INTERFACE_ID
                                 + sysDate + ";"                                       // LAST_UPDATE_DATE
                                 + userId + ";"                                        // LAST_UPDATED_BY
@@ -495,7 +547,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                                 + lote.getLotNumber() + ";"                           // LOT_NUMBER
                                 + cantidadLote + ";"                                  // TRANSACTION_QUANTITY
                                 + cantidadLote + ";"                                  // PRIMARY_QUANTITY
-                                + "NULL;"                                             // SERIAL_TRANSACTION_TEMP_ID
+                                + "null;"                                             // SERIAL_TRANSACTION_TEMP_ID
                                 + "RCV;"                                              // PRODUCT_CODE
                                 + lote.getTransactionId() + ";"                       // PRODUCT_TRANSACTION_ID
                                 + ";"                                                 // SUPPLIER_LOT_NUMBER
@@ -520,7 +572,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                             }
                         }
                         writer.write(
-                                "SER;"
+                                "4;"
                                 + serialTransactionId + ";"                            // TRANSACTION_INTERFACE_ID
                                 + sysDate + ";"                                        // LAST_UPDATE_DATE
                                 + userId + ";"                                         // LAST_UPDATED_BY
@@ -534,8 +586,6 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                         );
                     }
                 }
-                writer.flush();
-                writer.close();
 
                 writer.flush();
                 writer.close();
@@ -562,6 +612,35 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
         IMtlMaterialTransactionsDao mtlMaterialTransactionsDao = new MtlMaterialTransactionsDaoImpl();
         try {
             return mtlMaterialTransactionsDao.getSegmentsByShipment(shipmentHeaderId);
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<MtlTransactionLotNumbers> getLotesByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws ServiceException {
+        Log.d(TAG, "EntregaServiceImpl::getLotesByShipmentInventory");
+        Log.d(TAG, "EntregaServiceImpl::getLotesByShipmentInventory::shipmentHeaderId: " + shipmentHeaderId);
+        Log.d(TAG, "EntregaServiceImpl::getLotesByShipmentInventory::inventoryItemId: " + inventoryItemId);
+
+        IMtlTransactionLotNumbersDao mtlTransactionLotNumbersDao = new MtlTransactionLotNumbersDaoImpl();
+        try {
+            return mtlTransactionLotNumbersDao.getAllByShipmentHeaderIdInventoryItemId(shipmentHeaderId, inventoryItemId);
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<MtlSerialNumbers> getSerialsByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws ServiceException {
+        Log.d(TAG, "EntregaServiceImpl::getSerialsByShipmentInventory");
+        Log.d(TAG, "EntregaServiceImpl::getSerialsByShipmentInventory::shipmentHeaderId: " + shipmentHeaderId);
+        Log.d(TAG, "EntregaServiceImpl::getSerialsByShipmentInventory::inventoryItemId: " + inventoryItemId);
+
+        IMtlSerialNumbersDao serialNumbersDao = new MtlSerialNumbersDaoImpl();
+
+        try {
+            return serialNumbersDao.getAllByShipmentHeaderIdInventoryItemId(shipmentHeaderId, inventoryItemId);
         } catch(DaoException e){
             throw new ServiceException(2, e.getDescripcion());
         }

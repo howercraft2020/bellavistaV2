@@ -540,20 +540,21 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
             this.spinnerCategoria.setError("Seleccione categoría");
             return false;
         }
-
-        if (this.categoria.equalsIgnoreCase("REPUESTOS")) {
-            // Asigna Atributo 3
-            this.atributo3 = this.textAtributo3.getText().toString();
-        } else if (this.categoria.equalsIgnoreCase("LIQUIDOS Y LUBRICANTES")) {
-            // Asigna Atributo 1
-            this.atributo1 = this.textAtributo1.getText().toString();
-            // Asigna Atributo 2
-            this.atributo2 = this.textAtributo2.getText().toString();
-            // Asigna Atributo 3
-            this.atributo3 = this.textAtributo3.getText().toString();
-        }
          */
 
+        if (this.categoria != null) {
+            if (this.categoria.equalsIgnoreCase("REPUESTOS")) {
+                // Asigna Atributo 3
+                this.atributo3 = this.textAtributo3.getText().toString();
+            } else if (this.categoria.equalsIgnoreCase("LIQUIDOS Y LUBRICANTES")) {
+                // Asigna Atributo 1
+                this.atributo1 = this.textAtributo1.getText().toString();
+                // Asigna Atributo 2
+                this.atributo2 = this.textAtributo2.getText().toString();
+                // Asigna Atributo 3
+                this.atributo3 = this.textAtributo3.getText().toString();
+            }
+        }
         return true;
     }
 

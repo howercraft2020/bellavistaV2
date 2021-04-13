@@ -29,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import cl.clsoft.bave.BuildConfig;
 import cl.clsoft.bave.Entrega;
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.Recepcion;
@@ -129,6 +130,8 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
         if (!hasPermissions(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
+
+        this.setTitle("BAVE " + BuildConfig.APP_VERSION);
     }
 
     @Override

@@ -114,7 +114,7 @@ public class FisicoAgregarPresenter extends BasePresenter {
         return null;
     }
 
-    public void grabarInventario(Long inventarioId, String subinventarioId, Long locatorId, String segment, String serie, String lote, String vencimiento, Long cantidad) {
+    public void grabarInventario(Long inventarioId, String subinventarioId, Long locatorId, String segment, String serie, String lote, String vencimiento, Double cantidad) {
         try {
             this.mService.grabarInventario(inventarioId, subinventarioId, locatorId, segment, serie, lote, vencimiento,cantidad);
             mView.cleanScreen();
@@ -146,17 +146,19 @@ public class FisicoAgregarPresenter extends BasePresenter {
         mTaskExecutor.async(new FisicoAgregarPresenter.SigleByLoocalizador(inventarioId, subinventarioCodigo, locatorCodigo));
     }
 
-    public void getLocalizadoresBySubinventario(String subinventarioCodigo) {
+    public void getLocalizadoresBySubinventario(String subinventarioCodigo, long inventarioId) {
         mView.showProgres("Cargando localizadores...");
-        mTaskExecutor.async(new FisicoAgregarPresenter.LocalizadoresBySubinventario(subinventarioCodigo));
+        mTaskExecutor.async(new FisicoAgregarPresenter.LocalizadoresBySubinventario(subinventarioCodigo, inventarioId));
     }
 
     private class LocalizadoresBySubinventario implements AppTask<List<Localizador>> {
 
         private String subinventarioCodigo;
+        private Long inventarioId;
 
-        public LocalizadoresBySubinventario(String subinventarioCodigo) {
+        public LocalizadoresBySubinventario(String subinventarioCodigo, Long inventarioId) {
             this.subinventarioCodigo = subinventarioCodigo;
+            this.inventarioId = inventarioId;
         }
 
         @Override
@@ -164,7 +166,7 @@ public class FisicoAgregarPresenter extends BasePresenter {
             Log.d(TAG, "LocalizadoresBySubinventario::execute");
             List<Localizador> localizadores = new ArrayList<>();
             try {
-                localizadores = mService.getLocalizadoresBySubinventario(subinventarioCodigo);
+                localizadores = mService.getLocalizadoresBySubinventarioInventario(this.subinventarioCodigo, this.inventarioId);
             } catch (ServiceException e) {
                 Log.d(TAG, "LocalizadoresBySubinventario::execute::ServiceException");
                 e.printStackTrace();

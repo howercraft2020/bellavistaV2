@@ -40,11 +40,20 @@ public class MtlTransactionLotNumbersCatalogo {
             + "     mtl_transaction_lot_numbers "
             + " WHERE "
             + "     transaction_id = ? ";
+
     public static  final String SELECT_ALL_BY_SHIPMENT_HEADER_ID =
             " SELECT * "
             + " FROM "
             + "     mtl_transaction_lot_numbers "
             + " WHERE "
             + "     shipment_header_id = ? ";
+
+    public static  final String SELECT_ALL_BY_SHIPMENT_HEADER_ID_INVENTORY_ITEM_ID =
+            " SELECT * "
+            + " FROM "
+            + "     mtl_transaction_lot_numbers "
+            + " WHERE "
+            + "     shipment_header_id = ? "
+            + "     AND inventory_item_id = ? ";
 
 }

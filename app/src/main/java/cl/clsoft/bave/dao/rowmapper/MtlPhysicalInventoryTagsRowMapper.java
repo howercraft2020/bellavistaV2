@@ -22,7 +22,7 @@ public class MtlPhysicalInventoryTagsRowMapper implements RowMapper<MtlPhysicalI
         entity.setSerialNum(cursor.getString(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_SERIAL_NUM)));
         entity.setSegment1(cursor.getString(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_SEGMENT1)));
         entity.setPrimaryUomCode(cursor.getString(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_PRIMARY_UOM_CODE)));
-        entity.setCount(cursor.getLong(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_COUNT)));
+        entity.setCount(cursor.getDouble(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_COUNT)));
         entity.setDescription(cursor.getString(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_DESCRIPTION)));
         entity.setLongDescription(cursor.getString(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_LONG_DESCRIPTION)));
         entity.setLocatorCode(cursor.getString(cursor.getColumnIndex(MtlPhysicalInventoryTagsCatalogo.COLUMN_LOCATOR_CODE)));

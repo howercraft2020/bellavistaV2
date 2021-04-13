@@ -79,21 +79,12 @@
             android:text="textLocalizador" />
 
         <TextView
-            android:id="@+id/labelNumeroParte"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/icon"
-            android:layout_below="@id/labelLocalizador"
-            android:textStyle="bold"
-            android:text="N° DE PARTE:" />
-
-        <TextView
             android:id="@+id/textNumeroParte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/labelLocalizador"
-            android:layout_toRightOf="@+id/labelNumeroParte"
-            android:paddingLeft="5dp"
+            android:layout_toRightOf="@+id/icon"
+            android:paddingLeft="0dp"
             android:text="textNumeroParte" />
 
         <TextView
@@ -101,7 +92,7 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/icon"
-            android:layout_below="@id/labelNumeroParte"
+            android:layout_below="@id/textNumeroParte"
             android:layout_marginTop="0dp"
             android:textStyle="bold"
             android:text="CODIGO SIGLE:" />
@@ -110,17 +101,35 @@
             android:id="@+id/textCodigoSigle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/labelNumeroParte"
+            android:layout_below="@id/textNumeroParte"
             android:layout_toRightOf="@+id/labelCodigoSigle"
             android:paddingLeft="5dp"
             android:text="textCodigoSigle" />
+
+        <TextView
+            android:id="@+id/labelNumeroSerie"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_below="@id/labelCodigoSigle"
+            android:textStyle="bold"
+            android:text="N° SERIE:" />
+
+        <TextView
+            android:id="@+id/textNumeroSerie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/labelCodigoSigle"
+            android:layout_toRightOf="@+id/labelNumeroSerie"
+            android:paddingLeft="5dp"
+            android:text="textNumeroSerie" />
 
         <TextView
             android:id="@+id/labelNumeroLote"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/icon"
-            android:layout_below="@id/labelCodigoSigle"
+            android:layout_below="@id/labelNumeroSerie"
             android:textStyle="bold"
             android:text="N° LOTE:" />
 
@@ -128,7 +137,7 @@
             android:id="@+id/textNumeroLote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/labelCodigoSigle"
+            android:layout_below="@id/labelNumeroSerie"
             android:layout_toRightOf="@+id/labelNumeroLote"
             android:paddingLeft="5dp"
             android:text="textNumeroLote" />
@@ -140,6 +149,7 @@
             android:layout_toRightOf="@+id/icon"
             android:layout_below="@id/labelNumeroLote"
             android:textStyle="bold"
+            android:paddingBottom="10dp"
             android:text="VENCIMIENTO:" />
 
         <TextView
@@ -151,29 +161,10 @@
             android:paddingLeft="5dp"
             android:text="textVencimiento" />
 
-        <TextView
-            android:id="@+id/labelNumeroSerie"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/icon"
-            android:layout_below="@id/labelVencimiento"
-            android:textStyle="bold"
-            android:text="N° SERIE:" />
-
-        <TextView
-            android:id="@+id/textNumeroSerie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/labelVencimiento"
-            android:layout_toRightOf="@+id/labelNumeroSerie"
-            android:paddingLeft="5dp"
-            android:paddingBottom="10dp"
-            android:text="textNumeroSerie" />
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_alignBottom="@id/textNumeroSerie"
+            android:layout_alignBottom="@id/labelVencimiento"
             android:background="?attr/colorPrimaryDark" />
     </RelativeLayout>
 
@@ -187,16 +178,17 @@
         android:paddingRight="40dp"
         android:hint="Cantidad"
         android:textColorHint="?attr/colorPrimary">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textCantidad"
-            android:textColor="@android:color/black"
-            android:backgroundTint="?attr/colorPrimaryDark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:inputType="number"
-            android:maxLength="20"/>
+            android:backgroundTint="?attr/colorPrimaryDark"
+            android:inputType="numberDecimal"
+            android:maxLength="20"
+            android:textColor="@android:color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

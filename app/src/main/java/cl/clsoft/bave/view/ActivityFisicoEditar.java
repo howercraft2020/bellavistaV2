@@ -3,7 +3,6 @@ package cl.clsoft.bave.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,7 +28,7 @@ public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> im
     private Long tagId;
     private Long inventarioId;
     private String subinventarioId;
-    private Long cantidad;
+    private Double cantidad;
     private MtlPhysicalInventoryTags tag;
 
     // Controls
@@ -43,6 +42,7 @@ public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> im
     private TextView textVencimiento;
     private TextInputLayout layoutCantidad;
     private TextInputEditText textCantidad;
+    private SweetAlertDialog dialog;
 
     @NonNull
     @Override
@@ -84,20 +84,32 @@ public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> im
             }
             this.textSubinventario.setText(tag.getSubinventory());
             if (tag.getLocatorId() != null) {
-                this.textLocalizador.setText(tag.getLocatorId().toString());
+                String[] localizadorArr = tag.getLocatorCode().split("\\.");
+                this.textLocalizador.setText(localizadorArr[0]);
             } else {
                 this.textLocalizador.setText("");
             }
             this.textNumeroParte.setText(tag.getDescription());
             this.textCodigoSigle.setText(tag.getSegment1());
             this.textNumeroSerie.setText(tag.getSerialNum());
-            this.textNumeroLote.setText(tag.getLocatorCode());
+            if (tag.getSerialNum() != null && !tag.getSerialNum().isEmpty()) {
+                this.textCantidad.setEnabled(false);
+            }
+            this.textNumeroLote.setText(tag.getLotNumber());
             this.textVencimiento.setText(tag.getLotExpirationDate());
             if (tag.getCount() != null)
                 this.textCantidad.setText(tag.getCount().toString());
             this.inventarioId = tag.getPhysicalInventoryId();
             this.subinventarioId = tag.getSubinventory();
             layoutCantidad.setHint("Cantidad (" + tag.getPrimaryUomCode() + ")");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialog != null) {
+            dialog.dismiss();
         }
     }
 
@@ -123,7 +135,7 @@ public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> im
                     this.textCantidad.setError("Ingrese la cantidad");
                     return true;
                 }
-                cantidad = Long.valueOf(strCantidad);
+                cantidad = Double.valueOf(strCantidad);
                 if (cantidad < 0) {
                     this.textCantidad.setError("Ingrese una cantidad válida");
                     return true;
@@ -133,7 +145,7 @@ public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> im
                 dialogUpdate.show(getSupportFragmentManager(), "updateInventarioConfirm");
                 return true;
             case android.R.id.home:
-                Intent i = new Intent(getApplicationContext(), ActivityFisicoDetalle.class);
+                Intent i = new Intent(getApplicationContext(), ActivityFisicoTags.class);
                 i.putExtra("InventarioId", this.inventarioId);
                 i.putExtra("SubinventarioId", this.subinventarioId);
                 startActivity(i);
@@ -145,14 +157,13 @@ public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> im
     }
 
     public void mensajeOkDelete() {
-        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-        .setTitleText("Éxito")
+        dialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+        dialog.setTitleText("Éxito")
         .setContentText("Eliminación exitosa")
         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sDialog) {
-                Log.d("CMFA", "CLICK");
-                Intent i = new Intent(getApplicationContext(), ActivityFisicoDetalle.class);
+                Intent i = new Intent(getApplicationContext(), ActivityFisicoTags.class);
                 i.putExtra("InventarioId", inventarioId);
                 i.putExtra("SubinventarioId", subinventarioId);
                 startActivity(i);

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 
 @SuppressLint("AppCompatCustomView")
@@ -30,10 +31,11 @@ public class InstantAutoCompleteTextView extends AutoCompleteTextView {
     protected void onFocusChanged(boolean focused, int direction,
                                   Rect previouslyFocusedRect) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect);
-        if (focused && getFilter()!=null) {
+        if (getFilter()!=null) {
             performFiltering(getText(), 0);
         }
+        //if (focused && getFilter()!=null) {
+        //    performFiltering(getText(), 0);
+        //}
     }
-
-
 }

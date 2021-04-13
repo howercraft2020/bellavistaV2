@@ -11,6 +11,7 @@ import java.util.List;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.ConsultaItem;
+import cl.clsoft.bave.model.ConsultaResumenItem;
 import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.service.IConsultaService;
@@ -52,7 +53,7 @@ public class ConsultaSubinventarioPresenter extends BasePresenter {
         mTaskExecutor.async(new ConsultaSubinventarioPresenter.GetStock(subinventoryCode));
     }
 
-    private class GetStock implements AppTask<List<ConsultaItem>> {
+    private class GetStock implements AppTask<List<ConsultaResumenItem>> {
 
         private String subinventoryCode;
 
@@ -61,11 +62,11 @@ public class ConsultaSubinventarioPresenter extends BasePresenter {
         }
 
         @Override
-        public List<ConsultaItem> execute() {
+        public List<ConsultaResumenItem> execute() {
             Log.d(TAG, "GetStock::execute");
-            List<ConsultaItem> stock = new ArrayList<>();
+            List<ConsultaResumenItem> stock = new ArrayList<>();
             try {
-                stock = mService.getAllBySubinventory(this.subinventoryCode);
+                stock = mService.getAllResumenBySubinventory(this.subinventoryCode);
             } catch (ServiceException e) {
                 Log.d(TAG, "GetStock::execute::ServiceException");
                 e.printStackTrace();
@@ -79,7 +80,7 @@ public class ConsultaSubinventarioPresenter extends BasePresenter {
         }
 
         @Override
-        public void onPostExecute(@Nullable List<ConsultaItem> result) {
+        public void onPostExecute(@Nullable List<ConsultaResumenItem> result) {
             Log.d(TAG, "GetStock::onPostExecute");
             mView.hideProgres();
             mView.fillStock(result);

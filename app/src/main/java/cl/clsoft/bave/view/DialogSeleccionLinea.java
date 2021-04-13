@@ -31,11 +31,6 @@ public class DialogSeleccionLinea extends DialogFragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     selectedItem = items[which].toString();
-                    Toast.makeText(
-                            getActivity(),
-                            "Seleccionaste: " + items[which],
-                            Toast.LENGTH_SHORT)
-                            .show();
                 }
             })
             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {

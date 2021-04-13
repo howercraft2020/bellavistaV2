@@ -28,7 +28,7 @@ public class FisicoEditarPresenter extends BasePresenter {
         return null;
     }
 
-    public void updateTag(Long tagId, Long cantidad) {
+    public void updateTag(Long tagId, Double cantidad) {
         try {
             this.mService.updateTag(tagId, cantidad);
             mView.showSuccess("Actualización exitosa");

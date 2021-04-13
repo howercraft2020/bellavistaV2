@@ -14,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.List;
+
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.dto.TransactionDetalleDto;
@@ -64,6 +66,7 @@ public class ActivityEntregaOrgsTransactionDetalle extends BaseActivity<EntregaO
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entrega_orgs_transaction_detalle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_highlight_off_white_36dp);
 
         // Bind Controls
         this.llProgressBar = findViewById(R.id.llProgressBar);
@@ -115,7 +118,9 @@ public class ActivityEntregaOrgsTransactionDetalle extends BaseActivity<EntregaO
 
                     if (dto.isSerie()) {
                         this.rlayoutSeries.setVisibility(View.VISIBLE);
+                        this.fillSeries(dto.getSeries());
                     } else {
+                        this.textSeries.setText("");
                         this.rlayoutSeries.setVisibility(View.GONE);
                     }
                 }
@@ -186,6 +191,18 @@ public class ActivityEntregaOrgsTransactionDetalle extends BaseActivity<EntregaO
                     }
                 })
                 .show();
+    }
+
+    private void fillSeries(List<String> series) {
+        String strSeries = "";
+
+        if (series != null) {
+            for (String serie : series) {
+                strSeries = strSeries + serie + ", ";
+            }
+        }
+        this.textSeries.setText(strSeries);
+        this.rlayoutSeries.setVisibility(View.VISIBLE);
     }
 
 }

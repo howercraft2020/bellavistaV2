@@ -1,9 +1,12 @@
 package cl.clsoft.bave.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +21,7 @@ import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.control.InstantAutoCompleteTextView;
 import cl.clsoft.bave.model.ConsultaItem;
+import cl.clsoft.bave.model.ConsultaResumenItem;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.presenter.ConsultaSubinventarioPresenter;
 import cl.clsoft.bave.service.impl.ConsultaServiceImpl;
@@ -29,6 +33,7 @@ public class ActivityConsultaSubinventario extends BaseActivity<ConsultaSubinven
     // Variables
     private String TAG = "ConsultaSubinventario";
     private String subinventoryCode;
+    private List<ConsultaResumenItem> resumenes;
 
     // Controls
     private MaterialSpinner spinnerSubinventory;
@@ -56,6 +61,40 @@ public class ActivityConsultaSubinventario extends BaseActivity<ConsultaSubinven
         // Set Controls
         this.recyclerViewItems.setHasFixedSize(true);
         this.recyclerViewItems.setLayoutManager(new LinearLayoutManager(this));
+        final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+        });
+        this.recyclerViewItems.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean b) {
+            }
+
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+                try {
+                    View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+                    if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+                        int position = recyclerView.getChildAdapterPosition(child);
+                        Intent i = new Intent(getApplicationContext(), ActivityConsultaSubinventarioDetalle.class);
+                        i.putExtra("InventoryItemId", resumenes.get(position).getInventoryItemId());
+                        i.putExtra("SubinventoryCode", subinventoryCode);
+                        startActivity(i);
+                        //finish();
+                        return true;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+            }
+        });
 
         List<Subinventario> subinventarios = this.mPresenter.getSubinventarios();
         if (subinventarios != null) {
@@ -100,9 +139,10 @@ public class ActivityConsultaSubinventario extends BaseActivity<ConsultaSubinven
         }
     }
 
-    public void fillStock(List<ConsultaItem> items) {
-        AdapterItemConsultaSigle adapterItemConsultaSigle = new AdapterItemConsultaSigle(items);
-        this.recyclerViewItems.setAdapter(adapterItemConsultaSigle);
+    public void fillStock(List<ConsultaResumenItem> items) {
+        resumenes = items;
+        AdapterItemConsultaResumenSigle adapterItemConsultaResumenSigle = new AdapterItemConsultaResumenSigle(items);
+        this.recyclerViewItems.setAdapter(adapterItemConsultaResumenSigle);
         if (items.size() == 0) {
             showWarning("No se encontró Stock para " + subinventoryCode);
         }

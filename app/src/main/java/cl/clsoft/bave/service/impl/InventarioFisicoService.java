@@ -77,7 +77,7 @@ public class InventarioFisicoService implements IInventarioFisicoService {
     }
 
     @Override
-    public void updateTag(Long tagId, long cantidad) throws ServiceException {
+    public void updateTag(Long tagId, Double cantidad) throws ServiceException {
         Log.d(TAG, "InventarioFisicoService::updateTag");
         Log.d(TAG, "InventarioFisicoService::updateTag::tagId : " + tagId);
 
@@ -397,8 +397,16 @@ public class InventarioFisicoService implements IInventarioFisicoService {
     }
 
     @Override
-    public void grabarInventario(Long inventarioId, String subinventarioId, Long locatorId, String segment, String serie, String lote, String vencimiento, Long cantidad) throws ServiceException {
+    public void grabarInventario(Long inventarioId, String subinventarioId, Long locatorId, String segment, String serie, String lote, String vencimiento, Double cantidad) throws ServiceException {
         Log.d(TAG, "InventarioFisicoService::grabarInventario");
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::inventarioId: " + inventarioId);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::subinventarioId: " + subinventarioId);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::locatorId: " + locatorId);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::segment: " + segment);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::serie: " + serie);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::lote: " + lote);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::vencimiento: " + vencimiento);
+        Log.d(TAG, "InventarioFisicoService::grabarInventario::cantidad: " + cantidad);
 
         IMtlPhysicalInventoryTagsDao mtlPhysicalInventoryTagsDao = new MtlPhysicalInventoryTagsDaoImpl();
         try {
@@ -420,6 +428,9 @@ public class InventarioFisicoService implements IInventarioFisicoService {
 
             // Update Tag Count
             MtlPhysicalInventoryTags tag = tags.get(0);
+            if (tag.getCount().doubleValue() > 0 && tag.getLastUpdated() == null) {
+                throw new ServiceException(1, "Tag ya se encuentra ingresado.");
+            }
             tag.setCount(cantidad);
 
             DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
@@ -451,6 +462,22 @@ public class InventarioFisicoService implements IInventarioFisicoService {
         ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
         try {
             List<Localizador> salida = localizadorDao.getAllBySubinventario(subinventarioCodigo);
+            return salida;
+        } catch(DaoException e){
+            e.printStackTrace();
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<Localizador> getLocalizadoresBySubinventarioInventario(String subinventarioCodigo, Long inventarioId) throws ServiceException {
+        Log.d(TAG, "InventarioFisicoService::getLocalizadoresBySubinventarioInventario");
+        Log.d(TAG, "InventarioFisicoService::getLocalizadoresBySubinventarioInventario::subinventarioCodigo: " + subinventarioCodigo);
+        Log.d(TAG, "InventarioFisicoService::getLocalizadoresBySubinventarioInventario::inventarioId: " + inventarioId);
+
+        ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
+        try {
+            List<Localizador> salida = localizadorDao.getAllBySubinventarioInventarioId(subinventarioCodigo, inventarioId);
             return salida;
         } catch(DaoException e){
             e.printStackTrace();
@@ -494,7 +521,6 @@ public class InventarioFisicoService implements IInventarioFisicoService {
             File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
             File archivo = new File(Dir, nombreArchivo);
             FileWriter writer = new FileWriter(archivo);
-            writer.write("RECIBO;FIN" +"\r\n");
             for (MtlPhysicalInventoryTags tag : tagsInventariados) {
                 MtlSystemItems mtlSystemItems = mtlSystemItemsDao.get(tag.getInventoryItemId());
                 if (mtlSystemItems != null) {

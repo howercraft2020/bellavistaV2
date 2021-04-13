@@ -25,8 +25,10 @@ import java.util.List;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
+import cl.clsoft.bave.control.InstantAutoCompleteTextView;
 import cl.clsoft.bave.model.MtlMaterialTransactions;
 import cl.clsoft.bave.model.MtlSystemItems;
+import cl.clsoft.bave.model.MtlTransactionLotNumbers;
 import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.presenter.EntregaOrgsAgregarLotePresenter;
 import cl.clsoft.bave.service.impl.EntregaOrgsServiceImpl;
@@ -39,6 +41,7 @@ public class ActivityEntregaOrgsAgregarLote extends BaseActivity<EntregaOrgsAgre
     private String TAG = "EntregaAgregarOrgsLote";
     private Long shipmentHeaderId;
     private Long transactionId;
+    private Long inventoryItemId;
     private Double cantidad;
     private String subinventoryCode;
     private String locatorCode;
@@ -53,7 +56,7 @@ public class ActivityEntregaOrgsAgregarLote extends BaseActivity<EntregaOrgsAgre
 
     // Controls
     private TextInputLayout layoutLote;
-    private TextInputEditText textLote;
+    private InstantAutoCompleteTextView textLote;
     private MaterialSpinner spinnerCategoria;
     private MaterialSpinner spinnerAtributo1;
     private MaterialSpinner spinnerAtributo2;
@@ -163,6 +166,7 @@ public class ActivityEntregaOrgsAgregarLote extends BaseActivity<EntregaOrgsAgre
 
         MtlMaterialTransactions transaction = mPresenter.getTransactionById(this.transactionId);
         if (transaction != null) {
+            this.inventoryItemId = transaction.getInventoryItemId();
             MtlSystemItems item = mPresenter.getMtlSystemItemsById(transaction.getInventoryItemId());
             if (item != null) {
                 if (item.getLotControlCode().equalsIgnoreCase("2")) {
@@ -311,6 +315,7 @@ public class ActivityEntregaOrgsAgregarLote extends BaseActivity<EntregaOrgsAgre
             }
         });
 
+        this.fillLote();
     }
 
     @Override
@@ -413,6 +418,19 @@ public class ActivityEntregaOrgsAgregarLote extends BaseActivity<EntregaOrgsAgre
         dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
     }
 
+    private void fillLote() {
+        List<MtlTransactionLotNumbers> lotes = mPresenter.getLotesByShipmentInventory(this.shipmentHeaderId, this.inventoryItemId);
+        if (lotes != null && lotes.size() > 0) {
+            String[] lotesStr = new String[lotes.size()];
+            for (int i = 0; i < lotes.size(); i++) {
+                lotesStr[i] = lotes.get(i).getLotNumber();
+            }
+            ArrayAdapter<String> adapterLotes = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, lotesStr);
+            this.textLote.setAdapter(adapterLotes);
+
+        }
+    }
+
     private void fillCategorias(Long position) {
         List<String> categorias = new ArrayList<>();
 
@@ -471,22 +489,29 @@ public class ActivityEntregaOrgsAgregarLote extends BaseActivity<EntregaOrgsAgre
         }
         this.lote = this.textLote.getText().toString();
 
+        // 03-04-2021: Se solicita eliminar las validaciones de categoria
+        // Valida categoria
+        /*
+
         // Valida categoria
         if (categoria == null) {
             this.spinnerCategoria.setError("Seleccione categoría");
             return false;
         }
+        */
 
-        if (this.categoria.equalsIgnoreCase("REPUESTOS")) {
-            // Asigna Atributo 3
-            this.atributo3 = this.textAtributo3.getText().toString();
-        } else if (this.categoria.equalsIgnoreCase("LIQUIDOS Y LUBRICANTES")) {
-            // Asigna Atributo 1
-            this.atributo1 = this.textAtributo1.getText().toString();
-            // Asigna Atributo 2
-            this.atributo2 = this.textAtributo2.getText().toString();
-            // Asigna Atributo 3
-            this.atributo3 = this.textAtributo3.getText().toString();
+        if (this.categoria != null) {
+            if (this.categoria.equalsIgnoreCase("REPUESTOS")) {
+                // Asigna Atributo 3
+                this.atributo3 = this.textAtributo3.getText().toString();
+            } else if (this.categoria.equalsIgnoreCase("LIQUIDOS Y LUBRICANTES")) {
+                // Asigna Atributo 1
+                this.atributo1 = this.textAtributo1.getText().toString();
+                // Asigna Atributo 2
+                this.atributo2 = this.textAtributo2.getText().toString();
+                // Asigna Atributo 3
+                this.atributo3 = this.textAtributo3.getText().toString();
+            }
         }
         return true;
     }

@@ -101,6 +101,22 @@ public class MtlCycleCountEntriesCatalogo {
             "     AND ifnull(a.lot_number, '') = ? " +
             "     AND ifnull(a.serial_number, '') = ? ";
 
+    public static final String SELECT_ALL_BY_CYCLECOUNT_SUBINVENTORY_SEGMENT_LOTE_SERIE =
+            " SELECT " +
+                    "     a.*, " +
+                    "     b.description, " +
+                    "     b.long_description, " +
+                    "     c.cod_localizador " +
+                    " FROM " +
+                    "     mtl_cycle_count_entries a LEFT JOIN mtl_system_items b  ON a.inventory_item_id = b.inventory_item_id  " +
+                    "     LEFT JOIN localizador c ON a.locator_id = c.id_localizador " +
+                    " WHERE " +
+                    "     a.cycle_count_header_id = ? " +
+                    "     AND a.subinventory = ? " +
+                    "     AND a.segment1 = ? " +
+                    "     AND ifnull(a.lot_number, '') = ? " +
+                    "     AND ifnull(a.serial_number, '') = ? ";
+
     public static final String SELECT_SEGMENT_BY_CYCLECOUNTEHEADER_LOCATOR =
             " SELECT " +
             "     segment1 " +
@@ -111,6 +127,26 @@ public class MtlCycleCountEntriesCatalogo {
             " ORDER BY " +
             "     segment1 ";
 
+    public static final String SELECT_SEGMENT_BY_CYCLECOUNTEHEADER_SUBINVENTORY =
+            " SELECT " +
+                    "     segment1 " +
+                    " FROM " +
+                    "     mtl_system_items " +
+                    " WHERE " +
+                    "     inventory_item_id in ( SELECT distinct(inventory_item_id) FROM mtl_cycle_count_entries WHERE cycle_count_header_id = ? and subinventory = ? ) " +
+                    " ORDER BY " +
+                    "     segment1 ";
+
+    public static final String SELECT_SEGMENT_BY_CYCLECOUNTEHEADER_SUBINVENTORY_LOCATOR =
+            " SELECT " +
+                    "     segment1 " +
+                    " FROM " +
+                    "     mtl_system_items " +
+                    " WHERE " +
+                    "     inventory_item_id in ( SELECT distinct(inventory_item_id) FROM mtl_cycle_count_entries WHERE cycle_count_header_id = ? and subinventory = ? and locator_id = ? ) " +
+                    " ORDER BY " +
+                    "     segment1 ";
+
     public static final String SELECT_LOTE_BY_CYCLECOUNTEHEADER_LOCATOR_SEGMENT =
             " SELECT " +
                     "     lot_number " +
@@ -119,6 +155,56 @@ public class MtlCycleCountEntriesCatalogo {
                     " WHERE " +
                     "     cycle_count_header_id = ? " +
                     "     AND locator_id = ?  " +
+                    "     AND segment1 = ? " +
+                    " ORDER BY " +
+                    "     segment1 ";
+
+    public static final String SELECT_LOTE_BY_CYCLECOUNTEHEADER_SUBINVENTORY_LOCATOR_SEGMENT =
+            " SELECT " +
+                    "     lot_number " +
+                    " FROM " +
+                    "     mtl_cycle_count_entries " +
+                    " WHERE " +
+                    "     cycle_count_header_id = ? " +
+                    "     AND subinventory = ? " +
+                    "     AND locator_id = ?  " +
+                    "     AND segment1 = ? " +
+                    " ORDER BY " +
+                    "     segment1 ";
+
+    public static final String SELECT_LOTE_BY_CYCLECOUNTEHEADER_SUBINVENTORY_SEGMENT =
+            " SELECT " +
+                    "     lot_number " +
+                    " FROM " +
+                    "     mtl_cycle_count_entries " +
+                    " WHERE " +
+                    "     cycle_count_header_id = ? " +
+                    "     AND subinventory = ? " +
+                    "     AND segment1 = ? " +
+                    " ORDER BY " +
+                    "     segment1 ";
+
+    public static final String SELECT_SERIAL_BY_CYCLECOUNTEHEADER_SUBINVENTORY_LOCATOR_SEGMENT =
+            " SELECT " +
+                    "     serial_number " +
+                    " FROM " +
+                    "     mtl_cycle_count_entries " +
+                    " WHERE " +
+                    "     cycle_count_header_id = ? " +
+                    "     AND subinventory = ? " +
+                    "     AND locator_id = ?  " +
+                    "     AND segment1 = ? " +
+                    " ORDER BY " +
+                    "     segment1 ";
+
+    public static final String SELECT_SERIAL_BY_CYCLECOUNTEHEADER_SUBINVENTORY_SEGMENT =
+            " SELECT " +
+                    "     serial_number " +
+                    " FROM " +
+                    "     mtl_cycle_count_entries " +
+                    " WHERE " +
+                    "     cycle_count_header_id = ? " +
+                    "     AND subinventory = ? " +
                     "     AND segment1 = ? " +
                     " ORDER BY " +
                     "     segment1 ";

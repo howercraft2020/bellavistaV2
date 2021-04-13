@@ -386,8 +386,14 @@ public class ActivityEntregaOrgsAgregar extends BaseActivity<EntregaOrgsAgregarP
                 ArrayAdapter<String> adapterLocator = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, locators);
                 this.textLocator.setAdapter(adapterLocator);
                 this.textLocator.setText(this.locatorCode);
+                this.textLocator.setEnabled(true);
                 //this.hayLocalizador = true;
             } else {
+                ArrayAdapter<String> adapterLocator = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, new String[0]);
+                this.textLocator.setAdapter(adapterLocator);
+                this.textLocator.setEnabled(false);
+                this.locatorCode = "";
+                this.textLocator.setText(this.locatorCode);
                 //this.textLocator.setVisibility(View.GONE);
                 //this.layoutLocator.setVisibility(View.GONE);
                 //this.textSigle.setEnabled(false);
@@ -427,15 +433,19 @@ public class ActivityEntregaOrgsAgregar extends BaseActivity<EntregaOrgsAgregarP
         this.subinventoryCode = this.textSubinventory.getText().toString();
 
         // Valida Localizador
-        if (this.textLocator.getText() == null) {
-            this.textLocator.setError("ingrese el localizador");
-            return false;
+        if (this.textLocator.getAdapter().getCount() > 0) {
+            if (this.textLocator.getText() == null) {
+                this.textLocator.setError("ingrese el localizador");
+                return false;
+            }
+            if (this.textLocator.getText().toString().isEmpty()) {
+                this.textLocator.setError("ingrese el localizador");
+                return false;
+            }
+            this.locatorCode = this.textLocator.getText().toString();
+        } else {
+            this.locatorCode = "";
         }
-        if (this.textLocator.getText().toString().isEmpty()) {
-            this.textLocator.setError("ingrese el localizador");
-            return false;
-        }
-        this.locatorCode = this.textLocator.getText().toString();
 
         return true;
     }

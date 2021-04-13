@@ -12,5 +12,6 @@ public interface IMtlTransactionLotNumbersDao {
     void deleteByShipmentHeaderId(Long shipmentHeaderId) throws DaoException;
     public MtlTransactionLotNumbers get(Long transactionId) throws DaoException;
     public List<MtlTransactionLotNumbers> getAllByShipmentHeaderId(Long shipmentHeaderId) throws DaoException;
+    public List<MtlTransactionLotNumbers> getAllByShipmentHeaderIdInventoryItemId(Long shipmentHeaderId, Long inventoryItemId) throws DaoException;
 
 }

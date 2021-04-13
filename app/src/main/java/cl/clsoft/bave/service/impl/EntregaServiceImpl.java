@@ -259,7 +259,8 @@ public class EntregaServiceImpl implements IEntregaService {
             }
 
             // Locator
-            if (locatorCode != null) {
+            if (locatorCode != null && !locatorCode.isEmpty()) {
+                Log.d(TAG, "locatorCode: " + locatorCode);
                 localizador = localizadorDao.getByCodigo(locatorCode);
                 if (localizador == null) {
                     throw new ServiceException(1, "Localizador " + locatorCode + " no existe en el sistema");
@@ -587,9 +588,9 @@ public class EntregaServiceImpl implements IEntregaService {
             File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
             File archivo = new File(Dir, nombreArchivo);
             FileWriter writer = new FileWriter(archivo);
-            writer.write("RECIBO;FIN" +"\r\n");
+            writer.write("ENTREGA;FIN" +"\r\n");
             writer.write(
-                    "HDR;"
+                    "1;"
                     + (rcvHeadersInterface.getHeaderInterfaceId() == null ? "null" : rcvHeadersInterface.getHeaderInterfaceId()) + ";"
                     + (rcvHeadersInterface.getGroupId() == null ? "null" : rcvHeadersInterface.getGroupId()) + ";"
                     + (rcvHeadersInterface.getProcessingStatusCode() == null ? "null" : (rcvHeadersInterface.getProcessingStatusCode().isEmpty() ? "null" : rcvHeadersInterface.getProcessingStatusCode())) + ";"
@@ -607,7 +608,7 @@ public class EntregaServiceImpl implements IEntregaService {
             );
             for (RcvTransactionsInterface trx : trxs) {
                 writer.write(
-                        "TRX;"
+                        "2;"
                         + (trx.getInterfaceTransactionId() == null ? "null" : trx.getInterfaceTransactionId()) + ";"
                         + (trx.getLastUpdatedDate() == null ? "null" : (trx.getLastUpdatedDate().isEmpty() ? "null" : trx.getLastUpdatedDate())) + ";"
                         + (trx.getLastUpdatedBy() == null ? "null" : trx.getLastUpdatedBy()) + ";"
@@ -662,7 +663,7 @@ public class EntregaServiceImpl implements IEntregaService {
                 MtlTransactionsLotsIface lote = mtlTransactionLotsInterfaceDao.getByInterfaceTransactionId(trx.getInterfaceTransactionId());
                 if (lote != null) {
                     writer.write(
-                            "LOT;"
+                            "3;"
                             + (lote.getTransactionInterfaceId() == null ? "null" : lote.getTransactionInterfaceId()) + ";"
                             + (lote.getLastUpdateDate() == null ? "null" : (lote.getLastUpdateDate().isEmpty() ? "null" : lote.getLastUpdateDate())) + ";"
                             + (lote.getLastUpdateBy() == null ? "null" : lote.getLastUpdateBy()) + ";"
@@ -689,7 +690,7 @@ public class EntregaServiceImpl implements IEntregaService {
                 List<MtlSerialNumbersInterface> series = mtlSerialNumbersInterfaceDao.getAllByInterfaceTransactionId(trx.getInterfaceTransactionId());
                 for (MtlSerialNumbersInterface serie : series) {
                     writer.write(
-                            "SER;"
+                            "4;"
                             + (serie.getTransactionInterfaceId() == null ? "null" : serie.getTransactionInterfaceId()) + ";"
                             + (serie.getLastUpdateDate() == null ? "null" : (serie.getLastUpdateDate().isEmpty() ? "null" : serie.getLastUpdateDate())) + ";"
                             + (serie.getLastUpdatedBy() == null ? "null" : serie.getLastUpdatedBy()) + ";"

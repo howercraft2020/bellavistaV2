@@ -37,5 +37,12 @@ public class MtlSerialNumbersCatalogo {
                     + "     mtl_serial_numbers "
                     + " WHERE "
                     + "     shipment_header_id = ? ";
+    public static final String SELECT_BY_SHIPMENT_HEADER_ID_INVENTORY_ITEM_ID =
+            " SELECT * "
+                    + " FROM "
+                    + "     mtl_serial_numbers "
+                    + " WHERE "
+                    + "     shipment_header_id = ? "
+                    + "     AND inventory_item_id = ? ";
 
 }

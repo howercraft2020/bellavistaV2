@@ -33,7 +33,7 @@ public class MtlPhysicalInventoryTagsCatalogo {
                     COLUMN_SERIAL_NUM + " TEXT, " +
                     COLUMN_SEGMENT1 + " TEXT, " +
                     COLUMN_PRIMARY_UOM_CODE + " TEXT, " +
-                    COLUMN_COUNT + " TEXT, " +
+                    COLUMN_COUNT + " REAL, " +
                     COLUMN_LAST_UPDATED + " TEXT " +
                     ")";
 

@@ -13,7 +13,7 @@ import cl.clsoft.bave.model.Localizador;
 
 public class LocalizadorDaoImpl extends GenericDao<Localizador> implements ILocalizadorDao {
 
-    private static final String TAG = "Dao";
+    private static final String TAG = "DAO";
 
     @Override
     public void insert(Localizador localizador) throws DaoException {
@@ -34,7 +34,26 @@ public class LocalizadorDaoImpl extends GenericDao<Localizador> implements ILoca
     }
 
     @Override
+    public void update(Localizador localizador) throws DaoException {
+        Log.d(TAG, "LocalizadorDaoImpl::update");
+
+        ContentValues values = new ContentValues();
+        values.put(LocalizadorCatalogo.COLUMN_ORG_ID, localizador.getOrganizationId());
+        values.put(LocalizadorCatalogo.COLUMN_COD_SUBINV, localizador.getCodSubinventario());
+        values.put(LocalizadorCatalogo.COLUMN_COD_LOC, localizador.getCodLocalizador());
+        values.put(LocalizadorCatalogo.COLUMN_COD_SEG1, localizador.getCodSeg1());
+        values.put(LocalizadorCatalogo.COLUMN_COD_SEG2, localizador.getCodSeg2());
+        values.put(LocalizadorCatalogo.COLUMN_COD_SEG3, localizador.getCodSeg3());
+        values.put(LocalizadorCatalogo.COLUMN_COD_SEG4, localizador.getCodSeg4());
+        values.put(LocalizadorCatalogo.COLUMN_COD_SEG5, localizador.getCodSeg5());
+        values.put(LocalizadorCatalogo.COLUMN_COD_SEG6, localizador.getCodSeg6());
+        super.update(LocalizadorCatalogo.TABLE, values, LocalizadorCatalogo.UPDATE, localizador.getIdLocalizador());
+    }
+
+    @Override
     public Long get(String localizador) throws DaoException {
+        Log.d(TAG, "LocalizadorDaoImpl::get");
+
         return super.selectLong(LocalizadorCatalogo.SELECT_CODE_LOCALIZADOR,localizador);
     }
 
@@ -67,5 +86,14 @@ public class LocalizadorDaoImpl extends GenericDao<Localizador> implements ILoca
         Log.d(TAG, "LocalizadorDaoImpl::getAllBySubinventarioCountheaderId::cycleCountHeaderId: " + cycleCountHeaderId);
 
         return super.selectMany(LocalizadorCatalogo.SELECT_ALL_BY_SUBINVENTORY_COUNTHEADERID, new LocalizadorRowMapper(), subinventarioCodigo, cycleCountHeaderId);
+    }
+
+    @Override
+    public List<Localizador> getAllBySubinventarioInventarioId(String subinventarioCodigo, Long inventarioId) throws DaoException {
+        Log.d(TAG, "LocalizadorDaoImpl::getAllBySubinventarioInventarioId");
+        Log.d(TAG, "LocalizadorDaoImpl::getAllBySubinventarioInventarioId::subinventarioCodigo: " + subinventarioCodigo);
+        Log.d(TAG, "LocalizadorDaoImpl::getAllBySubinventarioInventarioId::inventarioId: " + inventarioId);
+
+        return super.selectMany(LocalizadorCatalogo.SELECT_ALL_BY_SUBINVENTORY_INVENTARIOID, new LocalizadorRowMapper(), subinventarioCodigo, inventarioId);
     }
 }

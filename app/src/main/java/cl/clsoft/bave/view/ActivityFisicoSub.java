@@ -104,7 +104,7 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> implemen
                     if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
                         int position = recyclerView.getChildAdapterPosition(child);
                         Intent i = null;
-                        i = new Intent(getApplicationContext(), ActivityFisicoDetalle.class);
+                        i = new Intent(getApplicationContext(), ActivityFisicoTags.class);
 
                         i.putExtra("InventarioId", subinventories.get(position).getPhyshicalInventoryId());
                         i.putExtra("SubinventarioId", subinventories.get(position).getSubinventory());

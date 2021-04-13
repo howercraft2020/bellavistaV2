@@ -13,7 +13,7 @@ public class MtlPhysicalInventoryTags {
     private String serialNum;           //numero de serie
     private String segment1;            //sigle
     private String primaryUomCode;      //UMD STOCK
-    private Long count;                 //cantidad
+    private Double count;                 //cantidad
     private String lastUpdated;
     private String description;
     private String longDescription;
@@ -116,11 +116,11 @@ public class MtlPhysicalInventoryTags {
         this.primaryUomCode = primaryUomCode;
     }
 
-    public Long getCount() {
+    public Double getCount() {
         return count;
     }
 
-    public void setCount(Long count) {
+    public void setCount(Double count) {
         this.count = count;
     }
 

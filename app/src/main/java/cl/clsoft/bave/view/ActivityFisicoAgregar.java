@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -44,7 +43,7 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
     private String serie;
     private String lote;
     private String vencimiento;
-    private Long cantidad;
+    private Double cantidad;
     private List<MtlPhysicalInventoryTags> tags;
     private boolean hayLocalizador = false;
     private int LAUNCH_SEARCHSINGLE_ACTIVITY = 2;
@@ -75,6 +74,7 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fisico_agregar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_highlight_off_white_36dp);
 
         // bind controls
         this.llProgressBar = findViewById(R.id.llProgressBar);
@@ -128,6 +128,9 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                 segment = parent.getAdapter().getItem(pos).toString();
                 MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
                 if (item != null) {
+                    layoutCantidad.setHintEnabled(true);
+                    textCantidad.setEnabled(true);
+                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                     if (item.getLotControlCode().equalsIgnoreCase("2")) {
                         fillLote();
                     }
@@ -136,10 +139,10 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                     }
                     if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
                         fillSerie();
+                        textCantidad.setText("1.0");
+                        textCantidad.setEnabled(false);
+
                     }
-                    layoutCantidad.setHintEnabled(true);
-                    textCantidad.setEnabled(true);
-                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                 } else {
                     showWarning("Item " + segment + " no encontrado en tabla maestra");
                 }
@@ -167,7 +170,12 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
         this.layoutCantidad.setHintEnabled(false);
         this.textCantidad.setEnabled(false);
         //this.fillLocator();
-        this.mPresenter.getLocalizadoresBySubinventario(this.subinventarioCodigo);
+        this.mPresenter.getLocalizadoresBySubinventario(this.subinventarioCodigo, this.inventarioId);
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.confirmacionSalir();
     }
 
     @Override
@@ -192,22 +200,8 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                 this.grabarInventario();
                 return true;
             case android.R.id.home:
-                if(inventarioId != null && subinventarioCodigo != null){
-                    Log.d(TAG, "Agregar inventario tag");
-                    Intent i = new Intent(this, ActivityFisicoDetalle.class);
-                    i.putExtra("InventarioId", inventarioId);
-                    i.putExtra("SubinventarioId", subinventarioCodigo);
-                    startActivity(i);
-                    this.finish();
-                    return true;
-                }else if(inventarioId != null && subinventarioCodigo == null){
-                    Log.d(TAG, "Agregar inventario subinventario");
-                    Intent i = new Intent(this, ActivityFisicoSub.class);
-                    i.putExtra("InventarioId", inventarioId);
-                    startActivity(i);
-                    this.finish();
-                    return true;
-                }
+                this.confirmacionSalir();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -225,6 +219,9 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                 Log.d(TAG, "sigle: " + segment);
                 MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
                 if (item != null) {
+                    layoutCantidad.setHintEnabled(true);
+                    textCantidad.setEnabled(true);
+                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                     if (item.getLotControlCode().equalsIgnoreCase("2")) {
                         fillLote();
                     }
@@ -233,10 +230,9 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                     }
                     if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
                         fillSerie();
+                        textCantidad.setText("1.0");
+                        textCantidad.setEnabled(false);
                     }
-                    layoutCantidad.setHintEnabled(true);
-                    textCantidad.setEnabled(true);
-                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                 } else {
                     showWarning("Item " + segment + " no encontrado en tabla maestra");
                 }
@@ -361,7 +357,7 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
             this.textCantidad.setError("Ingrese la cantidad");
             return;
         }
-        Long cantidad = Long.valueOf(strCantidad);
+        Double cantidad = Double.valueOf(strCantidad);
         if (cantidad < 0) {
             this.textCantidad.setError("Ingrese una cantidad válida");
             return;
@@ -415,11 +411,24 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
         String tipo = dialog.getArguments().getString("tipo");
         if (tipo.equalsIgnoreCase("grabar")) {
             mPresenter.grabarInventario(this.inventarioId, this.subinventarioCodigo, this.locatorId, this.segment, this.serie, this.lote, this.vencimiento, this.cantidad);
+        } else  if (tipo.equalsIgnoreCase("exit")) {
+            Intent i = new Intent(this, ActivityFisicoTags.class);
+            i.putExtra("InventarioId", inventarioId);
+            i.putExtra("SubinventarioId", subinventarioCodigo);
+            startActivity(i);
+            this.finish();
         }
+
     }
 
     @Override
     public void onDialogCancelarClick(DialogFragment dialog) {
 
     }
+
+    private void confirmacionSalir() {
+        ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
+        dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
+    }
+
 }

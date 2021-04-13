@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="20dp"
+    android:paddingLeft="10dp">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dip"
+        android:paddingTop="40dp"
+        android:paddingLeft="10dp"
+        android:src="@drawable/inventario03_48dp" />
+
+    <TextView
+        android:id="@+id/labelLocalizador"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:textStyle="bold"
+        android:text="LOCALIZADOR: " />
+
+    <TextView
+        android:id="@+id/textLocalizador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/labelLocalizador"
+        android:paddingLeft="10dp"
+        android:text="localizadorText" />
+
+    <TextView
+        android:id="@+id/textNumeroParte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labelLocalizador"
+        android:layout_toRightOf="@+id/icon"
+        android:paddingLeft="0dp"
+        android:text="numeroParteText" />
+
+    <TextView
+        android:id="@+id/labelCodigoSigle"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/textNumeroParte"
+        android:layout_marginTop="0dp"
+        android:textStyle="bold"
+        android:text="CODIGO SIGLE:" />
+
+    <TextView
+        android:id="@+id/textCodigoSigle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textNumeroParte"
+        android:layout_toRightOf="@+id/labelCodigoSigle"
+        android:paddingLeft="10dp"
+        android:text="SigleText" />
+
+    <TextView
+        android:id="@+id/labelNumeroSerie"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/labelCodigoSigle"
+        android:textStyle="bold"
+        android:text="N° SERIE:" />
+
+    <TextView
+        android:id="@+id/textNumeroSerie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labelCodigoSigle"
+        android:layout_toRightOf="@+id/labelNumeroSerie"
+        android:paddingLeft="10dp"
+        android:text="serieText" />
+
+    <TextView
+        android:id="@+id/labelNumeroLote"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/labelNumeroSerie"
+        android:textStyle="bold"
+        android:text="N° LOTE:" />
+
+    <TextView
+        android:id="@+id/textNumeroLote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labelNumeroSerie"
+        android:layout_toRightOf="@+id/labelNumeroLote"
+        android:paddingLeft="10dp"
+        android:text="loteText" />
+
+    <TextView
+        android:id="@+id/labelVencimiento"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_below="@id/labelNumeroLote"
+        android:textStyle="bold"
+        android:text="VENCIMIENTO:"
+        android:paddingBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/textVencimiento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labelNumeroLote"
+        android:layout_toRightOf="@+id/labelVencimiento"
+        android:paddingLeft="10dp"
+        android:text="loteText" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignBottom="@id/labelVencimiento"
+        android:background="?attr/colorPrimaryDark" />
+
+</RelativeLayout>
