@@ -727,7 +727,8 @@ public class EntregaServiceImpl implements IEntregaService {
                         // VALIDATION_FLAG
                         + (trx.getValidationFlag() == null ? "null" : (trx.getValidationFlag().isEmpty() ? "null" : trx.getValidationFlag())) + ";"
                         // ORG_ID
-                        + (trx.getOrgId() == null ? "null" : trx.getOrgId()) + ";"
+                        //+ (trx.getOrgId() == null ? "null" : trx.getOrgId()) + ";"
+                        + "82;"
                         // SERIE_RANGO
                         + "N;"
                         + "FIN\r\n"
