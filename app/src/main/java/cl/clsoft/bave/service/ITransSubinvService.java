@@ -33,4 +33,8 @@ public interface ITransSubinvService {
     public MtlTransactionDetalleDto getTransactionsInterfaceById(Long transactionInterfaceId) throws ServiceException;
     public MtlSystemItems getMtlSystemItemsById(Long inventoryItemId) throws ServiceException;
     public void deleteTransactionsInterfaceById(Long transactionInterfaceId) throws ServiceException;
+    public Localizador getLocalizadorByCodigo(String codigo) throws ServiceException;
+    public List<String> getSegment1(String subinventory, String locatorCodigo) throws ServiceException;
+    public List<String> getLote(String subinventory, Long locatorCodigo, String segment1) throws ServiceException;
+
 }

@@ -39,6 +39,16 @@ public class SigleSearchPresenter extends BasePresenter {
         mTaskExecutor.async(new SigleSearchPresenter.SearchSigleEntrega(pattern, shipmentHeaderId));
     }
 
+    public void getItemsRecepcion(String pattern, Long poHeaderId) {
+        mView.showProgres("Cargando productos...");
+        mTaskExecutor.async(new SigleSearchPresenter.SearchSigleRecepcion(pattern, poHeaderId));
+    }
+
+    public void getItemsTransSubinv(String pattern, String subinventario, Long locatorId) {
+        mView.showProgres("Cargando productos...");
+        mTaskExecutor.async(new SigleSearchPresenter.SearchSigleTransSubinv(pattern, subinventario, locatorId));
+    }
+
     public void getItemsEntregaOrganizacion(String pattern, Long shipmentHeaderId) {
         mView.showProgres("Cargando productos...");
         mTaskExecutor.async(new SigleSearchPresenter.SearchSigleEntregaOrganizaciones(pattern, shipmentHeaderId));
@@ -85,6 +95,77 @@ public class SigleSearchPresenter extends BasePresenter {
             mView.hideProgres();
             mView.fillItem(result);
 
+        }
+    }
+
+    private class SearchSigleTransSubinv implements AppTask<List<MtlSystemItems>> {
+
+        private String pattern;
+        private String subinventario;
+        private Long locatorId;
+
+        public SearchSigleTransSubinv(String pattern, String subinventario, Long locatorId) {
+            this.pattern = pattern;
+            this.subinventario = subinventario;
+            this.locatorId = locatorId;
+        }
+
+        @Override
+        public List<MtlSystemItems> execute() {
+            Log.d(TAG, "SearchSigle::execute");
+            List<MtlSystemItems> salida = new ArrayList<>();
+            try {
+                salida = mService.getItemsTransSubinbByDescription(this.pattern,this.subinventario, this.locatorId);
+            } catch (ServiceException e) {
+                Log.d(TAG, "SearchSigle::execute::ServiceException");
+                e.printStackTrace();
+                mView.runOnUiThread(new Runnable() {
+                    public void run() {
+                        mView.showError(e.getDescripcion());
+                    }
+                });
+            }
+            return salida;
+        }
+
+        @Override
+        public void onPostExecute(@Nullable List<MtlSystemItems> result) {
+
+        }
+    }
+
+    private class SearchSigleRecepcion implements AppTask<List<MtlSystemItems>> {
+
+        private String pattern;
+        private Long poHeaderId;
+
+        public SearchSigleRecepcion(String pattern, Long poHeaderId) {
+            this.pattern = pattern;
+            this.poHeaderId = poHeaderId;
+        }
+
+        @Override
+        public List<MtlSystemItems> execute() {
+            Log.d(TAG, "SearchSigle::execute");
+            List<MtlSystemItems> salida = new ArrayList<>();
+            try {
+                salida = mService.getItemsRecepcionByDescription(this.pattern, this.poHeaderId);
+            } catch (ServiceException e) {
+                Log.d(TAG, "SearchSigle::execute::ServiceException");
+                e.printStackTrace();
+                mView.runOnUiThread(new Runnable() {
+                    public void run() {
+                        mView.showError(e.getDescripcion());
+                    }
+                });
+            }
+            return salida;
+        }
+
+        @Override
+        public void onPostExecute(@Nullable List<MtlSystemItems> result) {
+            mView.hideProgres();
+            mView.fillItem(result);
         }
     }
 

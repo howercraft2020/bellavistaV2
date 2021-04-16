@@ -36,9 +36,11 @@ public class ActivitySigleSearch extends BaseActivity<SigleSearchPresenter> {
     private String TAG = "SigleSearch";
     private String tipo = "";
     private Long shipmentHeaderId;
+    private String poHeaderId;
     private Long countHeaderId;
     private Long inventoryId;
     private Long locatorId;
+    private String subinventario;
     List<MtlSystemItems> items;
 
     // Controls
@@ -67,9 +69,11 @@ public class ActivitySigleSearch extends BaseActivity<SigleSearchPresenter> {
         this.tipo = this.getIntent().getStringExtra("Tipo");
         if (tipo == null) tipo = "";
         this.shipmentHeaderId = this.getIntent().getLongExtra("ShipmentHeaderId", 0);
+        this.poHeaderId = this.getIntent().getStringExtra("PoHeaderId");
         this.countHeaderId = this.getIntent().getLongExtra("CountHeaderId", 0);
         this.inventoryId = this.getIntent().getLongExtra("InventoryId", 0);
         this.locatorId = this.getIntent().getLongExtra("LocatorId", 0);
+        this.subinventario = this.getIntent().getStringExtra("Subinventario");
         this.inputTexto.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
         this.inputTexto.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -85,12 +89,16 @@ public class ActivitySigleSearch extends BaseActivity<SigleSearchPresenter> {
                         String pattern = "%" + textView.getText().toString().toUpperCase() + "%";
                         if (tipo.equalsIgnoreCase("E"))
                             mPresenter.getItemsEntrega(pattern, shipmentHeaderId);
+                        else if (tipo.equalsIgnoreCase("R"))
+                            mPresenter.getItemsRecepcion(pattern, Long.parseLong(poHeaderId));
                         else if (tipo.equalsIgnoreCase("EO"))
                             mPresenter.getItemsEntregaOrganizacion(pattern, shipmentHeaderId);
                         else if (tipo.equalsIgnoreCase("C"))
                             mPresenter.getItemsCiclico(pattern,countHeaderId, locatorId);
                         else if (tipo.equalsIgnoreCase("F"))
                             mPresenter.getItemsFisico(pattern, inventoryId, locatorId);
+                        else if (tipo.equalsIgnoreCase("TS"))
+                            mPresenter.getItemsTransSubinv(pattern, subinventario, locatorId);
                         else
                             mPresenter.getItems(pattern);
                     }

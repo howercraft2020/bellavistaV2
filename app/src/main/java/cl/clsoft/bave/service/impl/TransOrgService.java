@@ -569,7 +569,7 @@ public class TransOrgService  implements ITransOrgService {
                         + (trx.getInventoryItemId() == null ? "null" : trx.getInventoryItemId()) + ";"
                         + (trx.getOrganizationId() == null ? "null" : trx.getOrganizationId()) + ";"
                         + (trx.getTransactionQuantity() == null ? "null" : trx.getTransactionQuantity()) + ";"
-                        //+ (trx.getPrimaryQuantity() == null ? "null" : trx.getPrimaryQuantity()) + ";"
+                        + (trx.getPrimaryQuantity() == null ? "null" : trx.getPrimaryQuantity()) + ";"
                         + (trx.getTransactionUom() == null ? "null" : (trx.getTransactionUom().isEmpty() ? "null" : trx.getTransactionUom())) + ";"
                         + (trx.getTransactionDate() == null ? "null" : (trx.getTransactionDate().isEmpty() ? "null" : trx.getTransactionDate())) + ";"
                         + (trx.getSubinventoryCode() == null ? "null" : (trx.getSubinventoryCode().isEmpty() ? "null" : trx.getSubinventoryCode())) + ";"

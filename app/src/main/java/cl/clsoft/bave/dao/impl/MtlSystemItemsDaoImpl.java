@@ -6,6 +6,7 @@ import android.util.Log;
 import java.util.List;
 
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
+import cl.clsoft.bave.dao.catalogo.MtlOnhandQuantitiesCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlSystemItemsCatalogo;
 import cl.clsoft.bave.dao.rowmapper.MtlSystemItemsRowMapper;
 import cl.clsoft.bave.exception.DaoException;
@@ -102,6 +103,15 @@ public class MtlSystemItemsDaoImpl extends GenericDao<MtlSystemItems> implements
     }
 
     @Override
+    public List<MtlSystemItems> getAllByDescriptionPoHeaderId(String pattern, Long poHeaderId) throws DaoException {
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionPoHeaderId");
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionPoHeaderId::pattern: " + pattern);
+        Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionPoHeaderId::poHeaderId: " + poHeaderId);
+
+        return super.selectMany(MtlSystemItemsCatalogo.SELECT_ALL_BY_DESCRIPTION_POHEADERID, new MtlSystemItemsRowMapper(), pattern, poHeaderId);
+    }
+
+    @Override
     public List<MtlSystemItems> getAllByDescriptionShipmentOrganizacion(String pattern, Long shipmentHeaderId) throws DaoException {
         Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionShipmentOrganizacion");
         Log.d(TAG, "MtlSystemItemsDaoImpl::getAllByDescriptionShipmentOrganizacion::pattern: " + pattern);
@@ -133,6 +143,17 @@ public class MtlSystemItemsDaoImpl extends GenericDao<MtlSystemItems> implements
     @Override
     public List<MtlSystemItems> getAllByOcReceipt(Long poHeaderId, Long receiptNum) throws DaoException {
         return super.selectMany(MtlSystemItemsCatalogo.SELECT_BY_OC_RECEIPT, new MtlSystemItemsRowMapper(), poHeaderId, receiptNum);
+    }
+
+    @Override
+    public List<MtlSystemItems> getAllByDescriptionSubinvLocator(String pattern, String subinventario, Long locatorId) throws DaoException {
+        List<MtlSystemItems> salida;
+        if (locatorId != null) {
+            salida = super.selectMany(MtlSystemItemsCatalogo.SELECT_BY_SUBINVENTORY_LOCATOR, new MtlSystemItemsRowMapper(), pattern, subinventario);
+        } else {
+            salida = super.selectMany(MtlSystemItemsCatalogo.SELECT_BY_SUBINVENTORY_LOCATOR_NULL, new MtlSystemItemsRowMapper(), pattern, subinventario, locatorId);
+        }
+        return salida;
     }
 
 }

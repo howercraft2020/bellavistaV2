@@ -50,6 +50,15 @@ public class MtlSystemItemsCatalogo {
             "     description || long_description like ? " +
             "     AND inventory_item_id in (SELECT distinct(item_id) FROM rcv_transactions WHERE shipment_header_id = ?)";
 
+    public static final String SELECT_ALL_BY_DESCRIPTION_POHEADERID =
+            " SELECT * " +
+                    " FROM " +
+                    "     mtl_system_items " +
+                    " WHERE " +
+                    "     description || long_description like ? " +
+                    "     AND inventory_item_id in (SELECT distinct(item_id) FROM po_lines_all WHERE po_header_id = ?)";
+
+
     public static final String SELECT_ALL_BY_DESCRIPTION_SHIPMENT_ORGANIZACION =
             " SELECT * " +
                     " FROM " +
@@ -81,5 +90,21 @@ public class MtlSystemItemsCatalogo {
             "AND pla.ITEM_ID = msi.INVENTORY_ITEM_ID " +
             "AND pha.PO_HEADER_ID = ? " +
             "AND pha.RECEIPT_NUM = ? ";
+
+    public static final String SELECT_BY_SUBINVENTORY_LOCATOR_NULL =
+            " SELECT * " +
+                    " FROM " +
+                    "     mtl_system_items " +
+                    " WHERE " +
+                    "     description || long_description like ? " +
+                    "     AND inventory_item_id in (SELECT distinct(inventory_item_id) FROM mtl_onhand_quantities WHERE subinventory_code = ?)";
+
+    public static final String SELECT_BY_SUBINVENTORY_LOCATOR =
+            " SELECT * " +
+                    " FROM " +
+                    "     mtl_system_items " +
+                    " WHERE " +
+                    "     description || long_description like ? " +
+                    "     AND inventory_item_id in (SELECT distinct(inventory_item_id) FROM mtl_onhand_quantities WHERE subinventory_code = ? and locator_id = ?)";
 
 }

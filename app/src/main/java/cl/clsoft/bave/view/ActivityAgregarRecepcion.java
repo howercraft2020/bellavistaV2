@@ -158,8 +158,10 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
         });
 
         this.iconSearch.setOnClickListener(v -> {
-            Intent i = new Intent(this, ActivitySigleSearch.class);
-            startActivityForResult(i, LAUNCH_SEARCHSINGLE_ACTIVITY);
+            Intent iSearch = new Intent(this, ActivitySigleSearch.class);
+            iSearch.putExtra("Tipo", "R");
+            iSearch.putExtra("PoHeaderId", this.poHeaderId);
+            startActivityForResult(iSearch, LAUNCH_SEARCHSINGLE_ACTIVITY);
         });
 
         this.mPresenter.getArticulosByOcReceipt(Long.valueOf(poHeaderId),numeroRecep);
