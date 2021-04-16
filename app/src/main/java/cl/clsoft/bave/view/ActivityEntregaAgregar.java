@@ -467,12 +467,14 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                 ArrayAdapter<String> adapterLocator = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, locators);
                 this.textLocator.setAdapter(adapterLocator);
                 this.textLocator.setText(this.locatorCode);
+                this.textLocator.setEnabled(true);
                 //this.hayLocalizador = true;
             } else {
                 ArrayAdapter<String> adapterLocator = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, new String[0]);
                 this.textLocator.setAdapter(adapterLocator);
-                this.textLocator.setText("");
+                this.textLocator.setEnabled(false);
                 this.locatorCode = "";
+                this.textLocator.setText(this.locatorCode);
                 //this.textLocator.setVisibility(View.GONE);
                 //this.layoutLocator.setVisibility(View.GONE);
                 //this.textSigle.setEnabled(false);

@@ -496,7 +496,7 @@ public class EntregaServiceImpl implements IEntregaService {
             }
 
             // Locator
-            if (rcvTransactionsInterface.getLocatorId() != null) {
+            if (rcvTransactionsInterface.getLocatorId() != null && rcvTransactionsInterface.getLocatorId().longValue() > 0) {
                 localizador = localizadorDao.get(rcvTransactionsInterface.getLocatorId());
                 if (localizador == null) {
                     throw new ServiceException(1, "Localizador " + rcvTransactionsInterface.getLocatorId() + " no existe en el sistema");
