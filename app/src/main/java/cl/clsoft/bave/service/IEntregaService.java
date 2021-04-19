@@ -30,7 +30,7 @@ public interface IEntregaService {
     public List<TransactionsDto> getTransactionsInterfaceByShipmentHeader(Long shipmentHeaderId) throws ServiceException;
     public TransactionDetalleDto getTransactionsInterfaceById(Long interfaceTransactionId) throws ServiceException;
     public void deleteTransactionsInterfaceById(Long interfaceTransactionId) throws ServiceException;
-    public void closeEntrega(Long shipmentHeaderId) throws ServiceException;
+    public String closeEntrega(Long shipmentHeaderId) throws ServiceException;
     public List<String> getSegmentsByShipment(Long shipmentHeaderId) throws ServiceException;
 
 }

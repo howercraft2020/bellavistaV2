@@ -1,5 +1,8 @@
 package cl.clsoft.bave.service.impl;
 
+import android.content.Intent;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -558,9 +561,11 @@ public class EntregaServiceImpl implements IEntregaService {
     }
 
     @Override
-    public void closeEntrega(Long shipmentHeaderId) throws ServiceException {
+    public String closeEntrega(Long shipmentHeaderId) throws ServiceException {
         Log.d(TAG, "EntregaServiceImpl::closeEntrega");
         Log.d(TAG, "EntregaServiceImpl::closeEntrega::shipmentHeaderId: " + shipmentHeaderId);
+
+        String salida = "";
 
         IRcvShipmentHeadersDao rcvShipmentHeadersDao = new RcvShipmentHeadersDaoImpl();
         IRcvTransactionsDao rcvTransactionsDao = new RcvTransactionsDaoImpl();
@@ -802,6 +807,9 @@ public class EntregaServiceImpl implements IEntregaService {
             writer.flush();
             writer.close();
 
+            salida = archivo.getAbsolutePath();
+            Log.d(TAG, "salida: " + salida);
+
             // Elimina datos de la BD
             for (RcvTransactionsInterface trx : trxs) {
                 mtlSerialNumbersInterfaceDao.deleteByInterfaceTransactionId(trx.getInterfaceTransactionId());
@@ -812,6 +820,7 @@ public class EntregaServiceImpl implements IEntregaService {
             rcvHeadersInterfaceDao.delete(rcvShipmentHeaders.getHeaderInterfaceId());
             rcvTransactionsDao.deleteByShipmenHeader(shipmentHeaderId);
             rcvShipmentHeadersDao.delete(shipmentHeaderId);
+            return salida;
         } catch(DaoException e){
             throw new ServiceException(2, e.getDescripcion());
         } catch(IOException e){
