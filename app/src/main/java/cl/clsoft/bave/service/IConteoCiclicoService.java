@@ -23,7 +23,7 @@ public interface IConteoCiclicoService {
     public MtlCycleCountEntries getEntry(Long entryId) throws ServiceException;
     public void updateEntry(Long entryId, Double cantidad) throws ServiceException;
     public void deleteEntry(Long entryId) throws ServiceException;
-    public Long closeConteoCiclico(Long cycleCountHeaderId) throws ServiceException;
+    public String closeConteoCiclico(Long cycleCountHeaderId) throws ServiceException;
 
     public List<MtlCycleCountEntries> getAllSigleInformation(Long idSigle) throws ServiceException;
 

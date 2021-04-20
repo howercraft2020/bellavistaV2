@@ -486,10 +486,11 @@ public class InventarioFisicoService implements IInventarioFisicoService {
     }
 
     @Override
-    public Long closeInventory(Long inventoryId) throws ServiceException {
+    public String closeInventory(Long inventoryId) throws ServiceException {
         Log.d(TAG, "InventarioFisicoService::closeInventory");
         Log.d(TAG, "InventarioFisicoService::closeInventory::inventoryId: " + inventoryId);
 
+        String salida = "";
         IMtlPhysicalInventoriesDao mtlPhysicalInventoriesDao = new MtlPhysicalInventoriesDaoImpl();
         IMtlPhysicalSubinventoriesDao mtlPhysicalSubinventoriesDao = new MtlPhysicalSubinventoriesDaoImpl();
         IMtlPhysicalInventoryTagsDao mtlPhysicalInventoryTagsDao = new MtlPhysicalInventoryTagsDaoImpl();
@@ -547,11 +548,13 @@ public class InventarioFisicoService implements IInventarioFisicoService {
             writer.flush();
             writer.close();
 
+            salida = archivo.getAbsolutePath();
+
             // Elimina datos de la BD
             mtlPhysicalInventoryTagsDao.deleteByPhysicalInventory(inventoryId);
             mtlPhysicalSubinventoriesDao.deleteByPhysicalInventory(inventoryId);
             mtlPhysicalInventoriesDao.delete(inventoryId);
-            return 0L;
+            return salida;
 
         } catch(DaoException e){
             e.printStackTrace();

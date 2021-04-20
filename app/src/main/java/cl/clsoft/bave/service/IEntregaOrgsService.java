@@ -29,7 +29,7 @@ public interface IEntregaOrgsService {
     public List<TransactionsDto> getTransactionsInterfaceByShipmentHeader(Long shipmentHeaderId) throws ServiceException;
     public TransactionDetalleDto getTransactionDetalleById(Long transactionId) throws ServiceException;
     public void deleteTransactionsById(Long transactionId) throws ServiceException;
-    public void closeEntrega(Long shipmentHeaderId) throws ServiceException;
+    public String closeEntrega(Long shipmentHeaderId) throws ServiceException;
     public List<String> getSegmentsByShipment(Long shipmentHeaderId) throws ServiceException;
     public List<MtlTransactionLotNumbers> getLotesByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws ServiceException;
     public List<MtlSerialNumbers> getSerialsByShipmentInventory(Long shipmentHeaderId, Long inventoryItemId) throws ServiceException;

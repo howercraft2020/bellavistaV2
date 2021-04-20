@@ -1,5 +1,7 @@
 package cl.clsoft.bave.presenter;
 
+import android.media.MediaScannerConnection;
+
 import androidx.annotation.NonNull;
 
 import java.util.List;
@@ -55,7 +57,8 @@ public class EntregasOrgsDetallePresenter extends BasePresenter {
 
     public void closeEntrega(Long shipmentHeaderId){
         try {
-            this.mService.closeEntrega(shipmentHeaderId);
+            String archivo = this.mService.closeEntrega(shipmentHeaderId);
+            MediaScannerConnection.scanFile(mView, new String[] {archivo}, null, null);
             mView.resultadoOkCerrarEntrega();
         } catch (ServiceException e) {
             if (e.getCodigo() == 1) {

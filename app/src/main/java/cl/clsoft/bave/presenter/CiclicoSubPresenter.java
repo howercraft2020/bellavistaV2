@@ -1,5 +1,6 @@
 package cl.clsoft.bave.presenter;
 
+import android.media.MediaScannerConnection;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -99,7 +100,8 @@ public class CiclicoSubPresenter extends BasePresenter {
             Log.d(TAG, "CloseConteoCiclico::execute");
             Long salida = 0L;
             try {
-                salida = mService.closeConteoCiclico(this.id);
+                String archivo = mService.closeConteoCiclico(this.id);
+                MediaScannerConnection.scanFile(mView, new String[] {archivo}, null, null);
             } catch (ServiceException e) {
                 Log.d(TAG, "CloseConteoCiclico::execute::ServiceException");
                 e.printStackTrace();
