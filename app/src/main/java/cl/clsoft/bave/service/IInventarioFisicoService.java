@@ -24,7 +24,8 @@ public interface IInventarioFisicoService {
     public List<MtlSystemItems> getItemsEntregaOrganizacionesByDescription(String pattern, Long shipmentHeaderId) throws ServiceException;
     public List<MtlSystemItems> getItemsCiclicoByDescription(String pattern, Long countHeaderId, Long locatorId) throws ServiceException;
     public List<MtlSystemItems> getItemsFisicoByDescription(String pattern, Long inventoryId, Long locatorId) throws ServiceException;
-    public List<MtlSystemItems> getItemsTransSubinbByDescription(String pattern, String subinventario, Long locatorId) throws ServiceException;
+    public List<MtlSystemItems> getItemsTransSubinbByDescription(String pattern, String subinventario, String locatorCodigo) throws ServiceException;
+    public List<MtlSystemItems> getItemsTransOrgByDescription(String pattern, String subinventario, String locatorCodigo) throws ServiceException;
 
     public List<MtlPhysicalInventoryTags> getAllTagsByInventory(Long physicalInventoryId) throws ServiceException;
     public List<MtlPhysicalInventoryTags> getAllTagsByInventorySubinventory(Long physicalInventoryId, String subinventory) throws ServiceException;

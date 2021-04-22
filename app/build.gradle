@@ -16,7 +16,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
-        def APP_VERSION = "\"DEV: V 1.0 R Beta03\""
+        def APP_VERSION = "\"DEV: V 1.0 R Beta06\""
         buildConfigField("String", "APP_VERSION", APP_VERSION)
 
     }

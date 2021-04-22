@@ -145,7 +145,9 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                             textCantidad.setEnabled(true);
                             layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                             textUdm.setText(item.getPrimaryUomCode());
-                            mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
+                            inventoryItemId = item.getInventoryItemId();
+                            //mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
+                            validaLinea();
                         }
                         else {
                             showWarning("Item " + segment + " no se ha encontrado en la maestra.");
@@ -184,7 +186,9 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                     textCantidad.setEnabled(true);
                     layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
                     textUdm.setText(item.getPrimaryUomCode());
-                    mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
+                    inventoryItemId = item.getInventoryItemId();
+                    //mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
+                    validaLinea();
                 } else {
                     showWarning("Item " + segment + " no encontrado en tabla maestra");
                 }
@@ -198,22 +202,34 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        String codigoSigle;
+        String codigoSigle = "";
         Double cantidad = 0.0;
-        Long poLineNum;
+        Long poLineNum = 0L;
         String udm;
 
 
-        codigoSigle = this.textSigle.getText().toString();
+        if(this.textSigle.getText().toString().trim().length() != 0) {
+            codigoSigle = this.textSigle.getText().toString();
+        }
 
         if(this.textCantidad.getText().toString().trim().length() != 0) {
             cantidad = Double.parseDouble(this.textCantidad.getText().toString());
 
         }
-        udm = this.textUdm.getText().toString();
-        poLineNum = Long.parseLong(this.textNumeroLinea.getText().toString());
+
+        if(this.textUdm.getText().toString().trim().length() != 0) {
+            udm = this.textUdm.getText().toString();
+        }
+
+        if(this.textNumeroLinea.getText().toString().trim().length() != 0) {
+            poLineNum = Long.parseLong(this.textNumeroLinea.getText().toString());
+
+        }
 
         switch (item.getItemId()){
+            case R.id.clean:
+                this.cleanScreen();
+                return true;
             case R.id.action_save:
                 mPresenter.cargaRecepcion(codigoSigle,Long.parseLong(poHeaderId),numeroOc,numeroRecep, cantidad, poLineNum);
                 return true;
@@ -323,4 +339,16 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
         String linea = ((DialogSeleccionLinea) dialog).selectedItem;
         this.textNumeroLinea.setText(linea);
     }
+
+
+    public void cleanScreen() {
+
+        this.textSigle.setText("");
+        this.textNumeroLinea.setText("");
+        this.textCantidad.setText("");
+        this.textUdm.setText("");
+        this.textSigle.requestFocus();
+    }
+
+
 }

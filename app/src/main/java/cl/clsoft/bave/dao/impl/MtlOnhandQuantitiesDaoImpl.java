@@ -46,8 +46,18 @@ public class MtlOnhandQuantitiesDaoImpl extends GenericDao<MtlOnhandQuantities> 
     }
 
     @Override
+    public MtlOnhandQuantities getLocatorNull(String articulo, String lote, String subinventario) throws DaoException {
+        return super.selectOne(MtlOnhandQuantitiesCatalogo.SELECT_LOCATOR_NULL, new MtlOnHandQuantitiesRowMapper(), articulo, lote, subinventario);
+    }
+
+    @Override
     public Double getCantidad(String articulo, String lote, String subinventario, String localizador) throws DaoException {
         return super.selectDouble(MtlOnhandQuantitiesCatalogo.SELECT_QUANTITY, articulo, lote,subinventario, localizador);
+    }
+
+    @Override
+    public Double getCantidadLocatorNull(String articulo, String lote, String subinventario) throws DaoException {
+        return super.selectDouble(MtlOnhandQuantitiesCatalogo.SELECT_QUANTITY_LOCATOR_NULL, articulo, lote,subinventario);
     }
 
     @Override

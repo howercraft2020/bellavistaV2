@@ -159,6 +159,7 @@ public class TransOrgService  implements ITransOrgService {
         IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
         IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
         IOrganizacionPrincipalDao organizacionPrincipalDao = new OrganizacionPrincipalDaoImpl();
+        MtlOnhandQuantities mtlOnhandQuantities;
 
         Long inventoryItemId;
         Long existe = 0L;
@@ -170,15 +171,14 @@ public class TransOrgService  implements ITransOrgService {
         boolean isControlSerie = false;
         Localizador localizadorDesde = null;
 
-        try{
+        try {
 
             transactionInterfaceId = id;
             String fecha = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
-            if(nroTraspaso.equals("")) {
+            if (nroTraspaso.equals("")) {
                 fechaId = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault()).format(new Date());
-            }
-            else {
+            } else {
                 fechaId = nroTraspaso;
             }
             //Validación de Articulo
@@ -186,8 +186,8 @@ public class TransOrgService  implements ITransOrgService {
             inventoryItemId = sigle.getInventoryItemId();
             sigleUomCode = sigle.getPrimaryUomCode();
 
-            if (inventoryItemId == null){
-                throw new ServiceException(1,"No se encuentra información para el articulo : " + articulo);
+            if (inventoryItemId == null) {
+                throw new ServiceException(1, "No se encuentra información para el articulo : " + articulo);
             }
 
             if (sigle.getLotControlCode().equalsIgnoreCase("2")) {
@@ -197,11 +197,8 @@ public class TransOrgService  implements ITransOrgService {
                 isControlSerie = true;
             }
 
-            //Valida si existe en interfaz
-            existe = mtlTransactionsInterfaceDao.getLocNull(inventoryItemId,subinventario,localizador);
-
-            if (existe != 0){
-                throw new ServiceException(1,articulo + "ya esta ingresado en interfaz");
+            if (existe != 0) {
+                throw new ServiceException(1, articulo + " ya esta ingresado en interfaz");
             }
 
             // Subinventory Desde
@@ -219,16 +216,34 @@ public class TransOrgService  implements ITransOrgService {
             }
 
             //Datos de mtlOnHandQuantities
-            MtlOnhandQuantities mtlOnhandQuantities = mtlOnhandQuantitiesDao.get(articulo,lote, subinventario, localizador);
+            //MtlOnhandQuantities mtlOnhandQuantities = mtlOnhandQuantitiesDao.get(articulo,lote, subinventario, localizador);
 
-            if(mtlOnhandQuantities == null){
-                throw new ServiceException(1,"No se encuentra información en mtlonhandquantities");
+            if (!localizador.equals("")) {
+                mtlOnhandQuantities = mtlOnhandQuantitiesDao.get(articulo, lote, subinventario, localizador);
+            } else {
+                mtlOnhandQuantities = mtlOnhandQuantitiesDao.getLocatorNull(articulo, lote, subinventario);
+            }
+
+            if (mtlOnhandQuantities == null) {
+                throw new ServiceException(1, "No se encuentra información en mtlonhandquantities");
             }
 
             //Organizacion Destino
             Organizacion organizacionDestino = organizacionDao.getByCodeDestino(orgDestino);
-            if (organizacionDestino == null){
+            if (organizacionDestino == null) {
                 throw new ServiceException(1, "Organizacion Destino " + orgDestino + " no existe en el sistema");
+            }
+
+            //Valida si existe en interfaz
+            //existe = mtlTransactionsInterfaceDao.getLocNull(inventoryItemId,subinventario,localizador);
+            if (!localizador.equals("")) {
+                existe = mtlTransactionsInterfaceDao.getLocOrDesNotNullOrg(inventoryItemId, subinventario, localizador, organizacionDestino.getIdOrganizacion());
+            } else {
+                existe = mtlTransactionsInterfaceDao.getLocOrNullDestNotNullOrg(inventoryItemId, subinventario, organizacionDestino.getIdOrganizacion());
+            }
+
+            if (existe != 0){
+                throw new ServiceException(1,articulo + " ya esta ingresado en interfaz");
             }
 
             //Validaciones
@@ -265,13 +280,15 @@ public class TransOrgService  implements ITransOrgService {
             mtlTransactionsInterface.setTransactionUom(sigleUomCode);
             mtlTransactionsInterface.setTransactionDate(fecha);
             mtlTransactionsInterface.setSubinventoryCode(subinventarioDesde.getCodSubinventario());
-            mtlTransactionsInterface.setLocatorId(localizadorDesde.getIdLocalizador());
+            if(localizadorDesde != null) {
+                mtlTransactionsInterface.setLocatorId(localizadorDesde.getIdLocalizador());
+            }
             mtlTransactionsInterface.setTransactionSourceName(glosa);
             mtlTransactionsInterface.setTransactionSourceTypeId(13L);
             mtlTransactionsInterface.setTransactionActionId(21L);
             mtlTransactionsInterface.setTransactionTypeId(21L);
             mtlTransactionsInterface.setTransferOrganization(organizacionDestino.getIdOrganizacion());
-            mtlTransactionsInterface.setShipmentNumber(organizacionPrincipal.getCode()+fechaId);
+            mtlTransactionsInterface.setShipmentNumber(fechaId);
             mtlTransactionsInterfaceDao.insert(mtlTransactionsInterface);
 
             if(isControlLote) {
@@ -301,6 +318,7 @@ public class TransOrgService  implements ITransOrgService {
                     mtlSerialNumbersInterface.setCreationDate(fecha);
                     mtlSerialNumbersInterface.setCreatedBy(mtlOnhandQuantities.getUserId());
                     mtlSerialNumbersInterface.setFmSerialNumber(serie);
+                    mtlSerialNumbersInterface.setToSerialNumber(serie);
                     mtlSerialNumbersInterface.setProductTransactionId(Long.parseLong(transactionInterfaceId));
                     mtlSerialNumbersInterfaceDao.insert(mtlSerialNumbersInterface);
                 }
@@ -323,6 +341,7 @@ public class TransOrgService  implements ITransOrgService {
         ISubinventarioDao subinventarioDao = new SubinventarioDaoImpl();
         ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
         IOrganizacionDao organizacionDao = new OrganizacionDaoImpl();
+        MtlOnhandQuantities cantidades;
 
         Double cantidadEnMano;
         String controlLote;
@@ -357,7 +376,14 @@ public class TransOrgService  implements ITransOrgService {
             }
 
             //Validación datos en mtlonhandquantities
-            MtlOnhandQuantities cantidades = mtlOnhandQuantitiesDao.get(articulo,lote, subinventario, localizador);
+            //MtlOnhandQuantities cantidades = mtlOnhandQuantitiesDao.get(articulo,lote, subinventario, localizador);
+
+            if (!localizador.equals("")) {
+                cantidades = mtlOnhandQuantitiesDao.get(articulo, lote, subinventario, localizador);
+            }else {
+                cantidades = mtlOnhandQuantitiesDao.getLocatorNull(articulo, lote, subinventario);
+            }
+
             if(cantidades == null){
                 throw new ServiceException(1,"No se encuentra información de cantidad de stock");
             }
@@ -383,7 +409,13 @@ public class TransOrgService  implements ITransOrgService {
             }
 
             //Validación Cantidad en Mano
-            cantidadEnMano = cantidades.getPrimaryTransactionQuantity();
+            //cantidadEnMano = cantidades.getPrimaryTransactionQuantity();
+            //cantidadEnMano = mtlOnhandQuantitiesDao.getCantidad(articulo,lote, subinventario, localizador);
+            if (!localizador.equals("")) {
+                cantidadEnMano = mtlOnhandQuantitiesDao.getCantidad(articulo,lote, subinventario, localizador);
+            } else {
+                cantidadEnMano = mtlOnhandQuantitiesDao.getCantidadLocatorNull(articulo,lote, subinventario);
+            }
 
             if (cantidadEnMano < cantidad) {
                 throw new ServiceException(1,"Cantidad no puede ser mayor a : " + cantidadEnMano);
@@ -451,6 +483,64 @@ public class TransOrgService  implements ITransOrgService {
     }
 
     @Override
+    public Localizador getLocalizadorByCodigo(String codigo) throws ServiceException {
+        ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
+
+        try {
+            Localizador localizador = localizadorDao.getByCodigo(codigo);
+            return localizador;
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<String> getSegment1(String subinventory, String locatorCodigo) throws ServiceException {
+        Log.d(TAG, "TransSubinvServide::getSegment1");
+        Log.d(TAG, "TransSubinvServide::getSegment1::subinventory: " + subinventory);
+        Log.d(TAG, "TransSubinvServide::getSegment1::locatorCodigo: " + locatorCodigo);
+
+        IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
+        ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
+        try {
+            List<String> segments;
+            if (locatorCodigo == null) {
+                segments = mtlOnhandQuantitiesDao.getSegment1BySubinventory(subinventory);
+            } else {
+                Localizador localizador = localizadorDao.getByCodigo(locatorCodigo);
+                if (localizador != null) {
+                    segments = mtlOnhandQuantitiesDao.getSegment1BySubinventoryLocator(subinventory, localizador.getIdLocalizador());
+                } else {
+                    segments = mtlOnhandQuantitiesDao.getSegment1BySubinventoryLocator(subinventory, null);
+                }
+            }
+            return segments;
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<String> getLote(String subinventory, Long locatorCodigo, String segment1) throws ServiceException {
+        Log.d(TAG, "TransSubinvServide::getLote");
+        Log.d(TAG, "TransSubinvServide::getLote::subinventory: " + subinventory);
+        Log.d(TAG, "TransSubinvServide::getLote::locatorCodigo: " + locatorCodigo);
+
+        IMtlOnhandQuantitiesDao mtlOnhandQuantitiesDao = new MtlOnhandQuantitiesDaoImpl();
+        try {
+            List<String> lotes;
+            if (locatorCodigo == null) {
+                lotes = mtlOnhandQuantitiesDao.getLoteBySubinventory(subinventory, segment1);
+            } else {
+                lotes = mtlOnhandQuantitiesDao.getLoteBySubinventoryLocator(subinventory, locatorCodigo, segment1);
+            }
+            return lotes;
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
     public MtlTransactionOrgDto getTransactionsInterfaceById(Long transactionInterfaceId) throws ServiceException {
         Log.d(TAG, "TransSubvinvService::getTransactionsInterfaceById");
         Log.d(TAG, "TransSubvinvService::getTransactionsInterfaceById::interfaceTransactionId: " + transactionInterfaceId);
@@ -488,9 +578,6 @@ public class TransOrgService  implements ITransOrgService {
             // Locator
             if (mtlTransactionsInterface.getLocatorId() != null) {
                 localizador = localizadorDao.get(mtlTransactionsInterface.getLocatorId());
-                if (localizador == null) {
-                    throw new ServiceException(1, "Localizador " + mtlTransactionsInterface.getLocatorId() + " no existe en el sistema");
-                }
             }
 
             //Organizacion Destino
@@ -534,8 +621,9 @@ public class TransOrgService  implements ITransOrgService {
     }
 
     @Override
-    public void crearArchivo(String transactionReference) throws ServiceException {
+    public String crearArchivo(String transactionReference) throws ServiceException {
         String nomenclatura;
+        String salida = "";
         IMtlTransactionsInterfaceDao mtlTransactionsInterfaceDao = new MtlTransactionInterfaceDaoImpl();
         IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
         IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
@@ -568,8 +656,8 @@ public class TransOrgService  implements ITransOrgService {
                         + (trx.getCreatedBy() == null ? "null" : trx.getCreatedBy()) + ";"
                         + (trx.getInventoryItemId() == null ? "null" : trx.getInventoryItemId()) + ";"
                         + (trx.getOrganizationId() == null ? "null" : trx.getOrganizationId()) + ";"
-                        + (trx.getTransactionQuantity() == null ? "null" : trx.getTransactionQuantity()) + ";"
-                        + (trx.getPrimaryQuantity() == null ? "null" : trx.getPrimaryQuantity()) + ";"
+                        + (trx.getTransactionQuantity() == null ? "null" : "-" + trx.getTransactionQuantity()) + ";"
+                        + (trx.getPrimaryQuantity() == null ? "null" : "-" + trx.getPrimaryQuantity()) + ";"
                         + (trx.getTransactionUom() == null ? "null" : (trx.getTransactionUom().isEmpty() ? "null" : trx.getTransactionUom())) + ";"
                         + (trx.getTransactionDate() == null ? "null" : (trx.getTransactionDate().isEmpty() ? "null" : trx.getTransactionDate())) + ";"
                         + (trx.getSubinventoryCode() == null ? "null" : (trx.getSubinventoryCode().isEmpty() ? "null" : trx.getSubinventoryCode())) + ";"
@@ -596,7 +684,7 @@ public class TransOrgService  implements ITransOrgService {
                             + (lote.getLotNumber() == null ? "null" : (lote.getLotNumber().isEmpty() ? "null" : lote.getLotNumber())) + ";"
                             + (lote.getLotExpirationDate() == null ? "null" : (lote.getLotExpirationDate().isEmpty() ? "null" : lote.getLotExpirationDate())) + ";"
                             + (lote.getTransactionQuantity() == null ? "null" : lote.getTransactionQuantity()) + ";"
-                            + (lote.getPrimaryQuantity() == null ? "null" : lote.getPrimaryQuantity()) + ";"
+                            + (lote.getPrimaryQuantity() == null ? "null" : "-" + lote.getPrimaryQuantity()) + ";"
                             + (lote.getSerialTransactionTempId() == null ? "null" : lote.getSerialTransactionTempId()) + ";"
                             + (lote.getAttributeCategory() == null ? "null" : (lote.getAttributeCategory().isEmpty() ? "null" : lote.getAttributeCategory())) + ";"
                             + (lote.getAttrubute1() == null ? "null" : (lote.getAttrubute1().isEmpty() ? "null" : lote.getAttrubute1())) + ";"
@@ -617,12 +705,17 @@ public class TransOrgService  implements ITransOrgService {
                             + (serie.getCreationDate() == null ? "null" : (serie.getCreationDate().isEmpty() ? "null" : serie.getCreationDate())) + ";"
                             + (serie.getCreatedBy() == null ? "null" : serie.getCreatedBy()) + ";"
                             + (serie.getFmSerialNumber() == null ? "null" : (serie.getFmSerialNumber().isEmpty() ? "null" : serie.getFmSerialNumber())) + ";"
+                            + (serie.getToSerialNumber() == null ? "null" : (serie.getToSerialNumber().isEmpty() ? "null" : serie.getToSerialNumber())) + ";"
                             + "FIN\r\n");
                 }
             }
 
             writer.flush();
             writer.close();
+
+            salida = rutaArchivo.getAbsolutePath();
+            Log.d(TAG, "salida: " + salida);
+
 
             // Elimina datos de la BD
             for (MtlTransactionsInterface trx : trxs) {
@@ -636,6 +729,38 @@ public class TransOrgService  implements ITransOrgService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return salida;
+    }
+
+    @Override
+    public void controlSerie(String articulo) throws ServiceException {
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+
+        String controlSerie;
+
+        try{
+
+            //Validación de Articulo
+            MtlSystemItems sigle = mtlSystemItemsDao.getBySegment(articulo);
+            controlSerie = sigle.getSerialNumberControlCode();
+
+            if (sigle.equals("")){
+                throw new ServiceException(1,"No se encuentra información de serie para el articulo : " + articulo);
+            }
+
+            if (controlSerie.equals("1")){
+                throw new ServiceException(1,"Este articulo no tiene control de serie");
+            }
+
+        }catch (ServiceException e){
+            throw e;
+        }catch (DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }catch (Exception e){
+            throw new ServiceException(2, e.getMessage());
+        }
+
+
     }
 
 

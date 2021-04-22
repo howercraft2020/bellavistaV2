@@ -5,11 +5,13 @@ import android.util.Log;
 
 import java.util.List;
 
+import cl.clsoft.bave.dao.ILocalizadorDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.catalogo.MtlOnhandQuantitiesCatalogo;
 import cl.clsoft.bave.dao.catalogo.MtlSystemItemsCatalogo;
 import cl.clsoft.bave.dao.rowmapper.MtlSystemItemsRowMapper;
 import cl.clsoft.bave.exception.DaoException;
+import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlSystemItems;
 
 public class MtlSystemItemsDaoImpl extends GenericDao<MtlSystemItems> implements IMtlSystemItemsDao {
@@ -146,12 +148,16 @@ public class MtlSystemItemsDaoImpl extends GenericDao<MtlSystemItems> implements
     }
 
     @Override
-    public List<MtlSystemItems> getAllByDescriptionSubinvLocator(String pattern, String subinventario, Long locatorId) throws DaoException {
+    public List<MtlSystemItems> getAllByDescriptionSubinvLocator(String pattern, String subinventario, String locatorCodigo) throws DaoException {
+        ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
         List<MtlSystemItems> salida;
-        if (locatorId != null) {
-            salida = super.selectMany(MtlSystemItemsCatalogo.SELECT_BY_SUBINVENTORY_LOCATOR, new MtlSystemItemsRowMapper(), pattern, subinventario);
+
+
+        if (locatorCodigo != null) {
+            Localizador localizador = localizadorDao.getByCodigo(locatorCodigo);
+            salida = super.selectMany(MtlSystemItemsCatalogo.SELECT_BY_SUBINVENTORY_LOCATOR, new MtlSystemItemsRowMapper(), pattern, subinventario, localizador.getIdLocalizador());
         } else {
-            salida = super.selectMany(MtlSystemItemsCatalogo.SELECT_BY_SUBINVENTORY_LOCATOR_NULL, new MtlSystemItemsRowMapper(), pattern, subinventario, locatorId);
+            salida = super.selectMany(MtlSystemItemsCatalogo.SELECT_BY_SUBINVENTORY_LOCATOR_NULL, new MtlSystemItemsRowMapper(), pattern, subinventario);
         }
         return salida;
     }

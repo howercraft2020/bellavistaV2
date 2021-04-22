@@ -44,9 +44,14 @@ public class SigleSearchPresenter extends BasePresenter {
         mTaskExecutor.async(new SigleSearchPresenter.SearchSigleRecepcion(pattern, poHeaderId));
     }
 
-    public void getItemsTransSubinv(String pattern, String subinventario, Long locatorId) {
+    public void getItemsTransSubinv(String pattern, String subinventario, String locatorCodigo) {
         mView.showProgres("Cargando productos...");
-        mTaskExecutor.async(new SigleSearchPresenter.SearchSigleTransSubinv(pattern, subinventario, locatorId));
+        mTaskExecutor.async(new SigleSearchPresenter.SearchSigleTransSubinv(pattern, subinventario, locatorCodigo));
+    }
+
+    public void getItemsTransOrg(String pattern, String subinventario, String locatorCodigo) {
+        mView.showProgres("Cargando productos...");
+        mTaskExecutor.async(new SigleSearchPresenter.SearchSigleTransOrg(pattern, subinventario, locatorCodigo));
     }
 
     public void getItemsEntregaOrganizacion(String pattern, Long shipmentHeaderId) {
@@ -102,12 +107,12 @@ public class SigleSearchPresenter extends BasePresenter {
 
         private String pattern;
         private String subinventario;
-        private Long locatorId;
+        private String locatorCodigo;
 
-        public SearchSigleTransSubinv(String pattern, String subinventario, Long locatorId) {
+        public SearchSigleTransSubinv(String pattern, String subinventario, String locatorCodigo) {
             this.pattern = pattern;
             this.subinventario = subinventario;
-            this.locatorId = locatorId;
+            this.locatorCodigo = locatorCodigo;
         }
 
         @Override
@@ -115,7 +120,7 @@ public class SigleSearchPresenter extends BasePresenter {
             Log.d(TAG, "SearchSigle::execute");
             List<MtlSystemItems> salida = new ArrayList<>();
             try {
-                salida = mService.getItemsTransSubinbByDescription(this.pattern,this.subinventario, this.locatorId);
+                salida = mService.getItemsTransSubinbByDescription(this.pattern,this.subinventario, this.locatorCodigo);
             } catch (ServiceException e) {
                 Log.d(TAG, "SearchSigle::execute::ServiceException");
                 e.printStackTrace();
@@ -130,7 +135,45 @@ public class SigleSearchPresenter extends BasePresenter {
 
         @Override
         public void onPostExecute(@Nullable List<MtlSystemItems> result) {
+            mView.hideProgres();
+            mView.fillItem(result);
+        }
+    }
 
+    private class SearchSigleTransOrg implements AppTask<List<MtlSystemItems>> {
+
+        private String pattern;
+        private String subinventario;
+        private String locatorCodigo;
+
+        public SearchSigleTransOrg(String pattern, String subinventario, String locatorCodigo) {
+            this.pattern = pattern;
+            this.subinventario = subinventario;
+            this.locatorCodigo = locatorCodigo;
+        }
+
+        @Override
+        public List<MtlSystemItems> execute() {
+            Log.d(TAG, "SearchSigle::execute");
+            List<MtlSystemItems> salida = new ArrayList<>();
+            try {
+                salida = mService.getItemsTransOrgByDescription(this.pattern,this.subinventario, this.locatorCodigo);
+            } catch (ServiceException e) {
+                Log.d(TAG, "SearchSigle::execute::ServiceException");
+                e.printStackTrace();
+                mView.runOnUiThread(new Runnable() {
+                    public void run() {
+                        mView.showError(e.getDescripcion());
+                    }
+                });
+            }
+            return salida;
+        }
+
+        @Override
+        public void onPostExecute(@Nullable List<MtlSystemItems> result) {
+            mView.hideProgres();
+            mView.fillItem(result);
         }
     }
 

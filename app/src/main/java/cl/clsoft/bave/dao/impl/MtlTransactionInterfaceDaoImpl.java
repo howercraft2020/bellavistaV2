@@ -72,6 +72,18 @@ public class MtlTransactionInterfaceDaoImpl extends GenericDao<MtlTransactionsIn
         return super.selectLong(MtlTransactionsInterfaceCatalogo.SELECT_LOC_OR_NULL_DEST_NULL, inventoryItemId, subinventario, transferSubinventory);
     }
 
+    //Organizacion
+    @Override
+    public Long getLocOrDesNotNullOrg(Long inventoryItemId, String subinventario, String localizador,Long organizacionDestino) throws DaoException {
+        return super.selectLong(MtlTransactionsInterfaceCatalogo.SELECT_LOC_OR_DES_NOT_NULL_ORG, inventoryItemId, subinventario, localizador, organizacionDestino);
+    }
+
+    @Override
+    public Long getLocOrNullDestNotNullOrg(Long inventoryItemId, String subinventario, Long organizacionDestino) throws DaoException {
+        return super.selectLong(MtlTransactionsInterfaceCatalogo.SELECT_LOC_OR_NULL_DEST_NOT_NULL_ORG, inventoryItemId,subinventario,organizacionDestino);
+    }
+
+
     @Override
     public Long getLocNull(Long inventoryItemId, String subinventario, String localizador) throws DaoException {
         return super.selectLong(MtlTransactionsInterfaceCatalogo.SELECT_LOC_NULL, inventoryItemId,subinventario,localizador);

@@ -138,7 +138,7 @@ public class ActivityTransOrgDetalle extends BaseActivity<TransOrgDetallePresent
                 this.finish();
                 return true;
             case android.R.id.home:
-                Intent ihome = new Intent(this, ActivityTransSubinv.class);
+                Intent ihome = new Intent(this, ActivityTransOrg.class);
                 startActivity(ihome);
                 this.finish();
                 return true;

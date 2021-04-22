@@ -1,5 +1,7 @@
 package cl.clsoft.bave.presenter;
 
+import android.media.MediaScannerConnection;
+
 import java.util.List;
 
 import cl.clsoft.bave.base.BasePresenter;
@@ -31,7 +33,8 @@ public class TransSubinvDetallePresenter extends BasePresenter {
 
     public void crearArchivo(String transactionReference){
         try{
-            this.mservice.crearArchivo(transactionReference);
+            String archivo = this.mservice.crearArchivo(transactionReference);
+            MediaScannerConnection.scanFile(mview, new String[] {archivo}, null, null);
             mview.resultadoOkCerrarTransferencia();
         }catch (ServiceException e) {
             e.printStackTrace();

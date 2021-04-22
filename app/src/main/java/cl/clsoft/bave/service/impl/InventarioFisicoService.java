@@ -166,10 +166,22 @@ public class InventarioFisicoService implements IInventarioFisicoService {
     }
 
     @Override
-    public List<MtlSystemItems> getItemsTransSubinbByDescription(String pattern, String subinventario, Long locatorId) throws ServiceException {
+    public List<MtlSystemItems> getItemsTransSubinbByDescription(String pattern, String subinventario, String locatorCodigo) throws ServiceException {
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
         try {
-            List<MtlSystemItems> items = mtlSystemItemsDao.getAllByDescriptionSubinvLocator(pattern, subinventario, locatorId);
+            List<MtlSystemItems> items = mtlSystemItemsDao.getAllByDescriptionSubinvLocator(pattern, subinventario, locatorCodigo);
+            Log.d(TAG, "size" + items.size());
+            return items;
+        } catch(DaoException e){
+            throw new ServiceException(2, e.getDescripcion());
+        }
+    }
+
+    @Override
+    public List<MtlSystemItems> getItemsTransOrgByDescription(String pattern, String subinventario, String locatorCodigo) throws ServiceException {
+        IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+        try {
+            List<MtlSystemItems> items = mtlSystemItemsDao.getAllByDescriptionSubinvLocator(pattern, subinventario, locatorCodigo);
             Log.d(TAG, "size" + items.size());
             return items;
         } catch(DaoException e){
@@ -201,6 +213,7 @@ public class InventarioFisicoService implements IInventarioFisicoService {
         Log.d(TAG, "InventarioFisicoService::getItemsCiclicoByDescription::locatorId: " + locatorId);
 
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+        ILocalizadorDao localizadorDao = new LocalizadorDaoImpl();
         try {
             List<MtlSystemItems> items = mtlSystemItemsDao.getAllByDescriptionCountHeaderLocator(pattern, countHeaderId, locatorId);
             Log.d(TAG, "size" + items.size());

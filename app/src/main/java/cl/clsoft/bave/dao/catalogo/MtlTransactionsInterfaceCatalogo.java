@@ -103,6 +103,20 @@ public class MtlTransactionsInterfaceCatalogo {
                                                               "and locator_id IS NULL " +
                                                               "and transfer_locator IS NULL ";
 
+    //Organizacion
+    public static final String SELECT_LOC_OR_DES_NOT_NULL_ORG = " select count(*) from mtl_transactions_interface mti, " +
+            "localizador loc " +
+            "where mti.locator_id = loc.id_localizador " +
+            "and mti.inventory_item_id = ? " +
+            "and mti.subinventory_code = ? " +
+            "and loc.cod_localizador = ? " +
+            "and mti.transfer_organization = ? ";
+
+    public static final String SELECT_LOC_OR_NULL_DEST_NOT_NULL_ORG = " select count(*) from mtl_transactions_interface mti " +
+            "where mti.inventory_item_id = ? " +
+            "and mti.subinventory_code = ? " +
+            "and mti.transfer_organization = ? ";
+
     public static final String SELECT_LOC_NULL = "select count(*) from mtl_transactions_interface mti, "+
                                                  "localizador loc " +
                                                  "where mti.locator_id = loc.id_localizador " +

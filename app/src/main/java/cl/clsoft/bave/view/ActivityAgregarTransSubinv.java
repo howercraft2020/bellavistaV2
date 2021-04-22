@@ -205,6 +205,10 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
                     if (item.getLotControlCode().equalsIgnoreCase("2")) {
                         fillLote();
                     }
+                    else{
+                        textLote.setEnabled(false);
+                        layoutLote.setHintEnabled(false);
+                    }
                     layoutCantidad.setHintEnabled(true);
                     textCantidad.setEnabled(true);
                     layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
@@ -269,7 +273,7 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
             Intent iSearch = new Intent(this, ActivitySigleSearch.class);
             iSearch.putExtra("Tipo", "TS");
             iSearch.putExtra("Subinventario", this.codSubinventario);
-            iSearch.putExtra("LocatorId", this.locatorId);
+            iSearch.putExtra("locatorCodigo", this.locatorCodigo);
             startActivityForResult(iSearch, LAUNCH_SEARCHSINGLE_ACTIVITY);
         });
 
@@ -355,6 +359,8 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
                 this.textLocator.setAdapter(adapterLocator);
                 this.textLocator.setText("");
             } else {
+                this.textLocator.setVisibility(View.GONE);
+                this.layoutLocator.setVisibility(View.GONE);
                 this.loadSigle();
             }
         }
@@ -487,5 +493,7 @@ public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvP
         this.textSigle.setText("");
         this.textLote.setText("");
         this.textCantidad.setText("");
+        this.textLocator.setVisibility(View.VISIBLE);
+        this.layoutLocator.setVisibility(View.VISIBLE);
     }
 }

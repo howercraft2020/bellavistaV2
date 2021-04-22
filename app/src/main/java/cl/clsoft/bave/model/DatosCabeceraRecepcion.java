@@ -12,6 +12,7 @@ public class DatosCabeceraRecepcion {
     private Long rate;
     private String rateDate;
     private Long termsId;
+    private Long orgId;
 
     public DatosCabeceraRecepcion() {}
 
@@ -93,5 +94,13 @@ public class DatosCabeceraRecepcion {
 
     public void setTermsId(Long termsId) {
         this.termsId = termsId;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
     }
 }

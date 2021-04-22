@@ -12,6 +12,8 @@ public interface IMtlTransactionsInterfaceDao {
     public Long getLocOrNullDestNotNull(Long inventoryItemId, String subinventario, String transferSubinventory, String transferLocator) throws DaoException;
     public Long getLocOrNotNullDestNull(Long inventoryItemId, String subinventario, String localizador, String transferSubinventory) throws DaoException;
     public Long getLocOrNullDestNull(Long inventoryItemId, String subinventario, String transferSubinventory) throws DaoException;
+    public Long getLocOrDesNotNullOrg(Long inventoryItemId, String subinventario, String localizador, Long organizacionDestino) throws DaoException;
+    public Long getLocOrNullDestNotNullOrg(Long inventoryItemId, String subinventario, Long organizacionDestino) throws DaoException;
     public Long getLocNull(Long inventoryItemId, String subinventario, String localizador) throws DaoException;
     public List<MtlTransactionsInterface> getTransferencias(String numeroTraspaso, String glosa) throws DaoException;
     public List<MtlTransactionsInterface> getTransferenciasByTraspaso(String numeroTraspaso) throws DaoException;

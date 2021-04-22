@@ -35,9 +35,41 @@ public class AgregarTransOrgPresenter extends BasePresenter {
         mTaskExecutor.async(new AgregarTransOrgPresenter.LocalizadoresBySubinventario(subinventarioCodigo));
     }
 
+    public void getSegment1(String subinventarioCodigo, String locatorCodigo) {
+        mView.showProgres("Cargando Productos...");
+        mTaskExecutor.async(new AgregarTransOrgPresenter.SigleByLoocalizador(subinventarioCodigo, locatorCodigo));
+    }
+
+    public List<String> getLotesBySubinvLoc(String subinventarioCodigo, Long locatorCodigo, String segment1) {
+
+        try {
+            return this.mService.getLote(subinventarioCodigo,locatorCodigo, segment1);
+        } catch(ServiceException e){
+            if (e.getCodigo() == 1) {
+                this.mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                this.mView.showError(e.getDescripcion());
+            }
+        }
+        return null;
+    }
+
     public MtlSystemItems getMtlSystemItemsBySegment(String segment) {
         try {
             return this.mService.getMtlSystemItemsBySegment(segment);
+        } catch(ServiceException e){
+            if (e.getCodigo() == 1) {
+                this.mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                this.mView.showError(e.getDescripcion());
+            }
+        }
+        return null;
+    }
+
+    public Localizador getLocalizadorbyCodigo(String codigo) {
+        try {
+            return this.mService.getLocalizadorByCodigo(codigo);
         } catch(ServiceException e){
             if (e.getCodigo() == 1) {
                 this.mView.showWarning(e.getDescripcion());
@@ -56,6 +88,26 @@ public class AgregarTransOrgPresenter extends BasePresenter {
         }catch (ServiceException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean controlSerie (String articulo) {
+
+        boolean ok = true;
+
+        try{
+            mService.controlSerie(articulo);
+            ok = true;
+        }catch (ServiceException e) {
+            e.printStackTrace();
+            if (e.getCodigo() == 1) {
+                mView.showWarning(e.getDescripcion());
+            } else if (e.getCodigo() == 2) {
+                mView.showError(e.getDescripcion());
+            }
+            ok = false;
+        }
+
+        return ok;
     }
 
     public boolean validaTransferencia(String articulo, String lote, String subinventario, String localizador, Double cantidad, String orgDestino, List<String> series){
@@ -126,5 +178,40 @@ public class AgregarTransOrgPresenter extends BasePresenter {
             mView.fillLocator(result);
         }
 
+    }
+
+    private class SigleByLoocalizador implements AppTask<List<String>> {
+
+        private String subinventarioCodigo;
+        private String locatorCodigo;
+
+        public SigleByLoocalizador(String subinventarioCodigo, String locatorCodigo) {
+            this.subinventarioCodigo = subinventarioCodigo;
+            this.locatorCodigo = locatorCodigo;
+        }
+
+        @Override
+        public List<String> execute() {
+            Log.d(TAG, "SigleByLoocalizador::execute");
+            List<String> salida = new ArrayList<>();
+            try {
+                salida = mService.getSegment1(this.subinventarioCodigo, this.locatorCodigo);
+            } catch (ServiceException e) {
+                Log.d(TAG, "SigleByLoocalizador::execute::ServiceException");
+                e.printStackTrace();
+                mView.runOnUiThread(new Runnable() {
+                    public void run() {
+                        mView.showError(e.getDescripcion());
+                    }
+                });
+            }
+            return salida;
+        }
+
+        @Override
+        public void onPostExecute(@Nullable List<String> result) {
+            mView.hideProgres();
+            mView.fillSigle(result);
+        }
     }
 }

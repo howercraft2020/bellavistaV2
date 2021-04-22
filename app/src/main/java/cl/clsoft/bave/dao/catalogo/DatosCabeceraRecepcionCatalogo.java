@@ -12,5 +12,6 @@ public class DatosCabeceraRecepcionCatalogo
     public static final String COLUMN_RATE = "rate";
     public static final String COLUMN_RATE_DATE = "rate_date";
     public static final String COLUMN_TERMS_ID = "terms_id";
-    public static final String SELECT = "SELECT user_id, receipt_num, vendor_id, vendor_site_code, vendor_site_id, currency_code, rate_type, rate, rate_date, terms_id FROM po_headers_all where po_header_id = ? AND receipt_num = ?";
+    public static final String COLUMN_ORG_ID = "org_id";
+    public static final String SELECT = "SELECT user_id, receipt_num, vendor_id, vendor_site_code, vendor_site_id, currency_code, rate_type, rate, rate_date, terms_id, org_id FROM po_headers_all where po_header_id = ? AND receipt_num = ?";
 }

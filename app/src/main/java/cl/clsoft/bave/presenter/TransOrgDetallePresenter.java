@@ -1,5 +1,7 @@
 package cl.clsoft.bave.presenter;
 
+import android.media.MediaScannerConnection;
+
 import java.util.List;
 
 import cl.clsoft.bave.base.BasePresenter;
@@ -31,7 +33,8 @@ public class TransOrgDetallePresenter extends BasePresenter {
 
     public void crearArchivo(String transactionReference){
         try{
-            this.mService.crearArchivo(transactionReference);
+            String archivo = this.mService.crearArchivo(transactionReference);
+            MediaScannerConnection.scanFile(mView, new String[] {archivo}, null, null);
             mView.resultadoOkCerrarTransferencia();
         }catch (ServiceException e) {
             e.printStackTrace();

@@ -1,6 +1,8 @@
 package cl.clsoft.bave.service.impl;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.media.MediaScannerConnection;
 import android.os.Environment;
 import android.util.Log;
 
@@ -47,6 +49,7 @@ import cl.clsoft.bave.model.PoLinesAll;
 import cl.clsoft.bave.model.RcvHeadersInterface;
 import cl.clsoft.bave.model.RcvTransactionsInterface;
 import cl.clsoft.bave.service.IRecepcionOcService;
+import cl.clsoft.bave.view.ActivityRecepcionOc;
 
 public class RecepcionOcService implements IRecepcionOcService {
 
@@ -149,8 +152,9 @@ public class RecepcionOcService implements IRecepcionOcService {
                 {
                     rcvHeadersInterface = new RcvHeadersInterface();
                     rcvHeadersInterface.setHeaderInterfaceId(headerInterfaceId);
-                    rcvHeadersInterface.setReciptSourceCode("VENDOR");
-                    rcvHeadersInterface.setTransactionType("NEW");
+                    rcvHeadersInterface.setReciptSourceCode("PDA");
+                    rcvHeadersInterface.setTransactionType("VENDOR");
+                    rcvHeadersInterface.setAutoTransactCode("");
                     rcvHeadersInterface.setLastUpdateDate(fecha);
                     rcvHeadersInterface.setLastUpdateBy(datosCabeceraRecepcion.getUserId());
                     rcvHeadersInterface.setCreatedBy(datosCabeceraRecepcion.getUserId());
@@ -168,7 +172,7 @@ public class RecepcionOcService implements IRecepcionOcService {
                     rcvHeadersInterface.setPaymentTermsId(datosCabeceraRecepcion.getTermsId());
                     rcvHeadersInterface.setTransactionDate(fecha);
                     rcvHeadersInterface.setComments("");
-                    rcvHeadersInterface.setOrgId(organizacionPrincipal.getIdOrganizacion());
+                    rcvHeadersInterface.setOrgId(datosCabeceraRecepcion.getOrgId());
                     rcvHeadersInterface.setProcessingStatusCode("PENDING");
                     rcvHeadersInterface.setValidationFlag("Y");
                     rcvHeadersInterface.setGroupId(groupId);
@@ -193,14 +197,16 @@ public class RecepcionOcService implements IRecepcionOcService {
             rcvTransactionsInterface = new RcvTransactionsInterface();
             rcvTransactionsInterface.setInterfaceTransactionId(datosRecepcion.getPoLineId());
             rcvTransactionsInterface.setLastUpdatedDate(fecha);
+            rcvTransactionsInterface.setLastUpdatedBy(datosRecepcion.getUserId());
             rcvTransactionsInterface.setCreationDate(fecha);
+            rcvTransactionsInterface.setCreatedBy(datosRecepcion.getUserId());
             rcvTransactionsInterface.setTransactionType("RECEIVE");
             rcvTransactionsInterface.setTransactionDate(fecha);
             rcvTransactionsInterface.setQuantity(cantidad);
-            rcvTransactionsInterface.setUomCode(datosRecepcion.getUnitMeasLookupCode());
+            rcvTransactionsInterface.setUnitOfMeasure(datosRecepcion.getUnitMeasLookupCode());
             rcvTransactionsInterface.setItemId(datosRecepcion.getItemId());
             rcvTransactionsInterface.setItemDescription(datosRecepcion.getItemDescription());
-            rcvTransactionsInterface.setUomCode(datosRecepcion.getUomCode());
+            rcvTransactionsInterface.setUomCode(datosRecepcion.getPrimaryUomCode());
             rcvTransactionsInterface.setShipToLocationId(248L);
             rcvTransactionsInterface.setPrimaryQuantity(cantidad);
             rcvTransactionsInterface.setReceiptSourceCode("VENDOR");
@@ -224,13 +230,13 @@ public class RecepcionOcService implements IRecepcionOcService {
             rcvTransactionsInterface.setHeaderInterfaceId(headerInterfaceId);
             rcvTransactionsInterface.setVendorSiteCode(datosRecepcion.getVendorSiteCode());
             rcvTransactionsInterface.setProcessingStatusCode("PENDING");
+            rcvTransactionsInterface.setProcessingModeCode("BATCH");
             rcvTransactionsInterface.setComments("");
-            rcvTransactionsInterface.setProcessingStatusCode("BATCH");
             rcvTransactionsInterface.setUseMtlLot(0L);
             rcvTransactionsInterface.setUseMtlSerial(0L);
             rcvTransactionsInterface.setTransactionStatusCode("PENDING");
             rcvTransactionsInterface.setValidationFlag("Y");
-            rcvTransactionsInterface.setOrgId(organizacionPrincipal.getIdOrganizacion());
+            rcvTransactionsInterface.setOrgId(datosRecepcion.getOrgId());
             rcvTransactionsInterface.setGroupId(groupId);
             rcvTransactionsInterface.setAutoTransactCode("RECEIVE");
             ircvTransactionsInterfaceDao.insert(rcvTransactionsInterface);
@@ -245,8 +251,9 @@ public class RecepcionOcService implements IRecepcionOcService {
     }
 
     @Override
-    public void crearArchivo(Long interfaceheaderId, String numeroOc, Long receiptNum, Long poHeaderId, String comentario, Long groupId) throws ServiceException {
+    public String crearArchivo(Long interfaceheaderId, String numeroOc, Long receiptNum, Long poHeaderId, String comentario, Long groupId) throws ServiceException {
      String nomenclatura = "";
+     String salida = "";
      IRcvHeadersInterfaceDao rcvHeadersInterfaceDao = new RcvHeadersInterfaceDaoImpl();
      IRcvTransactionsInterfaceDao rcvTransactionsInterfaceDao = new RcvTransactionsInterfaceDaoImpl();
      IPoHeadersAllDao poHeadersAllDao = new PoHeadersAllDaoImpl();
@@ -284,6 +291,7 @@ public class RecepcionOcService implements IRecepcionOcService {
                         + (rcvHeadersInterface.getHeaderInterfaceId() == null ? "null" : rcvHeadersInterface.getHeaderInterfaceId()) + ";"
                         + (rcvHeadersInterface.getReciptSourceCode() == null ? "null" : (rcvHeadersInterface.getReciptSourceCode().isEmpty() ? "null" : rcvHeadersInterface.getReciptSourceCode())) + ";"
                         + (rcvHeadersInterface.getTransactionType() == null ? "null" : (rcvHeadersInterface.getTransactionType().isEmpty() ? "null" : rcvHeadersInterface.getTransactionType())) + ";"
+                        + (rcvHeadersInterface.getAutoTransactCode() == null ? "null" : (rcvHeadersInterface.getAutoTransactCode().isEmpty() ? "null" : rcvHeadersInterface.getAutoTransactCode())) + ";"
                         + (rcvHeadersInterface.getLastUpdateDate() == null ? "null" : (rcvHeadersInterface.getLastUpdateDate().isEmpty() ? "null" : rcvHeadersInterface.getLastUpdateDate())) + ";"
                         + (rcvHeadersInterface.getLastUpdateBy() == null ? "null" : rcvHeadersInterface.getLastUpdateBy()) + ";"
                         + (rcvHeadersInterface.getCreatedBy() == null ? "null" : rcvHeadersInterface.getCreatedBy()) + ";"
@@ -307,6 +315,7 @@ public class RecepcionOcService implements IRecepcionOcService {
                         + (groupId == null ? "null" : groupId) + ";"
                         + (numeroOc == null ? "null" : (numeroOc.isEmpty() ? "null" : numeroOc)) + ";"
                         + "FIN\r\n");
+
 
 
             for(int i = 0; i <rcvTransactionsInterface.size(); i++)
@@ -357,10 +366,15 @@ public class RecepcionOcService implements IRecepcionOcService {
                         + (groupId == null ? "null" : groupId) + ";"
                         + (rcvTransactionsInterface.get(i).getAutoTransactCode() == null ? "null" : (rcvTransactionsInterface.get(i).getAutoTransactCode().isEmpty() ? "null" : rcvTransactionsInterface.get(i).getAutoTransactCode())) + ";"
                         + "FIN\r\n");
+
             }
 
             writer.flush();
             writer.close();
+
+            salida = rutaArchivo.getAbsolutePath();
+            Log.d(TAG, "salida: " + salida);
+
 
             // Elimina datos de la BD
             for (RcvTransactionsInterface trx : rcvTransactionsInterface) {
@@ -378,7 +392,7 @@ public class RecepcionOcService implements IRecepcionOcService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return salida;
     }
 
     @Override
@@ -463,6 +477,8 @@ public class RecepcionOcService implements IRecepcionOcService {
         }
         return null;
     }
+
+
 
 
 }

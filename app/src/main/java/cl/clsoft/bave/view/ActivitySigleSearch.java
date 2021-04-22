@@ -40,6 +40,7 @@ public class ActivitySigleSearch extends BaseActivity<SigleSearchPresenter> {
     private Long countHeaderId;
     private Long inventoryId;
     private Long locatorId;
+    private String locatorCodigo;
     private String subinventario;
     List<MtlSystemItems> items;
 
@@ -73,6 +74,7 @@ public class ActivitySigleSearch extends BaseActivity<SigleSearchPresenter> {
         this.countHeaderId = this.getIntent().getLongExtra("CountHeaderId", 0);
         this.inventoryId = this.getIntent().getLongExtra("InventoryId", 0);
         this.locatorId = this.getIntent().getLongExtra("LocatorId", 0);
+        this.locatorCodigo = this.getIntent().getStringExtra("locatorCodigo");
         this.subinventario = this.getIntent().getStringExtra("Subinventario");
         this.inputTexto.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
         this.inputTexto.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -98,7 +100,9 @@ public class ActivitySigleSearch extends BaseActivity<SigleSearchPresenter> {
                         else if (tipo.equalsIgnoreCase("F"))
                             mPresenter.getItemsFisico(pattern, inventoryId, locatorId);
                         else if (tipo.equalsIgnoreCase("TS"))
-                            mPresenter.getItemsTransSubinv(pattern, subinventario, locatorId);
+                            mPresenter.getItemsTransSubinv(pattern, subinventario, locatorCodigo);
+                        else if (tipo.equalsIgnoreCase("TO"))
+                            mPresenter.getItemsTransOrg(pattern, subinventario, locatorCodigo);
                         else
                             mPresenter.getItems(pattern);
                     }

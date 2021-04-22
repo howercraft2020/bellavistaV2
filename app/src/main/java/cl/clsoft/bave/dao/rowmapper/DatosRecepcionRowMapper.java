@@ -14,7 +14,7 @@ public class  DatosRecepcionRowMapper implements RowMapper<DatosRecepcion> {
         entity.setUnitMeasLookupCode(cursor.getString(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_UNIT_MEAS_LOOKUP_CODE)));
         entity.setItemId(cursor.getLong(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_ITEM_ID)));
         entity.setItemDescription(cursor.getString(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_ITEM_DESCRIPTION)));
-        entity.setUomCode(cursor.getString(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_BASE_UOM)));
+        entity.setPrimaryUomCode(cursor.getString(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_PRIMARY_UOM_CODE)));
         entity.setVendorId(cursor.getLong(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_VENDOR_ID)));
         entity.setVendorSiteId(cursor.getLong(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_VENDOR_SITE_ID)));
         entity.setPoHeaderId(cursor.getLong(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_PO_HEADER_ID)));
@@ -31,6 +31,8 @@ public class  DatosRecepcionRowMapper implements RowMapper<DatosRecepcion> {
         entity.setQuantityReceived(cursor.getDouble(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_QUANTITY_RECEIVED)));
         entity.setQuantityCancelled(cursor.getDouble(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_QUANTITY_CANCELLED)));
         entity.setQtyRcvTolerance(cursor.getDouble(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_QTY_RCV_TOLERANCE)));
+        entity.setUserId(cursor.getLong(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_USER_ID)));
+        entity.setOrgId(cursor.getLong(cursor.getColumnIndex(DatosRecepcionCatalogo.COLUMN_ORG_ID)));
 
         return entity;
 

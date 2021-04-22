@@ -12,6 +12,18 @@
         android:visibility="gone"
         layout="@layout/progress_bar"/>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="0dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp">
+
     <EditText
         android:id="@+id/traspasoEditText"
         android:layout_width="match_parent"
@@ -156,4 +168,6 @@
             android:maxLength="20"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

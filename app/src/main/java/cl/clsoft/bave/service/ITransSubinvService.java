@@ -22,7 +22,7 @@ public interface ITransSubinvService {
     public void insertarDatos(String id, String nroTraspaso, String articulo, String lote, String subinventario, String localizador, Double cantidad,
                               String subinventarioHasta, String localizadorHasta, String glosa, List<String> series) throws ServiceException;
     public List<DatosTransSubinvDetalle> getTransferencias(String numeroTraspaso) throws ServiceException;
-    public void crearArchivo(String transactionReference) throws ServiceException;
+    public String crearArchivo(String transactionReference) throws ServiceException;
     public void controlSerie(String articulo) throws ServiceException;
     public List<MtlSerialNumbersInterface> getAllSeries(Long transactionInterfaceId) throws ServiceException;
     public List<MtlOnhandQuantities> getSeries(String sigle, String lote, String subinventario, String localizador) throws ServiceException;

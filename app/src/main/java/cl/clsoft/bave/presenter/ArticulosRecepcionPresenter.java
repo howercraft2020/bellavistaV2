@@ -1,5 +1,12 @@
 package cl.clsoft.bave.presenter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Environment;
+
+import java.io.File;
 import java.util.List;
 
 import cl.clsoft.bave.base.BasePresenter;
@@ -30,8 +37,9 @@ public class ArticulosRecepcionPresenter extends BasePresenter {
 
     public void crearArchivo(Long interfaceheaderId, String numeroOc, Long receiptNum, Long poHeaderId, String comentario, Long groupId) {
         try{
-             this.mService.crearArchivo(interfaceheaderId,numeroOc,receiptNum, poHeaderId, comentario, groupId);
-            mview.resultadoOkCerrarRecepcion();
+             String archivo = this.mService.crearArchivo(interfaceheaderId,numeroOc,receiptNum, poHeaderId, comentario, groupId);
+             MediaScannerConnection.scanFile(mview, new String[] {archivo}, null, null);
+             mview.resultadoOkCerrarRecepcion();
         }catch (ServiceException e) {
             e.printStackTrace();
             if (e.getCodigo() == 1) {
@@ -41,5 +49,15 @@ public class ArticulosRecepcionPresenter extends BasePresenter {
             }
         }
     }
+
+    public static void scanMedia(Context context, String path) {
+        File file = new File(path);
+        Uri uri = Uri.fromFile(file);
+        Intent scanFileIntent = new Intent(
+                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
+        context.sendBroadcast(scanFileIntent);
+    }
+
+
 }
 

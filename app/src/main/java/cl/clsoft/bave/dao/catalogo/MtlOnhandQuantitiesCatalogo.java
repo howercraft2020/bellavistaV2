@@ -32,11 +32,21 @@ public class MtlOnhandQuantitiesCatalogo {
             "AND msi.segment1 = ? AND ifnull(moq.lot_number,'') = ? " +
             "AND moq.subinventory_code = ? AND ifnull(loc.cod_localizador,'') = ?";
 
+    public static final String SELECT_LOCATOR_NULL = "SELECT moq.* FROM mtl_onhand_quantities moq, mtl_system_items msi " +
+            "WHERE moq.inventory_item_id = msi.inventory_item_id " +
+            "AND msi.segment1 = ? AND ifnull(moq.lot_number,'') = ? " +
+            "AND moq.subinventory_code = ?";
+
     public static final String SELECT_QUANTITY = "SELECT SUM(moq.primary_transaction_quantity) FROM mtl_onhand_quantities moq, mtl_system_items msi, localizador loc " +
             "WHERE moq.inventory_item_id = msi.inventory_item_id " +
             "AND loc.id_localizador = moq.locator_id " +
             "AND msi.segment1 = ? AND ifnull(moq.lot_number,'') = ? " +
             "AND moq.subinventory_code = ? AND ifnull(loc.cod_localizador,'') = ?";
+
+    public static final String SELECT_QUANTITY_LOCATOR_NULL = "SELECT SUM(moq.primary_transaction_quantity) FROM mtl_onhand_quantities moq, mtl_system_items msi " +
+            "WHERE moq.inventory_item_id = msi.inventory_item_id " +
+            "AND msi.segment1 = ? AND ifnull(moq.lot_number,'') = ? " +
+            "AND moq.subinventory_code = ?";
 
     public static final String SELECT_ALL = "SELECT moq.* FROM mtl_onhand_quantities moq, mtl_system_items msi, localizador loc " +
             "WHERE moq.inventory_item_id = msi.inventory_item_id " +

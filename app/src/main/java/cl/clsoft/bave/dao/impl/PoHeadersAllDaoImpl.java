@@ -18,6 +18,7 @@ public class PoHeadersAllDaoImpl extends GenericDao<PoHeadersAll> implements IPo
         values.put(PoHeadersAllCatalogo.COLUMN_CREATED_BY, poHeadersAll.getCreatedBy());
         values.put(PoHeadersAllCatalogo.COLUMN_CREATION_DATE, poHeadersAll.getCreationDate());
         values.put(PoHeadersAllCatalogo.COLUMN_VENDOR_NAME, poHeadersAll.getVendorName());
+        values.put(PoHeadersAllCatalogo.COLUMN_VENDOR_SITE_ID, poHeadersAll.getVendorSiteId());
         values.put(PoHeadersAllCatalogo.COLUMN_VENDOR_ID,poHeadersAll.getVendorId());
         values.put(PoHeadersAllCatalogo.COLUMN_VENDOR_SITE_CODE, poHeadersAll.getVendorSiteCode());
         values.put(PoHeadersAllCatalogo.COLUMN_PO_HEADER_ID, poHeadersAll.getPoHeaderId());

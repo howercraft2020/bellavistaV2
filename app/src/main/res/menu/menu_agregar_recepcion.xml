@@ -2,6 +2,11 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/clean"
+        android:title="Limpiar"
+        app:showAsAction="ifRoom"
+        android:icon="@mipmap/ic_delete_sweep_white_24dp" />
     <item android:id="@+id/action_save"
         android:icon="@mipmap/ic_save_white_24dp"
         android:title="Nuevo"

@@ -70,7 +70,7 @@ public class MainPresenter extends BasePresenter {
                         });
                         File archivoSetup = new File(ruta.getPath() + "/" + listFile[i].getName());
                         baveService.cargarArchivoSetup(archivoSetup);
-                        mView.getContentResolver().delete(Uri.fromFile(archivoSetup), null, null);
+                        //mView.getContentResolver().delete(Uri.fromFile(archivoSetup), null, null);
                         //MediaScannerConnection.scanFile(mView, new String[] {archivoSetup.getAbsolutePath()}, null, null);
                     }
 
@@ -83,7 +83,7 @@ public class MainPresenter extends BasePresenter {
                         });
                         File archivoStock = new File(ruta.getPath() + "/" + listFile[i].getName());
                         baveService.cargarArchivoStock(archivoStock);
-                        mView.getContentResolver().delete(Uri.fromFile(archivoStock), null, null);
+                        //mView.getContentResolver().delete(Uri.fromFile(archivoStock), null, null);
                         //MediaScannerConnection.scanFile(mView, new String[] {archivoStock.getAbsolutePath()}, null, null);
                     }
 
@@ -122,7 +122,7 @@ public class MainPresenter extends BasePresenter {
                         });
                         File archivoRecepcion = new File(ruta.getPath() + "/" + listFile[i].getName());
                         baveService.cargarArchivoRecepcion(archivoRecepcion);
-                        mView.getContentResolver().delete(Uri.fromFile(archivoRecepcion), null, null);
+                        //mView.getContentResolver().delete(Uri.fromFile(archivoRecepcion), null, null);
                         //MediaScannerConnection.scanFile(mView, new String[] {archivoRecepcion.getAbsolutePath()}, null, null);
                     }
 
@@ -135,7 +135,7 @@ public class MainPresenter extends BasePresenter {
                         });
                         File archivoEntrega = new File(ruta.getPath() + "/" + listFile[i].getName());
                         baveService.cargarArchivoEntrega(archivoEntrega);
-                        mView.getContentResolver().delete(Uri.fromFile(archivoEntrega), null, null);
+                        //mView.getContentResolver().delete(Uri.fromFile(archivoEntrega), null, null);
                         //MediaScannerConnection.scanFile(mView, new String[] {archivoEntrega.getAbsolutePath()}, null, null);
                     }
 

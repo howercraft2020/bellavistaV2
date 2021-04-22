@@ -10,7 +10,9 @@ public interface IMtlOnhandQuantitiesDao {
     public void insert(MtlOnhandQuantities mtlOnhandQuantities) throws DaoException;
     public void deleteAll() throws DaoException;
     public MtlOnhandQuantities get(String articulo, String lote, String subinventario, String localizador) throws DaoException;
+    public MtlOnhandQuantities getLocatorNull(String articulo, String lote, String subinventario) throws DaoException;
     public Double getCantidad(String articulo, String lote, String subinventario, String localizador) throws DaoException;
+    public Double getCantidadLocatorNull(String articulo, String lote, String subinventario) throws DaoException;
     public MtlOnhandQuantities validaSerie(String articulo, String lote, String subinventario, String localizador, String serie) throws DaoException;
     public List<MtlOnhandQuantities> getAll(String articulo, String lote, String subinventario, String localizador) throws DaoException;
     public List<String> getSegment1BySubinventory(String subinventory) throws DaoException;
