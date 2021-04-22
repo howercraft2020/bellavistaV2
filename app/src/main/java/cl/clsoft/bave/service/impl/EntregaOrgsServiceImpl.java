@@ -431,10 +431,11 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
     }
 
     @Override
-    public void closeEntrega(Long shipmentHeaderId) throws ServiceException {
+    public String closeEntrega(Long shipmentHeaderId) throws ServiceException {
         Log.d(TAG, "EntregaOrgsServiceImpl::closeEntrega");
         Log.d(TAG, "EntregaOrgsServiceImpl::closeEntrega::shipmentHeaderId: " + shipmentHeaderId);
 
+        String salida = "";
         IMtlMaterialTransactionsDao mtlMaterialTransactionsDao = new MtlMaterialTransactionsDaoImpl();
         IMtlTransactionLotNumbersDao mtlTransactionLotNumbersDao = new MtlTransactionLotNumbersDaoImpl();
         IMtlSerialNumbersDao mtlSerialNumbersDao = new MtlSerialNumbersDaoImpl();
@@ -590,11 +591,12 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                 writer.flush();
                 writer.close();
 
+                salida = archivo.getAbsolutePath();
                 // Elimina registros
                 mtlSerialNumbersDao.deleteBySHipmentHeaderId(shipmentHeaderId);
                 mtlTransactionLotNumbersDao.deleteByShipmentHeaderId(shipmentHeaderId);
                 mtlMaterialTransactionsDao.deleteByShipmentHeaderId(shipmentHeaderId);
-
+                return salida;
             }
 
         } catch(DaoException e){
@@ -602,6 +604,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
         } catch(IOException e){
             throw new ServiceException(2, e.getMessage());
         }
+        return salida;
     }
 
     @Override

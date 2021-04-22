@@ -71,7 +71,7 @@ public class MainPresenter extends BasePresenter {
                         File archivoSetup = new File(ruta.getPath() + "/" + listFile[i].getName());
                         baveService.cargarArchivoSetup(archivoSetup);
                         //mView.getContentResolver().delete(Uri.fromFile(archivoSetup), null, null);
-                        //MediaScannerConnection.scanFile(mView, new String[] {archivoSetup.getAbsolutePath()}, null, null);
+                        MediaScannerConnection.scanFile(mView, new String[] {archivoSetup.getAbsolutePath()}, null, null);
                     }
 
                     // Archivo stock
@@ -84,7 +84,7 @@ public class MainPresenter extends BasePresenter {
                         File archivoStock = new File(ruta.getPath() + "/" + listFile[i].getName());
                         baveService.cargarArchivoStock(archivoStock);
                         //mView.getContentResolver().delete(Uri.fromFile(archivoStock), null, null);
-                        //MediaScannerConnection.scanFile(mView, new String[] {archivoStock.getAbsolutePath()}, null, null);
+                        MediaScannerConnection.scanFile(mView, new String[] {archivoStock.getAbsolutePath()}, null, null);
                     }
 
                     // Archivo Ciclico
@@ -96,8 +96,8 @@ public class MainPresenter extends BasePresenter {
                         });
                         File archivoCiclico = new File(ruta.getPath() + "/" + listFile[i].getName());
                         baveService.cargarArchivoCiclico(archivoCiclico);
-                        mView.getContentResolver().delete(Uri.fromFile(archivoCiclico), null, null);
-                        //MediaScannerConnection.scanFile(mView, new String[] {archivoCiclico.getAbsolutePath()}, null, null);
+                        //mView.getContentResolver().delete(Uri.fromFile(archivoCiclico), null, null);
+                        MediaScannerConnection.scanFile(mView, new String[] {archivoCiclico.getAbsolutePath()}, null, null);
                     }
 
                     // Archivo Fisico
@@ -109,8 +109,8 @@ public class MainPresenter extends BasePresenter {
                         });
                         File archivoFisico = new File(ruta.getPath() + "/" + listFile[i].getName());
                         baveService.cargarArchivoFisico(archivoFisico);
-                        mView.getContentResolver().delete(Uri.fromFile(archivoFisico), null, null);
-                        //MediaScannerConnection.scanFile(mView, new String[] {archivoFisico.getAbsolutePath()}, null, null);
+                        //mView.getContentResolver().delete(Uri.fromFile(archivoFisico), null, null);
+                        MediaScannerConnection.scanFile(mView, new String[] {archivoFisico.getAbsolutePath()}, null, null);
                     }
 
                     // Archivo Recepción
@@ -123,7 +123,7 @@ public class MainPresenter extends BasePresenter {
                         File archivoRecepcion = new File(ruta.getPath() + "/" + listFile[i].getName());
                         baveService.cargarArchivoRecepcion(archivoRecepcion);
                         //mView.getContentResolver().delete(Uri.fromFile(archivoRecepcion), null, null);
-                        //MediaScannerConnection.scanFile(mView, new String[] {archivoRecepcion.getAbsolutePath()}, null, null);
+                        MediaScannerConnection.scanFile(mView, new String[] {archivoRecepcion.getAbsolutePath()}, null, null);
                     }
 
                     // Archivo Entrega
@@ -136,7 +136,7 @@ public class MainPresenter extends BasePresenter {
                         File archivoEntrega = new File(ruta.getPath() + "/" + listFile[i].getName());
                         baveService.cargarArchivoEntrega(archivoEntrega);
                         //mView.getContentResolver().delete(Uri.fromFile(archivoEntrega), null, null);
-                        //MediaScannerConnection.scanFile(mView, new String[] {archivoEntrega.getAbsolutePath()}, null, null);
+                        MediaScannerConnection.scanFile(mView, new String[] {archivoEntrega.getAbsolutePath()}, null, null);
                     }
 
                     // Archivo Entrega Orgs
@@ -148,8 +148,8 @@ public class MainPresenter extends BasePresenter {
                         });
                         File archivoEntrega = new File(ruta.getPath() + "/" + listFile[i].getName());
                         baveService.cargarArchivoEntregaOrgs(archivoEntrega);
-                        mView.getContentResolver().delete(Uri.fromFile(archivoEntrega), null, null);
-                        //MediaScannerConnection.scanFile(mView, new String[] {archivoEntrega.getAbsolutePath()}, null, null);
+                        //mView.getContentResolver().delete(Uri.fromFile(archivoEntrega), null, null);
+                        MediaScannerConnection.scanFile(mView, new String[] {archivoEntrega.getAbsolutePath()}, null, null);
                     }
                 }
                 return 0L;

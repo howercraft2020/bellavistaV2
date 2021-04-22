@@ -240,10 +240,11 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
     }
 
     @Override
-    public Long closeConteoCiclico(Long cycleCountHeaderId) throws ServiceException {
+    public String closeConteoCiclico(Long cycleCountHeaderId) throws ServiceException {
         Log.d(TAG, "ConteoCiclicoService::closeConteoCiclico");
         Log.d(TAG, "ConteoCiclicoService::closeConteoCiclico::cycleCountHeaderId: " + cycleCountHeaderId);
 
+        String salida = "";
         IMtlCycleCountHeadersDao mtlCycleCountHeadersDao = new MtlCycleCountHeadersDaoImpl();
         IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
         IOrganizacionPrincipalDao organizacionPrincipalDao = new OrganizacionPrincipalDaoImpl();
@@ -307,11 +308,12 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
             writer.flush();
             writer.close();
 
+            salida = archivo.getAbsolutePath();
             // Elimina datos de la BD
             mtlCycleCountEntriesDao.deleteByHeader(cycleCountHeaderId);
             mtlCycleCountHeadersDao.delete(cycleCountHeaderId);
 
-            return 0L;
+            return salida;
         } catch(DaoException e){
             throw new ServiceException(2, e.getDescripcion());
         } catch(IOException e){

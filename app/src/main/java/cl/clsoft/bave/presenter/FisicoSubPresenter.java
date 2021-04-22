@@ -1,5 +1,6 @@
 package cl.clsoft.bave.presenter;
 
+import android.media.MediaScannerConnection;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -79,7 +80,8 @@ public class FisicoSubPresenter extends BasePresenter {
             Log.d(TAG, "LocalizadoresBySubinventario::execute");
             Long salida = 0L;
             try {
-                salida = mService.closeInventory(this.inventoryId);
+                String archivo = mService.closeInventory(this.inventoryId);
+                MediaScannerConnection.scanFile(mView, new String[] {archivo}, null, null);
             } catch (ServiceException e) {
                 Log.d(TAG, "CloseInventory::execute::ServiceException");
                 salida = 1L;

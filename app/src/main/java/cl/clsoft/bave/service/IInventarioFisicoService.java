@@ -45,6 +45,6 @@ public interface IInventarioFisicoService {
     public List<Localizador> getLocalizadoresBySubinventario(String subinventarioCodigo) throws ServiceException;
     public List<Localizador> getLocalizadoresBySubinventarioInventario(String subinventarioCodigo, Long inventarioId) throws ServiceException;
 
-    public Long closeInventory(Long inventoryId) throws ServiceException;
+    public String closeInventory(Long inventoryId) throws ServiceException;
 
 }
