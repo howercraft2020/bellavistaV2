@@ -420,11 +420,15 @@ public class InventarioFisicoService implements IInventarioFisicoService {
         Log.d(TAG, "InventarioFisicoService::grabarInventario::lote: " + lote);
         Log.d(TAG, "InventarioFisicoService::grabarInventario::vencimiento: " + vencimiento);
         Log.d(TAG, "InventarioFisicoService::grabarInventario::cantidad: " + cantidad);
+        List<MtlPhysicalInventoryTags> tags = null;
 
         IMtlPhysicalInventoryTagsDao mtlPhysicalInventoryTagsDao = new MtlPhysicalInventoryTagsDaoImpl();
         try {
-
-            List<MtlPhysicalInventoryTags> tags = mtlPhysicalInventoryTagsDao.getAllByInventorySubinventorySegmentSerieLote(inventarioId, subinventarioId, locatorId, segment, serie, lote, vencimiento);
+            if(locatorId != null && locatorId.longValue() > 0) {
+                tags = mtlPhysicalInventoryTagsDao.getAllByInventorySubinventorySegmentSerieLote(inventarioId, subinventarioId, locatorId, segment, serie, lote, vencimiento);
+            }else{
+                 tags = mtlPhysicalInventoryTagsDao.getAllByInventorySubinventorySegmentSerieLoteLocatorNull(inventarioId, subinventarioId, segment, serie, lote, vencimiento);
+            }
 
             // Valida tag
             if (tags == null) {

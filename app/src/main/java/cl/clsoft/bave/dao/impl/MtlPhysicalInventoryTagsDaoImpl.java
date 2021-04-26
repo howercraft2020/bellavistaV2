@@ -122,6 +122,12 @@ public class MtlPhysicalInventoryTagsDaoImpl extends GenericDao<MtlPhysicalInven
     }
 
     @Override
+    public List<MtlPhysicalInventoryTags> getAllByInventorySubinventorySegmentSerieLoteLocatorNull(Long physicalInventoryId, String subinventory, String segment, String serie, String lote, String vencimiento) throws DaoException {
+        Log.d(TAG, "MtlPhysicalInventoryTagsDaoImpl::getAllByInventorySubinventorySegmentSerieLoteLocatorNull");
+        return super.selectMany(MtlPhysicalInventoryTagsCatalogo.SELECT_ALL_BY_INVENTORY_SUBINVENTORY_SEGMENT_SERIE_LOTE_LOCATOR_NULL, new MtlPhysicalInventoryTagsRowMapper(), physicalInventoryId, subinventory, segment, serie, lote, vencimiento);
+    }
+
+    @Override
     public List<String> getLocatorByInventorySubinventory(Long physicalInventoryId, String subinventory) throws DaoException {
         Log.d(TAG, "MtlPhysicalInventoryTagsDaoImpl::getLocatorByInventorySubinventory");
         Log.d(TAG, "MtlPhysicalInventoryTagsDaoImpl::getLocatorByInventorySubinventory::physicalInventoryId : " + physicalInventoryId);

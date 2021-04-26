@@ -272,6 +272,8 @@ public class TransOrgService  implements ITransOrgService {
             mtlTransactionsInterface.setProcessFlag(1L);
             mtlTransactionsInterface.setTransactionMode(2L);
             mtlTransactionsInterface.setLastUpdateDate(fecha);
+            mtlTransactionsInterface.setLastUpdatedBy(mtlOnhandQuantities.getUserId());
+            mtlTransactionsInterface.setCreationDate(fecha);
             mtlTransactionsInterface.setCreatedBy(mtlOnhandQuantities.getUserId());
             mtlTransactionsInterface.setInventoryItemId(inventoryItemId);
             mtlTransactionsInterface.setOrganizationId(mtlOnhandQuantities.getOrganizationId());
@@ -289,6 +291,7 @@ public class TransOrgService  implements ITransOrgService {
             mtlTransactionsInterface.setTransactionTypeId(21L);
             mtlTransactionsInterface.setTransferOrganization(organizacionDestino.getIdOrganizacion());
             mtlTransactionsInterface.setShipmentNumber(fechaId);
+            mtlTransactionsInterface.setSourceCode("PDA INTERORG ENVIO");
             mtlTransactionsInterfaceDao.insert(mtlTransactionsInterface);
 
             if(isControlLote) {
@@ -304,7 +307,13 @@ public class TransOrgService  implements ITransOrgService {
                 mtlTransactionsLotsIface.setLotNumber(lote);
                 mtlTransactionsLotsIface.setTransactionQuantity(cantidad);
                 mtlTransactionsLotsIface.setPrimaryQuantity(cantidad);
-                mtlTransactionsLotsIface.setSerialTransactionTempId(Long.parseLong(transactionInterfaceId));
+                if(isControlSerie) {
+                    mtlTransactionsLotsIface.setSerialTransactionTempId(Long.parseLong(transactionInterfaceId));
+                }
+                else
+                {
+                    mtlTransactionsLotsIface.setSerialTransactionTempId(null);
+                }
                 mtlTransactionLotsInterfaceDao.insert(mtlTransactionsLotsIface);
             }
 
@@ -666,9 +675,10 @@ public class TransOrgService  implements ITransOrgService {
                         + (trx.getTransactionSourceTypeId() == null ? "null" : trx.getTransactionSourceTypeId()) + ";"
                         + (trx.getTransactionActionId() == null ? "null" : trx.getTransactionActionId()) + ";"
                         + (trx.getTransactionTypeId() == null ? "null" : trx.getTransactionTypeId()) + ";"
-                        + (trx.getTransactionReference() == null ? "null" : (trx.getTransactionReference().isEmpty() ? "null" : trx.getTransactionReference())) + ";"
+                        //+ (trx.getTransactionReference() == null ? "null" : (trx.getTransactionReference().isEmpty() ? "null" : trx.getTransactionReference())) + ";"
                         + (trx.getTransferOrganization() == null ? "null" : trx.getTransferOrganization()) + ";"
                         + (trx.getShipmentNumber() == null ? "null" : (trx.getShipmentNumber().isEmpty() ? "null" : trx.getShipmentNumber())) + ";"
+                        + (trx.getSourceCode() == null ? "null" : (trx.getSourceCode().isEmpty() ? "null" : trx.getSourceCode())) + ";"
                         + "FIN\r\n");
             }
 
@@ -682,14 +692,14 @@ public class TransOrgService  implements ITransOrgService {
                             + (lote.getCreationDate() == null ? "null" : (lote.getCreationDate().isEmpty() ? "null" : lote.getCreationDate())) + ";"
                             + (lote.getCreatedBy() == null ? "null" : lote.getCreatedBy()) + ";"
                             + (lote.getLotNumber() == null ? "null" : (lote.getLotNumber().isEmpty() ? "null" : lote.getLotNumber())) + ";"
-                            + (lote.getLotExpirationDate() == null ? "null" : (lote.getLotExpirationDate().isEmpty() ? "null" : lote.getLotExpirationDate())) + ";"
+                            //+ (lote.getLotExpirationDate() == null ? "null" : (lote.getLotExpirationDate().isEmpty() ? "null" : lote.getLotExpirationDate())) + ";"
                             + (lote.getTransactionQuantity() == null ? "null" : lote.getTransactionQuantity()) + ";"
                             + (lote.getPrimaryQuantity() == null ? "null" : "-" + lote.getPrimaryQuantity()) + ";"
-                            + (lote.getSerialTransactionTempId() == null ? "null" : lote.getSerialTransactionTempId()) + ";"
-                            + (lote.getAttributeCategory() == null ? "null" : (lote.getAttributeCategory().isEmpty() ? "null" : lote.getAttributeCategory())) + ";"
-                            + (lote.getAttrubute1() == null ? "null" : (lote.getAttrubute1().isEmpty() ? "null" : lote.getAttrubute1())) + ";"
-                            + (lote.getAttrubute2() == null ? "null" : (lote.getAttrubute2().isEmpty() ? "null" : lote.getAttrubute2())) + ";"
-                            + (lote.getAttrubute3() == null ? "null" : (lote.getAttrubute3().isEmpty() ? "null" : lote.getAttrubute3())) + ";"
+                            + (lote.getSerialTransactionTempId() == null ? "null" : (lote.getSerialTransactionTempId().longValue() == 0 ? "null" : lote.getSerialTransactionTempId())) + ";"
+                            //+ (lote.getAttributeCategory() == null ? "null" : (lote.getAttributeCategory().isEmpty() ? "null" : lote.getAttributeCategory())) + ";"
+                            //+ (lote.getAttrubute1() == null ? "null" : (lote.getAttrubute1().isEmpty() ? "null" : lote.getAttrubute1())) + ";"
+                            //+ (lote.getAttrubute2() == null ? "null" : (lote.getAttrubute2().isEmpty() ? "null" : lote.getAttrubute2())) + ";"
+                            //+ (lote.getAttrubute3() == null ? "null" : (lote.getAttrubute3().isEmpty() ? "null" : lote.getAttrubute3())) + ";"
                             + "FIN\r\n");
                 }
 

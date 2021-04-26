@@ -259,4 +259,21 @@ public class MtlPhysicalInventoryTagsCatalogo {
                     "     AND ifnull(a.lot_number, '') = ?" +
                     "     AND ifnull(a.lot_expiration_date, '') = ? ";
 
+    public static final String SELECT_ALL_BY_INVENTORY_SUBINVENTORY_SEGMENT_SERIE_LOTE_LOCATOR_NULL =
+            " SELECT " +
+                    "     a.*, " +
+                    "     b.description, " +
+                    "     b.long_description, " +
+                    "     c.cod_localizador " +
+                    " FROM " +
+                    "     mtl_physical_inventory_tags a LEFT JOIN mtl_system_items b  ON a.inventory_item_id = b.inventory_item_id " +
+                    "     LEFT JOIN localizador c ON a.locator_id = c.id_localizador " +
+                    " WHERE " +
+                    "     a.physical_inventory_id = ?" +
+                    "     AND a.subinventory = ?" +
+                    "     AND a.segment1 = ? " +
+                    "     AND ifnull(a.serial_num, '') = ? " +
+                    "     AND ifnull(a.lot_number, '') = ?" +
+                    "     AND ifnull(a.lot_expiration_date, '') = ? ";
+
 }
