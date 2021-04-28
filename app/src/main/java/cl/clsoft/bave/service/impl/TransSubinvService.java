@@ -266,7 +266,7 @@ public class TransSubinvService implements ITransSubinvService {
                 MtlTransactionsInterface mtlTransactionsInterface = new MtlTransactionsInterface();
                 mtlTransactionsInterface.setTransactionInterfaceId(Long.parseLong(transactionInterfaceId));
                 mtlTransactionsInterface.setProcessFlag(1L);
-                mtlTransactionsInterface.setTransactionMode(2L);
+                mtlTransactionsInterface.setTransactionMode(3L);
                 mtlTransactionsInterface.setLastUpdateDate(fecha);
                 mtlTransactionsInterface.setLastUpdatedBy(-1L);
                 mtlTransactionsInterface.setCreationDate(fecha);

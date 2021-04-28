@@ -18,4 +18,5 @@ public interface IRecepcionOcService {
     public List<MtlSystemItems> getArticulosByOcReceipt(Long poHeaderId, Long receiptNum) throws ServiceException;
     public List<PoLinesAll> getLines(Long inventoryItemId, Long poHeaderId) throws ServiceException;
     public void updateEntry(Long entryId, Double cantidad, Long lineLocationId) throws ServiceException;
+    public void deleteTransactionsInterfaceById(Long interfaceTransactionId) throws ServiceException;
 }

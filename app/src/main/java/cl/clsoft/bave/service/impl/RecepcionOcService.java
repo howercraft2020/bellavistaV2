@@ -468,6 +468,20 @@ public class RecepcionOcService implements IRecepcionOcService {
     }
 
     @Override
+    public void deleteTransactionsInterfaceById(Long interfaceTransactionId) throws ServiceException {
+        Log.d(TAG, "RecepcionOcServiceImpl::deleteTransactionsInterfaceById");
+        Log.d(TAG, "RecepcionOcServiceImpl::deleteTransactionsInterfaceById::interfaceTransactionId: " + interfaceTransactionId);
+
+        IRcvTransactionsInterfaceDao rcvTransactionsInterfaceDao = new RcvTransactionsInterfaceDaoImpl();
+        try {
+            rcvTransactionsInterfaceDao.delete(interfaceTransactionId);
+        } catch (DaoException e) {
+            throw new ServiceException(2, e.getDescripcion());
+        }
+
+    }
+
+    @Override
     public List<PoLinesAll> getLines(Long inventoryItemId, Long poHeaderId) throws ServiceException {
         IPoLinesAllDao poLinesAllDao = new PoLinesAllDaoImpl();
         try {

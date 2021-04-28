@@ -464,7 +464,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                 writer.write("INTERORG_RECIBO;FIN" +"\r\n");
                 writer.write(
                         "1;"
-                        + shipmentHeaderId.toString() + ";"  // HEADER_INTERFACE_ID
+                        + shipmentHeaderId.toString() + ";"  // HEADER_INTERFACE_ID //Corresponde al id informado por rodrigo
                         + "PENDING;"                         // PROCESSING_STATUS_CODE
                         + "INVENTORY;"                       // RECEIPT_SOURCE_CODE
                         + "NEW;"                             // TRANSACTION_TYPE
@@ -474,13 +474,14 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                         + userId.toString() + ";"            // CREATED_BY
                         + shipmentNumber + ";"               // SHIPMENT_NUM
                         + receiptNum + ";"                   // RECEIPT_NUM
-                        + organizationId.toString()          // FROM_ORGANIZATION_ID
+                        + organizationId.toString() +";"    // FROM_ORGANIZATION_ID JPINTO
                         + "288;"                             // SHIP_TO_ORGANIZATION_ID
-                        + shipToLocationId.toString() + ";"  // LOCATION_ID
+                        //+ shipToLocationId.toString() + ";"  // LOCATION_ID
+                        + "null;"                            //LOCATION_ID  JPINTO
                         + transactionDate + ";"              // SHIPPED_DATE
                         + ";"                                // COMMENTS
                         + sysDate + ";"                      // TRANSACTION_DATE
-                        + "288;"                             // ORG_ID
+                        + "82;"                              // ORG_ID JPINTO
                         + groupId.toString() + ";"           // GROUP_ID
                         + "Y;"                               // VALIDATION_FLAG
                         + "FIN\r\n"
@@ -507,6 +508,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                                         + transaction.getOrganizationId() + ";"                // FROM_ORGANIZATION_ID
                                         + "CLP;"                                               // CURRENCY_CODE
                                         + "NOT INSPECTED;"                                     // INSPECTION_STATUS_CODE
+                                        + "288;"                                               // TO_ORGANIZATION_ID  JPINTO
                                         + transaction.getSubinventory() + ";"                  // SUBINVENTORY
                                         + transaction.getLocatorId() + ";"                     // LOCATOR_ID
                                         + shipmentNumber + ";"                                 // SHIPMENT_NUM
@@ -519,9 +521,11 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                                         + transaction.getTransactionUom() + ";"                // UOM_CODE
                                         + userId.toString() + ";"                              // EMPLOYEE_ID
                                         + "INVENTORY;"                                         // SOURCE_DOCUMENT_CODE
+                                        + "INVENTORY;"                                         // DESTINATION_TYPE_CODE JPINTO
                                         + "0;"                                                 // HEADER_INTERFACE_ID
                                         + shipmentHeaderId.toString() + ";"                    // SHIPMENT_HEADER_ID
-                                        + "0;"                                                 // SHIPMENT_LINE_ID
+                                        //+ "0;"                                                 // SHIPMENT_LINE_ID
+                                        + transaction.getShipmentLineId().toString() + ";"     // SHIPMENT_LINE_ID
                                         + "N;"                                                 // SERIE_RANGO
                                         + "FIN\r\n"
                         );

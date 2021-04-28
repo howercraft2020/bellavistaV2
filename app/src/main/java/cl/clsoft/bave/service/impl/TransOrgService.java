@@ -173,11 +173,14 @@ public class TransOrgService  implements ITransOrgService {
 
         try {
 
+            //Datos organizacion Principal
+            OrganizacionPrincipal organizacionPrincipal = organizacionPrincipalDao.get();
+
             transactionInterfaceId = id;
             String fecha = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
             if (nroTraspaso.equals("")) {
-                fechaId = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault()).format(new Date());
+                fechaId = organizacionPrincipal.getCode() + new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault()).format(new Date());
             } else {
                 fechaId = nroTraspaso;
             }
@@ -263,14 +266,13 @@ public class TransOrgService  implements ITransOrgService {
                 throw new ServiceException(1, "Faltan series");
             }
 
-            //Datos organizacion Principal
-            OrganizacionPrincipal organizacionPrincipal = organizacionPrincipalDao.get();
+
 
             //Inserta datos en mtlTransactionsInterface
             MtlTransactionsInterface mtlTransactionsInterface = new MtlTransactionsInterface();
             mtlTransactionsInterface.setTransactionInterfaceId(Long.parseLong(transactionInterfaceId));
             mtlTransactionsInterface.setProcessFlag(1L);
-            mtlTransactionsInterface.setTransactionMode(2L);
+            mtlTransactionsInterface.setTransactionMode(3L);
             mtlTransactionsInterface.setLastUpdateDate(fecha);
             mtlTransactionsInterface.setLastUpdatedBy(mtlOnhandQuantities.getUserId());
             mtlTransactionsInterface.setCreationDate(fecha);

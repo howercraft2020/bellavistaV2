@@ -7,6 +7,7 @@ import androidx.fragment.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.presenter.RecepcionArticuloDetallePresenter;
 import cl.clsoft.bave.service.impl.RecepcionOcService;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ActivityRecepcionArticuloDetalle extends BaseActivity<RecepcionArticuloDetallePresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
@@ -37,6 +39,7 @@ public class ActivityRecepcionArticuloDetalle extends BaseActivity<RecepcionArti
     private TextView poHeaderId;
     private TextInputLayout layoutCantidad;
     private TextInputEditText textCantidad;
+    private SweetAlertDialog dialog;
 
 
     @NonNull
@@ -96,6 +99,11 @@ public class ActivityRecepcionArticuloDetalle extends BaseActivity<RecepcionArti
                 ConfirmationDialog dialogUpdate = ConfirmationDialog.newInstance("Esta seguro de actualizar la cantidad?", "Confirmación", "update");
                 dialogUpdate.show(getSupportFragmentManager(), "updateRecepcionConfirm");
                 return true;
+            case R.id.delete:
+                Log.d(TAG, "delete");
+                ConfirmationDialog dialogDelete = ConfirmationDialog.newInstance("Esta seguro de eliminar la transacción?", "Confirmación", "delete");
+                dialogDelete.show(getSupportFragmentManager(), "deleteTransactionConfirm");
+                return true;
             case android.R.id.home:
                 Intent i = new Intent(getApplicationContext(), ActivityArticulosRecepcion.class);
                 i.putExtra("numeroOc", numeroOc);
@@ -115,10 +123,34 @@ public class ActivityRecepcionArticuloDetalle extends BaseActivity<RecepcionArti
         if (tipo.equalsIgnoreCase("update")) {
             this.mPresenter.updateEntry(this.interfaceTransactionId, cantidad, lineLocationId);
         }
+        else if (tipo.equalsIgnoreCase("delete")){
+                this.mPresenter.deleteTransactionsInterfaceById(this.interfaceTransactionId);
+        }
     }
 
     @Override
     public void onDialogCancelarClick(DialogFragment dialog) {
 
     }
+
+    public void resultadoOkDeleteTransaction() {
+        dialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+        dialog.setTitleText("Éxito")
+                .setContentText("Eliminación exitosa")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        Log.d("CMFA", "CLICK");
+                        Intent i = new Intent(getApplicationContext(), ActivityArticulosRecepcion.class);
+                        i.putExtra("numeroOc", numeroOc);
+                        i.putExtra("NumeroRecep", numeroRecep);
+                        i.putExtra("poHeaderId", id);
+                        startActivity(i);
+                        finish();
+                    }
+                })
+                .show();
+    }
+
+
 }

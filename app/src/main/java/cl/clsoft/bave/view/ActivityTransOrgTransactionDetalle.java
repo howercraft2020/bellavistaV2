@@ -169,7 +169,7 @@ public class ActivityTransOrgTransactionDetalle extends BaseActivity<TransOrgTra
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         Log.d("CMFA", "CLICK");
-                        Intent i = new Intent(getApplicationContext(), ActivityTransSubinv.class);
+                        Intent i = new Intent(getApplicationContext(), ActivityTransOrg.class);
                         startActivity(i);
                         finish();
                     }

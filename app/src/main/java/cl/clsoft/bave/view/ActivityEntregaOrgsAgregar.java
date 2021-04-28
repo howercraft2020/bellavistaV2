@@ -287,6 +287,22 @@ public class ActivityEntregaOrgsAgregar extends BaseActivity<EntregaOrgsAgregarP
                         iSerie.putStringArrayListExtra("series", (ArrayList<String>) this.series);
                         startActivity(iSerie);
                         this.finish();
+                    } else {
+                        Intent iResumen = new Intent(this, ActivityEntregaOrgsAgregarResumen.class);
+                        iResumen.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+                        iResumen.putExtra("TransactionId", this.transactionId);
+                        iResumen.putExtra("Cantidad", this.cantidad);
+                        iResumen.putExtra("SubinventoryCode", this.subinventoryCode);
+                        iResumen.putExtra("LocatorCode", this.locatorCode);
+                        iResumen.putExtra("Lote", this.lote);
+                        iResumen.putExtra("Categoria", this.categoria);
+                        iResumen.putExtra("Atributo1", this.atributo1);
+                        iResumen.putExtra("Atributo2", this.atributo2);
+                        iResumen.putExtra("Atributo3", this.atributo3);
+                        iResumen.putStringArrayListExtra("series", (ArrayList<String>) this.series);
+                        startActivity(iResumen);
+                        this.finish();
+                        return true;
                     }
                 }
                 return true;
