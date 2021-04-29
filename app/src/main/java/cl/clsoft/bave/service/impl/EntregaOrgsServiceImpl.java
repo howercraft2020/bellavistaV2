@@ -479,7 +479,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                         //+ shipToLocationId.toString() + ";"  // LOCATION_ID
                         + "null;"                            //LOCATION_ID  JPINTO
                         + transactionDate + ";"              // SHIPPED_DATE
-                        + ";"                                // COMMENTS
+                        + "null;"                            // COMMENTS  JPINTO
                         + sysDate + ";"                      // TRANSACTION_DATE
                         + "82;"                              // ORG_ID JPINTO
                         + groupId.toString() + ";"           // GROUP_ID
@@ -555,12 +555,16 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                                 + "null;"                                             // SERIAL_TRANSACTION_TEMP_ID
                                 + "RCV;"                                              // PRODUCT_CODE
                                 + lote.getTransactionId() + ";"                       // PRODUCT_TRANSACTION_ID
-                                + ";"                                                 // SUPPLIER_LOT_NUMBER
-                                + ";"                                                 // LOT_EXPIRATION_DATE
-                                + lote.getLotAttributeCategory() + ";"                // ATTRIBUTE_CATEGORY
-                                + lote.getcAttribute1() + ";"                         // ATTRIBUTE1
-                                + lote.getcAttribute2() + ";"                         // ATTRIBUTE2
-                                + lote.getcAttribute3() + ";"                         // ATTRIBUTE3
+                                //+ ";"                                                 // SUPPLIER_LOT_NUMBER
+                                //+ ";"                                                 // LOT_EXPIRATION_DATE
+                                //+ lote.getLotAttributeCategory() + ";"                // ATTRIBUTE_CATEGORY
+                                + (lote.getLotAttributeCategory() == null ? "null" : (lote.getLotAttributeCategory().isEmpty() ? "null" : lote.getLotAttributeCategory())) + ";"  // ATTRIBUTE_CATEGORY
+                                //+ lote.getcAttribute1() + ";"                         // ATTRIBUTE1
+                                + (lote.getcAttribute1() == null ? "null" : (lote.getcAttribute1().isEmpty() ? "null" : lote.getcAttribute1())) + ";"  // ATTRIBUTE1
+                                //+ lote.getcAttribute2() + ";"                         // ATTRIBUTE2
+                                + (lote.getcAttribute2() == null ? "null" : (lote.getcAttribute2().isEmpty() ? "null" : lote.getcAttribute2())) + ";"  // ATTRIBUTE2
+                                //+ lote.getcAttribute3() + ";"                         // ATTRIBUTE3
+                                + (lote.getcAttribute3() == null ? "null" : (lote.getcAttribute3().isEmpty() ? "null" : lote.getcAttribute3())) + ";"  // ATTRIBUTE3
                                 + "FIN\r\n"
                         );
                     }
@@ -588,6 +592,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                                 + serial.getSerialNumber() + ";"                       // TO_SERIAL_NUMBER
                                 + "RCV;"                                               // PRODUCT_CODE
                                 + serialTransactionId + ";"                            // PRODUCT_TRANSACTION_ID
+                                + "FIN\r\n"                                            // JPINTO
                         );
                     }
                 }

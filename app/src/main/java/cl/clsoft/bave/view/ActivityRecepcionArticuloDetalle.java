@@ -32,6 +32,7 @@ public class ActivityRecepcionArticuloDetalle extends BaseActivity<RecepcionArti
     Long lineLocationId;
     Double cantidad;
     String id;
+    String comentario;
 
     //Controls
     private TextView segment1;
@@ -74,6 +75,7 @@ public class ActivityRecepcionArticuloDetalle extends BaseActivity<RecepcionArti
         interfaceTransactionId = getIntent().getLongExtra("interfaceTransactionId",0);
         cantidad = getIntent().getDoubleExtra("cantidad",0.0);
         lineLocationId = getIntent().getLongExtra("lineLocationId",0);
+        comentario = getIntent().getStringExtra("comentario");
 
         segment1.setText(numeroOc);
         receiptNum.setText(numeroRecep.toString());
@@ -109,6 +111,7 @@ public class ActivityRecepcionArticuloDetalle extends BaseActivity<RecepcionArti
                 i.putExtra("numeroOc", numeroOc);
                 i.putExtra("NumeroRecep", numeroRecep);
                 i.putExtra("poHeaderId", id);
+                i.putExtra("comentario", comentario);
                 startActivity(i);
                 finish();
                 return true;
@@ -145,6 +148,7 @@ public class ActivityRecepcionArticuloDetalle extends BaseActivity<RecepcionArti
                         i.putExtra("numeroOc", numeroOc);
                         i.putExtra("NumeroRecep", numeroRecep);
                         i.putExtra("poHeaderId", id);
+                        i.putExtra("comentario", comentario);
                         startActivity(i);
                         finish();
                     }

@@ -47,6 +47,7 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
     String numeroOc;
     String poHeaderId;
     Long numeroRecep;
+    String comentario;
     private String segment;
     private Long inventoryItemId;
     private int LAUNCH_SEARCHSINGLE_ACTIVITY = 2;
@@ -102,6 +103,7 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
         numeroOc = getIntent().getStringExtra("numeroOc");
         numeroRecep = getIntent().getLongExtra("NumeroRecep",0);
         poHeaderId = getIntent().getStringExtra("poHeaderId");
+        comentario = getIntent().getStringExtra("comentario");
 
         this.textSigle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -274,6 +276,7 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
         i.putExtra("numeroOc", numeroOc);
         i.putExtra("NumeroRecep", numeroRecep);
         i.putExtra("poHeaderId", poHeaderId);
+        i.putExtra("comentario", comentario);
         startActivity(i);
         this.finish();
     }
@@ -300,6 +303,7 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                         i.putExtra("numeroOc", numeroOc);
                         i.putExtra("NumeroRecep", numeroRecep);
                         i.putExtra("poHeaderId", poHeaderId);
+                        i.putExtra("comentario", comentario);
                         startActivity(i);
                         finish();
                     }

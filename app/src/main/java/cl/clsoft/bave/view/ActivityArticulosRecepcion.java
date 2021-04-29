@@ -49,6 +49,7 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
     String numeroOc;
     Long numeroRecep;
     String id;
+    String comentario;
 
     //Controls
     private RecyclerView recyclerViewArticulosRecepcion;
@@ -72,6 +73,7 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
+        String comentarioCap = textComentario.getText().toString();
 
         switch (item.getItemId()){
             case R.id.action_more:
@@ -80,6 +82,7 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
                 i.putExtra("numeroOc", numeroOc);
                 i.putExtra("NumeroRecep", numeroRecep);
                 i.putExtra("poHeaderId", id);
+                i.putExtra("comentario", comentarioCap);
 
                 startActivity(i);
                 this.finish();
@@ -114,12 +117,14 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
         numeroOc = getIntent().getStringExtra("numeroOc");
         numeroRecep = getIntent().getLongExtra("NumeroRecep",0);
         id = getIntent().getStringExtra("poHeaderId");
+        comentario = getIntent().getStringExtra("comentario");
 
         interfaceHeaderId = Long.parseLong(id+numeroRecep);
 
         segment1.setText(numeroOc);
         receiptNum.setText(numeroRecep.toString());
         poHeaderId.setText(id);
+        textComentario.setText(comentario);
 
         //Bind Controls
         this.llProgressBar = findViewById(R.id.llProgressBar);
@@ -142,6 +147,9 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
         this.recyclerViewArticulosRecepcion.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+
+                String comentarioCap = textComentario.getText().toString();
+
                 try{
                     View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
                     if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
@@ -153,6 +161,7 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
                         i.putExtra("numeroOc", numeroOc);
                         i.putExtra("NumeroRecep", numeroRecep);
                         i.putExtra("id", id);
+                        i.putExtra("comentario", comentarioCap);
                         startActivity(i);
                         finish();
                         return true;

@@ -152,8 +152,8 @@ public class RecepcionOcService implements IRecepcionOcService {
                 {
                     rcvHeadersInterface = new RcvHeadersInterface();
                     rcvHeadersInterface.setHeaderInterfaceId(headerInterfaceId);
-                    rcvHeadersInterface.setReciptSourceCode("PDA");
-                    rcvHeadersInterface.setTransactionType("VENDOR");
+                    rcvHeadersInterface.setReciptSourceCode("VENDOR");
+                    rcvHeadersInterface.setTransactionType("NEW");
                     rcvHeadersInterface.setAutoTransactCode("");
                     rcvHeadersInterface.setLastUpdateDate(fecha);
                     rcvHeadersInterface.setLastUpdateBy(datosCabeceraRecepcion.getUserId());
