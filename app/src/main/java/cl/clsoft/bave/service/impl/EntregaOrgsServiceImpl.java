@@ -453,7 +453,10 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                 Long organizationId = transactions.get(0).getOrganizationId();
                 Long shipToLocationId = transactions.get(0).getShipToLocationId();
                 String transactionDate = transactions.get(0).getTransactionDate();
-                Long groupId = transactions.get(0).getShipmentLineId();
+                //Long groupId = transactions.get(0).getShipmentLineId();
+                Long orgId = transactions.get(0).getOrgId();
+                Long headerInterfaceId = transactions.get(0).getHeaderInterfaceId();
+                Long groupId = transactions.get(0).getGroupId();
 
                 // Genera archivo Conteo
                 String nombreArchivo = "I_R_" + shipmentNumber + ".txt";
@@ -464,7 +467,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                 writer.write("INTERORG_RECIBO;FIN" +"\r\n");
                 writer.write(
                         "1;"
-                        + shipmentHeaderId.toString() + ";"  // HEADER_INTERFACE_ID //Corresponde al id informado por rodrigo
+                        + headerInterfaceId.toString() + ";"  // HEADER_INTERFACE_ID
                         + "PENDING;"                         // PROCESSING_STATUS_CODE
                         + "INVENTORY;"                       // RECEIPT_SOURCE_CODE
                         + "NEW;"                             // TRANSACTION_TYPE
@@ -481,7 +484,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                         + transactionDate + ";"              // SHIPPED_DATE
                         + "null;"                            // COMMENTS  JPINTO
                         + sysDate + ";"                      // TRANSACTION_DATE
-                        + "82;"                              // ORG_ID JPINTO
+                        + orgId.toString() + ";"             // ORG_ID
                         + groupId.toString() + ";"           // GROUP_ID
                         + "Y;"                               // VALIDATION_FLAG
                         + "FIN\r\n"
@@ -490,7 +493,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                     if (transaction.getEntregaCreationDate() != null) {
                         writer.write(
                                 "2;"
-                                        + transaction.getTransactionId(). toString() + ";"     // INTERFACE_TRANSACTION_ID
+                                        + transaction.getInterfaceTransactionId().toString() + ";"     // INTERFACE_TRANSACTION_ID
                                         + sysDate + ";"                                        // LAST_UPDATE_DATE
                                         + userId + ";"                                         // LAST_UPDATED_BY
                                         + sysDate + ";"                                        // CREATION_DATE
@@ -522,11 +525,12 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                                         + userId.toString() + ";"                              // EMPLOYEE_ID
                                         + "INVENTORY;"                                         // SOURCE_DOCUMENT_CODE
                                         + "INVENTORY;"                                         // DESTINATION_TYPE_CODE JPINTO
-                                        + "0;"                                                 // HEADER_INTERFACE_ID
+                                        + headerInterfaceId +  ";"                             // HEADER_INTERFACE_ID
                                         + shipmentHeaderId.toString() + ";"                    // SHIPMENT_HEADER_ID
-                                        //+ "0;"                                                 // SHIPMENT_LINE_ID
+                                        //+ "0;"                                               // SHIPMENT_LINE_ID
                                         + transaction.getShipmentLineId().toString() + ";"     // SHIPMENT_LINE_ID
                                         + "N;"                                                 // SERIE_RANGO
+                                        + transaction.getEntregaQuantity().toString() + ";"    // PRIMARY QUANTITY
                                         + "FIN\r\n"
                         );
                     }
@@ -544,7 +548,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                         }
                         writer.write(
                                 "3;"
-                                + lote.getTransactionId() + ";"                       // TRANSACTION_INTERFACE_ID
+                                + lote.getTransactionInterfaceId() + ";"              // TRANSACTION_INTERFACE_ID
                                 + sysDate + ";"                                       // LAST_UPDATE_DATE
                                 + userId + ";"                                        // LAST_UPDATED_BY
                                 + sysDate + ";"                                       // CREATION_DATE
@@ -582,7 +586,7 @@ public class EntregaOrgsServiceImpl implements IEntregaOrgsService {
                         }
                         writer.write(
                                 "4;"
-                                + serialTransactionId + ";"                            // TRANSACTION_INTERFACE_ID
+                                + serial.getTransactionInterfaceId() + ";"             // TRANSACTION_INTERFACE_ID
                                 + sysDate + ";"                                        // LAST_UPDATE_DATE
                                 + userId + ";"                                         // LAST_UPDATED_BY
                                 + sysDate + ";"                                        // CREATION_DATE

@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import cl.clsoft.bave.dao.ILocalizadorDao;
 import cl.clsoft.bave.dao.IMtlCycleCountEntriesDao;
@@ -827,6 +828,9 @@ public class BaveServiceImpl implements IBaveService {
                     if (extraccion.length >= 20) {
                         mtlMaterialTransactions.setShipmentLineId(extraccion[19].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[19]));
                     }
+                    if (extraccion.length >= 21) {
+                        mtlMaterialTransactions.setOrgId(extraccion[20].equalsIgnoreCase("") ? null : Long.valueOf(extraccion[20]));
+                    }
                     mtlMaterialTransactionsDao.insert(mtlMaterialTransactions);
                 } else if (extraccion[0].equals("2")) {
                     MtlTransactionLotNumbers mtlTransactionLotNumbers = new MtlTransactionLotNumbers();
@@ -898,6 +902,29 @@ public class BaveServiceImpl implements IBaveService {
                         mtlSystemItemsDao.update(mtlSystemItems);
                     } else {
                         mtlSystemItemsDao.insert(mtlSystemItems);
+                    }
+                } else if (extraccion[0].equals("IDI")) {
+                    Long interfaceTransactionId = Long.valueOf(extraccion[2]);
+                    List<MtlMaterialTransactions> trans = mtlMaterialTransactionsDao.getAllByShipmentHeaderId(shipmentHeaderId);
+                    for (MtlMaterialTransactions tran : trans) {
+                        tran.setHeaderInterfaceId(Long.valueOf(extraccion[1]));
+                        tran.setGroupId(Long.valueOf(extraccion[3]));
+                        tran.setInterfaceTransactionId(interfaceTransactionId);
+                        mtlMaterialTransactionsDao.update(tran);
+                        interfaceTransactionId++;
+                    }
+                    Long transactionInterfaceId = Long.valueOf(extraccion[4]);
+                    List<MtlTransactionLotNumbers> lotes = mtlTransactionLotNumbersDao.getAllByShipmentHeaderId(shipmentHeaderId);
+                    for (MtlTransactionLotNumbers lote : lotes) {
+                        lote.setTransactionInterfaceId(transactionInterfaceId);
+                        mtlTransactionLotNumbersDao.update(lote);
+                        transactionInterfaceId++;
+                    }
+                    List<MtlSerialNumbers> serials = mtlSerialNumbersDao.getAllByShipmentHeaderId(shipmentHeaderId);
+                    for (MtlSerialNumbers serial : serials) {
+                        serial.setTransactionInterfaceId(transactionInterfaceId);
+                        mtlSerialNumbersDao.update(serial);
+                        transactionInterfaceId++;
                     }
                 }
                 linea = leerArchivo.readLine();

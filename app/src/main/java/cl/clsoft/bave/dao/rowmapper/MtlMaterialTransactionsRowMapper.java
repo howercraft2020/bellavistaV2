@@ -30,6 +30,10 @@ public class MtlMaterialTransactionsRowMapper implements RowMapper<MtlMaterialTr
         entity.setShipmentNumber(cursor.getString(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_SHIPMENT_NUMBER)));
         entity.setShipmentHeaderId(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_SHIPMENT_HEADER_ID)));
         entity.setShipmentLineId(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_SHIPMENT_LINE_ID)));
+        entity.setOrgId(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_ORG_ID)));
+        entity.setHeaderInterfaceId(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_HEADER_INTERFACE_ID)));
+        entity.setGroupId(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_GROUP_ID)));
+        entity.setInterfaceTransactionId(cursor.getLong(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_INTERFACE_TRANSACTION_ID)));
         entity.setEntregaCreationDate(cursor.getString(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_ENTREGA_CREATION_DATE)));
         entity.setEntregaQuantity(cursor.getDouble(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_ENTREGA_QUANTITY)));
         entity.setSubinventory(cursor.getString(cursor.getColumnIndex(MtlMaterialTransactionsCatalogo.COLUMN_SUBINVENTORY)));

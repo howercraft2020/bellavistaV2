@@ -41,6 +41,10 @@ public class MtlMaterialTransactionsDaoImpl extends GenericDao<MtlMaterialTransa
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_SHIPMENT_NUMBER, mtlMaterialTransactions.getShipmentNumber());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_SHIPMENT_HEADER_ID, mtlMaterialTransactions.getShipmentHeaderId());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_SHIPMENT_LINE_ID, mtlMaterialTransactions.getShipmentLineId());
+        values.put(MtlMaterialTransactionsCatalogo.COLUMN_ORG_ID, mtlMaterialTransactions.getOrgId());
+        values.put(MtlMaterialTransactionsCatalogo.COLUMN_HEADER_INTERFACE_ID, mtlMaterialTransactions.getHeaderInterfaceId());
+        values.put(MtlMaterialTransactionsCatalogo.COLUMN_GROUP_ID, mtlMaterialTransactions.getGroupId());
+        values.put(MtlMaterialTransactionsCatalogo.COLUMN_INTERFACE_TRANSACTION_ID, mtlMaterialTransactions.getInterfaceTransactionId());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_ENTREGA_CREATION_DATE, mtlMaterialTransactions.getEntregaCreationDate());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_ENTREGA_QUANTITY, mtlMaterialTransactions.getEntregaQuantity());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_SUBINVENTORY, mtlMaterialTransactions.getSubinventory());
@@ -73,6 +77,10 @@ public class MtlMaterialTransactionsDaoImpl extends GenericDao<MtlMaterialTransa
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_SHIPMENT_NUMBER, mtlMaterialTransactions.getShipmentNumber());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_SHIPMENT_HEADER_ID, mtlMaterialTransactions.getShipmentHeaderId());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_SHIPMENT_LINE_ID, mtlMaterialTransactions.getShipmentLineId());
+        values.put(MtlMaterialTransactionsCatalogo.COLUMN_ORG_ID, mtlMaterialTransactions.getOrgId());
+        values.put(MtlMaterialTransactionsCatalogo.COLUMN_HEADER_INTERFACE_ID, mtlMaterialTransactions.getHeaderInterfaceId());
+        values.put(MtlMaterialTransactionsCatalogo.COLUMN_GROUP_ID, mtlMaterialTransactions.getGroupId());
+        values.put(MtlMaterialTransactionsCatalogo.COLUMN_INTERFACE_TRANSACTION_ID, mtlMaterialTransactions.getInterfaceTransactionId());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_ENTREGA_CREATION_DATE, mtlMaterialTransactions.getEntregaCreationDate());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_ENTREGA_QUANTITY, mtlMaterialTransactions.getEntregaQuantity());
         values.put(MtlMaterialTransactionsCatalogo.COLUMN_SUBINVENTORY, mtlMaterialTransactions.getSubinventory());
@@ -101,6 +109,14 @@ public class MtlMaterialTransactionsDaoImpl extends GenericDao<MtlMaterialTransa
         Log.d(TAG, "MtlMaterialTransactionsDaoImpl::get::transactionId: " + transactionId);
 
         return super.selectOne(MtlMaterialTransactionsCatalogo.SELECT, new MtlMaterialTransactionsRowMapper(), transactionId);
+    }
+
+    @Override
+    public List<MtlMaterialTransactions> getAllByShipmentHeaderId(Long shipmentHeaderId) throws DaoException {
+        Log.d(TAG, "MtlMaterialTransactionsDaoImpl::getAllByShipmentHeaderId");
+        Log.d(TAG, "MtlMaterialTransactionsDaoImpl::getAllByShipmentHeaderId::shipmentHeaderId: " + shipmentHeaderId);
+
+        return super.selectMany(MtlMaterialTransactionsCatalogo.SELECT_ALL_BY_SHIPMENT_HEADER_ID, new MtlMaterialTransactionsRowMapper(), shipmentHeaderId);
     }
 
     @Override

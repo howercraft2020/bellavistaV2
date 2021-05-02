@@ -11,6 +11,7 @@ public class MtlSerialNumbers {
     private String lotNumber;
     private Long currentOrganizationId;
     private Long shipmentHeaderId;
+    private Long transactionInterfaceId;
     private String entregaCreationDate;
 
     public MtlSerialNumbers() {}
@@ -85,6 +86,14 @@ public class MtlSerialNumbers {
 
     public void setShipmentHeaderId(Long shipmentHeaderId) {
         this.shipmentHeaderId = shipmentHeaderId;
+    }
+
+    public Long getTransactionInterfaceId() {
+        return transactionInterfaceId;
+    }
+
+    public void setTransactionInterfaceId(Long transactionInterfaceId) {
+        this.transactionInterfaceId = transactionInterfaceId;
     }
 
     public String getEntregaCreationDate() {

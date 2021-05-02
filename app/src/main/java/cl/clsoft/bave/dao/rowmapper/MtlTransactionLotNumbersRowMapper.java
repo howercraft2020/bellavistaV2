@@ -22,6 +22,7 @@ public class MtlTransactionLotNumbersRowMapper implements RowMapper<MtlTransacti
         entity.setcAttribute2(cursor.getString(cursor.getColumnIndex(MtlTransactionLotNumbersCatalogo.COLUMN_C_ATTRIBUTE2)));
         entity.setcAttribute3(cursor.getString(cursor.getColumnIndex(MtlTransactionLotNumbersCatalogo.COLUMN_C_ATTRIBUTE3)));
         entity.setShipmentHeaderId(cursor.getLong(cursor.getColumnIndex(MtlTransactionLotNumbersCatalogo.COLUMN_SHIPMENT_HEADER_ID)));
+        entity.setTransactionInterfaceId(cursor.getLong(cursor.getColumnIndex(MtlTransactionLotNumbersCatalogo.COLUMN_TRANSACTION_INTERFACE_ID)));
         entity.setEntregaCreationDate(cursor.getString(cursor.getColumnIndex(MtlTransactionLotNumbersCatalogo.COLUMN_ENTREGA_CREATION_DATE)));
         return entity;
     }

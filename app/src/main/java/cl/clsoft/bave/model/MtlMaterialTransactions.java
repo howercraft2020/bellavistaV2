@@ -21,6 +21,10 @@ public class MtlMaterialTransactions {
     private String shipmentNumber;
     private Long shipmentHeaderId;
     private Long shipmentLineId;
+    private Long orgId;
+    private Long headerInterfaceId;
+    private Long groupId;
+    private Long interfaceTransactionId;
     private String entregaCreationDate;
     private Double entregaQuantity;
     private String subinventory;
@@ -180,6 +184,38 @@ public class MtlMaterialTransactions {
 
     public void setShipmentLineId(Long shipmentLineId) {
         this.shipmentLineId = shipmentLineId;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
+    }
+
+    public Long getHeaderInterfaceId() {
+        return headerInterfaceId;
+    }
+
+    public void setHeaderInterfaceId(Long headerInterfaceId) {
+        this.headerInterfaceId = headerInterfaceId;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public Long getInterfaceTransactionId() {
+        return interfaceTransactionId;
+    }
+
+    public void setInterfaceTransactionId(Long interfaceTransactionId) {
+        this.interfaceTransactionId = interfaceTransactionId;
     }
 
     public String getEntregaCreationDate() {

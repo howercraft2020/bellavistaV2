@@ -12,6 +12,7 @@ public class MtlTransactionLotNumbers {
     private String cAttribute2;
     private String cAttribute3;
     private Long shipmentHeaderId;
+    private Long transactionInterfaceId;
     private String entregaCreationDate;
 
     public MtlTransactionLotNumbers() {}
@@ -94,6 +95,14 @@ public class MtlTransactionLotNumbers {
 
     public void setShipmentHeaderId(Long shipmentHeaderId) {
         this.shipmentHeaderId = shipmentHeaderId;
+    }
+
+    public Long getTransactionInterfaceId() {
+        return transactionInterfaceId;
+    }
+
+    public void setTransactionInterfaceId(Long transactionInterfaceId) {
+        this.transactionInterfaceId = transactionInterfaceId;
     }
 
     public String getEntregaCreationDate() {

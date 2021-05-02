@@ -22,12 +22,17 @@ public class MtlMaterialTransactionsCatalogo {
     public static final String COLUMN_SHIPMENT_NUMBER = "shipment_number";
     public static final String COLUMN_SHIPMENT_HEADER_ID = "shipment_header_id";
     public static final String COLUMN_SHIPMENT_LINE_ID = "shipment_line_id";
+    public static final String COLUMN_ORG_ID = "org_id";
     public static final String COLUMN_ENTREGA_CREATION_DATE = "entrega_creation_date";
     public static final String COLUMN_ENTREGA_QUANTITY = "entrega_quantity";
     public static final String COLUMN_SUBINVENTORY ="subinventory";
     public static final String COLUMN_LOCATOR_ID ="locator_id";
     public static final String COLUMN_USE_MTL_LOT = "use_mtl_lot";
     public static final String COLUMN_USE_MTL_SERIAL = "use_mtl_serial";
+    public static final String COLUMN_HEADER_INTERFACE_ID = "headerInterfaceId";
+    public static final String COLUMN_INTERFACE_TRANSACTION_ID = "interfaceTransactionId";
+    public static final String COLUMN_GROUP_ID = "groupId";
+    public static final String COLUMN_TRANSACTION_INTERFACE_ID = "transactionInterfaceId";
 
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE + "(" +
@@ -50,6 +55,11 @@ public class MtlMaterialTransactionsCatalogo {
             COLUMN_SHIPMENT_NUMBER + " TEXT, " +
             COLUMN_SHIPMENT_HEADER_ID + " INTEGER, " +
             COLUMN_SHIPMENT_LINE_ID + " INTEGER, " +
+            COLUMN_ORG_ID + " INTEGER, " +
+            COLUMN_HEADER_INTERFACE_ID + " INTEGER, " +
+            COLUMN_GROUP_ID + " INTEGER, " +
+            COLUMN_INTERFACE_TRANSACTION_ID + " INTEGER, " +
+            COLUMN_TRANSACTION_INTERFACE_ID + " INTEGER, " +
             COLUMN_ENTREGA_CREATION_DATE + " TEXT, " +
             COLUMN_ENTREGA_QUANTITY + " REAL, " +
             COLUMN_SUBINVENTORY + " TEXT, " +

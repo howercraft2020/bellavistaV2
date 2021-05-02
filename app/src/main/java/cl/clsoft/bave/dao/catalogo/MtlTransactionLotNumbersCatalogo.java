@@ -13,6 +13,7 @@ public class MtlTransactionLotNumbersCatalogo {
     public static final String COLUMN_C_ATTRIBUTE2 = "c_attribute2";
     public static final String COLUMN_C_ATTRIBUTE3 = "c_attribute3";
     public static final String COLUMN_SHIPMENT_HEADER_ID = "shipment_header_id";
+    public static final String COLUMN_TRANSACTION_INTERFACE_ID = "transaction_interface_id";
     public static final String COLUMN_ENTREGA_CREATION_DATE = "entrega_creation_date";
 
     public static final String CREATE_TABLE =
@@ -27,6 +28,7 @@ public class MtlTransactionLotNumbersCatalogo {
             COLUMN_C_ATTRIBUTE2 + " TEXT, " +
             COLUMN_C_ATTRIBUTE3 + " TEXT, " +
             COLUMN_SHIPMENT_HEADER_ID + " INTEGER, " +
+            COLUMN_TRANSACTION_INTERFACE_ID + " INTEGER, " +
             COLUMN_ENTREGA_CREATION_DATE + " TEXT, " +
             " PRIMARY KEY (" + COLUMN_ID + " )" +
             ")";
