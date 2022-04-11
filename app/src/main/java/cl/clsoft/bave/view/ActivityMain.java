@@ -131,13 +131,13 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
 
-        this.setTitle("BAVE " + BuildConfig.APP_VERSION);
+        this.setTitle("EJERCITO " + BuildConfig.APP_VERSION);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mPresenter.cargaArchivos();
+        //mPresenter.cargaArchivos();
     }
 
     @Override

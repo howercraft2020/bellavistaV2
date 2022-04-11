@@ -1,5 +1,7 @@
 package cl.clsoft.bave.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class RcvTransactionsInterface {
 
     private Long interfaceTransactionId;
@@ -15,6 +17,7 @@ public class RcvTransactionsInterface {
     private String unitOfMeasure;
     private Long itemId;
     private String itemDescription;
+    @SerializedName("uomCode")
     private String UomCode;
     private Long employeeId;
     private Long shipmentHeaderId;
@@ -41,8 +44,10 @@ public class RcvTransactionsInterface {
     private String subinventory;
     private Long locatorId;
     private String shipmentNum;
+
     private Long useMtlLot;
-    private Long UseMtlSerial;
+
+    private Long useMtlSerial;
     private Long groupId;
     private String transactionStatusCode;
     private String autoTransactCode;
@@ -378,11 +383,11 @@ public class RcvTransactionsInterface {
     }
 
     public Long getUseMtlSerial() {
-        return UseMtlSerial;
+        return useMtlSerial;
     }
 
     public void setUseMtlSerial(Long useMtlSerial) {
-        UseMtlSerial = useMtlSerial;
+        this.useMtlSerial = useMtlSerial;
     }
 
     public Long getGroupId() {

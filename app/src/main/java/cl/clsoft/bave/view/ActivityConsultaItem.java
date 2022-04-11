@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,12 +23,19 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestConsulta;
+import cl.clsoft.bave.apis.IRestHomologacion;
+import cl.clsoft.bave.apis.IRestMtlSystemItems;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.ConsultaItem;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.presenter.ConsultaItemPresenter;
 import cl.clsoft.bave.service.impl.ConsultaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
 
@@ -42,6 +51,13 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
     private TextInputEditText textSigle;
     private ImageView iconSearch;
     private RecyclerView recyclerViewItems;
+    private TextInputLayout layoutCodigoBarrasItem;
+    private EditText textCodigobarrasItem;
+
+    //API
+    IRestConsulta iRestConsulta;
+    IRestMtlSystemItems iRestMtlSystemItems;
+    IRestHomologacion iRestHomologacion;
 
     @NonNull
     @Override
@@ -63,8 +79,39 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
         this.textSigle = findViewById(R.id.textSigle);
         this.iconSearch = findViewById(R.id.iconSearch);
         this.recyclerViewItems = findViewById(R.id.recyclerViewItems);
+        this.layoutCodigoBarrasItem = findViewById(R.id.layoutCodigoBarrasItem);
+        this.textCodigobarrasItem = findViewById(R.id.textCodigobarrasItem);
+
+        // API
+        this.iRestConsulta= ApiUtils.getIRestConsulta();
+        this.iRestMtlSystemItems  = ApiUtils.getIRestMtlSystemItems();
+        this.iRestHomologacion = ApiUtils.getIRestHomologacion();
 
         // Set Controls
+
+
+        this.textCodigobarrasItem.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                String Homologacion = textCodigobarrasItem.getText().toString();
+                iRestHomologacion.getInventoryItemId(Homologacion).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.isSuccessful() == true){
+                            fillStock(Long.valueOf(response.body()));
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        showError("Error de Conexion"+t.getMessage());
+                    }
+                });
+                return false;
+            }
+        });
+
+
+
 
         this.textSigle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -130,13 +177,53 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
         }
     }
 
-    private void fillStock(Long inventoryItemId) {
+   /* private void fillStock(Long inventoryItemId) {
         List<ConsultaItem> items = mPresenter.getAllByItem(inventoryItemId);
         AdapterItemConsultaSigle adapterItemConsultaSigle = new AdapterItemConsultaSigle(items);
         this.recyclerViewItems.setAdapter(adapterItemConsultaSigle);
         if (items.size() == 0) {
             showWarning("No se encontró Stock para " + segment);
         }
+        this.textSigle.setText("");
+    }*/
+
+
+    private void fillStock(Long inventoryItemId) {
+        System.out.println("FillStock: "+inventoryItemId);
+        iRestMtlSystemItems.getBySegment(String.valueOf(inventoryItemId)).enqueue(new Callback<MtlSystemItems>() {
+            @Override
+            public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+                if(response.isSuccessful() == true)
+                {
+                    System.out.println("FillStock : "+response.body().getInventoryItemId());
+                    //IRest
+                    iRestConsulta.getAllByItem(response.body().getInventoryItemId()).enqueue(new Callback<List<cl.clsoft.bave.model.ConsultaItem>>() {
+                        @Override
+                        public void onResponse(Call<List<cl.clsoft.bave.model.ConsultaItem>> call, Response<List<cl.clsoft.bave.model.ConsultaItem>> response)
+                        {
+                            List<ConsultaItem> items = response.body();
+                            AdapterItemConsultaSigle adapterItemConsultaSigle = new AdapterItemConsultaSigle(items);
+                            recyclerViewItems.setAdapter(adapterItemConsultaSigle);
+                            if (items.size() == 0) {
+                                showWarning("No se encontró Stock para " + segment);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<cl.clsoft.bave.model.ConsultaItem>> call, Throwable t) {
+                        }
+                    });
+                }
+                textCodigobarrasItem.setText("");
+            }
+
+            @Override
+            public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+
+            }
+        });
+        //AdapterItemConsultaSigle adapterItemConsultaSigle = new AdapterItemConsultaSigle(items);
+        //this.recyclerViewItems.setAdapter(adapterItemConsultaSigle);
         this.textSigle.setText("");
     }
 

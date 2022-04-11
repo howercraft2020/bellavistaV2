@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestLocalizador;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.Localizador;
@@ -20,6 +22,9 @@ import cl.clsoft.bave.task.AppTask;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityCiclicoAgregar;
 import cl.clsoft.bave.view.ActivityEntregaAgregar;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EntregaAgregarPresenter extends BasePresenter {
 
@@ -124,17 +129,46 @@ public class EntregaAgregarPresenter extends BasePresenter {
 
     public void getLocalizadoresBySubinventario(String subinventarioCodigo) {
         mView.showProgres("Cargando localizadores...");
-        mTaskExecutor.async(new EntregaAgregarPresenter.LocalizadoresBySubinventario(subinventarioCodigo));
+        //mTaskExecutor.async(new EntregaAgregarPresenter.LocalizadoresBySubinventario(subinventarioCodigo));
+        new EntregaAgregarPresenter.LocalizadoresBySubinventario(subinventarioCodigo);
+
+
     }
 
-    private class LocalizadoresBySubinventario implements AppTask<List<Localizador>> {
+    private class LocalizadoresBySubinventario  {
 
+
+
+        private IRestLocalizador iRestLocalizador;
         private String subinventarioCodigo;
 
         public LocalizadoresBySubinventario(String subinventarioCodigo) {
             this.subinventarioCodigo = subinventarioCodigo;
-        }
+            this.iRestLocalizador = ApiUtils.getIRestLocalizador();
 
+
+
+            iRestLocalizador.getLocalizadoresBySubinventario(subinventarioCodigo).enqueue(new Callback<List<Localizador>>() {
+                @Override
+                public void onResponse(Call<List<Localizador>> call, Response<List<Localizador>> response) {
+                    if(response.isSuccessful() == true && response.code()==200){
+
+                        mView.hideProgres();
+                        mView.fillLocator(response.body());
+
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Localizador>> call, Throwable t) {
+                    mView.showError(t.getMessage());
+                }
+            });
+
+
+        }
+        /*
         @Override
         public List<Localizador> execute() {
             Log.d(TAG, "LocalizadoresBySubinventario::execute");
@@ -159,6 +193,8 @@ public class EntregaAgregarPresenter extends BasePresenter {
             mView.hideProgres();
             mView.fillLocator(result);
         }
+
+         */
     }
 
 }

@@ -1,5 +1,6 @@
 package cl.clsoft.bave.view;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +21,23 @@ public class AdapterItemRecepcionOc extends RecyclerView.Adapter<AdapterItemRece
 
     private static final String TAG = "AdapterRecepcionOc";
     private List<PoHeadersAll> recepciones;
+    private Context context;
 
-    public AdapterItemRecepcionOc(List<PoHeadersAll> recepciones) {
+    public AdapterItemRecepcionOc(Context context, List<PoHeadersAll> recepciones) {
+        this.context = context;
         this.recepciones = recepciones;
+    }
+
+
+    public void setRecepciones(List<PoHeadersAll> recepciones){
+
+        this.recepciones = recepciones;
+        notifyDataSetChanged();
+    }
+
+    public List<PoHeadersAll> getRecepciones(){
+        notifyDataSetChanged();
+        return this.recepciones;
     }
 
     @NonNull

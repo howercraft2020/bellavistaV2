@@ -1,5 +1,6 @@
 package cl.clsoft.bave.view;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +13,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.model.PoHeadersAll;
 import cl.clsoft.bave.model.RcvShipmentHeaders;
 
 public class AdapterItemEntrega extends RecyclerView.Adapter<AdapterItemEntrega.EntregaViewHolder> {
 
     private static final String TAG = "AdapterItemEntrega";
     private List<RcvShipmentHeaders> headers;
+    private Context context;
 
-    public AdapterItemEntrega(List<RcvShipmentHeaders> headers) {
+    public AdapterItemEntrega(Context context,List<RcvShipmentHeaders> headers) {
+        this.context = context;
         this.headers = headers;
+    }
+
+    public void setEntregas(List<RcvShipmentHeaders> headers){
+
+        this.headers = headers;
+        notifyDataSetChanged();
+    }
+
+    public List<RcvShipmentHeaders> getEntregas(){
+        notifyDataSetChanged();
+        return this.headers;
     }
 
     @NonNull
@@ -44,10 +59,16 @@ public class AdapterItemEntrega extends RecyclerView.Adapter<AdapterItemEntrega.
 
     @Override
     public int getItemCount() {
-        if (headers != null) {
+
+
+        Log.d(TAG, "AdapterItemEntrega::getItemCount");
+        if (headers != null && headers.size() > 0) {
+            Log.d(TAG, "AdapterItemEntrega::return " + headers.size());
             return headers.size();
+        } else {
+            Log.d(TAG, "AdapterItemEntrega::return 0 (no entregas)");
+            return 0;
         }
-        return 0;
     }
 
     public class EntregaViewHolder extends RecyclerView.ViewHolder {
@@ -66,6 +87,7 @@ public class AdapterItemEntrega extends RecyclerView.Adapter<AdapterItemEntrega.
 
         public void onBind(RcvShipmentHeaders rcvShipmentHeaders) {
             if (rcvShipmentHeaders != null) {
+                Log.d(TAG, "public void onBind NO NULL");
                 this.textShipmentHeaderId.setText(rcvShipmentHeaders.getPoNumber().toString());
                 this.textReceiptNum.setText(rcvShipmentHeaders.getReceiptNum());
                 this.textCreationDate.setText(rcvShipmentHeaders.getCreationDate());

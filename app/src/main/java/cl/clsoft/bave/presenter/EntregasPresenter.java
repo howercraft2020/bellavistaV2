@@ -12,17 +12,34 @@ import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.RcvShipmentHeaders;
 import cl.clsoft.bave.service.IEntregaService;
+import cl.clsoft.bave.service.IRecepcionOcService;
 import cl.clsoft.bave.task.AppTask;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityEntregas;
+import cl.clsoft.bave.view.ActivityRecepcionOc;
+import cl.clsoft.bave.viewmodel.RcvShipmentHeadersViewModel;
 
 public class EntregasPresenter extends BasePresenter {
 
     private static final String TAG = "EntregasPresenter";
-    private ActivityEntregas mView;
+    private ActivityEntregas mview;
     private IEntregaService mService;
     private TaskExecutor mTaskExecutor;
 
+
+    private RcvShipmentHeadersViewModel rcvShipmentHeadersViewModel;
+
+
+
+
+    public EntregasPresenter(@NonNull final ActivityEntregas mview, @NonNull final IEntregaService mService){
+        this.mview = mview;
+        this.mService = mService;
+    }
+
+
+
+    /*
     public EntregasPresenter (@NonNull final ActivityEntregas view, @NonNull final TaskExecutor taskExecutor, @NonNull final IEntregaService service) {
         this.mView = view;
         this.mTaskExecutor = taskExecutor;
@@ -31,8 +48,11 @@ public class EntregasPresenter extends BasePresenter {
 
     public void getEntregas() {
         this.mView.showProgres("Cargando Entregas...");
-        this.mTaskExecutor.async(new EntregasPresenter.Entregas());
+      this.mTaskExecutor.async(new EntregasPresenter.Entregas());
     }
+
+
+
 
     private class Entregas implements AppTask<List<RcvShipmentHeaders>> {
 
@@ -59,8 +79,8 @@ public class EntregasPresenter extends BasePresenter {
         @Override
         public void onPostExecute(@Nullable List<RcvShipmentHeaders> result) {
             mView.hideProgres();
-            mView.fillEntregas(result);
+          //mView.fillEntregas(result);
         }
     }
-
+*/
 }

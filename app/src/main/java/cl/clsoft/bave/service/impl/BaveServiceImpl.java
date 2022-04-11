@@ -274,7 +274,8 @@ public class BaveServiceImpl implements IBaveService {
             String linea = null;
             linea = leerArchivo.readLine();
             while(linea != null){
-                String [] extraccion = linea.split("\\|");
+                //String [] extraccion = linea.split("\\|");
+                String [] extraccion = linea.split("\\|", -1);
                 if (extraccion[0].equals("1")) {
                     boolean existe = false;
 

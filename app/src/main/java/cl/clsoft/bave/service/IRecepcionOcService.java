@@ -12,7 +12,7 @@ public interface IRecepcionOcService {
 
     public List<PoHeadersAll> getAllRecepcionesOc() throws ServiceException;
     public List<RcvTransactionsInterface> getAllArticulos(Long headerInterfaceId) throws ServiceException;
-    public void cargaRecepcion(String segment1, Long poHeaderId, String oc, Long receiptNum, Double cantidad, Long poLineNum) throws ServiceException;
+    public void cargaRecepcion(String segment1, Long poHeaderId, String oc, Long receiptNum, Double cantidad, Long lineNum, Long poLineNum,Long itemid) throws ServiceException;
     public String crearArchivo(Long interfaceheaderId, String numeroOc, Long receiptNum, Long poHeaderId, String comentario, Long groupId) throws ServiceException;
     public MtlSystemItems getMtlSystemItemsBySegment(String segment) throws ServiceException;
     public List<MtlSystemItems> getArticulosByOcReceipt(Long poHeaderId, Long receiptNum) throws ServiceException;

@@ -142,8 +142,8 @@ public class RcvTransactionsInterfaceDaoImpl extends GenericDao<RcvTransactionsI
     }
 
     @Override
-    public RcvTransactionsInterface get(Long headerInterfaceId, String codigoSigle) throws DaoException {
-        return super.selectOne(RcvTransactionsInterfaceCatalogo.SELECT_EXISTE_LINEA,new RcvTransactionsInterfaceRowMapper(),headerInterfaceId,codigoSigle);
+    public RcvTransactionsInterface get(Long headerInterfaceId, String codigoSigle, Long poLineId) throws DaoException {
+        return super.selectOne(RcvTransactionsInterfaceCatalogo.SELECT_EXISTE_LINEA,new RcvTransactionsInterfaceRowMapper(),headerInterfaceId,codigoSigle, poLineId);
     }
 
     @Override

@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestMtlSystemItems;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlSystemItems;
@@ -15,6 +17,9 @@ import cl.clsoft.bave.service.IInventarioFisicoService;
 import cl.clsoft.bave.task.AppTask;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivitySigleSearch;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SigleSearchPresenter extends BasePresenter {
 
@@ -36,12 +41,16 @@ public class SigleSearchPresenter extends BasePresenter {
 
     public void getItemsEntrega(String pattern, Long shipmentHeaderId) {
         mView.showProgres("Cargando productos...");
-        mTaskExecutor.async(new SigleSearchPresenter.SearchSigleEntrega(pattern, shipmentHeaderId));
+        //mTaskExecutor.async(new SigleSearchPresenter.SearchSigleEntrega(pattern, shipmentHeaderId));
+        new SigleSearchPresenter.SearchSigleEntrega(pattern, shipmentHeaderId);
     }
 
     public void getItemsRecepcion(String pattern, Long poHeaderId) {
         mView.showProgres("Cargando productos...");
-        mTaskExecutor.async(new SigleSearchPresenter.SearchSigleRecepcion(pattern, poHeaderId));
+        //mTaskExecutor.async(new SigleSearchPresenter.SearchSigleRecepcion(pattern, poHeaderId));
+
+        new SigleSearchPresenter.SearchSigleRecepcion(pattern, poHeaderId);
+
     }
 
     public void getItemsTransSubinv(String pattern, String subinventario, String locatorCodigo) {
@@ -177,16 +186,40 @@ public class SigleSearchPresenter extends BasePresenter {
         }
     }
 
-    private class SearchSigleRecepcion implements AppTask<List<MtlSystemItems>> {
+    private class SearchSigleRecepcion  {
 
         private String pattern;
         private Long poHeaderId;
 
+        private IRestMtlSystemItems iRestMtlSystemItems;
+
         public SearchSigleRecepcion(String pattern, Long poHeaderId) {
             this.pattern = pattern;
             this.poHeaderId = poHeaderId;
+            this.iRestMtlSystemItems = ApiUtils.getIRestMtlSystemItems();
+
+
+            iRestMtlSystemItems.getAllByDescriptionPoHeaderId(pattern,poHeaderId).enqueue(new Callback<List<MtlSystemItems>>() {
+                @Override
+                public void onResponse(Call<List<MtlSystemItems>> call, Response<List<MtlSystemItems>> response) {
+                    if(response.isSuccessful()==true && response.code()==200){
+                    mView.hideProgres();
+                    mView.fillItem(response.body());
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<MtlSystemItems>> call, Throwable t) {
+                    mView.showError(t.getMessage());
+                }
+            });
+
+
         }
 
+        /*
         @Override
         public List<MtlSystemItems> execute() {
             Log.d(TAG, "SearchSigle::execute");
@@ -210,18 +243,55 @@ public class SigleSearchPresenter extends BasePresenter {
             mView.hideProgres();
             mView.fillItem(result);
         }
+
+         */
+
+
+
     }
 
-    private class SearchSigleEntrega implements AppTask<List<MtlSystemItems>> {
+    private class SearchSigleEntrega  {
 
         private String pattern;
         private Long shipmentHeaderId;
+        private IRestMtlSystemItems iRestMtlSystemItems;
 
         public SearchSigleEntrega(String pattern, Long shipmentHeaderId) {
             this.pattern = pattern;
             this.shipmentHeaderId = shipmentHeaderId;
+            this.iRestMtlSystemItems = ApiUtils.getIRestMtlSystemItems();
+
+
+            iRestMtlSystemItems.getAllByDescriptionShipment(this.pattern,this.shipmentHeaderId).enqueue(new Callback<List<MtlSystemItems>>() {
+                @Override
+                public void onResponse(Call<List<MtlSystemItems>> call, Response<List<MtlSystemItems>> response) {
+                    if(response.isSuccessful()==true && response.code()==200){
+
+
+                        mView.hideProgres();
+                        mView.fillItem(response.body());
+
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<MtlSystemItems>> call, Throwable t) {
+                    mView.showError(t.getMessage());
+                }
+            });
+
+
+
+
+
         }
 
+
+
+
+
+        /*
         @Override
         public List<MtlSystemItems> execute() {
             Log.d(TAG, "SearchSigle::execute");
@@ -246,6 +316,8 @@ public class SigleSearchPresenter extends BasePresenter {
             mView.fillItem(result);
 
         }
+
+         */
     }
 
     private class SearchSigleEntregaOrganizaciones implements AppTask<List<MtlSystemItems>> {

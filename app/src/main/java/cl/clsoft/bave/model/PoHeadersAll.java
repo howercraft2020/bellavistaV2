@@ -1,5 +1,7 @@
 package cl.clsoft.bave.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class PoHeadersAll {
     private Long createdBy;
     private String creationDate;
@@ -8,6 +10,7 @@ public class PoHeadersAll {
     private Long vendorSiteId;
     private String vendorSiteCode;
     private Long poHeaderId;
+    @SerializedName("segment1")
     private String Segment1;
     private Long orgId;
     private String approvedDate;

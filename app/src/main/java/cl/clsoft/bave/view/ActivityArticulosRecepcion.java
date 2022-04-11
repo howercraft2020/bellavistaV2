@@ -1,11 +1,13 @@
 package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,22 +19,37 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestPoDistributionsAll;
+import cl.clsoft.bave.apis.IRestPoLineLocationsAll;
+import cl.clsoft.bave.apis.IRestPoLinesAll;
+import cl.clsoft.bave.apis.IRestPoheadersAll;
+import cl.clsoft.bave.apis.IRestRcvHeadersInterface;
+import cl.clsoft.bave.apis.IRestRcvStatus;
+import cl.clsoft.bave.apis.IRestRcvTransactionsInterface;
 import cl.clsoft.bave.base.BaseActivity;
+import cl.clsoft.bave.model.PoHeadersAll;
 import cl.clsoft.bave.model.RcvTransactionsInterface;
 import cl.clsoft.bave.presenter.ArticulosRecepcionPresenter;
 import cl.clsoft.bave.service.impl.RecepcionOcService;
+import cl.clsoft.bave.viewmodel.PoHeadersViewModel;
+import cl.clsoft.bave.viewmodel.RcvTransactionsInterfaceViewModel;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.reactivex.Observable;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionPresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
@@ -51,9 +68,21 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
     String id;
     String comentario;
 
+    //REST API Variable
+    private RcvTransactionsInterfaceViewModel rcvTransactionsInterfaceViewModel;
+
+
+    private IRestRcvTransactionsInterface iRestRcvTransactionsInterface;
+    private IRestRcvHeadersInterface iRestRcvHeadersInterface;
+    private IRestPoLinesAll iRestPoLinesAll;
+    private IRestPoheadersAll iRestPoheadersAll;
+    private IRestPoDistributionsAll iRestPoDistributionsAll;
+    private IRestPoLineLocationsAll iRestPoLineLocationsAll;
+    private IRestRcvStatus iRestRcvStatus;
+
     //Controls
-    private RecyclerView recyclerViewArticulosRecepcion;
-    private AdapterItemArticulosRecepcion adapter;
+    RecyclerView recyclerViewArticulosRecepcion;
+    AdapterItemArticulosRecepcion adapter;
     private SweetAlertDialog dialog;
 
     @NonNull
@@ -140,9 +169,59 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
         this.recyclerViewArticulosRecepcion.setHasFixedSize(true);
         this.recyclerViewArticulosRecepcion.setLayoutManager(new LinearLayoutManager(this));
 
-         this.articulos = mPresenter.getAllArticulos(interfaceHeaderId);
-        this.adapter = new AdapterItemArticulosRecepcion(articulos);
+
+        //Llamada SQLITE
+        /*
+        this.articulos = mPresenter.getAllArticulos(interfaceHeaderId);
+        this.adapter = new AdapterItemArticulosRecepcion(getApplicationContext(),articulos);
         this.recyclerViewArticulosRecepcion.setAdapter(this.adapter);
+        */
+
+        //Inicialización de REST API
+        iRestRcvTransactionsInterface = ApiUtils.getIRestTransactionInterface();
+        iRestRcvHeadersInterface = ApiUtils.getIRestRcvHeadersInterface();
+        iRestPoLinesAll = ApiUtils.getIRestPoLinesAll();
+        iRestPoheadersAll = ApiUtils.getIRestPoheadersAll();
+        iRestPoDistributionsAll = ApiUtils.getIRestPoDistributionsAlll();
+        iRestPoLineLocationsAll = ApiUtils.getIRestPoLineLocationsAll();
+        iRestRcvStatus = ApiUtils.getIRestRcvStatus();
+
+        // Set up progress before call
+        final ProgressDialog progressDoalog;
+        progressDoalog = new ProgressDialog(ActivityArticulosRecepcion.this);
+        progressDoalog.setMax(100);
+        progressDoalog.setMessage("Cargando artículos....");
+        progressDoalog.setTitle("Recepciones");
+        progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        // show it
+        progressDoalog.show();
+
+        //Llamada API REST VIEW MODEL
+
+        articulos = new ArrayList<RcvTransactionsInterface>();
+
+
+
+        rcvTransactionsInterfaceViewModel = new ViewModelProvider(this).get(RcvTransactionsInterfaceViewModel.class);
+        rcvTransactionsInterfaceViewModel.init();
+        rcvTransactionsInterfaceViewModel.RcvgetAllByHeader(interfaceHeaderId);
+
+
+        rcvTransactionsInterfaceViewModel.getAllByHeader().observe(this, new Observer<List<RcvTransactionsInterface>>() {
+            @Override
+            public void onChanged(List<RcvTransactionsInterface> rcvTransactionsInterfaces) {
+
+
+                progressDoalog.dismiss();
+                adapter = new AdapterItemArticulosRecepcion(getApplicationContext(),rcvTransactionsInterfaces);
+                recyclerViewArticulosRecepcion.setAdapter(adapter);
+                articulos = rcvTransactionsInterfaces;
+
+            }
+        });
+
+
+        //Log.d("Articulos Cant:", ""+adapter.getItemCount());
 
         this.recyclerViewArticulosRecepcion.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
@@ -189,12 +268,131 @@ public class ActivityArticulosRecepcion extends BaseActivity<ArticulosRecepcionP
 
     @Override
     public void onDialogAceptarClick(DialogFragment dialog) {
+        final ProgressDialog progressDoalog;
+        progressDoalog = new ProgressDialog(ActivityArticulosRecepcion.this);
+        progressDoalog.setMax(100);
+        progressDoalog.setMessage("Cerrando Recepción....");
+        progressDoalog.setTitle("Recepciones");
+        progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        // show it
+        progressDoalog.show();
+
+
         String tipo = dialog.getArguments().getString("tipo");
         String comentario = textComentario.getText().toString();
         String groupId = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault()).format(new Date());
 
         if (tipo.equalsIgnoreCase("close")) {
-            mPresenter.crearArchivo(interfaceHeaderId,numeroOc,numeroRecep,Long.parseLong(id), comentario, Long.parseLong(groupId));
+
+
+
+            iRestPoheadersAll.delete(Long.parseLong(id)).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if(response.isSuccessful()){
+
+                        Log.d("JAVARX", "Borrando PoheadersAll PoHeaderID: "+id);
+
+
+
+                        iRestPoLinesAll.deleteByPoHeaderId(Long.parseLong(id)).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                                if(response.isSuccessful()){
+
+                                    Log.d("JAVARX", "Borrando PoLinesAll PoHeaderID: "+id);
+
+
+
+                                    iRestPoLineLocationsAll.delete(Long.parseLong(id)).enqueue(new Callback<Void>() {
+                                        @Override
+                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                            if(response.isSuccessful()){
+
+                                                Log.d("JAVARX", "Borrando PoLineLocationsAll PoHeaderID: "+id);
+
+
+                                                iRestPoDistributionsAll.delete(Long.parseLong(id)).enqueue(new Callback<Void>() {
+                                                    @Override
+                                                    public void onResponse(Call<Void> call, Response<Void> response) {
+
+                                                        if(response.isSuccessful()){
+
+                                                            Log.d("JAVARX", "Borrando PoDistributionsAll PoHeaderID: "+id);
+
+
+                                                            iRestRcvStatus.actualiza_estado(3,Long.parseLong(id),numeroRecep).enqueue(new Callback<Void>() {
+                                                                @Override
+                                                                public void onResponse(Call<Void> call, Response<Void> response) {
+
+                                                                    if(response.isSuccessful()){
+
+                                                                        progressDoalog.dismiss();
+                                                                        Log.d("JAVARX", "RcvStatus Estado = 3, cerrado  con éxito");
+
+                                                                        resultadoOkCerrarRecepcion();
+                                                                    }
+
+
+                                                                }
+
+                                                                @Override
+                                                                public void onFailure(Call<Void> call, Throwable t) {
+                                                                    showError("Error Actualizando RCV_STATUS 3"+t.getMessage());
+                                                                }
+                                                            });
+
+
+                                                        }
+
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<Void> call, Throwable t) {
+                                                        showError("Error Borrando PO_DISTRIBUTIONS_ALL"+t.getMessage());
+                                                    }
+                                                });
+
+
+
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Void> call, Throwable t) {
+                                            showError("Error Borrando PO_LINE_LOCATIONS"+t.getMessage());
+                                        }
+                                    });
+
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                showError("Error Borrando PO_LINES"+t.getMessage());
+                            }
+                        });
+
+
+
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    showError("Error Borrando PO_HEADERS_ALL"+t.getMessage());
+                }
+            });
+
+           // mPresenter.crearArchivo(interfaceHeaderId,numeroOc,numeroRecep,Long.parseLong(id), comentario, Long.parseLong(groupId));
+
+
         }
     }
 

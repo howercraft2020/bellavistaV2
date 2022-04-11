@@ -121,7 +121,7 @@ public class RcvTransactionsInterfaceCatalogo {
     public static final String DELETE_HEADER_INTERFACE = COLUMN_HEADER_INTERFACE_ID + " = ?";
 
     public static final String SELECT = " SELECT * FROM rcv_transactions_interface rti, mtl_system_items msi where rti.item_id = msi.inventory_item_id AND rti.header_interface_id = ? ";
-    public static final String SELECT_EXISTE_LINEA = " SELECT * FROM rcv_transactions_interface rti, mtl_system_items msi where  rti.item_id = msi.inventory_item_id and rti.header_interface_id = ?  and msi.segment1 = ? ";
+    public static final String SELECT_EXISTE_LINEA = " SELECT * FROM rcv_transactions_interface rti, mtl_system_items msi where  rti.item_id = msi.inventory_item_id and rti.header_interface_id = ?  and msi.segment1 = ? and rti.po_line_id = ?";
 
     public static final String SELECT_BY_PARENT_TRANSACTION_ID =
             " SELECT * "

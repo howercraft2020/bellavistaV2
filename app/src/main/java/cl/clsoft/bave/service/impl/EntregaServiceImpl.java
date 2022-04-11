@@ -573,6 +573,8 @@ public class EntregaServiceImpl implements IEntregaService {
         IRcvTransactionsInterfaceDao rcvTransactionsInterfaceDao = new RcvTransactionsInterfaceDaoImpl();
         IMtlTransactionLotsInterfaceDao mtlTransactionLotsInterfaceDao = new MtlTransactionLotsIfaceDaoImpl();
         IMtlSerialNumbersInterfaceDao mtlSerialNumbersInterfaceDao = new MtlSerialNumbersInterfaceDaoImpl();
+
+
         try {
             RcvShipmentHeaders rcvShipmentHeaders = rcvShipmentHeadersDao.get(shipmentHeaderId);
             if (rcvShipmentHeaders == null) {
@@ -619,6 +621,7 @@ public class EntregaServiceImpl implements IEntregaService {
                     // LAST_UPDATED_BY
                     + (rcvHeadersInterface.getLastUpdateBy() == null ? "null" : rcvHeadersInterface.getLastUpdateBy()) + ";"
                     // LAST_UPDATE_LOGIN
+
                     + "0;"
                     // CREATION_DATE
                     + sysDate + ";"
@@ -636,7 +639,7 @@ public class EntregaServiceImpl implements IEntregaService {
                     + (rcvShipmentHeaders.getPoNumber() == null ? "null" : rcvShipmentHeaders.getPoNumber()) + ";"
                     + "FIN\r\n"
             );
-            for (RcvTransactionsInterface trx : trxs) {
+                for (RcvTransactionsInterface trx : trxs) {
                 writer.write(
                         "2;"
                         // INTERFACE_TRANSACTION_ID
@@ -789,16 +792,27 @@ public class EntregaServiceImpl implements IEntregaService {
                 for (MtlSerialNumbersInterface serie : series) {
                     writer.write(
                             "4;"
+                                    // TRANSACTION_INTERFACE_ID
                             + (serie.getTransactionInterfaceId() == null ? "null" : serie.getTransactionInterfaceId()) + ";"
+                            //LAST_UPDATE_DATE
                             + (serie.getLastUpdateDate() == null ? "null" : (serie.getLastUpdateDate().isEmpty() ? "null" : serie.getLastUpdateDate())) + ";"
+                            //LAST_UPDATED_BY
                             + (serie.getLastUpdatedBy() == null ? "null" : serie.getLastUpdatedBy()) + ";"
+                            //CREATION_DATE
                             + (serie.getCreationDate() == null ? "null" : (serie.getCreationDate().isEmpty() ? "null" : serie.getCreationDate())) + ";"
+                            //CREATED_BY
                             + (serie.getCreatedBy() == null ? "null" : serie.getCreatedBy()) + ";"
+                            //LAST_UPDATE_LOGIN
                             + (serie.getLastUpdateLogin() == null ? "null" : serie.getLastUpdateLogin()) + ";"
+                            //FM_SERIAL_NUMBER
                             + (serie.getFmSerialNumber() == null ? "null" : (serie.getFmSerialNumber().isEmpty() ? "null" : serie.getFmSerialNumber())) + ";"
+                            //TO_SERIAL_NUMBER
                             + (serie.getToSerialNumber() == null ? "null" : (serie.getToSerialNumber().isEmpty() ? "null" : serie.getToSerialNumber())) + ";"
+                            //PRODUCT_CODE
                             + (serie.getProductCode() == null ? "null" : (serie.getProductCode().isEmpty() ? "null" : serie.getProductCode())) + ";"
+                            //PRODUCT_TRANSACTION_ID
                             + (serie.getProductTransactionId() == null ? "null" : serie.getProductTransactionId()) + ";"
+
                             + "FIN\r\n"
                     );
 

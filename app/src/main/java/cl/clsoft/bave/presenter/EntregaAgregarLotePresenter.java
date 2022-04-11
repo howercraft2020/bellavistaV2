@@ -24,6 +24,7 @@ public class EntregaAgregarLotePresenter extends BasePresenter {
     }
 
     public RcvTransactions getTransactionById(Long transactionId) {
+        /*
         try {
             return this.mService.getTransactionById(transactionId);
         } catch(ServiceException e) {
@@ -35,10 +36,13 @@ public class EntregaAgregarLotePresenter extends BasePresenter {
         } catch(Exception e){
             this.mView.showError(e.getMessage());
         }
+
+         */
         return null;
     }
 
     public MtlSystemItems getMtlSystemItemsById(Long inventoryItemId) {
+        /*
         try {
             return this.mService.getMtlSystemItemsById(inventoryItemId);
         } catch(ServiceException e) {
@@ -50,6 +54,8 @@ public class EntregaAgregarLotePresenter extends BasePresenter {
         } catch(Exception e){
             this.mView.showError(e.getMessage());
         }
+
+         */
         return null;
     }
 

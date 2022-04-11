@@ -25,12 +25,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestMtlSystemItems;
+import cl.clsoft.bave.apis.IRestRcvTransactions;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.presenter.EntregaAgregarSeriePresenter;
 import cl.clsoft.bave.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeriePresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
@@ -52,6 +58,11 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
     private String currentSerie = "";
     private boolean isLote = false;
     private boolean isSerie = false;
+
+    //REST API VARIABLES
+
+    private IRestMtlSystemItems iRestMtlSystemItems;
+    private IRestRcvTransactions iRestRcvTransactions;
 
     // Controls
     private TextInputLayout layoutSerie;
@@ -97,6 +108,56 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
         if (this.series == null)
             this.series = new ArrayList<>();
 
+        //Iniciamos API REST
+        iRestMtlSystemItems = ApiUtils.getIRestMtlSystemItems();
+        iRestRcvTransactions = ApiUtils.getIRestRcvTransactions();
+
+
+
+        iRestRcvTransactions.get(this.transactionId).enqueue(new Callback<RcvTransactions>() {
+            @Override
+            public void onResponse(Call<RcvTransactions> call, Response<RcvTransactions> response) {
+                if(response.isSuccessful()==true && response.code()==200){
+                    RcvTransactions transaction = response.body();
+
+                    iRestMtlSystemItems.get(transaction.getItemId()).enqueue(new Callback<MtlSystemItems>() {
+                        @Override
+                        public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+                            if(response.isSuccessful()==true && response.code()==200){
+                                MtlSystemItems item = response.body();
+
+                                if (item != null) {
+                                    if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                                        isLote = true;
+                                    } else {
+                                        isLote = false;
+                                    }
+                                    if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                                        isSerie = true;
+                                    } else {
+                                        isSerie = false;
+                                    }
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RcvTransactions> call, Throwable t) {
+
+            }
+        });
+
+        /*
         RcvTransactions transaction = mPresenter.getTransactionById(this.transactionId);
         if (transaction != null) {
             MtlSystemItems item = mPresenter.getMtlSystemItemsById(transaction.getItemId());
@@ -113,6 +174,8 @@ public class ActivityEntregaAgregarSerie extends BaseActivity<EntregaAgregarSeri
                 }
             }
         }
+
+         */
 
         this.textSerie.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

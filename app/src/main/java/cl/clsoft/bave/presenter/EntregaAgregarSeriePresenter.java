@@ -24,7 +24,7 @@ public class EntregaAgregarSeriePresenter extends BasePresenter {
     }
 
     public RcvTransactions getTransactionById(Long transactionId) {
-        try {
+        /*try {
             return this.mService.getTransactionById(transactionId);
         } catch(ServiceException e) {
             if (e.getCodigo() == 1) {
@@ -35,10 +35,13 @@ public class EntregaAgregarSeriePresenter extends BasePresenter {
         } catch(Exception e){
             this.mView.showError(e.getMessage());
         }
+
+         */
         return null;
     }
 
     public MtlSystemItems getMtlSystemItemsById(Long inventoryItemId) {
+        /*
         try {
             return this.mService.getMtlSystemItemsById(inventoryItemId);
         } catch(ServiceException e) {
@@ -50,6 +53,8 @@ public class EntregaAgregarSeriePresenter extends BasePresenter {
         } catch(Exception e){
             this.mView.showError(e.getMessage());
         }
+
+         */
         return null;
     }
 

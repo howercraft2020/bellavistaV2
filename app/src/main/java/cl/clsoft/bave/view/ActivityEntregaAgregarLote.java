@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestMtlSystemItems;
+import cl.clsoft.bave.apis.IRestRcvTransactions;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.RcvTransactions;
@@ -32,6 +35,9 @@ import cl.clsoft.bave.presenter.EntregaAgregarLotePresenter;
 import cl.clsoft.bave.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import fr.ganfra.materialspinner.MaterialSpinner;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLotePresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
@@ -53,6 +59,12 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
     private String atributo2;
     private String atributo3;
     private List<String> series = new ArrayList<>();
+
+
+    //REST API VARIABLES
+    private IRestMtlSystemItems iRestMtlSystemItems;
+    private IRestRcvTransactions iRestRcvTransactions;
+
 
     // Controls
     private TextInputLayout layoutLote;
@@ -126,6 +138,12 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
         Log.d(TAG, "Atributo2: " + this.atributo2);
         Log.d(TAG, "Atributo3: " + this.atributo3);
 
+        //Inicializamos REST API
+
+        iRestMtlSystemItems = ApiUtils.getIRestMtlSystemItems();
+        iRestRcvTransactions = ApiUtils.getIRestRcvTransactions();
+
+        Log.d("CALLRCV2", "ActivityEntregaAgregarLote: " + this.transactionId);
         // Set Categoria - Atributos
         spinnerAtributo1.setVisibility(View.GONE);
         spinnerAtributo2.setVisibility(View.GONE);
@@ -180,6 +198,71 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
         }
 
 
+        iRestRcvTransactions.get(this.transactionId).enqueue(new Callback<RcvTransactions>() {
+            @Override
+            public void onResponse(Call<RcvTransactions> call, Response<RcvTransactions> response) {
+                if(response.isSuccessful() == true && response.code()==200 ){
+
+                    RcvTransactions transaction = response.body();
+
+
+                    iRestMtlSystemItems.get(transaction.getItemId()).enqueue(new Callback<MtlSystemItems>() {
+                        @Override
+                        public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+
+                            if(response.isSuccessful() == true && response.code()==200 ) {
+
+                                MtlSystemItems item = response.body();
+
+                                if (item != null) {
+                                    if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                                        isLote = true;
+                                    } else {
+                                        isLote = false;
+                                    }
+                                    if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                                        isSerie = true;
+                                    } else {
+                                        isSerie = false;
+                                    }
+                                    if (item.getShelfLifeCode().equalsIgnoreCase("2") || item.getShelfLifeCode().equalsIgnoreCase("4")) {
+                                        isVencimiento = true;
+                                    } else {
+                                        isVencimiento = false;
+                                    }
+                                    textLote.setText(lote);
+                                    textLoteProveedor.setText(loteProveedor);
+                                    if (isVencimiento) {
+                                        textVencimiento.setVisibility(View.VISIBLE);
+                                        textVencimiento.setText(vencimiento);
+                                    } else {
+                                        layoutVencimiento.setVisibility(View.GONE);
+                                        textVencimiento.setText("");
+                                    }
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+
+                        }
+                    });
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<RcvTransactions> call, Throwable t) {
+
+            }
+        });
+
+        /*
         RcvTransactions transaction = mPresenter.getTransactionById(this.transactionId);
         if (transaction != null) {
             MtlSystemItems item = mPresenter.getMtlSystemItemsById(transaction.getItemId());
@@ -210,7 +293,7 @@ public class ActivityEntregaAgregarLote extends BaseActivity<EntregaAgregarLoteP
                 }
             }
         }
-
+        */
         this.spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

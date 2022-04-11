@@ -1,5 +1,7 @@
 package cl.clsoft.bave.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class MtlSystemItems {
     private Long inventoryItemId;
     private String description;                 //numero parte

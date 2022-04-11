@@ -22,7 +22,15 @@ public class AdapterItemTransactionInterface extends RecyclerView.Adapter<Adapte
 
     public AdapterItemTransactionInterface(List<TransactionsDto> transactions) {
         this.transactions = transactions;
+
     }
+
+
+    public List<TransactionsDto> getTransactions(){
+
+        return this.transactions;
+    }
+
 
     @NonNull
     @Override
@@ -63,6 +71,8 @@ public class AdapterItemTransactionInterface extends RecyclerView.Adapter<Adapte
             this.textLinea = itemView.findViewById(R.id.textLinea);
             this.textSigle = itemView.findViewById(R.id.textSigle);
             this.textFechaCreacion = itemView.findViewById(R.id.textFechaCreacion);
+
+
         }
 
         public void onBind(TransactionsDto dto) {

@@ -1,5 +1,6 @@
 package cl.clsoft.bave.view;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +14,29 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.model.PoHeadersAll;
 import cl.clsoft.bave.model.RcvTransactionsInterface;
 
 public class AdapterItemArticulosRecepcion extends RecyclerView.Adapter<AdapterItemArticulosRecepcion.ArticulosRecepcionViewHolder> {
 
     private static final String TAG = "AdapterArticulosOc";
     private List<RcvTransactionsInterface> articulos;
-
-    public AdapterItemArticulosRecepcion(List<RcvTransactionsInterface> articulos) {
+    private Context context;
+    public AdapterItemArticulosRecepcion(Context context,List<RcvTransactionsInterface> articulos) {
         this.articulos = articulos;
+        this.context = context;
+    }
+
+
+    public void setArticulos(List<RcvTransactionsInterface> articulos){
+
+        this.articulos = articulos;
+        notifyDataSetChanged();
+    }
+
+    public List<RcvTransactionsInterface> getArticulos(){
+        notifyDataSetChanged();
+        return this.articulos;
     }
 
 
@@ -52,6 +67,7 @@ public class AdapterItemArticulosRecepcion extends RecyclerView.Adapter<AdapterI
         Log.d(TAG, "AdapterArticulosRecepcion::getItemCount");
         if (articulos != null && articulos.size() > 0) {
             Log.d(TAG, "AdapterArticulosRecepcion::return " + articulos.size());
+
             return articulos.size();
         } else {
             Log.d(TAG, "AdapterArticulosRecepcion::return 0 (no articulos)");

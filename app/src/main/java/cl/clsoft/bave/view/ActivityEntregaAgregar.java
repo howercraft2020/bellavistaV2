@@ -1,6 +1,7 @@
 package cl.clsoft.bave.view;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestMtlSystemItems;
+import cl.clsoft.bave.apis.IRestRcvTransactions;
+import cl.clsoft.bave.apis.IRestSubinventario;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.control.InstantAutoCompleteTextView;
 import cl.clsoft.bave.model.Localizador;
@@ -38,6 +43,9 @@ import cl.clsoft.bave.presenter.EntregaAgregarPresenter;
 import cl.clsoft.bave.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter> implements ConfirmationDialog.ConfirmationDialogListener, DialogSeleccionLinea.DialogSeleccionLineaListener {
 
@@ -83,6 +91,11 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
     private InstantAutoCompleteTextView textLocator;
     private TextView textProductoLote;
     private TextView textProductoSerie;
+
+    //VALRIABLES REST API
+    private IRestRcvTransactions iRestRcvTransactions;
+    private IRestMtlSystemItems iRestMtlSystemItems;
+    private IRestSubinventario iRestSubinventario;
 
     @NonNull
     @Override
@@ -135,7 +148,104 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
         this.series = this.getIntent().getStringArrayListExtra("series");
         Log.d(TAG, "Lote: " + lote);
         Log.d(TAG, "Cantidad: " + cantidad);
+        Log.d(TAG, "transactionId: " + transactionId);
+        Log.d(TAG, "shipmentHeaderId: " + shipmentHeaderId);
+        //Inicialización variables de API REST
 
+        //transactionId=Long.parseLong("1907004");
+        //cantidad = Double.parseDouble("20");
+        iRestRcvTransactions = ApiUtils.getIRestRcvTransactions();
+        iRestMtlSystemItems = ApiUtils.getIRestMtlSystemItems();
+        iRestSubinventario = ApiUtils.getIRestSubinventario();
+        // Set up progress before call
+
+
+        /*
+        final ProgressDialog progressDoalog;
+        progressDoalog = new ProgressDialog(ActivityEntregaAgregar.this);
+        progressDoalog.setMax(100);
+        progressDoalog.setMessage("Cargando Códigos Sigle...");
+        progressDoalog.setTitle("Entregas");
+        progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        // show it
+        progressDoalog.show();
+        */
+
+        if (transactionId > 0) {
+
+
+            iRestRcvTransactions.get(this.transactionId).enqueue(new Callback<RcvTransactions>() {
+                @Override
+                public void onResponse(Call<RcvTransactions> call, Response<RcvTransactions> response) {
+
+                    if(response.isSuccessful() == true && response.code()==200){
+                        RcvTransactions transaction = response.body();
+                        if (transaction != null) {
+
+                            iRestMtlSystemItems.get(transaction.getItemId()).enqueue(new Callback<MtlSystemItems>() {
+                                @Override
+                                public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+                                    if(response.isSuccessful() == true && response.code()==200){
+
+                                        MtlSystemItems item = response.body();
+
+                                        if (item != null) {
+                                            if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                                                isLote = true;
+                                            } else {
+                                                isLote = false;
+                                            }
+                                            if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                                                isSerie = true;
+                                            } else {
+                                                isSerie = false;
+                                            }
+                                            fillProducto(item.getDescription(), item.getSegment1(), transaction.getQuantity(),transaction.getLineNum(), isLote, isSerie);
+                                            layoutCantidad.setVisibility(View.VISIBLE);
+                                            layoutSubinventory.setVisibility(View.VISIBLE);
+                                            layoutLocator.setVisibility(View.VISIBLE);
+                                           // progressDoalog.dismiss();
+                                        }
+
+
+                                    }
+                                    else {
+                                        //progressDoalog.dismiss();
+                                        Log.d("NULO", "VIENE NULO");
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+                                    Log.d("CALLMTL1", "Error: " + t.getMessage());
+                                }
+                            });
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<RcvTransactions> call, Throwable t) {
+                    Log.d("CALLRCV", "Error: " + t.getMessage());
+                }
+            });
+
+
+        }else {
+
+
+            this.rlayoutSigle.setVisibility(View.VISIBLE);
+            this.rlayoutItem.setVisibility(View.GONE);
+            this.layoutCantidad.setVisibility(View.GONE);
+            this.layoutSubinventory.setVisibility(View.GONE);
+            this.layoutLocator.setVisibility(View.GONE);
+
+           // progressDoalog.dismiss();
+        }
+
+        /*
         if (transactionId > 0) {
             RcvTransactions transaction = mPresenter.getTransactionById(this.transactionId);
             if (transaction != null) {
@@ -166,6 +276,8 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
             this.layoutLocator.setVisibility(View.GONE);
         }
 
+         */
+
         this.textSigle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
@@ -181,6 +293,37 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
 
                         if (!segment.equalsIgnoreCase(currentSigle)) {
                             currentSigle = segment;
+
+
+                            iRestMtlSystemItems.getBySegment(segment).enqueue(new Callback<MtlSystemItems>() {
+                                @Override
+                                public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+
+                                    if(response.isSuccessful() == true && response.code()==200){
+
+                                        MtlSystemItems item = response.body();
+
+                                        if (item != null) {
+                                            inventoryItemId = item.getInventoryItemId();
+                                        } else {
+                                            textSigle.setText("");
+                                            currentSigle = "";
+                                        }
+                                        validaSigle();
+
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+                                    Log.d("CALLMTL2", "Error: " + t.getMessage());
+                                }
+                            });
+                            /*
+                            currentSigle = segment;
+
                             MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
                             if (item != null) {
                                 inventoryItemId = item.getInventoryItemId();
@@ -189,6 +332,8 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                                 currentSigle = "";
                             }
                             validaSigle();
+                            */
+
                         }
                     }
                     action = true;
@@ -208,6 +353,36 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
 
                 if (!segment.equalsIgnoreCase(currentSigle)) {
                     currentSigle = segment;
+
+                    iRestMtlSystemItems.getBySegment(segment).enqueue(new Callback<MtlSystemItems>() {
+                        @Override
+                        public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+                            if(response.isSuccessful() == true && response.code()==200) {
+                                MtlSystemItems item = response.body();
+
+                                if (item != null) {
+                                    inventoryItemId = item.getInventoryItemId();
+                                } else {
+                                    textSigle.setText("");
+                                    currentSigle = "";
+                                }
+                                validaSigle();
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+                            Log.d("CALLMTL3", "Error: " + t.getMessage());
+
+                        }
+                    });
+
+
+
+                    /*
+                    currentSigle = segment;
                     MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
                     if (item != null) {
                         inventoryItemId = item.getInventoryItemId();
@@ -216,6 +391,7 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                         currentSigle = "";
                     }
                     validaSigle();
+                    */
                 }
             }
         });
@@ -280,6 +456,42 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
             }
         });
 
+        iRestSubinventario.getAll().enqueue(new Callback<List<Subinventario>>() {
+            @Override
+            public void onResponse(Call<List<Subinventario>> call, Response<List<Subinventario>> response) {
+
+                if(response.isSuccessful() == true && response.code()==200){
+
+                    List<Subinventario> subinventarios = response.body();
+
+                    if (subinventarios != null) {
+                        if (subinventarios.size() > 0) {
+                            String[] arrSubinventarios = new String[subinventarios.size()];
+                            for (int i = 0; i < subinventarios.size(); i++) {
+                                arrSubinventarios[i] = subinventarios.get(i).getCodSubinventario();
+                            }
+                            ArrayAdapter<String> adapterSubinventario = new ArrayAdapter<String>(ActivityEntregaAgregar.this, android.R.layout.select_dialog_item, arrSubinventarios);
+                            textSubinventory.setAdapter(adapterSubinventario);
+                            textSubinventory.setText(subinventoryCode);
+                            if (subinventoryCode != null && !subinventoryCode.isEmpty()) {
+                                mPresenter.getLocalizadoresBySubinventario(subinventoryCode);
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Subinventario>> call, Throwable t) {
+                Log.d("CALLSUB1", "Error: " + t.getMessage());
+            }
+        });
+
+
+
+        /*
         List<Subinventario> subinventarios = this.mPresenter.getSubinventarios();
         if (subinventarios != null) {
             if (subinventarios.size() > 0) {
@@ -295,13 +507,57 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                 }
             }
         }
-
+        */
         this.textCantidad.setText(this.cantidad.toString());
     }
 
     @Override
     protected void onStart() {
+        final ProgressDialog progressDoalog;
+        progressDoalog = new ProgressDialog(ActivityEntregaAgregar.this);
+        progressDoalog.setMax(100);
+        progressDoalog.setMessage("Cargando Códigos Sigle...");
+        progressDoalog.setTitle("Entregas");
+        progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        // show it
+        progressDoalog.show();
         super.onStart();
+
+
+        iRestRcvTransactions.getSegmentsByShipment(this.shipmentHeaderId).enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if(response.isSuccessful()==true && response.code()==200){
+
+                    List<String> segmentosShipment = response.body();
+
+                    if (segmentosShipment.size() > 0) {
+                        String[] segmentos = new String[segmentosShipment.size()];
+                        for (int i = 0; i < segmentosShipment.size(); i++) {
+                            segmentos[i] = segmentosShipment.get(i);
+                        }
+                        ArrayAdapter<String> adapterSegmentos = new ArrayAdapter<String>(ActivityEntregaAgregar.this, android.R.layout.select_dialog_item, segmentos);
+                        textSigle.setAdapter(adapterSegmentos);
+                        progressDoalog.dismiss();
+
+
+                    }
+
+
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                Log.d(TAG, "Error llamando iRestRcvTransactions.getSegmentsByShipment : " + t.getMessage());
+            }
+        });
+
+        /*
         List<String> segmentosShipment = mPresenter.getSegmentosByShipment(this.shipmentHeaderId);
         if (segmentosShipment.size() > 0) {
             String[] segmentos = new String[segmentosShipment.size()];
@@ -311,6 +567,8 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
             ArrayAdapter<String> adapterSegmentos = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, segmentos);
             this.textSigle.setAdapter(adapterSegmentos);
         }
+        */
+
     }
 
     @Override
@@ -338,8 +596,18 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                 return true;
             case R.id.next:
                 Log.d(TAG, "next");
+
+                Log.d("CALLRCV2", "this.validaDatos(): " + this.validaDatos());
+                Log.d("CALLRCV2", "isLote: " + isLote);
+                Log.d("CALLRCV2", "isSerie: " + isSerie);
+                Log.d("CALLRCV2", "ActivityEntregaAgregar " + this.transactionId);
+                isLote = true;
+
                 if (this.validaDatos()) {
                     if (this.isLote) {
+
+
+
                         Intent iLote = new Intent(this, ActivityEntregaAgregarLote.class);
                         iLote.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
                         iLote.putExtra("TransactionId", this.transactionId);
@@ -373,6 +641,22 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                         iSerie.putStringArrayListExtra("series", (ArrayList<String>) this.series);
                         startActivity(iSerie);
                         this.finish();
+                    } else {
+                        Intent iResumen = new Intent(this, ActivityEntregaAgregarResumen.class);
+                        iResumen.putExtra("ShipmentHeaderId", this.shipmentHeaderId);
+                        iResumen.putExtra("TransactionId", this.transactionId);
+                        iResumen.putExtra("Cantidad", this.cantidad);
+                        iResumen.putExtra("SubinventoryCode", this.subinventoryCode);
+                        iResumen.putExtra("LocatorCode", this.locatorCode);
+                        iResumen.putExtra("Lote", this.lote);
+                        iResumen.putExtra("LoteProveedor", this.loteProveedor);
+                        iResumen.putExtra("Vencimiento", this.vencimiento);
+                        iResumen.putExtra("Categoria", this.categoria);
+                        iResumen.putExtra("Atributo1", this.atributo1);
+                        iResumen.putExtra("Atributo2", this.atributo2);
+                        iResumen.putExtra("Atributo3", this.atributo3);
+                        startActivity(iResumen);
+                        this.finish();
                     }
                 }
                 return true;
@@ -397,7 +681,64 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
     }
 
     private void validaSigle() {
-        if (this.inventoryItemId != null) {
+
+
+
+
+            iRestRcvTransactions.getAllByShipmentInventory(shipmentHeaderId,inventoryItemId).enqueue(new Callback<List<RcvTransactions>>() {
+                @Override
+                public void onResponse(Call<List<RcvTransactions>> call, Response<List<RcvTransactions>> response) {
+
+
+                    if (response.isSuccessful() == true && response.code() == 200) {
+                    List<RcvTransactions> transactions = response.body();
+                    if (inventoryItemId != null) {
+
+
+                      //  showSuccess("transactions.size()" + transactions.size());
+
+                            if (transactions.size() == 0) {
+                                textSigle.setText("");
+                                showWarning("Sigle " + segment + " no encontrado en OC");
+                                segment = null;
+                                inventoryItemId = null;
+                            } else if (transactions.size() > 1) {
+                                items = new CharSequence[transactions.size()];
+                                int index = 0;
+                                for (RcvTransactions transaction : transactions) {
+                                    Log.d(TAG, "items add " + transaction.getLineNum().toString());
+                                    items[index] = transaction.getLineNum().toString();
+                                    index++;
+                                }
+                                DialogSeleccionLinea dialogLinea = new DialogSeleccionLinea();
+                                Bundle args = new Bundle();
+                                args.putCharSequenceArray("items", items);
+                                dialogLinea.setArguments(args);
+                                dialogLinea.show(getSupportFragmentManager(), "DialogLinea");
+                            }
+
+
+                            else {
+                                setSigle(transactions.get(0));
+                            }
+
+
+                    }
+
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<RcvTransactions>> call, Throwable t) {
+                    Log.d("CALLRCV3", "Error validaSigle: " + t.getMessage());
+
+                }
+            });
+
+
+            /*
             List<RcvTransactions> transactions = mPresenter.getTransaccionsByShipmentInventory(shipmentHeaderId, inventoryItemId);
             if (transactions.size() == 0) {
                 this.textSigle.setText("");
@@ -417,14 +758,68 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
                 args.putCharSequenceArray("items", items);
                 dialogLinea.setArguments(args);
                 dialogLinea.show(getSupportFragmentManager(), "DialogLinea");
-            } else {
-                this.setSigle(transactions.get(0));
             }
-        }
+
+            */
+
+
+
+
+
+
     }
 
     private void setSigle(RcvTransactions transaction) {
         this.transactionId = transaction.getTransactionId();
+
+        iRestMtlSystemItems.getBySegment(segment).enqueue(new Callback<MtlSystemItems>() {
+            @Override
+            public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+                if (response.isSuccessful() == true && response.code() == 200) {
+                    MtlSystemItems item = response.body();
+
+                    if (item != null) {
+                        textProductoSigle.setText(segment);
+                        textProductoDescription.setText(item.getDescription());
+                        textProductoCantidad.setText(transaction.getQuantity().toString());
+                        textProductoLinea.setText(transaction.getLineNum().toString());
+                        if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                            isLote = true;
+                            textProductoLote.setText("SI");
+                        } else {
+                            isLote = false;
+                            textProductoLote.setText("NO");
+                        }
+                        if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                            isSerie = true;
+                            textProductoSerie.setText("SI");
+                        } else {
+                            isSerie = false;
+                            textProductoSerie.setText("NO");
+                        }
+
+                        rlayoutItem.setVisibility(View.VISIBLE);
+                        rlayoutSigle.setVisibility(View.GONE);
+                        layoutCantidad.setVisibility(View.VISIBLE);
+                        layoutSubinventory.setVisibility(View.VISIBLE);
+                        layoutLocator.setVisibility(View.VISIBLE);
+                        textCantidad.setText(transaction.getQuantity().toString());
+                        textSubinventory.requestFocus();
+                        cantidadTransaccion = transaction.getQuantity();
+                    }
+
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+                Log.d("CALLMTL4", "Error setSigle: " + t.getMessage());
+            }
+        });
+
+        /*
         MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
         if (item != null) {
             this.textProductoSigle.setText(segment);
@@ -455,6 +850,9 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
             this.textSubinventory.requestFocus();
             this.cantidadTransaccion = transaction.getQuantity();
         }
+        */
+
+
     }
 
     public void fillLocator(List<Localizador> localizadores) {
@@ -605,11 +1003,41 @@ public class ActivityEntregaAgregar extends BaseActivity<EntregaAgregarPresenter
     public void onDialogLineaPositiveClick(DialogFragment dialog) {
         Log.d(TAG, "salida " + ((DialogSeleccionLinea) dialog).selectedItem);
         String linea = ((DialogSeleccionLinea) dialog).selectedItem;
+
+
+        iRestRcvTransactions.getAllByShipmentInventory(shipmentHeaderId,inventoryItemId).enqueue(new Callback<List<RcvTransactions>>() {
+            @Override
+            public void onResponse(Call<List<RcvTransactions>> call, Response<List<RcvTransactions>> response) {
+                if (response.isSuccessful() == true && response.code() == 200) {
+
+                    List<RcvTransactions> transactions = response.body();
+
+                    for (RcvTransactions transaction : transactions) {
+                        if (transaction.getLineNum().toString().equalsIgnoreCase(linea)) {
+                            setSigle(transaction);
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RcvTransactions>> call, Throwable t) {
+
+            }
+        });
+
+        /*
         List<RcvTransactions> transactions = mPresenter.getTransaccionsByShipmentInventory(shipmentHeaderId, inventoryItemId);
+
+
         for (RcvTransactions transaction : transactions) {
             if (transaction.getLineNum().toString().equalsIgnoreCase(linea)) {
                 this.setSigle(transaction);
             }
         }
+        */
+
+
     }
 }

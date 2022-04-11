@@ -14,10 +14,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestMtlSystemItems;
+import cl.clsoft.bave.apis.IRestRcvTransactions;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.RcvTransactions;
@@ -25,6 +30,9 @@ import cl.clsoft.bave.presenter.EntregaAgregarResumenPresenter;
 import cl.clsoft.bave.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarResumenPresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
@@ -45,6 +53,11 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
     private String atributo2;
     private String atributo3;
     private List<String> series = new ArrayList<>();
+
+
+
+    private IRestMtlSystemItems iRestMtlSystemItems;
+    private IRestRcvTransactions iRestRcvTransactions;
 
     // Controls
     private TextView textProductoDescription;
@@ -122,10 +135,69 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
         if (this.series == null)
             this.series = new ArrayList<>();
 
+        iRestRcvTransactions = ApiUtils.getIRestRcvTransactions();
+        iRestMtlSystemItems = ApiUtils.getIRestMtlSystemItems();
+
+
+        iRestRcvTransactions.get(this.transactionId).enqueue(new Callback<RcvTransactions>() {
+            @Override
+            public void onResponse(Call<RcvTransactions> call, Response<RcvTransactions> response) {
+                if(response.isSuccessful()==true && response.code()==200){
+                    RcvTransactions transaction = response.body();
+
+                    iRestMtlSystemItems.get(transaction.getItemId()).enqueue(new Callback<MtlSystemItems>() {
+                        @Override
+                        public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+                            if(response.isSuccessful()==true && response.code()==200){
+
+                                MtlSystemItems item = response.body();
+
+                                if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                                    isLote = true;
+                                } else {
+                                    isLote = false;
+                                }
+                                if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                                    isSerie = true;
+                                } else {
+                                    isSerie = false;
+                                }
+                                Gson gson = new Gson();
+
+                                Log.d(TAG,"PRODUCTO"+ gson.toJson(item));
+
+                                fillProducto(item.getDescription(), item.getSegment1(), cantidad,
+                                        transaction.getLineNum(), isLote, isSerie, subinventoryCode, locatorCode);
+
+                                if (isLote) {
+                                    fillLote(lote, loteProveedor,vencimiento,categoria,atributo1,atributo2,atributo3);
+                                }
+                                if (isSerie) {
+                                    fillSeries(series);
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+                            showError("MtlSystemItems nula "+t.getMessage());
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<RcvTransactions> call, Throwable t) {
+                showError("RcvTransactions nula "+t.getMessage());
+            }
+        });
+        /*
         RcvTransactions transaction = mPresenter.getTransactionById(this.transactionId);
-        if (transaction != null) {
+      //  if (transaction != null) {
             MtlSystemItems item = mPresenter.getMtlSystemItemsById(transaction.getItemId());
-            if (item != null) {
+          //  if (item != null) {
                 if (item.getLotControlCode().equalsIgnoreCase("2")) {
                     this.isLote = true;
                 } else {
@@ -136,6 +208,10 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
                 } else {
                     this.isSerie = false;
                 }
+                Gson gson = new Gson();
+
+                Log.d(TAG,"PRODUCTO"+ gson.toJson(item));
+
                 this.fillProducto(item.getDescription(), item.getSegment1(), this.cantidad,
                         transaction.getLineNum(), this.isLote, this.isSerie, this.subinventoryCode, this.locatorCode);
 
@@ -145,8 +221,10 @@ public class ActivityEntregaAgregarResumen extends BaseActivity<EntregaAgregarRe
                 if (this.isSerie) {
                     this.fillSeries(this.series);
                 }
-            }
-        }
+       //     }
+       // }
+
+         */
     }
 
     @Override
