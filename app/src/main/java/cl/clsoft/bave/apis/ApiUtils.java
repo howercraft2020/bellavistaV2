@@ -295,4 +295,17 @@ public class ApiUtils {
 
     }
 
+    public static IRestMtlCycleCountEntries getIRestMtlCycleCountEntries(){
+
+
+        return RetrofitClient.getClient(BASE_URL).create(IRestMtlCycleCountEntries.class);
+    }
+
+    public static IRestMtlCycleCountEntries getIRestMtlCycleCountEntriesRx(){
+
+
+        return RetrofitClientRx.getClient(BASE_URL).create(IRestMtlCycleCountEntries.class);
+    }
+
+
 }
