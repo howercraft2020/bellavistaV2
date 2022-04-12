@@ -22,6 +22,7 @@ public class PoHeadersAll {
     private Long rate;
     private Long userId;
     private Long receiptNum;
+    private String comments;
 
     public PoHeadersAll(){
 
@@ -169,5 +170,13 @@ public class PoHeadersAll {
 
     public void setReceiptNum(Long receiptNum) {
         this.receiptNum = receiptNum;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 }

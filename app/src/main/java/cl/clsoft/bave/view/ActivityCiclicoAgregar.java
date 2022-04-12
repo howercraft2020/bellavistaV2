@@ -16,7 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
@@ -24,6 +26,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
+import java.util.Locale;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.apis.ApiUtils;
@@ -32,6 +35,7 @@ import cl.clsoft.bave.apis.IRestMtlCycleCountEntries;
 import cl.clsoft.bave.apis.IRestMtlSystemItems;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.Localizador;
+import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.presenter.CiclicoAgregarPresenter;
 import cl.clsoft.bave.service.impl.ConteoCiclicoService;
@@ -536,7 +540,167 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
     public void onDialogAceptarClick(DialogFragment dialog) {
         String tipo = dialog.getArguments().getString("tipo");
         if (tipo.equalsIgnoreCase("grabar")) {
-            mPresenter.grabarInventario(this.inventarioCiclicoId, this.subinventarioId, this.locatorId, this.segment, this.serie, this.lote, this.cantidad);
+
+
+            //mPresenter.grabarInventario(this.inventarioCiclicoId, this.subinventarioId, this.locatorId, this.segment, this.serie, this.lote, this.cantidad);
+            Log.d(TAG, "ConteoCiclicoService::grabarInventario");
+
+
+
+            if (this.locatorId != null && this.locatorId.longValue() > 0){
+
+                Log.d(TAG,"SERIE: "+this.serie);
+                Log.d(TAG,"LOTE: "+this.lote+" TAMANO "+this.lote.length());
+
+                iRestMtlCycleCountEntries.getAllBySubinventarioLocatorSegmentLoteSerie(this.inventarioCiclicoId, this.subinventarioId, this.locatorId, this.segment, Esnulo(this.serie), Esnulo(this.lote)).enqueue(new Callback<List<MtlCycleCountEntries>>() {
+                    @Override
+                    public void onResponse(Call<List<MtlCycleCountEntries>> call, Response<List<MtlCycleCountEntries>> response) {
+                        List<MtlCycleCountEntries> entries;
+
+                        if(response.isSuccessful()==true && response.code()==200 && response.body().toString()=="[]"){
+                            showError("Entrada no encontrada en conteo");
+                            return;
+
+                        }
+                        if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="[]"){
+
+                            entries = response.body();
+
+                            if(entries.size()>1){
+                                showError("Se encontro mas de una entrada en conteo");
+                                return;
+
+                            }
+                            if(entries.size()==1){
+                                //Update Entry
+                                MtlCycleCountEntries entry = entries.get(0);
+
+                                if (entry.getCount() !=null && entry.getLastUpdated() != null) {
+                                    showError( "Conteo ya se encuentra ingresado.");
+                                    return;
+
+                                }
+                                else {
+
+
+                                    entry.setCount(cantidad);
+
+                                    DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
+                                    String strLastUpdate = dateFormat.format(new Date());
+                                    entry.setLastUpdated(strLastUpdate.toUpperCase());
+
+                                    iRestMtlCycleCountEntries.insert(entry).enqueue(new Callback<Void>() {
+                                        @Override
+                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                            if(response.isSuccessful()==true && response.code()==200){
+
+                                                showSuccess("Conteo Actualizado correctamente");
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Void> call, Throwable t) {
+
+                                        }
+                                    });
+
+
+                                }
+
+
+                            }
+
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<MtlCycleCountEntries>> call, Throwable t) {
+
+                    }
+                });
+
+            }
+            else {
+                    iRestMtlCycleCountEntries.getAllBySubinventarioSegmentLoteSerie(this.inventarioCiclicoId, this.subinventarioId, this.segment, Esnulo(this.serie), Esnulo(this.lote)).enqueue(new Callback<List<MtlCycleCountEntries>>() {
+                        @Override
+                        public void onResponse(Call<List<MtlCycleCountEntries>> call, Response<List<MtlCycleCountEntries>> response) {
+
+                            List<MtlCycleCountEntries> entries;
+
+                            if(response.isSuccessful()==true && response.code()==200 && response.body().toString()=="[]"){
+                                showError("Entrada no encontrada en conteo");
+                                return;
+
+                            }
+                            if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="[]"){
+
+                                entries = response.body();
+
+                                if(entries.size()>1){
+                                    showError("Se encontro mas de una entrada en conteo");
+
+                                    return;
+
+                                }
+                                if(entries.size()==1){
+                                    //Update Entry
+                                    MtlCycleCountEntries entry = entries.get(0);
+
+                                    if (entry.getCount() !=null  && entry.getLastUpdated() != null) {
+                                        showError( "Conteo ya se encuentra ingresado.");
+                                        return;
+
+                                    }
+                                    else {
+
+
+                                        entry.setCount(cantidad);
+
+                                        DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
+                                        String strLastUpdate = dateFormat.format(new Date());
+                                        entry.setLastUpdated(strLastUpdate.toUpperCase());
+
+                                        iRestMtlCycleCountEntries.insert(entry).enqueue(new Callback<Void>() {
+                                            @Override
+                                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                                if(response.isSuccessful()==true && response.code()==200){
+
+                                                    showSuccess("Conteo Actualizado correctamente");
+
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<Void> call, Throwable t) {
+
+                                            }
+                                        });
+
+
+                                    }
+
+
+                                }
+
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<MtlCycleCountEntries>> call, Throwable t) {
+
+                        }
+                    });
+
+
+            }
+
+
         } else  if (tipo.equalsIgnoreCase("exit")) {
             Intent i = new Intent(this, ActivityCiclicoDetalle.class);
             i.putExtra("ciclicosId", this.inventarioCiclicoId);
@@ -583,6 +747,17 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                 //this.loadSigle();
             }
         }
+    }
+
+    public String Esnulo(String entrada){
+
+        if(entrada.length()==0){
+
+            return "0";
+        }
+        else
+
+            return entrada;
     }
 
     public void fillLote() {

@@ -100,7 +100,7 @@ public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter
         iRestMtlCycleCountHeaders.get(this.inventarioCiclicoId).enqueue(new Callback<MtlCycleCountHeaders>() {
             @Override
             public void onResponse(Call<MtlCycleCountHeaders> call, Response<MtlCycleCountHeaders> response) {
-                if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="{}"){
+                if(response.isSuccessful()==true && response.code()==200 && response.body()!=null){
                     MtlCycleCountHeaders mtlCycleCountHeaders = response.body();
 
 

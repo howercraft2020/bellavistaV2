@@ -3,6 +3,7 @@ package cl.clsoft.bave.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -17,14 +18,26 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestMtlCycleCountEntries;
 import cl.clsoft.bave.apis.IRestMtlCycleCountHeaders;
+import cl.clsoft.bave.apis.IRestMtlSystemItems;
+import cl.clsoft.bave.apis.IRestOrganizacionPrincipal;
 import cl.clsoft.bave.apis.IRestSubinventario;
 import cl.clsoft.bave.base.BaseActivity;
+import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
+import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.presenter.CiclicoSubPresenter;
 import cl.clsoft.bave.service.impl.ConteoCiclicoService;
@@ -52,6 +65,9 @@ public class ActivityCiclicoSub extends BaseActivity<CiclicoSubPresenter> implem
     //REST API
     private IRestMtlCycleCountHeaders iRestMtlCycleCountHeaders;
     private IRestSubinventario iRestSubinventario;
+    private IRestOrganizacionPrincipal iRestOrganizacionPrincipal;
+    private IRestMtlCycleCountEntries iRestMtlCycleCountEntries;
+    private IRestMtlSystemItems iRestMtlSystemItems;
 
     @NonNull
     @Override
@@ -95,13 +111,16 @@ public class ActivityCiclicoSub extends BaseActivity<CiclicoSubPresenter> implem
         //
         iRestMtlCycleCountHeaders = ApiUtils.getIRestMtlCycleCountHeaders();
         iRestSubinventario = ApiUtils.getIRestSubinventario();
+        iRestOrganizacionPrincipal = ApiUtils.getIRestOrganizacionPrincipal();
+        iRestMtlCycleCountEntries = ApiUtils.getIRestMtlCycleCountEntries();
+        iRestMtlSystemItems = ApiUtils.getIRestMtlSystemItems();
 
 
         iRestMtlCycleCountHeaders.get(this.inventarioCiclicoId).enqueue(new Callback<MtlCycleCountHeaders>() {
             @Override
             public void onResponse(Call<MtlCycleCountHeaders> call, Response<MtlCycleCountHeaders> response) {
 
-                if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="{}"){
+                if(response.isSuccessful()==true && response.code()==200 && response.body()!=null){
 
                     MtlCycleCountHeaders mtlCycleCountHeaders = response.body();
 
@@ -218,7 +237,127 @@ public class ActivityCiclicoSub extends BaseActivity<CiclicoSubPresenter> implem
     public void onDialogAceptarClick(DialogFragment dialog) {
         String tipo = dialog.getArguments().getString("tipo");
         if (tipo.equalsIgnoreCase("close")) {
-            mPresenter.closeConteoCiclico(this.inventarioCiclicoId);
+            //Cierre y cración de archivo conteo cíclico
+            Log.d(TAG, "ConteoCiclicoService::closeConteoCiclico");
+            Log.d(TAG, "ConteoCiclicoService::closeConteoCiclico::cycleCountHeaderId: " + this.inventarioCiclicoId);
+
+            String salida = "";
+            //mPresenter.closeConteoCiclico(this.inventarioCiclicoId);
+
+            iRestOrganizacionPrincipal.getAll().enqueue(new Callback<OrganizacionPrincipal>() {
+                @Override
+                public void onResponse(Call<OrganizacionPrincipal> call, Response<OrganizacionPrincipal> response) {
+
+                    if(response.isSuccessful()==true && response.code()==200 && response.body()!=null){
+
+                        OrganizacionPrincipal organizacionPrincipal = response.body();
+
+
+                        iRestMtlCycleCountHeaders.get(inventarioCiclicoId).enqueue(new Callback<MtlCycleCountHeaders>() {
+                            @Override
+                            public void onResponse(Call<MtlCycleCountHeaders> call, Response<MtlCycleCountHeaders> response) {
+
+
+                                if(response.isSuccessful()==true && response.code()==200 && response.body()!=null){
+
+                                    MtlCycleCountHeaders header = response.body();
+
+                                    iRestMtlCycleCountEntries.getAllInventariadosByHeader(inventarioCiclicoId).enqueue(new Callback<List<MtlCycleCountEntries>>() {
+                                        @Override
+                                        public void onResponse(Call<List<MtlCycleCountEntries>> call, Response<List<MtlCycleCountEntries>> response) {
+
+
+
+                                            if(response.isSuccessful()==true && response.code()==200 && response.body()!=null){
+
+                                                List<MtlCycleCountEntries> entries = response.body();
+
+
+                                                // Genera archivo Conteo
+                                                DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
+                                                String strLastUpdate = dateFormat.format(new Date());
+                                                String nombreArchivo = "I_C_" + inventarioCiclicoId + ".txt";
+
+                                                File tarjetaSD = Environment.getExternalStorageDirectory();
+                                                File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
+                                                File archivo = new File(Dir, nombreArchivo);
+                                                try {
+                                                    FileWriter writer = new FileWriter(archivo);
+
+
+
+
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                for (MtlCycleCountEntries entry : entries) {
+
+
+
+
+
+                                                }
+
+
+                                            }
+
+
+                                            if(response.isSuccessful()==true && response.code()==200 && response.body()==null){
+
+                                                showError( "Conteo Ciclico " + inventarioCiclicoId + ": no se encontraron entries inventariados.");
+
+                                            }
+
+
+
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<List<MtlCycleCountEntries>> call, Throwable t) {
+
+                                        }
+                                    });
+
+
+
+                                }
+                                if(response.isSuccessful()==true && response.code()==200 && response.body()==null){
+
+                                    showError("Conteo Ciclico " + inventarioCiclicoId + " no existe en el sistema");
+
+                                }
+
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<MtlCycleCountHeaders> call, Throwable t) {
+
+                            }
+                        });
+
+
+                    }
+                    if(response.isSuccessful()==true && response.code()==200 && response.body()==null){
+
+                        showError("Organizacion Principal no existe");
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<OrganizacionPrincipal> call, Throwable t) {
+
+                }
+            });
+
+
+
+
+
+
         }
     }
 
