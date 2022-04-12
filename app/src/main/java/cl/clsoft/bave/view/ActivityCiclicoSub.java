@@ -20,6 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestMtlCycleCountHeaders;
+import cl.clsoft.bave.apis.IRestSubinventario;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
 import cl.clsoft.bave.model.Subinventario;
@@ -27,6 +30,9 @@ import cl.clsoft.bave.presenter.CiclicoSubPresenter;
 import cl.clsoft.bave.service.impl.ConteoCiclicoService;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityCiclicoSub extends BaseActivity<CiclicoSubPresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
@@ -41,6 +47,11 @@ public class ActivityCiclicoSub extends BaseActivity<CiclicoSubPresenter> implem
     private TextView textCreationDate;
     private RecyclerView recyclerViewCiclicoSub;
     private AdapterConteoCiclicoSub adapter;
+
+
+    //REST API
+    private IRestMtlCycleCountHeaders iRestMtlCycleCountHeaders;
+    private IRestSubinventario iRestSubinventario;
 
     @NonNull
     @Override
@@ -65,6 +76,9 @@ public class ActivityCiclicoSub extends BaseActivity<CiclicoSubPresenter> implem
 
         //Set controls
         this.inventarioCiclicoId = this.getIntent().getLongExtra("ciclicosId",0);
+
+
+        /*
         MtlCycleCountHeaders mtlCycleCountHeaders = this.mPresenter.getMtlCycleCountHeaders(this.inventarioCiclicoId);
         if (mtlCycleCountHeaders != null) {
 
@@ -76,6 +90,67 @@ public class ActivityCiclicoSub extends BaseActivity<CiclicoSubPresenter> implem
             this.recyclerViewCiclicoSub.setLayoutManager(new LinearLayoutManager(this));
             this.mPresenter.loadSubinventories(mtlCycleCountHeaders.getCycleCountHeaderId());
         }
+        */
+
+        //
+        iRestMtlCycleCountHeaders = ApiUtils.getIRestMtlCycleCountHeaders();
+        iRestSubinventario = ApiUtils.getIRestSubinventario();
+
+
+        iRestMtlCycleCountHeaders.get(this.inventarioCiclicoId).enqueue(new Callback<MtlCycleCountHeaders>() {
+            @Override
+            public void onResponse(Call<MtlCycleCountHeaders> call, Response<MtlCycleCountHeaders> response) {
+
+                if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="{}"){
+
+                    MtlCycleCountHeaders mtlCycleCountHeaders = response.body();
+
+                    textCycleCountHeaderId.setText(mtlCycleCountHeaders.getCycleCountHeaderId().toString());
+                    textCycleCountHeaderName.setText(mtlCycleCountHeaders.getCycleCountHeaderName());
+                    textCreationDate.setText(mtlCycleCountHeaders.getCreationDate());
+
+                    recyclerViewCiclicoSub.setHasFixedSize(true);
+                    recyclerViewCiclicoSub.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                    //mPresenter.loadSubinventories(mtlCycleCountHeaders.getCycleCountHeaderId());
+
+                    iRestSubinventario.getAllByCiclico(mtlCycleCountHeaders.getCycleCountHeaderId()).enqueue(new Callback<List<Subinventario>>() {
+                        @Override
+                        public void onResponse(Call<List<Subinventario>> call, Response<List<Subinventario>> response) {
+
+                            if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="[]"){
+
+                                Log.d(TAG, "LocalizadoresBySubinventario::onPostExecute");
+                                hideProgres();
+                                fillSubinventarios(response.body());
+
+
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Subinventario>> call, Throwable t) {
+
+                        }
+                    });
+
+
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<MtlCycleCountHeaders> call, Throwable t) {
+
+            }
+        });
+
+
 
         final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override public boolean onSingleTapUp(MotionEvent e) {

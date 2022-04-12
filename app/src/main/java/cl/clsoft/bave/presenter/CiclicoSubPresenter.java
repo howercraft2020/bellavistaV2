@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestSubinventario;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.Localizador;
@@ -28,10 +30,16 @@ public class CiclicoSubPresenter extends BasePresenter {
     private IConteoCiclicoService mService;
     private TaskExecutor mTaskExecutor;
 
+
+
+
+
+
     public CiclicoSubPresenter(@NonNull final ActivityCiclicoSub view, @NonNull final TaskExecutor taskExecutor, @NonNull final IConteoCiclicoService service) {
         this.mView = view;
         this.mTaskExecutor = taskExecutor;
         this.mService = service;
+
     }
 
     public MtlCycleCountHeaders getMtlCycleCountHeaders(Long id) {
@@ -45,7 +53,7 @@ public class CiclicoSubPresenter extends BasePresenter {
 
     public void loadSubinventories(Long id) {
         mView.showProgres("Cargando subinventarios...");
-        mTaskExecutor.async(new CiclicoSubPresenter.GetSubinventories(id));
+        //mTaskExecutor.async(new CiclicoSubPresenter.GetSubinventories(id));
 
     }
 
@@ -54,16 +62,28 @@ public class CiclicoSubPresenter extends BasePresenter {
         mTaskExecutor.async(new CiclicoSubPresenter.CloseConteoCiclico(id));
     }
 
-    private class GetSubinventories implements AppTask<List<Subinventario>> {
+    private class GetSubinventories  {
 
         private Long id;
 
+        //REST API
+
+
         public GetSubinventories(Long id) {
             this.id = id;
+
         }
 
+
+
+
+        /*
         @Override
         public List<Subinventario> execute() {
+
+
+
+
             Log.d(TAG, "GetSubinventories::execute");
             List<Subinventario> subinventarios = new ArrayList<>();
             try {
@@ -86,6 +106,8 @@ public class CiclicoSubPresenter extends BasePresenter {
             mView.hideProgres();
             mView.fillSubinventarios(result);
         }
+
+         */
     }
 
     private class CloseConteoCiclico implements AppTask<Long> {

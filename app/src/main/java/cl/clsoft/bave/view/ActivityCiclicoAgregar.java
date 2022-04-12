@@ -26,12 +26,19 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestLocalizador;
+import cl.clsoft.bave.apis.IRestMtlCycleCountEntries;
+import cl.clsoft.bave.apis.IRestMtlSystemItems;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.presenter.CiclicoAgregarPresenter;
 import cl.clsoft.bave.service.impl.ConteoCiclicoService;
 import cl.clsoft.bave.task.AppTaskExecutor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
@@ -47,6 +54,15 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
     private Double cantidad;
     private boolean hayLocalizador = false;
     private int LAUNCH_SEARCHSINGLE_ACTIVITY = 2;
+
+
+    //REST API
+
+    private IRestMtlSystemItems iRestMtlSystemItems;
+    private IRestLocalizador iRestLocalizador;
+    private IRestMtlCycleCountEntries iRestMtlCycleCountEntries;
+
+
 
     // Controls
     private TextInputLayout layoutLocator;
@@ -97,6 +113,15 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
         this.textSerie.setThreshold(1);
         this.textLote.setThreshold(1);
 
+
+        //API
+        iRestMtlSystemItems = ApiUtils.getIRestMtlSystemItems();
+        iRestLocalizador = ApiUtils.getIRestLocalizador();
+        iRestMtlCycleCountEntries = ApiUtils.getIRestMtlCycleCountEntries();
+
+
+
+
         this.textLocator.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -105,6 +130,105 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                 locatorCodigo = parent.getAdapter().getItem(pos).toString();
                 Log.d(TAG, "locatorCodigo: " + locatorCodigo);
                 if (locatorCodigo != null && !locatorCodigo.equalsIgnoreCase("SIN LOCALIZADOR")) {
+
+
+                    iRestLocalizador.getByCodigo(locatorCodigo).enqueue(new Callback<Localizador>() {
+                        @Override
+                        public void onResponse(Call<Localizador> call, Response<Localizador> response) {
+                            //Si respuesta es correcta y no nula
+                            if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="{}"){
+
+                                Localizador localizador = response.body();
+
+
+                                    locatorId = localizador.getIdLocalizador();
+
+
+                                   // List<String> segmentosLocalizador = mPresenter.getSegmentosByCountHeaderIdSubinventoryLocatorId(inventarioCiclicoId, subinventarioId, locatorId);
+
+
+                                    if(locatorId == null){
+
+                                          iRestMtlCycleCountEntries.getSegmentsByCountHeaderSubinventory(inventarioCiclicoId, subinventarioId).enqueue(new Callback<List<String>>() {
+                                            @Override
+                                            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+
+                                                if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="[]") {
+                                                    List<String> segmentosLocalizador = response.body();
+                                                    if (segmentosLocalizador != null) {
+                                                        String[] segmentos = new String[segmentosLocalizador.size()];
+                                                        for (int i = 0; i < segmentosLocalizador.size(); i++) {
+                                                            segmentos[i] = segmentosLocalizador.get(i);
+                                                        }
+                                                        ArrayAdapter<String> adapterSegmentos = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.select_dialog_item, segmentos);
+                                                        textSigle.setAdapter(adapterSegmentos);
+                                                    }
+                                                    layoutSigle.setHintEnabled(true);
+                                                    textSigle.setEnabled(true);
+                                                    textSigle.setText("");
+                                                    textSigle.requestFocus();
+
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<List<String>> call, Throwable t) {
+
+                                            }
+                                        });
+
+
+                                    }
+                                    else {
+
+                                        iRestMtlCycleCountEntries.getSegmentsByCountHeaderSubinventoryLocator(inventarioCiclicoId, subinventarioId, locatorId).enqueue(new Callback<List<String>>() {
+                                            @Override
+                                            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                                                if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="[]") {
+
+                                                    List<String> segmentosLocalizador = response.body();
+                                                    if (segmentosLocalizador != null) {
+                                                        String[] segmentos = new String[segmentosLocalizador.size()];
+                                                        for (int i = 0; i < segmentosLocalizador.size(); i++) {
+                                                            segmentos[i] = segmentosLocalizador.get(i);
+                                                        }
+                                                        ArrayAdapter<String> adapterSegmentos = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.select_dialog_item, segmentos);
+                                                        textSigle.setAdapter(adapterSegmentos);
+                                                    }
+                                                    layoutSigle.setHintEnabled(true);
+                                                    textSigle.setEnabled(true);
+                                                    textSigle.setText("");
+                                                    textSigle.requestFocus();
+
+
+
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<List<String>> call, Throwable t) {
+
+                                            }
+                                        });
+
+
+                                    }
+
+
+
+
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Localizador> call, Throwable t) {
+
+                        }
+                    });
+
+                    /*
                     Localizador localizador = mPresenter.getLocalizadorbyCodigo(locatorCodigo);
                     if (localizador != null) {
                         locatorId = localizador.getIdLocalizador();
@@ -122,6 +246,9 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                         textSigle.setText("");
                         textSigle.requestFocus();
                     }
+                    */
+
+
                 }
             }
         });
@@ -138,6 +265,53 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                 {
                     if (textView.getText() != null && !textView.getText().toString().isEmpty()) {
                         segment = textView.getText().toString();
+
+
+
+                        iRestMtlSystemItems.getBySegment(segment).enqueue(new Callback<MtlSystemItems>() {
+                            @Override
+                            public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+
+                                //Si respuesta es correcta y no nula
+                                if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="{}"){
+
+                                    MtlSystemItems item = response.body();
+
+                                    textSigle.setEnabled(false);
+                                    layoutCantidad.setHintEnabled(true);
+                                    textCantidad.setEnabled(true);
+                                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
+                                    if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                                        fillLote();
+                                    } else {
+                                        textLote.setEnabled(false);
+                                        layoutLote.setHintEnabled(false);
+                                    }
+                                    if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                                        textSerie.setEnabled(true);
+                                        layoutSerie.setHintEnabled(true);
+                                        fillSerie();
+                                        textCantidad.setText("1.0");
+                                        textCantidad.setEnabled(false);
+                                    } else {
+                                        textSerie.setEnabled(false);
+                                        layoutSerie.setHintEnabled(false);
+                                    }
+
+                                }else {
+                                    showWarning("Item " + segment + " no encontrado en tabla maestra");
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+
+                            }
+                        });
+
+
+                        /*
                         MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
                         if (item != null) {
 
@@ -164,6 +338,10 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                         } else {
                             showWarning("Item " + segment + " no encontrado en tabla maestra");
                         }
+                        */
+
+
+
                     }
                     action = true;
                 }
@@ -228,7 +406,27 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
         });
 
         this.cleanScreen();
-        this.mPresenter.getLocalizadoresBySubinventario(this.subinventarioId, this.inventarioCiclicoId);
+        //this.mPresenter.getLocalizadoresBySubinventario(this.subinventarioId, this.inventarioCiclicoId);
+        iRestLocalizador.getAllBySubinventarioCountheaderId(this.subinventarioId, this.inventarioCiclicoId).enqueue(new Callback<List<Localizador>>() {
+            @Override
+            public void onResponse(Call<List<Localizador>> call, Response<List<Localizador>> response) {
+
+                if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="[]"){
+
+                    hideProgres();
+                    fillLocator(response.body());
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Localizador>> call, Throwable t) {
+
+            }
+        });
+
+
     }
 
     @Override
@@ -274,32 +472,59 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                 segment = data.getStringExtra("Segment1");
                 this.textSigle.setText(segment);
                 Log.d(TAG, "sigle: " + segment);
-                MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
-                if (item != null) {
-                    textSigle.setEnabled(false);
+                //MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
 
-                    if (item.getLotControlCode().equalsIgnoreCase("2")) {
-                        this.textLote.setEnabled(true);
-                        this.layoutLote.setHintEnabled(true);
-                        //fillLote();
-                    } else {
-                        this.textLote.setEnabled(false);
-                        this.layoutLote.setHintEnabled(false);
-                    }
-                    if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
-                        this.textSerie.setEnabled(true);
-                        this.layoutSerie.setHintEnabled(true);
-                        //fillSerie();
-                    } else {
-                        this.textSerie.setEnabled(false);
-                        this.layoutSerie.setHintEnabled(false);
-                    }
-                    layoutCantidad.setHintEnabled(true);
-                    textCantidad.setEnabled(true);
-                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
-                } else {
-                    showWarning("Item " + segment + " no encontrado en tabla maestra");
-                }
+
+                    iRestMtlSystemItems.getBySegment(segment).enqueue(new Callback<MtlSystemItems>() {
+                        @Override
+                        public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+                            if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="{}"){
+                                        MtlSystemItems item = response.body();
+
+                                        textSigle.setEnabled(false);
+
+                                if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                                    textLote.setEnabled(true);
+                                    layoutLote.setHintEnabled(true);
+                                    //fillLote();
+                                } else {
+                                    textLote.setEnabled(false);
+                                    layoutLote.setHintEnabled(false);
+                                }
+                                if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                                    textSerie.setEnabled(true);
+                                    layoutSerie.setHintEnabled(true);
+                                    //fillSerie();
+                                } else {
+                                    textSerie.setEnabled(false);
+                                    layoutSerie.setHintEnabled(false);
+                                }
+                                layoutCantidad.setHintEnabled(true);
+                                textCantidad.setEnabled(true);
+                                layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
+
+
+                            }
+
+                            else {
+                                showWarning("Item " + segment + " no encontrado en tabla maestra");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+
+                        }
+                    });
+
+
+
+
+
+
+
+
+
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 this.textSigle.setText("");
@@ -361,7 +586,89 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
     }
 
     public void fillLote() {
-        List<String> listLotes = this.mPresenter.getLotes(inventarioCiclicoId, subinventarioId, locatorId, segment);
+        //List<String> listLotes = this.mPresenter.getLotes(inventarioCiclicoId, subinventarioId, locatorId, segment);
+
+
+        if (locatorId != null && locatorId.longValue() > 0){
+
+            //getLoteByCountHeaderSubinventoryLocatorSegment
+
+            iRestMtlCycleCountEntries.getLoteByCountHeaderSubinventoryLocatorSegment(inventarioCiclicoId, subinventarioId, locatorId, segment).enqueue(new Callback<List<String>>() {
+                @Override
+                public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+
+                    if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="[]"){
+
+                        List<String> listLotes = response.body();
+
+                        if (listLotes.size() > 0) {
+                            String[] lotes = new String[listLotes.size()];
+                            for (int i = 0; i < listLotes.size(); i++) {
+                                lotes[i] = listLotes.get(i);
+                            }
+                            ArrayAdapter<String> adapterLote = new ArrayAdapter<String> (ActivityCiclicoAgregar.this, android.R.layout.select_dialog_item, lotes);
+                            textLote.setAdapter(adapterLote);
+                            textLote.setEnabled(true);
+                            layoutLote.setHintEnabled(true);
+                            textLote.requestFocus();
+                        } else {
+                            textLote.setEnabled(false);
+                            layoutLote.setHintEnabled(false);
+                        }
+
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<String>> call, Throwable t) {
+
+                }
+            });
+
+        }
+        else {
+
+            //getLoteByCountHeaderSubinventorySegment
+
+            iRestMtlCycleCountEntries.getLoteByCountHeaderSubinventorySegment(inventarioCiclicoId, subinventarioId,segment).enqueue(new Callback<List<String>>() {
+                @Override
+                public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+
+                    if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="[]"){
+                        List<String> listLotes = response.body();
+                        if (listLotes.size() > 0) {
+                            String[] lotes = new String[listLotes.size()];
+                            for (int i = 0; i < listLotes.size(); i++) {
+                                lotes[i] = listLotes.get(i);
+                            }
+                            ArrayAdapter<String> adapterLote = new ArrayAdapter<String> (ActivityCiclicoAgregar.this, android.R.layout.select_dialog_item, lotes);
+                            textLote.setAdapter(adapterLote);
+                            textLote.setEnabled(true);
+                            layoutLote.setHintEnabled(true);
+                            textLote.requestFocus();
+                        } else {
+                            textLote.setEnabled(false);
+                            layoutLote.setHintEnabled(false);
+                        }
+
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<String>> call, Throwable t) {
+
+                }
+            });
+
+
+
+        }
+
+       /*
         if (listLotes != null) {
             if (listLotes.size() > 0) {
                 String[] lotes = new String[listLotes.size()];
@@ -378,26 +685,98 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                 this.layoutLote.setHintEnabled(false);
             }
         }
+
+        */
+
     }
 
     public void fillSerie() {
-        List<String> listSeries = this.mPresenter.getSeries(inventarioCiclicoId, subinventarioId, locatorId, segment);
-        if (listSeries != null) {
-            if (listSeries.size() > 0) {
-                String[] series = new String[listSeries.size()];
-                for (int i = 0; i < listSeries.size(); i++) {
-                    series[i] = listSeries.get(i);
-                }
-                ArrayAdapter<String> adapterSerie = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, series);
-                this.textSerie.setAdapter(adapterSerie);
-                this.textSerie.setEnabled(true);
-                this.layoutSerie.setHintEnabled(true);
-                this.textSerie.requestFocus();
-            } else {
-                this.textSerie.setEnabled(false);
-                this.layoutSerie.setHintEnabled(false);
+        //List<String> listSeries = this.mPresenter.getSeries(inventarioCiclicoId, subinventarioId, locatorId, segment);
+
+
+            if (locatorId != null && locatorId.longValue() > 0){
+                //getSerialByCountHeaderSubinventoryLocatorSegment
+
+                iRestMtlCycleCountEntries.getSerialByCountHeaderSubinventoryLocatorSegment(inventarioCiclicoId, subinventarioId, locatorId, segment).enqueue(new Callback<List<String>>() {
+                    @Override
+                    public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                        if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="[]"){
+
+                            List<String> listSeries = response.body();
+
+                            if (listSeries.size() > 0) {
+                                String[] series = new String[listSeries.size()];
+                                for (int i = 0; i < listSeries.size(); i++) {
+                                    series[i] = listSeries.get(i);
+                                }
+                                ArrayAdapter<String> adapterSerie = new ArrayAdapter<String> (ActivityCiclicoAgregar.this, android.R.layout.select_dialog_item, series);
+                                textSerie.setAdapter(adapterSerie);
+                                textSerie.setEnabled(true);
+                                layoutSerie.setHintEnabled(true);
+                                textSerie.requestFocus();
+                            } else {
+                                textSerie.setEnabled(false);
+                                layoutSerie.setHintEnabled(false);
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<String>> call, Throwable t) {
+
+                    }
+                });
+
+
             }
-        }
+
+
+                else{
+
+                    //getSerialByCountHeaderSubinventorySegment
+                iRestMtlCycleCountEntries.getSerialByCountHeaderSubinventorySegment(inventarioCiclicoId, subinventarioId, segment).enqueue(new Callback<List<String>>() {
+                    @Override
+                    public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                        if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="[]"){
+
+                            List<String> listSeries = response.body();
+
+                            if (listSeries.size() > 0) {
+                                String[] series = new String[listSeries.size()];
+                                for (int i = 0; i < listSeries.size(); i++) {
+                                    series[i] = listSeries.get(i);
+                                }
+                                ArrayAdapter<String> adapterSerie = new ArrayAdapter<String> (ActivityCiclicoAgregar.this, android.R.layout.select_dialog_item, series);
+                                textSerie.setAdapter(adapterSerie);
+                                textSerie.setEnabled(true);
+                                layoutSerie.setHintEnabled(true);
+                                textSerie.requestFocus();
+                            } else {
+                                textSerie.setEnabled(false);
+                                layoutSerie.setHintEnabled(false);
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<String>> call, Throwable t) {
+
+                    }
+                });
+
+
+            }
+
+
+
+
+
+
+
+
+
     }
 
     public void grabarInventario() {
@@ -464,5 +843,6 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
         ConfirmationDialog dialogExit = ConfirmationDialog.newInstance("Perdera los datos ingresados. Quiere salir?", "Confirmación", "exit");
         dialogExit.show(getSupportFragmentManager(), "exitAgregarConfirm");
     }
+
 
 }

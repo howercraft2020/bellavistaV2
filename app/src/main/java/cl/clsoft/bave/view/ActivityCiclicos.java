@@ -3,6 +3,7 @@ package cl.clsoft.bave.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -15,10 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestMtlCycleCountHeaders;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
 import cl.clsoft.bave.presenter.CiclicosPresenter;
 import cl.clsoft.bave.service.impl.ConteoCiclicoService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityCiclicos extends BaseActivity<CiclicosPresenter> {
 
@@ -31,6 +37,9 @@ public class ActivityCiclicos extends BaseActivity<CiclicosPresenter> {
     private AdapterItemConteoCiclico adapter;
     private AdapterItemConteoCiclico.RecyclerViewClickListener listener;
 
+
+    //REST API
+    private IRestMtlCycleCountHeaders iRestMtlCycleCountHeaders;
 
     @NonNull
     @Override
@@ -54,9 +63,53 @@ public class ActivityCiclicos extends BaseActivity<CiclicosPresenter> {
         this.recyclerViewCiclicos.setHasFixedSize(true);
         this.recyclerViewCiclicos.setLayoutManager(new LinearLayoutManager(this));
 
+
+        //REST API
+        iRestMtlCycleCountHeaders = ApiUtils.getIRestMtlCycleCountHeaders();
+
+        /*
         this.ciclicos = mPresenter.getConteosCiclicos();
         this.adapter = new AdapterItemConteoCiclico(ciclicos, listener);
         this.recyclerViewCiclicos.setAdapter(this.adapter);
+        */
+
+        iRestMtlCycleCountHeaders.getAll().enqueue(new Callback<List<MtlCycleCountHeaders>>() {
+            @Override
+            public void onResponse(Call<List<MtlCycleCountHeaders>> call, Response<List<MtlCycleCountHeaders>> response) {
+
+                Log.d(TAG,response.body().toString());
+
+                if(response.isSuccessful()==true && response.code()==200 && response.body().toString()=="[]"){
+
+
+                    Log.d(TAG,"Viene Nulo MtlCycleCountHeaders");
+
+
+                }
+
+                if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="[]"){
+
+
+                    ciclicos = response.body();
+                    adapter = new AdapterItemConteoCiclico(ciclicos, listener);
+                    recyclerViewCiclicos.setAdapter(adapter);
+
+
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<MtlCycleCountHeaders>> call, Throwable t) {
+                    showError(t.getMessage());
+            }
+        });
+
+
+
         final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override public boolean onSingleTapUp(MotionEvent e) {
                 return true;

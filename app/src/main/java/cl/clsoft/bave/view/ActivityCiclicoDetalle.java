@@ -19,12 +19,18 @@ import android.widget.TextView;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestMtlCycleCountEntries;
+import cl.clsoft.bave.apis.IRestMtlCycleCountHeaders;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
 import cl.clsoft.bave.presenter.CiclicoDetallePresenter;
 import cl.clsoft.bave.service.impl.ConteoCiclicoService;
 import cl.clsoft.bave.task.AppTaskExecutor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter> {
 
@@ -33,6 +39,12 @@ public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter
     private Long inventarioCiclicoId;
     private String subinventarioId;
     private List<MtlCycleCountEntries> entries;
+
+
+    //REST API
+    private IRestMtlCycleCountHeaders iRestMtlCycleCountHeaders;
+    private IRestMtlCycleCountEntries iRestMtlCycleCountEntries;
+
 
     // Controls
     private TextView textCycleCountHeaderId;
@@ -62,9 +74,16 @@ public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter
         this.textCreationDate = findViewById(R.id.textCreationDate);
         this.recyclerViewEntries = findViewById(R.id.recyclerViewEntries);
 
+        iRestMtlCycleCountHeaders = ApiUtils.getIRestMtlCycleCountHeaders();
+        iRestMtlCycleCountEntries = ApiUtils.getIRestMtlCycleCountEntries();
+
+
         // Set Controls
         inventarioCiclicoId = this.getIntent().getLongExtra("ciclicosId",0);
         subinventarioId = this.getIntent().getStringExtra("subinventarioId");
+
+
+        /*
         MtlCycleCountHeaders mtlCycleCountHeaders = this.mPresenter.getMtlCycleCountHeaders(this.inventarioCiclicoId);
         if (mtlCycleCountHeaders != null) {
 
@@ -76,6 +95,31 @@ public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter
             this.recyclerViewEntries.setHasFixedSize(true);
             this.recyclerViewEntries.setLayoutManager(new LinearLayoutManager(this));
         }
+
+         */
+        iRestMtlCycleCountHeaders.get(this.inventarioCiclicoId).enqueue(new Callback<MtlCycleCountHeaders>() {
+            @Override
+            public void onResponse(Call<MtlCycleCountHeaders> call, Response<MtlCycleCountHeaders> response) {
+                if(response.isSuccessful()==true && response.code()==200 && response.body().toString()!="{}"){
+                    MtlCycleCountHeaders mtlCycleCountHeaders = response.body();
+
+
+                    textCycleCountHeaderId.setText(mtlCycleCountHeaders.getCycleCountHeaderId().toString());
+                    textCycleCountHeaderName.setText(mtlCycleCountHeaders.getCycleCountHeaderName());
+                    textSubinventario.setText(subinventarioId);
+                    textCreationDate.setText(mtlCycleCountHeaders.getCreationDate());
+
+                    recyclerViewEntries.setHasFixedSize(true);
+                    recyclerViewEntries.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MtlCycleCountHeaders> call, Throwable t) {
+
+            }
+        });
 
         final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override public boolean onSingleTapUp(MotionEvent e) {
@@ -116,7 +160,22 @@ public class ActivityCiclicoDetalle extends BaseActivity<CiclicoDetallePresenter
     @Override
     protected void onStart() {
         super.onStart();
-        this.mPresenter.loadEntries(this.inventarioCiclicoId, this.subinventarioId);
+        //this.mPresenter.loadEntries(this.inventarioCiclicoId, this.subinventarioId);
+
+       iRestMtlCycleCountEntries.getAllInventariadosBySubinventario(this.inventarioCiclicoId, this.subinventarioId).enqueue(new Callback<List<MtlCycleCountEntries>>() {
+           @Override
+           public void onResponse(Call<List<MtlCycleCountEntries>> call, Response<List<MtlCycleCountEntries>> response) {
+               if(response.isSuccessful()==true && response.code()==200 && response.toString().toString()!="[]") {
+                   hideProgres();
+                   fillEntries(response.body());
+               }
+           }
+
+           @Override
+           public void onFailure(Call<List<MtlCycleCountEntries>> call, Throwable t) {
+
+           }
+       });
     }
 
     @Override

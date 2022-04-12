@@ -34,5 +34,6 @@ public interface IRestLocalizador {
     Observable<Localizador> getByCodigoRx(@Path("codigo") String codigo);
 
 
-
+    @GET("Localizador/getAllBySubinventarioCountheaderId/{subinventarioCodigo}/{cycleCountHeaderId}")
+    Call<List<Localizador>> getAllBySubinventarioCountheaderId(@Path("subinventarioCodigo") String subinventarioCodigo,@Path("cycleCountHeaderId") Long cycleCountHeaderId);
 }
