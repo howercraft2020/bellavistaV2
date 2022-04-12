@@ -124,6 +124,8 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
     Long polineid,itemid;
     private TextInputLayout layoutCodigoBarrasItem;
     private EditText textCodigobarrasRecepOc;
+    private  TextInputLayout layoutDescripcion;
+    private TextInputLayout textDescripcion;
 
 
     @NonNull
@@ -159,6 +161,8 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
         this.iconSearch = findViewById(R.id.iconSearch);
         this.layoutCodigoBarrasItem = findViewById(R.id.layoutCodigoBarrasRecepOc);
         this.textCodigobarrasRecepOc = findViewById(R.id.textCodigobarrasRecepOc);
+        this.layoutDescripcion = findViewById(R.id.layoutDescripcion);
+
 
 
 
@@ -208,9 +212,11 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                             Log.d("Articulos Cant:", "Leyendo MtlgetBySegment");
                             layoutCantidad.setHintEnabled(true);
                             textCantidad.setEnabled(true);
+
                             layoutCantidad.setHint("Cantidad (" + mtlSystemItems.getPrimaryUomCode() + ")");
                             textUdm.setText(mtlSystemItems.getPrimaryUomCode());
                             inventoryItemId = mtlSystemItems.getInventoryItemId();
+
                             //mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
                             validaLinea();
                         }
@@ -254,6 +260,8 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                                     layoutCantidad.setHint("Cantidad (" + mtlSystemItems.getPrimaryUomCode() + ")");
                                     textUdm.setText(mtlSystemItems.getPrimaryUomCode());
                                     inventoryItemId = mtlSystemItems.getInventoryItemId();
+
+
                                     //mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
                                     validaLinea();
 
@@ -298,8 +306,9 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                                         layoutCantidad.setHint("Cantidad (" + mtlSystemItems.getPrimaryUomCode() + ")");
                                         textUdm.setText(mtlSystemItems.getPrimaryUomCode());
                                         inventoryItemId = mtlSystemItems.getInventoryItemId();
+
                                         //mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
-                                        validaLinea();
+                                      //  validaLinea();
                                     }else {
                                         // showWarning("Item " + segment + " no se ha encontrado en la maestra.");
                                     }
@@ -317,6 +326,9 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                 return false;
             }
         });
+
+
+
 
 
 
@@ -354,6 +366,8 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                             layoutCantidad.setHint("Cantidad (" + mtlSystemItems.getPrimaryUomCode() + ")");
                             textUdm.setText(mtlSystemItems.getPrimaryUomCode());
                             inventoryItemId = mtlSystemItems.getInventoryItemId();
+
+
                             //mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
                             validaLinea();
 
@@ -850,7 +864,6 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
 
             poLinesViewModel.init();
 
-
             poLinesViewModel.PoLinesgetLines(inventoryItemId,Long.parseLong(poHeaderId));
 
             poLinesViewModel.getLines().observe(this, new Observer<List<PoLinesAll>>() {
@@ -879,19 +892,18 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                         dialogLinea.show(getSupportFragmentManager(), "DialogLinea");
                     } else {
 
-
                         Log.d("LINENUM", "ASIGANDO NUMERO DE LINEA ");
                         textNumeroLinea.setText(poLinesAlls.get(0).getLineNum());
                         polineid = poLinesAlls.get(0).getPoLineId();
                         itemid = poLinesAlls.get(0).getItemId();
+                        //INGRESANDO CANTIDAD
+                        textCantidad.setText(poLinesAlls.get(0).getQuantity().toString());
                         Log.d("LINENUM", "PO_LINE_ID:"+polineid);
 
                         Log.d("LINENUM", "NUMERO ES"+poLinesAlls.get(0).getLineNum());
                     }
                 }
             });
-
-
 
         }
     }
@@ -903,9 +915,7 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
         this.textNumeroLinea.setText(linea);
     }
 
-
     public void cleanScreen() {
-
         this.textSigle.setText("");
         this.textNumeroLinea.setText("");
         this.textCantidad.setText("");

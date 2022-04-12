@@ -13,5 +13,30 @@
         <item>Consulta Stock Subinventario</item>
     </string-array>
 
-    
+
+
+    <string-array name="combo_acciones_paso0">
+        <item>Recepcion OC</item>
+        <item>Consulta Stock</item>
+        <item>Conteo Cíclico</item>
+        <item>Inventario Físico</item>
+        <item>Transferencia Subinventario</item>
+        <item>Transferencia Organización</item>
+        <item>Recepción entre Organizaciones</item>
+
+    </string-array>
+
+    <string-array name="combo_acciones_Recepcion">
+        <item>Paso Uno</item>
+        <item>Paso Dos</item>
+    </string-array>
+
+    <string-array name="combo_acciones_Stock">
+        <item>Consulta Stock Item</item>
+        <item>Consulta Stock Subinventario</item>
+    </string-array>
+
+
+
+
 </resources>

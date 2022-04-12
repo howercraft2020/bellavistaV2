@@ -13,20 +13,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestConsulta;
+import cl.clsoft.bave.apis.IRestHomologacion;
+import cl.clsoft.bave.apis.IRestMtlSystemItems;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
 import cl.clsoft.bave.R;
-import cl.clsoft.bave.apis.ApiUtils;
-import cl.clsoft.bave.apis.IRestConsulta;
-import cl.clsoft.bave.apis.IRestHomologacion;
-import cl.clsoft.bave.apis.IRestMtlSystemItems;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.ConsultaItem;
 import cl.clsoft.bave.model.MtlSystemItems;
@@ -82,35 +83,14 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
         this.layoutCodigoBarrasItem = findViewById(R.id.layoutCodigoBarrasItem);
         this.textCodigobarrasItem = findViewById(R.id.textCodigobarrasItem);
 
+        // Set Controls
+
+
+
         // API
         this.iRestConsulta= ApiUtils.getIRestConsulta();
         this.iRestMtlSystemItems  = ApiUtils.getIRestMtlSystemItems();
         this.iRestHomologacion = ApiUtils.getIRestHomologacion();
-
-        // Set Controls
-
-
-        this.textCodigobarrasItem.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                String Homologacion = textCodigobarrasItem.getText().toString();
-                iRestHomologacion.getInventoryItemId(Homologacion).enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if(response.isSuccessful() == true){
-                            fillStock(Long.valueOf(response.body()));
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        showError("Error de Conexion"+t.getMessage());
-                    }
-                });
-                return false;
-            }
-        });
-
-
 
 
         this.textSigle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -140,6 +120,33 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
                 return action;
             }
         });
+
+
+        this.textCodigobarrasItem.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                String Homologacion = textCodigobarrasItem.getText().toString();
+                iRestHomologacion.getInventoryItemId(Homologacion).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.isSuccessful() == true){
+                            fillStock(Long.valueOf(response.body()));
+                            Toast.makeText(ActivityConsultaItem.this, response.body().toString(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        showError("Error de Conexion"+t.getMessage());
+                    }
+                });
+                return false;
+            }
+        });
+
+
+
+
 
         this.iconSearch.setOnClickListener(v -> {
             Intent i = new Intent(this, ActivitySigleSearch.class);
@@ -177,7 +184,7 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
         }
     }
 
-   /* private void fillStock(Long inventoryItemId) {
+    /*private void fillStock(Long inventoryItemId) {
         List<ConsultaItem> items = mPresenter.getAllByItem(inventoryItemId);
         AdapterItemConsultaSigle adapterItemConsultaSigle = new AdapterItemConsultaSigle(items);
         this.recyclerViewItems.setAdapter(adapterItemConsultaSigle);
@@ -186,7 +193,6 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
         }
         this.textSigle.setText("");
     }*/
-
 
     private void fillStock(Long inventoryItemId) {
         System.out.println("FillStock: "+inventoryItemId);
@@ -222,6 +228,7 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
 
             }
         });
+
         //AdapterItemConsultaSigle adapterItemConsultaSigle = new AdapterItemConsultaSigle(items);
         //this.recyclerViewItems.setAdapter(adapterItemConsultaSigle);
         this.textSigle.setText("");

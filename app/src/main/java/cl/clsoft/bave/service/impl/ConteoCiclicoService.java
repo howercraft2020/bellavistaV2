@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import cl.clsoft.bave.apis.IRestMtlCycleCountHeaders;
+import cl.clsoft.bave.apis.IRestMtlSystemItems;
 import cl.clsoft.bave.dao.ILocalizadorDao;
 import cl.clsoft.bave.dao.IMtlCycleCountEntriesDao;
 import cl.clsoft.bave.dao.IMtlCycleCountHeadersDao;
@@ -34,9 +36,15 @@ import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.service.IConteoCiclicoService;
 
+
+//API
+
+
 public class ConteoCiclicoService implements IConteoCiclicoService {
 
     private static final String TAG = "SERVICE";
+    IRestMtlSystemItems iRestMtlSystemItems;
+    IRestMtlCycleCountHeaders iRestMtlCycleCountHeaders;
 
     @Override
     public List<MtlCycleCountHeaders> getAllConteosCiclicos() throws ServiceException {

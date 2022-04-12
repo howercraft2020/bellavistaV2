@@ -10,7 +10,5 @@ public interface IRestHomologacion {
 
     @GET("XXPDA_HOMOLOGACION_V/getHomologacion/{codBarra}")
     Call<String> getInventoryItemId(@Path("codBarra") String codBarra);
-
-
-
 }
+

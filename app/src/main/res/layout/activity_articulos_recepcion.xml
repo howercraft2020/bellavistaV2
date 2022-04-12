@@ -38,27 +38,29 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/TagPoHeaderId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/TagId"
-            android:text="ID : "
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:paddingStart="3dp"
-            android:paddingLeft="3dp" />
+                android:id="@+id/TagPoHeaderId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/TagId"
+                android:text="ID : "
+                android:visibility="gone"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:paddingStart="3dp"
+                android:paddingLeft="3dp"/>
 
         <TextView
-            android:id="@+id/poHeaderId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/segment1"
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="0dp"
-            android:layout_toRightOf="@id/TagPoHeaderId"
-            android:text="poheaderId"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+                android:id="@+id/poHeaderId"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/segment1"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="0dp"
+                android:layout_toRightOf="@id/TagPoHeaderId"
+                android:text="poheaderId"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/TagReceiptNum"
@@ -110,9 +112,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewArticulosRecepcion"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+            android:id="@+id/recyclerViewArticulosRecepcion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
 
 </LinearLayout>

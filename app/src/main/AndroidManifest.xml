@@ -1,167 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cl.clsoft.bave">
+          package="cl.clsoft.bave">
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <application
-        android:name=".InventarioApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/BaveTheme"
-        android:usesCleartextTraffic="true">
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	<uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_INTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
 
-        <activity android:name=".view.ActivityMain">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+	<application
+			android:name=".InventarioApplication"
+			android:allowBackup="true"
+			android:icon="@mipmap/ic_launcher"
+			android:label="@string/app_name"
+			android:requestLegacyExternalStorage="true"
+			android:roundIcon="@mipmap/ic_launcher_round"
+			android:supportsRtl="true"
+			android:theme="@style/BaveTheme"
+			android:usesCleartextTraffic="true">
+		<activity
+				android:name=".view.ActivityMenuStock"
+				android:exported="true"/>
+		<activity
+				android:name=".view.ActivityPaso_1"
+				android:exported="true"/>
+		<activity android:name=".view.ActivityMain">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <!-- TRANSFERENCIA ORGANIZACION-->
-
-        <activity android:name=".view.ActivityTransOrgTransactionDetalle"></activity>
-        <activity android:name=".view.ActivityTransOrgResumen" />
-        <activity android:name=".view.ActivitySeriesTransOrg" />
-        <activity android:name=".view.ActivityAgregarTransOrg" />
-        <activity android:name=".view.ActivityAgregarTransOrgDestino" />
-        <activity android:name=".view.ActivityTransOrgDetalle" />
-        <activity android:name=".view.ActivityTransOrg" />
-        <activity android:name=".view.ActivityTransSubinvTransactionDetalle" />
-
-        <!-- INVENTARIO CICLICO -->
-        <activity
-            android:name=".view.ActivityCiclicos"
-            android:label="Conteos Cíclicos" />
-        <activity
-            android:name=".view.ActivityCiclicoSub"
-            android:label="Subinventarios"/>
-        <activity
-            android:name=".view.ActivityCiclicoDetalle"
-            android:label="Conteos"/>
-        <activity
-            android:name=".view.ActivityCiclicoAgregar"
-            android:label="Agregar Conteo"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".view.ActivityCiclicoEditar"
-            android:label="Editar Conteo"/>
-
-        <!-- INVENTARIO FISICO -->
-        <activity
-            android:name=".view.ActivityFisicos"
-            android:label="Inventarios Físicos"/>
-        <activity
-            android:name=".view.ActivityFisicoSub"
-            android:label="Subinventarios"/>
-        <activity
-            android:name=".view.ActivityFisicoTags"
-            android:label="Tags"/>
-        <activity
-            android:name=".view.ActivityFisicoAgregar"
-            android:label="Agregar Inventario"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".view.ActivityFisicoAgregarDisponible"
-            android:label="Agregar Inventario"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".view.ActivityFisicoEditar"
-            android:label="Editar Inventario"/>
-
-
-        <!-- TRANSFERENCIA SUBINVENTARIO-->
-        <activity android:name=".view.ActivityAgregarTransSubinv" />
-        <activity android:name=".view.ActivityTransSubinv" />
-        <activity android:name=".Entrega" />
-        <activity android:name=".view.ActivityTransSubinvDetalle"></activity>
-        <activity android:name=".view.ActivityTransSubinvDest" />
-        <activity android:name=".view.ActivitySeriesTrans"/>
-        <activity android:name=".view.ActivityTransSubinvResumen" />
-
-        <!-- RECEPCION OC -->
-
-        <activity
-            android:name=".view.ActivityRecepcionOc"
-            android:label="Recepcion" />
-        <activity android:name=".view.ActivityArticulosRecepcion" />
-        <activity android:name=".view.ActivityAgregarRecepcion" />
-        <activity android:name=".view.ActivityRecepcionArticuloDetalle"></activity>
-
-        <!-- ENTREGA -->
-        <activity
-            android:name=".view.ActivityEntregas"
-            android:label="Entregas"/>
-        <activity
-            android:name=".view.ActivityEntregaDetalle"
-            android:label="Detalle"/>
-        <activity
-            android:name=".view.ActivityEntregaAgregar"
-            android:label="Agregar"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".view.ActivityEntregaAgregarLote"
-            android:label="Lote"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".view.ActivityEntregaAgregarSerie"
-            android:label="Serie"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".view.ActivityEntregaAgregarResumen"
-            android:label="Resumen"/>
-        <activity
-            android:name=".view.ActivityEntregaTransactionDetalle"
-            android:label="Transacción"/>
-
-        <!-- ENTREGA ORGANIZACIONES -->
-        <activity
-            android:name=".view.ActivityEntregasOrgs"
-            android:label="Entregas Orgs"/>
-        <activity
-            android:name=".view.ActivityEntregasOrgsDetalle"
-            android:label="Detalle"/>
-        <activity
-            android:name=".view.ActivityEntregaOrgsAgregar"
-            android:label="Agregar"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".view.ActivityEntregaOrgsAgregarLote"
-            android:label="Lote"/>
-        <activity
-            android:name=".view.ActivityEntregaOrgsAgregarSerie"
-            android:label="Serie"/>
-        <activity
-            android:name=".view.ActivityEntregaOrgsAgregarResumen"
-            android:label="Resumen"/>
-        <activity
-            android:name=".view.ActivityEntregaOrgsTransactionDetalle"
-            android:label="Transacción"/>
-
-        <!-- CONSULTA -->
-        <activity
-            android:name=".view.ActivityConsultaItem"
-            android:label="Stock"/>
-        <activity
-            android:name=".view.ActivityConsultaSubinventario"
-            android:label="Stock"/>
-        <activity
-            android:name=".view.ActivityConsultaSubinventarioDetalle"
-            android:label="Stock Detalle"/>
-
-        <!-- GENERICO -->
-        <activity
-            android:name=".view.ActivitySigleSearch"
-            android:label="Búsqueda Sigle"/>
-    </application>
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity> <!-- TRANSFERENCIA ORGANIZACION -->
+		<activity android:name=".view.ActivityTransOrgTransactionDetalle"/>
+		<activity android:name=".view.ActivityTransOrgResumen"/>
+		<activity android:name=".view.ActivitySeriesTransOrg"/>
+		<activity android:name=".view.ActivityAgregarTransOrg"/>
+		<activity android:name=".view.ActivityAgregarTransOrgDestino"/>
+		<activity android:name=".view.ActivityTransOrgDetalle"/>
+		<activity android:name=".view.ActivityTransOrg"/>
+		<activity android:name=".view.ActivityTransSubinvTransactionDetalle"/> <!-- INVENTARIO CICLICO -->
+		<activity
+				android:name=".view.ActivityCiclicos"
+				android:label="Conteos Cíclicos"/>
+		<activity
+				android:name=".view.ActivityCiclicoSub"
+				android:label="Subinventarios"/>
+		<activity
+				android:name=".view.ActivityCiclicoDetalle"
+				android:label="Conteos"/>
+		<activity
+				android:name=".view.ActivityCiclicoAgregar"
+				android:label="Agregar Conteo"
+				android:windowSoftInputMode="adjustResize"/>
+		<activity
+				android:name=".view.ActivityCiclicoEditar"
+				android:label="Editar Conteo"/> <!-- INVENTARIO FISICO -->
+		<activity
+				android:name=".view.ActivityFisicos"
+				android:label="Inventarios Físicos"/>
+		<activity
+				android:name=".view.ActivityFisicoSub"
+				android:label="Subinventarios"/>
+		<activity
+				android:name=".view.ActivityFisicoTags"
+				android:label="Tags"/>
+		<activity
+				android:name=".view.ActivityFisicoAgregar"
+				android:label="Agregar Inventario"
+				android:windowSoftInputMode="adjustResize"/>
+		<activity
+				android:name=".view.ActivityFisicoAgregarDisponible"
+				android:label="Agregar Inventario"
+				android:windowSoftInputMode="adjustResize"/>
+		<activity
+				android:name=".view.ActivityFisicoEditar"
+				android:label="Editar Inventario"/> <!-- TRANSFERENCIA SUBINVENTARIO -->
+		<activity android:name=".view.ActivityAgregarTransSubinv"/>
+		<activity android:name=".view.ActivityTransSubinv"/>
+		<activity android:name=".Entrega"/>
+		<activity android:name=".view.ActivityTransSubinvDetalle"/>
+		<activity android:name=".view.ActivityTransSubinvDest"/>
+		<activity android:name=".view.ActivitySeriesTrans"/>
+		<activity android:name=".view.ActivityTransSubinvResumen"/> <!-- RECEPCION OC -->
+		<activity
+				android:name=".view.ActivityRecepcionOc"
+				android:label="Recepcion"/>
+		<activity android:name=".view.ActivityArticulosRecepcion"/>
+		<activity android:name=".view.ActivityAgregarRecepcion"/>
+		<activity android:name=".view.ActivityRecepcionArticuloDetalle"/> <!-- ENTREGA -->
+		<activity
+				android:name=".view.ActivityEntregas"
+				android:label="Entregas"/>
+		<activity
+				android:name=".view.ActivityEntregaDetalle"
+				android:label="Detalle"/>
+		<activity
+				android:name=".view.ActivityEntregaAgregar"
+				android:label="Agregar"
+				android:windowSoftInputMode="adjustResize"/>
+		<activity
+				android:name=".view.ActivityEntregaAgregarLote"
+				android:label="Lote"
+				android:windowSoftInputMode="adjustResize"/>
+		<activity
+				android:name=".view.ActivityEntregaAgregarSerie"
+				android:label="Serie"
+				android:windowSoftInputMode="adjustResize"/>
+		<activity
+				android:name=".view.ActivityEntregaAgregarResumen"
+				android:label="Resumen"/>
+		<activity
+				android:name=".view.ActivityEntregaTransactionDetalle"
+				android:label="Transacción"/> <!-- ENTREGA ORGANIZACIONES -->
+		<activity
+				android:name=".view.ActivityEntregasOrgs"
+				android:label="Entregas Orgs"/>
+		<activity
+				android:name=".view.ActivityEntregasOrgsDetalle"
+				android:label="Detalle"/>
+		<activity
+				android:name=".view.ActivityEntregaOrgsAgregar"
+				android:label="Agregar"
+				android:windowSoftInputMode="adjustResize"/>
+		<activity
+				android:name=".view.ActivityEntregaOrgsAgregarLote"
+				android:label="Lote"/>
+		<activity
+				android:name=".view.ActivityEntregaOrgsAgregarSerie"
+				android:label="Serie"/>
+		<activity
+				android:name=".view.ActivityEntregaOrgsAgregarResumen"
+				android:label="Resumen"/>
+		<activity
+				android:name=".view.ActivityEntregaOrgsTransactionDetalle"
+				android:label="Transacción"/> <!-- CONSULTA -->
+		<activity
+				android:name=".view.ActivityConsultaItem"
+				android:label="Stock"/>
+		<activity
+				android:name=".view.ActivityConsultaSubinventario"
+				android:label="Stock"/>
+		<activity
+				android:name=".view.ActivityConsultaSubinventarioDetalle"
+				android:label="Stock Detalle"/> <!-- GENERICO -->
+		<activity
+				android:name=".view.ActivitySigleSearch"
+				android:label="Búsqueda Sigle"/>
+	</application>
 
 </manifest>

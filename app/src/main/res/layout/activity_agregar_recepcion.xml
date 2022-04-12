@@ -128,4 +128,23 @@
             android:textColor="@android:color/black"></cl.clsoft.bave.control.InstantAutoCompleteTextView>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:hint="Descripcion"
+            android:textColorHint="?attr/colorPrimary">
+
+        <cl.clsoft.bave.control.InstantAutoCompleteTextView
+                android:id="@+id/textDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorPrimaryDark"
+                android:inputType="text"
+                android:text=""
+                android:textColor="@android:color/black"></cl.clsoft.bave.control.InstantAutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
+
 </LinearLayout>

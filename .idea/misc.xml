@@ -6,10 +6,16 @@
         <entry key="..\:/Users/diego/Downloads/PDA_PROJECT/baveProd/baveProd/app/src/main/res/layout/spinner_dropdown_layout.xml" value="0.2824074074074074" />
         <entry key="..\:/Users/diego/Downloads/PDA_PROJECT/baveProd/baveProd/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1703125" />
         <entry key="..\:/Users/diego/Downloads/PDA_PROJECT/baveProd/baveProd/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.10572916666666667" />
+        <entry key="..\:/Users/lican/OneDrive/Documentos/GIT/app/src/main/res/layout/activity_agregar_recepcion.xml" value="0.1" />
+        <entry key="..\:/Users/lican/OneDrive/Documentos/GIT/app/src/main/res/layout/activity_articulos_recepcion.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/lican/OneDrive/Documentos/GIT/app/src/main/res/layout/activity_intermedio1.xml" value="0.15989583333333332" />
+        <entry key="..\:/Users/lican/OneDrive/Documentos/GIT/app/src/main/res/layout/activity_main.xml" value="0.15989583333333332" />
+        <entry key="..\:/Users/lican/OneDrive/Documentos/GIT/app/src/main/res/layout/activity_menu_stock.xml" value="0.15989583333333332" />
+        <entry key="..\:/Users/lican/OneDrive/Documentos/GIT/app/src/main/res/layout/activity_paso1.xml" value="0.15989583333333332" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="openjdk-18" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android API 30 Platform" project-jdk-type="Android SDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

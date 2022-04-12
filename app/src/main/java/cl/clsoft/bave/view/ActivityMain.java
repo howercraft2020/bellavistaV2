@@ -70,7 +70,7 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
         txtCargaDatos = (TextView) findViewById(R.id.txtCargaDatos);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.combo_acciones,
+                R.array.combo_acciones_paso0,
                 R.layout.estilo_spinner);
 
         comboAcciones.setAdapter(adapter);
@@ -79,14 +79,14 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
             public void onClick(View v) {
                 String seleccion = comboAcciones.getSelectedItem().toString();
                 if (seleccion.equals("Recepcion OC")){
-                    Intent intent = new Intent(ActivityMain.this, ActivityRecepcionOc.class);
+                    Intent intent = new Intent(ActivityMain.this, ActivityPaso_1.class);
                     intent.putExtra("paso", "1");
                     startActivity(intent);
                 }
-                if (seleccion.equals("Entrega OC")){
+                /*if (seleccion.equals("Entrega OC")){
                     Intent intent = new Intent(ActivityMain.this, ActivityEntregas.class);
                     startActivity(intent);
-                }
+                }*/
                 if (seleccion.equals("Conteo Cíclico")){
                     Intent intent = new Intent(ActivityMain.this, ActivityCiclicos.class);
                     startActivity(intent);
@@ -111,13 +111,13 @@ public class ActivityMain extends BaseActivity<MainPresenter> {
                     startActivity(intent);
                 }
 
-                if (seleccion.equals("Consulta Stock Item")){
+               /* if (seleccion.equals("Consulta Stock Item")){
                     Intent intent = new Intent(ActivityMain.this, ActivityConsultaItem.class);
                     startActivity(intent);
-                }
+                }*/
 
-                if (seleccion.equals("Consulta Stock Subinventario")){
-                    Intent intent = new Intent(ActivityMain.this, ActivityConsultaSubinventario.class);
+                if (seleccion.equals("Consulta Stock")){
+                    Intent intent = new Intent(ActivityMain.this, ActivityMenuStock.class);
                     startActivity(intent);
                 }
             }
