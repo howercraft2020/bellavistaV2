@@ -7,6 +7,7 @@ import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
 import cl.clsoft.bave.model.MtlSystemItems;
+import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.Subinventario;
 
 public interface IConteoCiclicoService {
@@ -35,7 +36,7 @@ public interface IConteoCiclicoService {
     public List<String> getLotesByCountHeaderIdSubinventoryLocatorIdSegment(Long cycleCountHeaderId, String subinventory, Long locatorId, String segment) throws ServiceException;
     public List<String> getSerialByCountHeaderIdSubinventoryLocatorIdSegment(Long cycleCountHeaderId, String subinventory, Long locatorId, String segment) throws ServiceException;
 
-
+    public String closeConteoCiclicov2(Long cycleCountHeaderId, MtlCycleCountHeaders header, List<MtlCycleCountEntries> entries, OrganizacionPrincipal organizacionPrincipal, MtlSystemItems mtlSystemItems) throws ServiceException;
 
 
 }

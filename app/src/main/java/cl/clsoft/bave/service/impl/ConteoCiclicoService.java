@@ -246,6 +246,73 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
             throw new ServiceException(2, e.getDescripcion());
         }
     }
+    @Override
+    public String closeConteoCiclicov2(Long cycleCountHeaderId,MtlCycleCountHeaders header,List<MtlCycleCountEntries> entries,OrganizacionPrincipal organizacionPrincipal,MtlSystemItems mtlSystemItems) throws ServiceException {
+        Log.d(TAG, "ConteoCiclicoService::closeConteoCiclico");
+        Log.d(TAG, "ConteoCiclicoService::closeConteoCiclico::cycleCountHeaderId: ");
+
+        String salida = "";
+
+        try {
+
+
+            // Genera archivo Conteo
+            DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
+            String strLastUpdate = dateFormat.format(new Date());
+            String nombreArchivo = "I_C_" + cycleCountHeaderId + ".txt";
+
+            File tarjetaSD = Environment.getExternalStorageDirectory();
+            File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
+            File archivo = new File(Dir, nombreArchivo);
+            FileWriter writer = new FileWriter(archivo);
+            for (MtlCycleCountEntries entry : entries) {
+
+                writer.write(
+                        header.getOrganizationId() + ";" +              // ORGANIZATION_ID
+                                organizacionPrincipal.getCode() + ";" +     // ORGANIZATION_CODE
+                                header.getLastUpdateDate() + ";" +          // LAST_UPDATE_DATE
+                                header.getLastUpdatedBy() + ";" +           // LAST_UPDATED_BY
+                                header.getCreationDate() + ";" +            // CREATION_DATE
+                                header.getCreatedBy() + ";" +               // CREATED_BY
+                                entry.getCycleCountEntryId() + ";" +        // CYCLE_COUNT_ENTRY_ID
+                                "2;" +                                      // ACTION_CODE
+                                header.getCycleCountHeaderId() + ";" +      // CYCLE_COUNT_HEADER_ID
+                                header.getCycleCountHeaderName() + ";" +    // CYCLE_COUNT_HEADER_NAME
+                                entry.getInventoryItemId() + ";" +          // INVENTORY_ITEM_ID
+                                mtlSystemItems.getSegment1() + ";" +        // SEGMENT1
+                                mtlSystemItems.getDescription() + ";" +     // DESCRIPTION
+                                entry.getSubinventory() + ";" +             // SUBINVENTORY
+                                entry.getLocatorId() + ";" +                // LOCATOR_ID
+                                entry.getLocatorCode() + ";" +              // LOCATOR
+                                entry.getLotNumber() + ";" +                // LOT_NUMBER
+                                entry.getSerialNumber() + ";" +             // SERIAL_NUMBER
+                                entry.getCount() + ";" +                    // PRIMARY_UOM_QUANTITY
+                                entry.getPrimaryUomCode() + ";" +           // COUNT_UOM
+                                entry.getCount() + ";" +                    // COUNT_QUANTITY
+                                entry.getLastUpdated() + ";" +              // COUNT_DATE
+                                header.getEmployeeId() + ";" + "" +         // EMPLOYEE_ID
+                                "1;" +                                      // LOCK_FLAG
+                                "1;" +                                      // DELETE_FLAG
+                                "FIN\r\n");
+            }
+            writer.flush();
+            writer.close();
+
+            salida = archivo.getAbsolutePath();
+
+
+
+
+            return salida;
+        } catch(IOException e){
+            throw new ServiceException(2, e.getMessage());
+        }
+
+
+
+
+    }
+
 
     @Override
     public String closeConteoCiclico(Long cycleCountHeaderId) throws ServiceException {
@@ -257,6 +324,11 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
         IMtlCycleCountEntriesDao mtlCycleCountEntriesDao = new MtlCycleCountEntriesDaoImpl();
         IOrganizacionPrincipalDao organizacionPrincipalDao = new OrganizacionPrincipalDaoImpl();
         IMtlSystemItemsDao mtlSystemItemsDao = new MtlSystemItemsDaoImpl();
+
+
+
+
+
         try {
             // Recupera Organizacion
             OrganizacionPrincipal organizacionPrincipal = organizacionPrincipalDao.get();

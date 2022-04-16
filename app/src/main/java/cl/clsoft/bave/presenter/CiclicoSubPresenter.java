@@ -14,7 +14,10 @@ import cl.clsoft.bave.apis.IRestSubinventario;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.Localizador;
+import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
+import cl.clsoft.bave.model.MtlSystemItems;
+import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.service.IConteoCiclicoService;
 import cl.clsoft.bave.service.IInventarioFisicoService;
@@ -57,9 +60,11 @@ public class CiclicoSubPresenter extends BasePresenter {
 
     }
 
-    public void closeConteoCiclico(Long id) {
+    public void closeConteoCiclico(Long id, MtlCycleCountHeaders header, List<MtlCycleCountEntries> entries, OrganizacionPrincipal organizacionPrincipal, MtlSystemItems mtlSystemItems) throws ServiceException {
         mView.showProgres("Cerrando conteo ciclico...");
-        mTaskExecutor.async(new CiclicoSubPresenter.CloseConteoCiclico(id));
+        //mTaskExecutor.async(new CiclicoSubPresenter.CloseConteoCiclico(id));
+        new CiclicoSubPresenter.CloseConteoCiclico(id,header,entries,organizacionPrincipal,mtlSystemItems).cerrar_conteo();
+
     }
 
     private class GetSubinventories  {
@@ -110,13 +115,32 @@ public class CiclicoSubPresenter extends BasePresenter {
          */
     }
 
-    private class CloseConteoCiclico implements AppTask<Long> {
+    //private class CloseConteoCiclico implements AppTask<Long> {
+    private class CloseConteoCiclico  {
         private Long id;
+        private MtlCycleCountHeaders header;
+        private List<MtlCycleCountEntries> entries;
+        private OrganizacionPrincipal organizacionPrincipal;
+        private MtlSystemItems mtlSystemItems;
 
-        public CloseConteoCiclico(Long id) {
+        public CloseConteoCiclico(Long id, MtlCycleCountHeaders header, List<MtlCycleCountEntries> entries, OrganizacionPrincipal organizacionPrincipal, MtlSystemItems mtlSystemItems) {
             this.id = id;
+            this.header = header;
+            this.entries = entries;
+            this.organizacionPrincipal = organizacionPrincipal;
+            this.mtlSystemItems = mtlSystemItems;
+
         }
 
+
+        public void cerrar_conteo() throws ServiceException {
+
+            String archivo = mService.closeConteoCiclicov2(this.id,this.header,this.entries,this.organizacionPrincipal,this.mtlSystemItems);
+
+        }
+
+
+        /*
         @Override
         public Long execute() {
             Log.d(TAG, "CloseConteoCiclico::execute");
@@ -145,6 +169,9 @@ public class CiclicoSubPresenter extends BasePresenter {
                 mView.mensajeErrorCloseInventory();
             }
         }
+        */
+
+
     }
 
 }

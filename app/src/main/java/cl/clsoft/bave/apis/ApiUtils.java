@@ -4,9 +4,9 @@ package cl.clsoft.bave.apis;
 public class ApiUtils {
 
 
-    public static final String BASE_URL ="https://10.13.30.31:8443/InventarioREST-0.0.1-SNAPSHOT/";
+    //public static final String BASE_URL ="https://10.13.30.31:8443/InventarioREST-0.0.1-SNAPSHOT/";
 
-    //public static final String BASE_URL = "https://6fb0-181-42-20-110.ngrok.io/";
+    public static final String BASE_URL = "https://6034-200-68-46-18.ngrok.io/";
 
     public static IRestPoheadersAll getIRestPoheadersAll() {
         return RetrofitClient.getClient(BASE_URL).create(IRestPoheadersAll.class);

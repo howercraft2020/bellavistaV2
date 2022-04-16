@@ -35,8 +35,10 @@ import cl.clsoft.bave.apis.IRestMtlSystemItems;
 import cl.clsoft.bave.apis.IRestOrganizacionPrincipal;
 import cl.clsoft.bave.apis.IRestSubinventario;
 import cl.clsoft.bave.base.BaseActivity;
+import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
+import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.presenter.CiclicoSubPresenter;
@@ -273,30 +275,78 @@ public class ActivityCiclicoSub extends BaseActivity<CiclicoSubPresenter> implem
                                                 List<MtlCycleCountEntries> entries = response.body();
 
 
-                                                // Genera archivo Conteo
-                                                DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
-                                                String strLastUpdate = dateFormat.format(new Date());
-                                                String nombreArchivo = "I_C_" + inventarioCiclicoId + ".txt";
 
-                                                File tarjetaSD = Environment.getExternalStorageDirectory();
-                                                File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
-                                                File archivo = new File(Dir, nombreArchivo);
-                                                try {
-                                                    FileWriter writer = new FileWriter(archivo);
-
-
-
-
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
-                                                }
                                                 for (MtlCycleCountEntries entry : entries) {
 
+                                                    iRestMtlSystemItems.get(entry.getInventoryItemId()).enqueue(new Callback<MtlSystemItems>() {
+                                                        @Override
+                                                        public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+                                                            if(response.isSuccessful()==true && response.code()==200 && response.body()!=null){
 
+                                                                MtlSystemItems mtlSystemItems = response.body();
+
+                                                               // mPresenter.c(this.inventarioCiclicoId);
+
+                                                                try {
+                                                                    mPresenter.closeConteoCiclico(inventarioCiclicoId,header,entries,organizacionPrincipal,mtlSystemItems);
+
+
+
+                                                                    iRestMtlCycleCountHeaders.delete(inventarioCiclicoId).enqueue(new Callback<Void>() {
+                                                                        @Override
+                                                                        public void onResponse(Call<Void> call, Response<Void> response) {
+
+                                                                            if(response.isSuccessful()==true && response.code()==200) {
+                                                                                iRestMtlCycleCountEntries.deleteByHeader(inventarioCiclicoId).enqueue(new Callback<Void>() {
+
+                                                                                    @Override
+                                                                                    public void onResponse(Call<Void> call, Response<Void> response) {
+
+                                                                                        if (response.isSuccessful() == true && response.code() == 200) {
+                                                                                            mensajeOkCloseInventory();
+
+                                                                                        }
+                                                                                    }
+
+                                                                                    @Override
+                                                                                    public void onFailure(Call<Void> call, Throwable t) {
+
+                                                                                    }
+
+                                                                                });
+
+                                                                            }
+
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onFailure(Call<Void> call, Throwable t) {
+
+                                                                        }
+                                                                    });
+
+                                                                } catch (ServiceException e) {
+                                                                    e.printStackTrace();
+                                                                }
+
+                                                            }
+
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+
+                                                        }
+                                                    });
 
 
 
                                                 }
+
+
+
+
+
 
 
                                             }
@@ -354,7 +404,7 @@ public class ActivityCiclicoSub extends BaseActivity<CiclicoSubPresenter> implem
             });
 
 
-
+            ////
 
 
 
