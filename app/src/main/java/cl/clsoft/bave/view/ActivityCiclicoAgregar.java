@@ -593,8 +593,8 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                                         @Override
                                         public void onResponse(Call<Void> call, Response<Void> response) {
                                             if(response.isSuccessful()==true && response.code()==200){
-
-                                                showSuccess("Conteo Actualizado correctamente");
+                                                cleanScreen();
+                                                showSuccess("Inventario ingresado.");
 
                                             }
                                         }
@@ -669,7 +669,8 @@ public class ActivityCiclicoAgregar extends BaseActivity<CiclicoAgregarPresenter
                                             public void onResponse(Call<Void> call, Response<Void> response) {
                                                 if(response.isSuccessful()==true && response.code()==200){
 
-                                                    showSuccess("Conteo Actualizado correctamente");
+                                                    cleanScreen();
+                                                    showSuccess("Inventario ingresado.");
 
                                                 }
                                             }
