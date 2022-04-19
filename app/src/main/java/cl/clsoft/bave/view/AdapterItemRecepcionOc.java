@@ -79,6 +79,7 @@ public class AdapterItemRecepcionOc extends RecyclerView.Adapter<AdapterItemRece
         private TextView segment1;
         private TextView poHeaderId;
         private TextView receiptNum;
+        private TextView comment;
 
 
 
@@ -87,12 +88,14 @@ public class AdapterItemRecepcionOc extends RecyclerView.Adapter<AdapterItemRece
             this.segment1 = itemView.findViewById(R.id.segment1);
             this.receiptNum = itemView.findViewById(R.id.receiptNum);
             this.poHeaderId = itemView.findViewById(R.id.poHeaderId);
+            this.comment = itemView.findViewById(R.id.textComentario);
         }
 
         public void onBind(PoHeadersAll poHeadersAll){
             this.segment1.setText(poHeadersAll.getSegment1().toString());
             this.receiptNum.setText(poHeadersAll.getReceiptNum().toString());
             this.poHeaderId.setText(poHeadersAll.getPoHeaderId().toString());
+            this.comment.setText(poHeadersAll.getComments().toString());
         }
 
     }

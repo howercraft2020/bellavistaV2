@@ -125,7 +125,7 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
     private TextInputLayout layoutCodigoBarrasItem;
     private EditText textCodigobarrasRecepOc;
     private  TextInputLayout layoutDescripcion;
-    private TextInputLayout textDescripcion;
+    private EditText textDescripcion;
 
 
     @NonNull
