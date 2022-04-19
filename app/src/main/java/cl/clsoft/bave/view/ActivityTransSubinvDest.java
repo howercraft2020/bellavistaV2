@@ -1,7 +1,6 @@
 package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,12 +13,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +27,7 @@ import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.presenter.TransSubinvDestPresenter;
-import cl.clsoft.bave.service.impl.TransSubinvService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.TransSubinvService;
 import cl.clsoft.bave.task.AppTaskExecutor;
 
 public class ActivityTransSubinvDest extends BaseActivity<TransSubinvDestPresenter> {

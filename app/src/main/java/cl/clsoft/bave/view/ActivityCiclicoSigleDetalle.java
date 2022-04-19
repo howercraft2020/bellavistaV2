@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,7 +19,7 @@ import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.presenter.CiclicoSigleDetallePresenter;
-import cl.clsoft.bave.service.impl.ConteoCiclicoService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.ConteoCiclicoService;
 
 public class ActivityCiclicoSigleDetalle extends BaseActivity<CiclicoSigleDetallePresenter> {
 

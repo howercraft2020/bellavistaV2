@@ -22,7 +22,7 @@ import cl.clsoft.bave.dto.TransactionDetalleDto;
 import cl.clsoft.bave.model.MtlMaterialTransactions;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.presenter.EntregaOrgsTransactionDetallePresenter;
-import cl.clsoft.bave.service.impl.EntregaOrgsServiceImpl;
+import cl.clsoft.bave.dao.rowmapper.service.impl.EntregaOrgsServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 

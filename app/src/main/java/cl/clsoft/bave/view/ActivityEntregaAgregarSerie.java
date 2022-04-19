@@ -19,8 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.w3c.dom.EntityReference;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +30,7 @@ import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.presenter.EntregaAgregarSeriePresenter;
-import cl.clsoft.bave.service.impl.EntregaServiceImpl;
+import cl.clsoft.bave.dao.rowmapper.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import retrofit2.Call;
 import retrofit2.Callback;

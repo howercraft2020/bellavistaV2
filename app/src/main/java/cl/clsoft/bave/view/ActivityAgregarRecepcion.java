@@ -1,8 +1,8 @@
 package cl.clsoft.bave.view;
 
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,17 +19,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,32 +40,22 @@ import cl.clsoft.bave.apis.IRestPoLinesAll;
 import cl.clsoft.bave.apis.IRestRcvHeadersInterface;
 import cl.clsoft.bave.apis.IRestRcvStatus;
 import cl.clsoft.bave.apis.IRestRcvTransactionsInterface;
-import cl.clsoft.bave.apis.RetrofitClient;
-import cl.clsoft.bave.apis.RetrofitClientRx;
 import cl.clsoft.bave.base.BaseActivity;
-import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.DatosCabeceraRecepcion;
 import cl.clsoft.bave.model.DatosRecepcion;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.PoLinesAll;
 import cl.clsoft.bave.model.RcvHeadersInterface;
-import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.model.RcvTransactionsInterface;
-import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.presenter.AgregarRecepcionPresenter;
-import cl.clsoft.bave.repository.RcvHeaderInterfaceRepository;
-import cl.clsoft.bave.service.impl.RecepcionOcService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.RecepcionOcService;
 import cl.clsoft.bave.viewmodel.MtlSystemItemsViewModel;
 import cl.clsoft.bave.viewmodel.PoLinesViewModel;
-import cl.clsoft.bave.viewmodel.RcvTransactionsInterfaceViewModel;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Function4;
 import io.reactivex.functions.Function5;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
@@ -125,7 +108,8 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
     private TextInputLayout layoutCodigoBarrasItem;
     private EditText textCodigobarrasRecepOc;
     private  TextInputLayout layoutDescripcion;
-    private TextInputLayout textDescripcion;
+    private EditText textDescripcion;
+    private Button ScanRecepcionOc;
 
 
     @NonNull
@@ -162,7 +146,30 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
         this.layoutCodigoBarrasItem = findViewById(R.id.layoutCodigoBarrasRecepOc);
         this.textCodigobarrasRecepOc = findViewById(R.id.textCodigobarrasRecepOc);
         this.layoutDescripcion = findViewById(R.id.layoutDescripcion);
+        this.ScanRecepcionOc = findViewById(R.id.ScanRecepcionOc);
+        this.textDescripcion = findViewById(R.id.textDescripcion);
 
+
+
+        this.ScanRecepcionOc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer Color = ScanRecepcionOc.getHighlightColor();
+                if(Color == 1718197024 ){
+                    ScanRecepcionOc.setHintTextColor(171228096);
+                    ScanRecepcionOc.setHighlightColor(171228096);
+                    textSigle.setEnabled(false);
+                    textCodigobarrasRecepOc.setEnabled(true);
+                }
+                if(Color == 171228096){
+                    ScanRecepcionOc.setHighlightColor(1718197024);
+                    ScanRecepcionOc.setHintTextColor(1718197024);
+                    textSigle.setEnabled(true);
+                    textCodigobarrasRecepOc.setEnabled(false);
+                }
+                Toast.makeText(getApplicationContext(),"color : " + Color,Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 
@@ -198,9 +205,6 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 segment = parent.getAdapter().getItem(position).toString();
-
-
-
 
                 mtlSystemItemsViewModel.MtlgetBySegment(segment);
 
@@ -260,7 +264,7 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                                     layoutCantidad.setHint("Cantidad (" + mtlSystemItems.getPrimaryUomCode() + ")");
                                     textUdm.setText(mtlSystemItems.getPrimaryUomCode());
                                     inventoryItemId = mtlSystemItems.getInventoryItemId();
-
+                                    textDescripcion.setText(mtlSystemItems.getDescription().toString());
 
                                     //mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
                                     validaLinea();
@@ -289,7 +293,7 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                 iRestHomologacion.getInventoryItemId(Codigo).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        Log.d(TAG,"response body Codigo :" );
+                        Log.d(TAG,"LLAMADA A LA API:" );
                         textSigle.setText(response.body());
                         Boolean action = false;
                         if(textSigle.getText() != null && !textSigle.getText().toString().isEmpty())
@@ -326,8 +330,6 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                 return false;
             }
         });
-
-
 
 
 
@@ -607,8 +609,6 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                                         Log.d("JAVARX", "RcvHeadersInterface Insert/Update con éxito");
 
 
-
-
                                     }
 
 
@@ -727,7 +727,6 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                             }
                          //FIN ON COMPLETE
                         }
-
 
 
                     });
@@ -904,7 +903,6 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                     }
                 }
             });
-
         }
     }
 

@@ -1,28 +1,19 @@
-package cl.clsoft.bave.service.impl;
+package cl.clsoft.bave.dao.rowmapper.service.impl;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.media.MediaScannerConnection;
-import android.os.Environment;
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import cl.clsoft.bave.apis.ApiUtils;
 import cl.clsoft.bave.apis.IRestRcvHeadersInterface;
 import cl.clsoft.bave.apis.IRestRcvTransactionsInterface;
 import cl.clsoft.bave.dao.IDatosCabeceraRecepcionDao;
 import cl.clsoft.bave.dao.IDatosRecepcionDao;
-import cl.clsoft.bave.dao.IMtlCycleCountEntriesDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
 import cl.clsoft.bave.dao.IOrganizacionPrincipalDao;
-import cl.clsoft.bave.dao.IPoDistributionsAllDao;
 import cl.clsoft.bave.dao.IPoHeadersAllDao;
 import cl.clsoft.bave.dao.IPoLineLocationsAllDao;
 import cl.clsoft.bave.dao.IPoLinesAllDao;
@@ -30,22 +21,19 @@ import cl.clsoft.bave.dao.IRcvHeadersInterfaceDao;
 import cl.clsoft.bave.dao.IRcvTransactionsInterfaceDao;
 import cl.clsoft.bave.dao.impl.DatosCabeceraRecepcionImpl;
 import cl.clsoft.bave.dao.impl.DatosRecepcionDaoImpl;
-import cl.clsoft.bave.dao.impl.MtlCycleCountEntriesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.OrganizacionPrincipalDaoImpl;
-import cl.clsoft.bave.dao.impl.PoDistributionsAllDaoImpl;
 import cl.clsoft.bave.dao.impl.PoHeadersAllDaoImpl;
 import cl.clsoft.bave.dao.impl.PoLineLocationsAllDaoImpl;
 import cl.clsoft.bave.dao.impl.PoLinesAllDaoImpl;
 import cl.clsoft.bave.dao.impl.RcvHeadersInterfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.RcvTransactionsInterfaceDaoImpl;
+import cl.clsoft.bave.dao.rowmapper.service.IRecepcionOcService;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.DatosCabeceraRecepcion;
 import cl.clsoft.bave.model.DatosRecepcion;
-import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlSystemItems;
-import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.PoHeadersAll;
 import cl.clsoft.bave.model.PoLineLocationsAll;
 import cl.clsoft.bave.model.PoLinesAll;
@@ -53,8 +41,6 @@ import cl.clsoft.bave.model.RcvHeadersInterface;
 import cl.clsoft.bave.model.RcvTransactionsInterface;
 import cl.clsoft.bave.repository.RcvHeaderInterfaceRepository;
 import cl.clsoft.bave.repository.RcvTransactionsInterfaceRepository;
-import cl.clsoft.bave.service.IRecepcionOcService;
-import cl.clsoft.bave.view.ActivityRecepcionOc;
 
 public class RecepcionOcService implements IRecepcionOcService {
 

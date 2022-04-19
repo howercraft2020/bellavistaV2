@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.IRestMtlPhysicalInventories;
 import cl.clsoft.bave.model.ConsultaItem;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
 
@@ -19,6 +20,7 @@ public class AdapterItemConsultaSigle extends RecyclerView.Adapter<AdapterItemCo
 
     private static final String TAG = "ConsultaSigle";
     private List<ConsultaItem> items;
+    private IRestMtlPhysicalInventories iRestMtlPhysicalInventories;
 
     public AdapterItemConsultaSigle(List<ConsultaItem> items) {
         this.items = items;

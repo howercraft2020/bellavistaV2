@@ -9,9 +9,8 @@ import java.util.List;
 
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
-import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.Organizacion;
-import cl.clsoft.bave.service.ITransOrgService;
+import cl.clsoft.bave.dao.rowmapper.service.ITransOrgService;
 import cl.clsoft.bave.task.AppTask;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityAgregarTransOrgDestino;

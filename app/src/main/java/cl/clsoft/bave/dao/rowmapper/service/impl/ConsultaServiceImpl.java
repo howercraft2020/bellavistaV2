@@ -1,4 +1,4 @@
-package cl.clsoft.bave.service.impl;
+package cl.clsoft.bave.dao.rowmapper.service.impl;
 
 import android.util.Log;
 
@@ -12,13 +12,13 @@ import cl.clsoft.bave.dao.impl.ConsultaItemDaoImpl;
 import cl.clsoft.bave.dao.impl.ConsultaResumenItemDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
+import cl.clsoft.bave.dao.rowmapper.service.IConsultaService;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.ConsultaItem;
 import cl.clsoft.bave.model.ConsultaResumenItem;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.Subinventario;
-import cl.clsoft.bave.service.IConsultaService;
 
 public class ConsultaServiceImpl implements IConsultaService {
 

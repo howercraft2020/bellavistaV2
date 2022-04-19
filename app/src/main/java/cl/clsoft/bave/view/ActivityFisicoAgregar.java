@@ -32,7 +32,7 @@ import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.presenter.FisicoAgregarPresenter;
-import cl.clsoft.bave.service.impl.InventarioFisicoService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.InventarioFisicoService;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import retrofit2.Call;
 import retrofit2.Callback;

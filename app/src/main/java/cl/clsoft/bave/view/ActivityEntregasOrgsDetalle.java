@@ -23,9 +23,8 @@ import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.dto.TransactionsDto;
 import cl.clsoft.bave.model.EntregaOrgsHeader;
-import cl.clsoft.bave.model.RcvShipmentHeaders;
 import cl.clsoft.bave.presenter.EntregasOrgsDetallePresenter;
-import cl.clsoft.bave.service.impl.EntregaOrgsServiceImpl;
+import cl.clsoft.bave.dao.rowmapper.service.impl.EntregaOrgsServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 

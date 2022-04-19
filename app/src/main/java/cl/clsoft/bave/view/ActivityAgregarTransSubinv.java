@@ -2,7 +2,6 @@ package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
@@ -32,12 +31,10 @@ import java.util.List;
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.Localizador;
-import cl.clsoft.bave.model.MtlOnhandQuantities;
-import cl.clsoft.bave.model.MtlSerialNumbersInterface;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.presenter.AgregarTransSubinvPresenter;
-import cl.clsoft.bave.service.impl.TransSubinvService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.TransSubinvService;
 import cl.clsoft.bave.task.AppTaskExecutor;
 
 public class ActivityAgregarTransSubinv extends BaseActivity<AgregarTransSubinvPresenter> implements ConfirmationDialog.ConfirmationDialogListener{

@@ -7,9 +7,7 @@ import cl.clsoft.bave.apis.IRestDatosRecepcion;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.DatosTransSubinv;
-import cl.clsoft.bave.model.MtlTransactionsInterface;
-import cl.clsoft.bave.model.RcvTransactionsInterface;
-import cl.clsoft.bave.service.ITransSubinvService;
+import cl.clsoft.bave.dao.rowmapper.service.ITransSubinvService;
 import cl.clsoft.bave.view.ActivityTransSubinv;
 
 

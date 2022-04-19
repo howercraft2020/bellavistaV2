@@ -11,6 +11,7 @@
         android:layout_marginRight="6dip"
         android:paddingTop="8dp"
         android:paddingLeft="10dp"
+
         android:src="@drawable/inventario01_48dp" />
 
     <TextView
@@ -30,17 +31,21 @@
         android:text="ID" />
 
     <TextView
-        android:id="@+id/TagPoHeaderId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/icon"
-        android:layout_below="@id/TagSegment1"
-        android:layout_marginTop="2dp"
-        android:textStyle="bold"
-        android:text="ID : " />
+            android:id="@+id/TagPoHeaderId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_below="@id/TagSegment1"
+            android:layout_marginTop="2dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+
+            android:text="ID : "/>
 
     <TextView
         android:id="@+id/poHeaderId"
+        android:visibility="gone"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/TagPoHeaderId"
@@ -71,10 +76,37 @@
         android:paddingLeft="10dp"
         android:paddingBottom="10dp"/>
 
+    <TextView
+            android:id="@+id/TagComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_below="@id/TagReceiptNum"
+            android:text="Comentario : "
+            android:textStyle="bold"
+            android:paddingBottom="10dp"/>
+
+
+    <TextView
+            android:id="@+id/textComentario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/receiptNum"
+            android:layout_toRightOf="@+id/TagReceiptNum"
+            android:layout_marginTop="0dp"
+            android:text="Comentario"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"/>
+
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?attr/colorPrimaryDark"
-        android:layout_alignBottom="@id/receiptNum" />
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignBottom="@id/textComentario"
+            android:background="?attr/colorPrimaryDark"/>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignBottom="@id/textComentario"
+            android:background="?attr/colorPrimaryDark"/>
 
 </RelativeLayout>

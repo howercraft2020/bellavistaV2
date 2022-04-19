@@ -3,10 +3,9 @@ package cl.clsoft.bave.presenter;
 import androidx.annotation.NonNull;
 
 import cl.clsoft.bave.base.BasePresenter;
-import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.RcvTransactions;
-import cl.clsoft.bave.service.IEntregaService;
+import cl.clsoft.bave.dao.rowmapper.service.IEntregaService;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityEntregaAgregarLote;
 

@@ -1,7 +1,6 @@
 package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.content.Context;
@@ -11,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -20,7 +18,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.presenter.RecepcionArticuloDetallePresenter;
-import cl.clsoft.bave.service.impl.RecepcionOcService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.RecepcionOcService;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ActivityRecepcionArticuloDetalle extends BaseActivity<RecepcionArticuloDetallePresenter> implements ConfirmationDialog.ConfirmationDialogListener {

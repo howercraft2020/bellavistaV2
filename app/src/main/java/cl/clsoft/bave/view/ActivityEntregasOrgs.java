@@ -18,10 +18,8 @@ import java.util.List;
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.EntregaOrgsHeader;
-import cl.clsoft.bave.model.RcvShipmentHeaders;
 import cl.clsoft.bave.presenter.EntregasOrgsPresenter;
-import cl.clsoft.bave.service.impl.EntregaOrgsServiceImpl;
-import cl.clsoft.bave.service.impl.EntregaServiceImpl;
+import cl.clsoft.bave.dao.rowmapper.service.impl.EntregaOrgsServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 
 public class ActivityEntregasOrgs extends BaseActivity<EntregasOrgsPresenter> {

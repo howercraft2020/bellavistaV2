@@ -14,11 +14,9 @@ import java.util.List;
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.ConsultaItem;
-import cl.clsoft.bave.model.ConsultaResumenItem;
 import cl.clsoft.bave.presenter.ConsultaSubinventarioDetallePresenter;
-import cl.clsoft.bave.service.impl.ConsultaServiceImpl;
+import cl.clsoft.bave.dao.rowmapper.service.impl.ConsultaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
-import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class ActivityConsultaSubinventarioDetalle extends BaseActivity<ConsultaSubinventarioDetallePresenter> {
 

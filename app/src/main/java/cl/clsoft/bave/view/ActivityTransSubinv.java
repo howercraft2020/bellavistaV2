@@ -1,7 +1,6 @@
 package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,9 +19,8 @@ import java.util.List;
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.DatosTransSubinv;
-import cl.clsoft.bave.model.MtlTransactionsInterface;
 import cl.clsoft.bave.presenter.TransSubinvPresenter;
-import cl.clsoft.bave.service.impl.TransSubinvService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.TransSubinvService;
 
 public class ActivityTransSubinv extends BaseActivity<TransSubinvPresenter> {
 

@@ -1,7 +1,6 @@
 package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.content.Context;
@@ -22,7 +21,7 @@ import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.presenter.TransSubinvResumenPresenter;
-import cl.clsoft.bave.service.impl.TransSubinvService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.TransSubinvService;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ActivityTransSubinvResumen extends BaseActivity<TransSubinvResumenPresenter> implements ConfirmationDialog.ConfirmationDialogListener {

@@ -3,10 +3,7 @@ package cl.clsoft.bave.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,21 +15,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestMtlPhysicalInventories;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlPhysicalInventories;
 import cl.clsoft.bave.presenter.FisicosPresenter;
-import cl.clsoft.bave.service.impl.InventarioFisicoService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.InventarioFisicoService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityFisicos extends BaseActivity<FisicosPresenter> {
 
     // Variables
     private String TAG = "ActivityFisicos";
-    private List<MtlPhysicalInventories> inventarios;
+    private static List<MtlPhysicalInventories> inventarios;
+    private static  List<MtlPhysicalInventories> IRESinventarios;
 
     // Controls
     private RecyclerView recyclerViewFisicos;
     private AdapterInventarioFisico adapter;
     private AdapterInventarioFisico.RecyclerViewClickListener listener;
+
+    //API
+    IRestMtlPhysicalInventories iRestMtlPhysicalInventories;
 
     @NonNull
     @Override
@@ -55,10 +61,28 @@ public class ActivityFisicos extends BaseActivity<FisicosPresenter> {
         //Set Controls
         this.recyclerViewFisicos.setHasFixedSize(true);
         this.recyclerViewFisicos.setLayoutManager(new LinearLayoutManager(this));
+        this.iRestMtlPhysicalInventories = ApiUtils.getIRestMtlPhysicalInventories();
 
-        inventarios = mPresenter.getInventariosFisicos();
+        //inventarios = mPresenter.getInventariosFisicos();
+        iRestMtlPhysicalInventories.getAll().enqueue(new Callback<List<MtlPhysicalInventories>>() {
+            @Override
+            public void onResponse(Call<List<MtlPhysicalInventories>> call, Response<List<MtlPhysicalInventories>> response) {
+               inventarios =  response.body();
+               System.out.println("TEST FISICO" + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<MtlPhysicalInventories>> call, Throwable t) {
+                inventarios = null;
+                System.out.println("TEST FISICO FALLA");
+            }
+        });
+        
+        
         this.adapter = new AdapterInventarioFisico(inventarios, listener);
         this.recyclerViewFisicos.setAdapter(this.adapter);
+
+
 
         final GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override public boolean onSingleTapUp(MotionEvent e) {

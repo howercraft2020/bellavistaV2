@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,7 +26,7 @@ import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.presenter.SigleSearchPresenter;
-import cl.clsoft.bave.service.impl.InventarioFisicoService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.InventarioFisicoService;
 import cl.clsoft.bave.task.AppTaskExecutor;
 
 public class ActivitySigleSearch extends BaseActivity<SigleSearchPresenter> {

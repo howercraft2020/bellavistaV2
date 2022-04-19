@@ -2,7 +2,6 @@ package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
@@ -26,11 +25,8 @@ import android.widget.TextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
@@ -38,7 +34,7 @@ import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.presenter.AgregarTransOrgPresenter;
-import cl.clsoft.bave.service.impl.TransOrgService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.TransOrgService;
 import cl.clsoft.bave.task.AppTaskExecutor;
 
 public class ActivityAgregarTransOrg extends BaseActivity<AgregarTransOrgPresenter> implements ConfirmationDialog.ConfirmationDialogListener{

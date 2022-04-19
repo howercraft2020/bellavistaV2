@@ -17,7 +17,7 @@ import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 import cl.clsoft.bave.model.MtlSystemItems;
-import cl.clsoft.bave.service.IInventarioFisicoService;
+import cl.clsoft.bave.dao.rowmapper.service.IInventarioFisicoService;
 import cl.clsoft.bave.task.AppTask;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityFisicoAgregar;

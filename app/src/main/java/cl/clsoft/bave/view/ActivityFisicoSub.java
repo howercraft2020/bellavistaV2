@@ -2,6 +2,7 @@ package cl.clsoft.bave.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -20,13 +21,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestMtlPhysicalInventories;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlPhysicalInventories;
 import cl.clsoft.bave.model.MtlPhysicalSubinventories;
 import cl.clsoft.bave.presenter.FisicoSubPresenter;
-import cl.clsoft.bave.service.impl.InventarioFisicoService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.InventarioFisicoService;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
@@ -43,6 +49,9 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> implemen
     private RecyclerView recyclerViewFisicoSub;
     private AdapterInventarioFisicoSub adapter;
     private SweetAlertDialog dialog;
+
+    //API
+    IRestMtlPhysicalInventories iRestMtlPhysicalInventories;
 
     @Override
     protected FisicoSubPresenter createPresenter(@NonNull Context context){
@@ -65,9 +74,27 @@ public class ActivityFisicoSub extends BaseActivity<FisicoSubPresenter> implemen
         this.textDescription = findViewById(R.id.textDescription);
         this.textFechaCreacion = findViewById(R.id.textFechaCreacion);
 
+        //API
+        this.iRestMtlPhysicalInventories = ApiUtils.getIRestMtlPhysicalInventories();
+
         //Set controls
         inventarioId = this.getIntent().getLongExtra("InventarioId", 0);
         MtlPhysicalInventories inventario = mPresenter.getPreviousInventarioFisicos(inventarioId);
+
+        iRestMtlPhysicalInventories.getAll().enqueue(new Callback<List<MtlPhysicalInventories>>() {
+            @Override
+            public void onResponse(Call<List<MtlPhysicalInventories>> call, Response<List<MtlPhysicalInventories>> response) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MtlPhysicalInventories>> call, Throwable t) {
+
+            }
+        });
+
+
         subinventories = mPresenter.getSubinventories(inventarioId);
         Log.d("SUBINVENTORY TAMAÑO: ", String.valueOf(subinventories.size()));
 

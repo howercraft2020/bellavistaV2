@@ -5,9 +5,8 @@ import androidx.annotation.NonNull;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
-import cl.clsoft.bave.service.IInventarioFisicoService;
+import cl.clsoft.bave.dao.rowmapper.service.IInventarioFisicoService;
 import cl.clsoft.bave.task.TaskExecutor;
-import cl.clsoft.bave.view.ActivityFisicoAgregar;
 import cl.clsoft.bave.view.ActivityFisicoAgregarDisponible;
 
 public class FisicoAgregarDisponiblePresenter extends BasePresenter {

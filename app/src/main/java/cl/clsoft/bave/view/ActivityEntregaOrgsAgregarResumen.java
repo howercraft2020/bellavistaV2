@@ -21,9 +21,8 @@ import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlMaterialTransactions;
 import cl.clsoft.bave.model.MtlSystemItems;
-import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.presenter.EntregaOrgsAgregarResumenPresenter;
-import cl.clsoft.bave.service.impl.EntregaOrgsServiceImpl;
+import cl.clsoft.bave.dao.rowmapper.service.impl.EntregaOrgsServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 

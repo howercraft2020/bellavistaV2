@@ -18,7 +18,7 @@ import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 import cl.clsoft.bave.presenter.FisicoAgregarDisponiblePresenter;
-import cl.clsoft.bave.service.impl.InventarioFisicoService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.InventarioFisicoService;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 

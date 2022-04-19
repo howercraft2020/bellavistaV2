@@ -1,30 +1,18 @@
 package cl.clsoft.bave.presenter;
 
-import android.media.MediaScannerConnection;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import cl.clsoft.bave.apis.ApiUtils;
-import cl.clsoft.bave.apis.IRestSubinventario;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
-import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.OrganizacionPrincipal;
-import cl.clsoft.bave.model.Subinventario;
-import cl.clsoft.bave.service.IConteoCiclicoService;
-import cl.clsoft.bave.service.IInventarioFisicoService;
-import cl.clsoft.bave.task.AppTask;
+import cl.clsoft.bave.dao.rowmapper.service.IConteoCiclicoService;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityCiclicoSub;
-import cl.clsoft.bave.view.ActivityFisicoAgregar;
 
 public class CiclicoSubPresenter extends BasePresenter {
 

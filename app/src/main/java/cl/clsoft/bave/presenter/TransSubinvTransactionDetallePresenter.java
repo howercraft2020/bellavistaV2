@@ -4,11 +4,9 @@ import androidx.annotation.NonNull;
 
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.dto.MtlTransactionDetalleDto;
-import cl.clsoft.bave.dto.TransactionDetalleDto;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlSystemItems;
-import cl.clsoft.bave.service.ITransSubinvService;
-import cl.clsoft.bave.view.ActivityEntregaTransactionDetalle;
+import cl.clsoft.bave.dao.rowmapper.service.ITransSubinvService;
 import cl.clsoft.bave.view.ActivityTransSubinvTransactionDetalle;
 
 public class TransSubinvTransactionDetallePresenter extends BasePresenter {

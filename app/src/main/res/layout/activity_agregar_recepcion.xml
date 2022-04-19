@@ -12,9 +12,12 @@
         android:visibility="gone"
         layout="@layout/progress_bar"/>
 
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutCodigoBarrasRecepOc"
-            android:layout_width="250dp"
+            android:layout_width="214dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
@@ -25,50 +28,60 @@
                 android:id="@+id/textCodigobarrasRecepOc"
                 android:textColor="@android:color/black"
                 android:backgroundTint="?attr/colorPrimaryDark"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:inputType="text">
         </com.google.android.material.textfield.TextInputEditText>
+
     </com.google.android.material.textfield.TextInputLayout>
+        <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/ScanRecepcionOc"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:layout_toRightOf="@+id/layoutCodigoBarrasRecepOc"
+                android:hint="SCAN"
+                android:textColorHint="@color/red_btn_bg_color"
+                android:layout_marginLeft="54dp"></androidx.appcompat.widget.AppCompatButton>
+    </RelativeLayout>
 
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutSigle"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="10dp"
-            android:hint="Sigle"
-            android:textColorHint="?attr/colorPrimary">
-            <cl.clsoft.bave.control.InstantAutoCompleteTextView
-                android:id="@+id/textSigle"
-                android:textColor="@android:color/black"
-                android:backgroundTint="?attr/colorPrimaryDark"
-                android:layout_width="match_parent"
+                android:id="@+id/layoutSigle"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:inputType="text">
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="10dp"
+                android:hint="Sigle"
+                android:textColorHint="?attr/colorPrimary">
+            <cl.clsoft.bave.control.InstantAutoCompleteTextView
+                    android:id="@+id/textSigle"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="text">
             </cl.clsoft.bave.control.InstantAutoCompleteTextView>
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
-            android:id="@+id/iconSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="6dip"
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp"
-            android:src="@mipmap/ic_search_black_36dp"
-            android:layout_toRightOf="@+id/layoutSigle"/>
+                android:id="@+id/iconSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6dip"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:src="@mipmap/ic_search_black_36dp"
+                android:layout_toRightOf="@+id/layoutSigle" android:layout_marginLeft="10dp"/>
+
 
     </RelativeLayout>
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutNumerolinea"
         android:layout_width="match_parent"
@@ -137,14 +150,14 @@
             android:hint="Descripcion"
             android:textColorHint="?attr/colorPrimary">
 
-        <cl.clsoft.bave.control.InstantAutoCompleteTextView
+        <EditText
                 android:id="@+id/textDescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="?attr/colorPrimaryDark"
                 android:inputType="text"
                 android:text=""
-                android:textColor="@android:color/black"></cl.clsoft.bave.control.InstantAutoCompleteTextView>
+                android:textColor="@android:color/black"></EditText>
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

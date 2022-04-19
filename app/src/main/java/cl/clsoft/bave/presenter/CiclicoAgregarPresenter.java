@@ -12,11 +12,10 @@ import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlSystemItems;
-import cl.clsoft.bave.service.IConteoCiclicoService;
+import cl.clsoft.bave.dao.rowmapper.service.IConteoCiclicoService;
 import cl.clsoft.bave.task.AppTask;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityCiclicoAgregar;
-import cl.clsoft.bave.view.ActivityCiclicoDetalle;
 
 public class CiclicoAgregarPresenter extends BasePresenter {
 

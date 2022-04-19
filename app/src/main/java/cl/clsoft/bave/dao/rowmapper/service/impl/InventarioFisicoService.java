@@ -1,4 +1,4 @@
-package cl.clsoft.bave.service.impl;
+package cl.clsoft.bave.dao.rowmapper.service.impl;
 
 import android.os.Environment;
 import android.util.Log;
@@ -12,22 +12,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import cl.clsoft.bave.apis.IRestMtlPhysicalInventories;
-import cl.clsoft.bave.apis.IRestMtlPhysicalInventoryTags;
 import cl.clsoft.bave.dao.ILocalizadorDao;
 import cl.clsoft.bave.dao.IMtlPhysicalInventoriesDao;
 import cl.clsoft.bave.dao.IMtlPhysicalInventoryTagsDao;
 import cl.clsoft.bave.dao.IMtlPhysicalSubinventoriesDao;
 import cl.clsoft.bave.dao.IMtlSystemItemsDao;
-import cl.clsoft.bave.dao.IOrganizacionDao;
 import cl.clsoft.bave.dao.IOrganizacionPrincipalDao;
 import cl.clsoft.bave.dao.impl.LocalizadorDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlPhysicalInventoriesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlPhysicalInventoryTagsDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlPhysicalSubinventoriesDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
-import cl.clsoft.bave.dao.impl.OrganizacionDaoImpl;
 import cl.clsoft.bave.dao.impl.OrganizacionPrincipalDaoImpl;
+import cl.clsoft.bave.dao.rowmapper.service.IInventarioFisicoService;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.Localizador;
@@ -36,11 +33,13 @@ import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 import cl.clsoft.bave.model.MtlPhysicalSubinventories;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.OrganizacionPrincipal;
-import cl.clsoft.bave.service.IInventarioFisicoService;
 
 public class InventarioFisicoService implements IInventarioFisicoService {
 
     private static final String TAG = "InventarioFisicoService";
+
+    //API
+    MtlPhysicalInventories mtlPhysicalInventories;
 
     @Override
     public List<MtlPhysicalInventories> getAllInventariosFisicos() throws ServiceException {

@@ -10,14 +10,11 @@ import java.util.List;
 
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
-import cl.clsoft.bave.model.ConsultaItem;
 import cl.clsoft.bave.model.ConsultaResumenItem;
-import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.Subinventario;
-import cl.clsoft.bave.service.IConsultaService;
+import cl.clsoft.bave.dao.rowmapper.service.IConsultaService;
 import cl.clsoft.bave.task.AppTask;
 import cl.clsoft.bave.task.TaskExecutor;
-import cl.clsoft.bave.view.ActivityConsultaItem;
 import cl.clsoft.bave.view.ActivityConsultaSubinventario;
 
 public class ConsultaSubinventarioPresenter extends BasePresenter {

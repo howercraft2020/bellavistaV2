@@ -1,7 +1,6 @@
 package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.content.Context;
@@ -20,7 +19,7 @@ import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.dto.MtlTransactionOrgDto;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.presenter.TransOrgTransactionDetallePresenter;
-import cl.clsoft.bave.service.impl.TransOrgService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.TransOrgService;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ActivityTransOrgTransactionDetalle extends BaseActivity<TransOrgTransactionDetallePresenter> implements ConfirmationDialog.ConfirmationDialogListener{

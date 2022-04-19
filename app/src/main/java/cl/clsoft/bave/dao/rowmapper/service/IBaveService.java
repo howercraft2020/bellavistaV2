@@ -1,4 +1,4 @@
-package cl.clsoft.bave.service;
+package cl.clsoft.bave.dao.rowmapper.service;
 
 import java.io.File;
 

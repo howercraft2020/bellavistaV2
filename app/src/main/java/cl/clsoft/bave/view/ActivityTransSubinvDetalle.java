@@ -1,7 +1,6 @@
 package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,19 +15,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.DatosTransSubinvDetalle;
-import cl.clsoft.bave.model.MtlTransactionsInterface;
 import cl.clsoft.bave.presenter.TransSubinvDetallePresenter;
-import cl.clsoft.bave.service.impl.TransSubinvService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.TransSubinvService;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ActivityTransSubinvDetalle extends BaseActivity<TransSubinvDetallePresenter> implements ConfirmationDialog.ConfirmationDialogListener {

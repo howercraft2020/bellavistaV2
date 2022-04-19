@@ -2,9 +2,7 @@ package cl.clsoft.bave.presenter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Environment;
 
 import androidx.annotation.NonNull;
 
@@ -23,17 +21,10 @@ import cl.clsoft.bave.apis.IRestRcvTransactionsInterface;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.RcvTransactionsInterface;
-import cl.clsoft.bave.service.IRecepcionOcService;
+import cl.clsoft.bave.dao.rowmapper.service.IRecepcionOcService;
 import cl.clsoft.bave.view.ActivityArticulosRecepcion;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function4;
-import io.reactivex.functions.Function6;
-import io.reactivex.internal.operators.observable.ObservableFlatMap;
-import io.reactivex.schedulers.Schedulers;
 
 public class ArticulosRecepcionPresenter extends BasePresenter {
 

@@ -1,12 +1,10 @@
 package cl.clsoft.bave.presenter;
 
 import cl.clsoft.bave.base.BasePresenter;
-import cl.clsoft.bave.dto.MtlTransactionDetalleDto;
 import cl.clsoft.bave.dto.MtlTransactionOrgDto;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlSystemItems;
-import cl.clsoft.bave.service.ITransOrgService;
-import cl.clsoft.bave.view.ActivityTransOrgDetalle;
+import cl.clsoft.bave.dao.rowmapper.service.ITransOrgService;
 import cl.clsoft.bave.view.ActivityTransOrgTransactionDetalle;
 
 public class TransOrgTransactionDetallePresenter extends BasePresenter {

@@ -18,7 +18,7 @@ import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 import cl.clsoft.bave.presenter.FisicoEditarPresenter;
-import cl.clsoft.bave.service.impl.InventarioFisicoService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.InventarioFisicoService;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ActivityFisicoEditar extends BaseActivity<FisicoEditarPresenter> implements ConfirmationDialog.ConfirmationDialogListener {

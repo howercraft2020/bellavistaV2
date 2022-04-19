@@ -26,7 +26,7 @@ import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlCycleCountHeaders;
 import cl.clsoft.bave.presenter.CiclicoDetallePresenter;
-import cl.clsoft.bave.service.impl.ConteoCiclicoService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.ConteoCiclicoService;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import retrofit2.Call;
 import retrofit2.Callback;

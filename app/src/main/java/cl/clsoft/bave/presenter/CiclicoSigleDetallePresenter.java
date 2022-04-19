@@ -5,9 +5,7 @@ import java.util.List;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
-import cl.clsoft.bave.model.MtlCycleCountHeaders;
-import cl.clsoft.bave.service.IConteoCiclicoService;
-import cl.clsoft.bave.view.ActivityCiclicoDetalle;
+import cl.clsoft.bave.dao.rowmapper.service.IConteoCiclicoService;
 import cl.clsoft.bave.view.ActivityCiclicoSigleDetalle;
 
 public class CiclicoSigleDetallePresenter extends BasePresenter {

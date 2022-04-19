@@ -11,12 +11,9 @@ import java.util.List;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.EntregaOrgsHeader;
-import cl.clsoft.bave.model.RcvShipmentHeaders;
-import cl.clsoft.bave.service.IEntregaOrgsService;
-import cl.clsoft.bave.service.IEntregaService;
+import cl.clsoft.bave.dao.rowmapper.service.IEntregaOrgsService;
 import cl.clsoft.bave.task.AppTask;
 import cl.clsoft.bave.task.TaskExecutor;
-import cl.clsoft.bave.view.ActivityEntregas;
 import cl.clsoft.bave.view.ActivityEntregasOrgs;
 
 public class EntregasOrgsPresenter extends BasePresenter {

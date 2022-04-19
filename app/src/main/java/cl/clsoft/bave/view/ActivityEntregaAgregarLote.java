@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,7 +31,7 @@ import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.presenter.EntregaAgregarLotePresenter;
-import cl.clsoft.bave.service.impl.EntregaServiceImpl;
+import cl.clsoft.bave.dao.rowmapper.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import fr.ganfra.materialspinner.MaterialSpinner;
 import retrofit2.Call;

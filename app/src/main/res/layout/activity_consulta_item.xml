@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+        android:id="@+id/screen"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,7 +15,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutCodigoBarrasItem"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
@@ -30,6 +31,18 @@
                 android:text=""
                 android:inputType="text">
         </com.google.android.material.textfield.TextInputEditText>
+        <Button
+                android:id="@+id/HabilitarScaner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6dip"
+                android:layout_toRightOf="@+id/layoutCodigoBarras"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:hint="SCANER"
+                android:textColorHint="@color/red_btn_bg_color"
+
+        ></Button>
     </com.google.android.material.textfield.TextInputLayout>
 
 

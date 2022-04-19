@@ -8,7 +8,7 @@ import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.ConsultaItem;
 import cl.clsoft.bave.model.MtlSystemItems;
-import cl.clsoft.bave.service.IConsultaService;
+import cl.clsoft.bave.dao.rowmapper.service.IConsultaService;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityConsultaItem;
 

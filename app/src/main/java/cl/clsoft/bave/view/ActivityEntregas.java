@@ -16,42 +16,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import cl.clsoft.bave.R;
-import cl.clsoft.bave.apis.ApiUtils;
-import cl.clsoft.bave.apis.IRestPoheadersAll;
-import cl.clsoft.bave.apis.IRestRcvHeadersInterfaceEntrega;
-import cl.clsoft.bave.apis.IRestRcvShipmentHeaders;
-import cl.clsoft.bave.apis.IRestRcvTransactionsInterface;
-import cl.clsoft.bave.apis.IRestRcvTransactionsInterfaceEntrega;
-import cl.clsoft.bave.apis.IRestXXPDA_RCV_HEADERS_INTERFACE;
-import cl.clsoft.bave.apis.IRestXXPDA_RCV_TRANS_INTERFACE;
 import cl.clsoft.bave.base.BaseActivity;
-import cl.clsoft.bave.model.MtlPhysicalInventories;
-import cl.clsoft.bave.model.RcvHeadersInterfaceEntrega;
 import cl.clsoft.bave.model.RcvShipmentHeaders;
-import cl.clsoft.bave.model.RcvTransactionsInterface;
-import cl.clsoft.bave.model.RcvTransactionsInterfaceEntrega;
-import cl.clsoft.bave.model.XXPDA_RCV_HEADERS_INTERFACE;
 import cl.clsoft.bave.presenter.EntregasPresenter;
-import cl.clsoft.bave.service.impl.EntregaServiceImpl;
-import cl.clsoft.bave.task.AppTaskExecutor;
-import cl.clsoft.bave.viewmodel.PoHeadersViewModel;
+import cl.clsoft.bave.dao.rowmapper.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.viewmodel.RcvShipmentHeadersViewModel;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.adapter.rxjava2.Result;
 
 public class ActivityEntregas extends BaseActivity<EntregasPresenter> {
 

@@ -5,8 +5,7 @@ import java.util.List;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlOnhandQuantities;
-import cl.clsoft.bave.service.ITransOrgService;
-import cl.clsoft.bave.service.ITransSubinvService;
+import cl.clsoft.bave.dao.rowmapper.service.ITransOrgService;
 import cl.clsoft.bave.view.ActivitySeriesTransOrg;
 
 public class SeriesTransOrgPresenter extends BasePresenter {

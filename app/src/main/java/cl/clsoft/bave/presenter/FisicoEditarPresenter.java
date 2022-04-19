@@ -7,7 +7,7 @@ import cl.clsoft.bave.apis.IRestMtlPhysicalInventoryTags;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
-import cl.clsoft.bave.service.IInventarioFisicoService;
+import cl.clsoft.bave.dao.rowmapper.service.IInventarioFisicoService;
 import cl.clsoft.bave.view.ActivityFisicoEditar;
 
 public class FisicoEditarPresenter extends BasePresenter {

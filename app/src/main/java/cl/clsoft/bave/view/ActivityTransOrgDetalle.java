@@ -1,7 +1,6 @@
 package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +23,7 @@ import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.DatosTransOrgDetalle;
 import cl.clsoft.bave.presenter.TransOrgDetallePresenter;
-import cl.clsoft.bave.service.impl.TransOrgService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.TransOrgService;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ActivityTransOrgDetalle extends BaseActivity<TransOrgDetallePresenter> implements ConfirmationDialog.ConfirmationDialogListener {

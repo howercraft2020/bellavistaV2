@@ -38,7 +38,7 @@ import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.presenter.CiclicoAgregarPresenter;
-import cl.clsoft.bave.service.impl.ConteoCiclicoService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.ConteoCiclicoService;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import retrofit2.Call;
 import retrofit2.Callback;

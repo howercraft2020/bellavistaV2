@@ -14,7 +14,7 @@ import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlSerialNumbersInterface;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.Subinventario;
-import cl.clsoft.bave.service.ITransSubinvService;
+import cl.clsoft.bave.dao.rowmapper.service.ITransSubinvService;
 import cl.clsoft.bave.task.AppTask;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityAgregarTransSubinv;

@@ -1,10 +1,8 @@
 package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,22 +15,17 @@ import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cl.clsoft.bave.R;
-import cl.clsoft.bave.apis.ApiUtils;
 import cl.clsoft.bave.apis.IRestPoheadersAll;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.PoHeadersAll;
 import cl.clsoft.bave.presenter.RecepcionOcPresenter;
-import cl.clsoft.bave.service.impl.RecepcionOcService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.RecepcionOcService;
 import cl.clsoft.bave.viewmodel.PoHeadersViewModel;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ActivityRecepcionOc extends BaseActivity<RecepcionOcPresenter> {
 

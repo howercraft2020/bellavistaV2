@@ -27,7 +27,7 @@ import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.presenter.EntregaAgregarResumenPresenter;
-import cl.clsoft.bave.service.impl.EntregaServiceImpl;
+import cl.clsoft.bave.dao.rowmapper.service.impl.EntregaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;

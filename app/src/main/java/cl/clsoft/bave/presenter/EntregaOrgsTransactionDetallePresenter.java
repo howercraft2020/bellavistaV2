@@ -7,9 +7,8 @@ import cl.clsoft.bave.dto.TransactionDetalleDto;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlMaterialTransactions;
 import cl.clsoft.bave.model.MtlSystemItems;
-import cl.clsoft.bave.service.IEntregaOrgsService;
+import cl.clsoft.bave.dao.rowmapper.service.IEntregaOrgsService;
 import cl.clsoft.bave.task.TaskExecutor;
-import cl.clsoft.bave.view.ActivityEntregaOrgsAgregarSerie;
 import cl.clsoft.bave.view.ActivityEntregaOrgsTransactionDetalle;
 
 public class EntregaOrgsTransactionDetallePresenter extends BasePresenter {

@@ -30,10 +30,9 @@ import cl.clsoft.bave.control.InstantAutoCompleteTextView;
 import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlMaterialTransactions;
 import cl.clsoft.bave.model.MtlSystemItems;
-import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.model.Subinventario;
 import cl.clsoft.bave.presenter.EntregaOrgsAgregarPresenter;
-import cl.clsoft.bave.service.impl.EntregaOrgsServiceImpl;
+import cl.clsoft.bave.dao.rowmapper.service.impl.EntregaOrgsServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 
 public class ActivityEntregaOrgsAgregar extends BaseActivity<EntregaOrgsAgregarPresenter> implements ConfirmationDialog.ConfirmationDialogListener {

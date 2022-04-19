@@ -1,4 +1,4 @@
-package cl.clsoft.bave.service.impl;
+package cl.clsoft.bave.dao.rowmapper.service.impl;
 
 import android.os.Environment;
 import android.util.Log;
@@ -33,7 +33,7 @@ import cl.clsoft.bave.dao.impl.MtlTransactionLotsIfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.OrganizacionDaoImpl;
 import cl.clsoft.bave.dao.impl.OrganizacionPrincipalDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
-import cl.clsoft.bave.dto.MtlTransactionDetalleDto;
+import cl.clsoft.bave.dao.rowmapper.service.ITransOrgService;
 import cl.clsoft.bave.dto.MtlTransactionOrgDto;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
@@ -48,7 +48,6 @@ import cl.clsoft.bave.model.MtlTransactionsLotsIface;
 import cl.clsoft.bave.model.Organizacion;
 import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.Subinventario;
-import cl.clsoft.bave.service.ITransOrgService;
 
 public class TransOrgService  implements ITransOrgService {
 

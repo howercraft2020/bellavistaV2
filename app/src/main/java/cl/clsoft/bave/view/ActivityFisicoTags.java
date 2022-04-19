@@ -19,7 +19,7 @@ import cl.clsoft.bave.model.MtlPhysicalInventories;
 import cl.clsoft.bave.model.MtlPhysicalInventoryTags;
 import cl.clsoft.bave.presenter.FisicoTagsPresenter;
 import cl.clsoft.bave.R;
-import cl.clsoft.bave.service.impl.InventarioFisicoService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.InventarioFisicoService;
 import cl.clsoft.bave.task.AppTaskExecutor;
 
 public class ActivityFisicoTags extends BaseActivity<FisicoTagsPresenter> {

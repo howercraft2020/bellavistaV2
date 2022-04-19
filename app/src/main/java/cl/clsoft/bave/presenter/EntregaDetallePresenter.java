@@ -1,14 +1,8 @@
 package cl.clsoft.bave.presenter;
 
-import android.content.Intent;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 
@@ -36,30 +30,15 @@ import cl.clsoft.bave.apis.IRestXXPDA_RCV_TRANS_INTERFACE;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.dto.TransactionsDto;
 import cl.clsoft.bave.exception.ServiceException;
-import cl.clsoft.bave.model.MtlSerialNumbersInterface;
-import cl.clsoft.bave.model.MtlTransactionsLotsIface;
 import cl.clsoft.bave.model.RcvHeadersInterface;
 import cl.clsoft.bave.model.RcvHeadersInterfaceEntrega;
 import cl.clsoft.bave.model.RcvShipmentHeaders;
 import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.model.RcvTransactionsInterface;
 import cl.clsoft.bave.model.RcvTransactionsInterfaceEntrega;
-import cl.clsoft.bave.model.XXPDA_MTL_SERIAL_NUM_IFACE;
-import cl.clsoft.bave.model.XXPDA_MTL_TRANS_LOTS_IFACE;
-import cl.clsoft.bave.model.XXPDA_RCV_HEADERS_INTERFACE;
-import cl.clsoft.bave.model.XXPDA_RCV_TRANS_INTERFACE;
-import cl.clsoft.bave.service.IEntregaService;
+import cl.clsoft.bave.dao.rowmapper.service.IEntregaService;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityEntregaDetalle;
-import cl.clsoft.bave.viewmodel.RcvShipmentHeadersViewModel;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function3;
-import io.reactivex.functions.Function4;
-import io.reactivex.functions.Function5;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

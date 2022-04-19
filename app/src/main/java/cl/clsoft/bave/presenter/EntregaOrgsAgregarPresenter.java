@@ -14,7 +14,7 @@ import cl.clsoft.bave.model.Localizador;
 import cl.clsoft.bave.model.MtlMaterialTransactions;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.Subinventario;
-import cl.clsoft.bave.service.IEntregaOrgsService;
+import cl.clsoft.bave.dao.rowmapper.service.IEntregaOrgsService;
 import cl.clsoft.bave.task.AppTask;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityEntregaOrgsAgregar;

@@ -10,9 +10,8 @@ import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.dto.TransactionsDto;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.EntregaOrgsHeader;
-import cl.clsoft.bave.service.IEntregaOrgsService;
+import cl.clsoft.bave.dao.rowmapper.service.IEntregaOrgsService;
 import cl.clsoft.bave.task.TaskExecutor;
-import cl.clsoft.bave.view.ActivityEntregasOrgs;
 import cl.clsoft.bave.view.ActivityEntregasOrgsDetalle;
 
 public class EntregasOrgsDetallePresenter extends BasePresenter {

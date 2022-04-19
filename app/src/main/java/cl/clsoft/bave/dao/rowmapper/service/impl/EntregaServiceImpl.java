@@ -1,8 +1,5 @@
-package cl.clsoft.bave.service.impl;
+package cl.clsoft.bave.dao.rowmapper.service.impl;
 
-import android.content.Intent;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -34,6 +31,7 @@ import cl.clsoft.bave.dao.impl.RcvShipmentHeadersDaoImpl;
 import cl.clsoft.bave.dao.impl.RcvTransactionsDaoImpl;
 import cl.clsoft.bave.dao.impl.RcvTransactionsInterfaceDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
+import cl.clsoft.bave.dao.rowmapper.service.IEntregaService;
 import cl.clsoft.bave.dto.TransactionDetalleDto;
 import cl.clsoft.bave.dto.TransactionsDto;
 import cl.clsoft.bave.exception.DaoException;
@@ -47,7 +45,6 @@ import cl.clsoft.bave.model.RcvShipmentHeaders;
 import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.model.RcvTransactionsInterface;
 import cl.clsoft.bave.model.Subinventario;
-import cl.clsoft.bave.service.IEntregaService;
 
 public class EntregaServiceImpl implements IEntregaService {
 

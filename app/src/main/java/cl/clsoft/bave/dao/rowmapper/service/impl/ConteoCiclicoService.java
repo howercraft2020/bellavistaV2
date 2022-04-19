@@ -1,4 +1,4 @@
-package cl.clsoft.bave.service.impl;
+package cl.clsoft.bave.dao.rowmapper.service.impl;
 
 import android.os.Environment;
 import android.util.Log;
@@ -26,6 +26,7 @@ import cl.clsoft.bave.dao.impl.MtlCycleCountHeadersDaoImpl;
 import cl.clsoft.bave.dao.impl.MtlSystemItemsDaoImpl;
 import cl.clsoft.bave.dao.impl.OrganizacionPrincipalDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
+import cl.clsoft.bave.dao.rowmapper.service.IConteoCiclicoService;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.Localizador;
@@ -34,7 +35,6 @@ import cl.clsoft.bave.model.MtlCycleCountHeaders;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.model.OrganizacionPrincipal;
 import cl.clsoft.bave.model.Subinventario;
-import cl.clsoft.bave.service.IConteoCiclicoService;
 
 
 //API

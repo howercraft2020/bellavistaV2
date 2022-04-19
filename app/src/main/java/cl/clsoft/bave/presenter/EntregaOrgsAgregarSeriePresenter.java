@@ -9,8 +9,7 @@ import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlMaterialTransactions;
 import cl.clsoft.bave.model.MtlSerialNumbers;
 import cl.clsoft.bave.model.MtlSystemItems;
-import cl.clsoft.bave.model.MtlTransactionLotNumbers;
-import cl.clsoft.bave.service.IEntregaOrgsService;
+import cl.clsoft.bave.dao.rowmapper.service.IEntregaOrgsService;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityEntregaOrgsAgregarSerie;
 

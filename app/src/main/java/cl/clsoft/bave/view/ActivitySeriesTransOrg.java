@@ -1,7 +1,6 @@
 package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,11 +27,9 @@ import java.util.List;
 
 import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
-import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.model.MtlOnhandQuantities;
 import cl.clsoft.bave.presenter.SeriesTransOrgPresenter;
-import cl.clsoft.bave.service.impl.TransOrgService;
-import cl.clsoft.bave.service.impl.TransSubinvService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.TransOrgService;
 
 public class ActivitySeriesTransOrg extends BaseActivity<SeriesTransOrgPresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 

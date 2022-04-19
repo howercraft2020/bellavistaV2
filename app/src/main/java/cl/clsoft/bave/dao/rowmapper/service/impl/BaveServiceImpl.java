@@ -1,4 +1,4 @@
-package cl.clsoft.bave.service.impl;
+package cl.clsoft.bave.dao.rowmapper.service.impl;
 
 import android.util.Log;
 
@@ -50,6 +50,7 @@ import cl.clsoft.bave.dao.impl.PoLinesAllDaoImpl;
 import cl.clsoft.bave.dao.impl.RcvShipmentHeadersDaoImpl;
 import cl.clsoft.bave.dao.impl.RcvTransactionsDaoImpl;
 import cl.clsoft.bave.dao.impl.SubinventarioDaoImpl;
+import cl.clsoft.bave.dao.rowmapper.service.IBaveService;
 import cl.clsoft.bave.exception.DaoException;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.Localizador;
@@ -72,7 +73,6 @@ import cl.clsoft.bave.model.PoLinesAll;
 import cl.clsoft.bave.model.RcvShipmentHeaders;
 import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.model.Subinventario;
-import cl.clsoft.bave.service.IBaveService;
 
 public class BaveServiceImpl implements IBaveService {
 

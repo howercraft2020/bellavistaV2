@@ -6,7 +6,7 @@ import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlOnhandQuantities;
 import cl.clsoft.bave.model.MtlSerialNumbersInterface;
-import cl.clsoft.bave.service.ITransSubinvService;
+import cl.clsoft.bave.dao.rowmapper.service.ITransSubinvService;
 import cl.clsoft.bave.view.ActivitySeriesTrans;
 
 public class SeriesTransPresenter extends BasePresenter {

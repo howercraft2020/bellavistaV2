@@ -17,7 +17,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -29,10 +28,8 @@ import cl.clsoft.bave.control.InstantAutoCompleteTextView;
 import cl.clsoft.bave.model.MtlMaterialTransactions;
 import cl.clsoft.bave.model.MtlSerialNumbers;
 import cl.clsoft.bave.model.MtlSystemItems;
-import cl.clsoft.bave.model.MtlTransactionLotNumbers;
-import cl.clsoft.bave.model.RcvTransactions;
 import cl.clsoft.bave.presenter.EntregaOrgsAgregarSeriePresenter;
-import cl.clsoft.bave.service.impl.EntregaOrgsServiceImpl;
+import cl.clsoft.bave.dao.rowmapper.service.impl.EntregaOrgsServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 
 public class ActivityEntregaOrgsAgregarSerie extends BaseActivity<EntregaOrgsAgregarSeriePresenter> implements ConfirmationDialog.ConfirmationDialogListener {

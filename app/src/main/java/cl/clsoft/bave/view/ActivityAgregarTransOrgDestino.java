@@ -1,7 +1,6 @@
 package cl.clsoft.bave.view;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.content.Context;
@@ -28,7 +27,7 @@ import cl.clsoft.bave.R;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.Organizacion;
 import cl.clsoft.bave.presenter.AgregarTransOrgDestinoPresenter;
-import cl.clsoft.bave.service.impl.TransOrgService;
+import cl.clsoft.bave.dao.rowmapper.service.impl.TransOrgService;
 import cl.clsoft.bave.task.AppTaskExecutor;
 
 public class ActivityAgregarTransOrgDestino extends BaseActivity<AgregarTransOrgDestinoPresenter> implements ConfirmationDialog.ConfirmationDialogListener{

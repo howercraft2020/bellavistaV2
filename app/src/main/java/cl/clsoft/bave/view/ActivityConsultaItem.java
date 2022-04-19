@@ -1,22 +1,22 @@
 package cl.clsoft.bave.view;
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import cl.clsoft.bave.apis.ApiUtils;
 import cl.clsoft.bave.apis.IRestConsulta;
@@ -32,7 +32,7 @@ import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.ConsultaItem;
 import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.presenter.ConsultaItemPresenter;
-import cl.clsoft.bave.service.impl.ConsultaServiceImpl;
+import cl.clsoft.bave.dao.rowmapper.service.impl.ConsultaServiceImpl;
 import cl.clsoft.bave.task.AppTaskExecutor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +54,8 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
     private RecyclerView recyclerViewItems;
     private TextInputLayout layoutCodigoBarrasItem;
     private EditText textCodigobarrasItem;
+    private Button HabilitarScanner;
+    private LinearLayoutManager Screen;
 
     //API
     IRestConsulta iRestConsulta;
@@ -82,6 +84,8 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
         this.recyclerViewItems = findViewById(R.id.recyclerViewItems);
         this.layoutCodigoBarrasItem = findViewById(R.id.layoutCodigoBarrasItem);
         this.textCodigobarrasItem = findViewById(R.id.textCodigobarrasItem);
+        this.HabilitarScanner = findViewById(R.id.HabilitarScaner);
+
 
         // Set Controls
 
@@ -91,6 +95,29 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
         this.iRestConsulta= ApiUtils.getIRestConsulta();
         this.iRestMtlSystemItems  = ApiUtils.getIRestMtlSystemItems();
         this.iRestHomologacion = ApiUtils.getIRestHomologacion();
+
+
+        this.HabilitarScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer Color = HabilitarScanner.getHighlightColor();
+                if(Color == 1718197024 ){
+                    HabilitarScanner.setHintTextColor(171228096);
+                    HabilitarScanner.setHighlightColor(171228096);
+                    textSigle.setEnabled(false);
+                    textCodigobarrasItem.setEnabled(true);
+                }
+                if(Color == 171228096){
+                    HabilitarScanner.setHighlightColor(1718197024);
+                    HabilitarScanner.setHintTextColor(1718197024);
+                    textSigle.setEnabled(true);
+                    textCodigobarrasItem.setEnabled(false);
+                }
+
+            }
+        });
+
+
 
 
         this.textSigle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -122,6 +149,8 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
         });
 
 
+
+
         this.textCodigobarrasItem.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -133,6 +162,7 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
                             fillStock(Long.valueOf(response.body()));
                             Toast.makeText(ActivityConsultaItem.this, response.body().toString(), Toast.LENGTH_SHORT).show();
 
+
                         }
                     }
                     @Override
@@ -141,11 +171,10 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
                     }
                 });
                 return false;
+
             }
+
         });
-
-
-
 
 
         this.iconSearch.setOnClickListener(v -> {
@@ -156,6 +185,23 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
         this.recyclerViewItems.setLayoutManager(new LinearLayoutManager(this));
 
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+       if(keyCode == 180 ){
+           textSigle.findFocus();
+           textSigle.performClick();
+           textSigle.hasFocus();
+           textSigle.callOnClick();
+           Toast.makeText(this,"PDA :"+keyCode, Toast.LENGTH_SHORT).show();
+
+
+       }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -221,6 +267,7 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
                     });
                 }
                 textCodigobarrasItem.setText("");
+
             }
 
             @Override
@@ -232,6 +279,9 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
         //AdapterItemConsultaSigle adapterItemConsultaSigle = new AdapterItemConsultaSigle(items);
         //this.recyclerViewItems.setAdapter(adapterItemConsultaSigle);
         this.textSigle.setText("");
+        textCodigobarrasItem.performClick();
+      //  textCodigobarrasItem.callOnClick();
+
     }
 
 }

@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import cl.clsoft.bave.base.BasePresenter;
 import cl.clsoft.bave.exception.ServiceException;
 import cl.clsoft.bave.model.MtlCycleCountEntries;
-import cl.clsoft.bave.service.IConteoCiclicoService;
+import cl.clsoft.bave.dao.rowmapper.service.IConteoCiclicoService;
 import cl.clsoft.bave.task.TaskExecutor;
 import cl.clsoft.bave.view.ActivityCiclicoEditar;
 
