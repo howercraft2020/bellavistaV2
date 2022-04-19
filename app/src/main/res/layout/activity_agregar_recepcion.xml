@@ -137,14 +137,14 @@
             android:hint="Descripcion"
             android:textColorHint="?attr/colorPrimary">
 
-        <cl.clsoft.bave.control.InstantAutoCompleteTextView
+        <EditText
                 android:id="@+id/textDescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="?attr/colorPrimaryDark"
                 android:inputType="text"
                 android:text=""
-                android:textColor="@android:color/black"></cl.clsoft.bave.control.InstantAutoCompleteTextView>
+                android:textColor="@android:color/black"></EditText>
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

@@ -18,10 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cl.clsoft.bave.R;
+import cl.clsoft.bave.apis.IRestMtlPhysicalInventories;
 import cl.clsoft.bave.base.BaseActivity;
 import cl.clsoft.bave.model.MtlPhysicalInventories;
 import cl.clsoft.bave.presenter.FisicosPresenter;
 import cl.clsoft.bave.service.impl.InventarioFisicoService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityFisicos extends BaseActivity<FisicosPresenter> {
 
@@ -33,6 +37,9 @@ public class ActivityFisicos extends BaseActivity<FisicosPresenter> {
     private RecyclerView recyclerViewFisicos;
     private AdapterInventarioFisico adapter;
     private AdapterInventarioFisico.RecyclerViewClickListener listener;
+
+    //API
+    IRestMtlPhysicalInventories iRestMtlPhysicalInventories;
 
     @NonNull
     @Override
@@ -57,6 +64,18 @@ public class ActivityFisicos extends BaseActivity<FisicosPresenter> {
         this.recyclerViewFisicos.setLayoutManager(new LinearLayoutManager(this));
 
         inventarios = mPresenter.getInventariosFisicos();
+        iRestMtlPhysicalInventories.getAll().enqueue(new Callback<List<MtlPhysicalInventories>>() {
+            @Override
+            public void onResponse(Call<List<MtlPhysicalInventories>> call, Response<List<MtlPhysicalInventories>> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<List<MtlPhysicalInventories>> call, Throwable t) {
+
+            }
+        });
+
         this.adapter = new AdapterInventarioFisico(inventarios, listener);
         this.recyclerViewFisicos.setAdapter(this.adapter);
 
