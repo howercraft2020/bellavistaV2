@@ -19,6 +19,7 @@ import androidx.fragment.app.DialogFragment;
 
 import cl.clsoft.bave.apis.ApiUtils;
 import cl.clsoft.bave.apis.IRestLocalizador;
+import cl.clsoft.bave.apis.IRestMtlPhysicalInventoryTags;
 import cl.clsoft.bave.apis.IRestMtlSystemItems;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -72,6 +73,7 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
     //API
     private IRestLocalizador iRestLocalizador;
     private IRestMtlSystemItems iRestMtlSystemItems;
+    private IRestMtlPhysicalInventoryTags iRestMtlPhysicalInventoryTags;
 
     @NonNull
     @Override
@@ -116,6 +118,7 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
         //API
         this.iRestMtlSystemItems = ApiUtils.getIRestMtlSystemItems();
         this.iRestLocalizador = ApiUtils.getIRestLocalizador();
+        this.iRestMtlPhysicalInventoryTags = ApiUtils.getIRestMtlPhysicalInventoryTagsResponse();
 
         this.textLocator.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -125,14 +128,15 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                 locatorCodigo = parent.getAdapter().getItem(pos).toString();
                 Log.d(TAG, "locatorCodigo: " + locatorCodigo);
                 if (locatorCodigo != null && !locatorCodigo.equalsIgnoreCase("SIN LOCALIZADOR")) {
-
                     iRestLocalizador.getByCodigo(locatorCodigo).enqueue(new Callback<Localizador>() {
                         @Override
                         public void onResponse(Call<Localizador> call, Response<Localizador> response) {
                             //Localizador localizador = mPresenter.getLocalizadorbyCodigo(locatorCodigo);
-                            Localizador localizador = response.body();
-                            if (localizador != null) {
-                                locatorId = localizador.getIdLocalizador();
+                            if(response.isSuccessful()== true) {
+                                Localizador localizador = response.body();
+                                if (localizador != null) {
+                                    locatorId = localizador.getIdLocalizador();
+                                }
                             }
                         }
 
@@ -159,25 +163,27 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                     @Override
                     public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
                         //MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
-                        MtlSystemItems item = response.body();
-                        if (item != null) {
-                            layoutCantidad.setHintEnabled(true);
-                            textCantidad.setEnabled(true);
-                            layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
-                            if (item.getLotControlCode().equalsIgnoreCase("2")) {
-                                fillLote();
-                            }
-                            if (item.getShelfLifeCode().equalsIgnoreCase("2") || item.getShelfLifeCode().equalsIgnoreCase("4")) {
-                                fillVencimiento();
-                            }
-                            if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
-                                fillSerie();
-                                textCantidad.setText("1.0");
-                                textCantidad.setEnabled(false);
+                        if(response.isSuccessful() == true) {
+                            MtlSystemItems item = response.body();
+                            if (item != null) {
+                                layoutCantidad.setHintEnabled(true);
+                                textCantidad.setEnabled(true);
+                                layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
+                                if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                                    fillLote();
+                                }
+                                if (item.getShelfLifeCode().equalsIgnoreCase("2") || item.getShelfLifeCode().equalsIgnoreCase("4")) {
+                                    fillVencimiento();
+                                }
+                                if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                                    fillSerie();
+                                    textCantidad.setText("1.0");
+                                    textCantidad.setEnabled(false);
 
+                                }
+                            } else {
+                                showWarning("Item " + segment + " no encontrado en tabla maestra");
                             }
-                        } else {
-                            showWarning("Item " + segment + " no encontrado en tabla maestra");
                         }
                     }
 
@@ -321,13 +327,15 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
         }
     }
 
+    //
     public void loadSigle() {
         this.mPresenter.getSegment1(inventarioId, subinventarioCodigo, locatorCodigo);
     }
 
     public void fillSigle(List<String> listSigles) {
-        //List<String> listSigles = this.mPresenter.getSegment1(inventarioId, subinventarioCodigo, locatorCodigo);
-        if (listSigles != null) {
+        //REVISAR
+        //List<String> listSigles = this.mPresenter.getSegment1(inventarioId, subinventarioCodigo, locatorCodigo);}
+
             if (listSigles.size() > 0) {
                 String[] sigles = new String[listSigles.size()];
                 for (int i = 0; i < listSigles.size(); i++) {
@@ -343,71 +351,111 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                 this.textLocator.setText("");
                 this.textLocator.requestFocus();
             }
-        } else {
-            this.showWarning("No se encontraron productos");
-            this.textLocator.setText("");
-            this.textLocator.requestFocus();
         }
-    }
+
 
     public void fillSerie() {
 
-
-
-        List<String> listSeries = this.mPresenter.getSeries(inventarioId, subinventarioCodigo, locatorId, segment);
-        if (listSeries != null) {
-            if (listSeries.size() > 0) {
-                String[] series = new String[listSeries.size()];
-                for (int i = 0; i < listSeries.size(); i++) {
-                    series[i] = listSeries.get(i);
+        //List<String> listSeries = this.mPresenter.getSeries(inventarioId, subinventarioCodigo, locatorId, segment);
+        iRestMtlPhysicalInventoryTags.getSeriesByInventorySubinventoryLocatorSegment(inventarioId, subinventarioCodigo, locatorId, segment).enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if(response.isSuccessful() == true) {
+                    List<String> listSeries = response.body();
+                    if (listSeries != null) {
+                        if (listSeries.size() > 0) {
+                            String[] series = new String[listSeries.size()];
+                            for (int i = 0; i < listSeries.size(); i++) {
+                                series[i] = listSeries.get(i);
+                            }
+                            ArrayAdapter<String> adapterSerie = new ArrayAdapter<String> (getApplicationContext(), android.R.layout.select_dialog_item, series);
+                            textSerie.setAdapter(adapterSerie);
+                            textSerie.setEnabled(true);
+                            layoutSerie.setHintEnabled(true);
+                        } else {
+                            textSerie.setEnabled(false);
+                            layoutSerie.setHintEnabled(false);
+                        }
+                    }
                 }
-                ArrayAdapter<String> adapterSerie = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, series);
-                this.textSerie.setAdapter(adapterSerie);
-                this.textSerie.setEnabled(true);
-                this.layoutSerie.setHintEnabled(true);
-            } else {
-                this.textSerie.setEnabled(false);
-                this.layoutSerie.setHintEnabled(false);
             }
-        }
+
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+
+            }
+        });
+
     }
 
     public void fillLote() {
-        List<String> listLotes = this.mPresenter.getLotes(inventarioId, subinventarioCodigo, locatorId, segment);
-        if (listLotes != null) {
-            if (listLotes.size() > 0) {
-                String[] lotes = new String[listLotes.size()];
-                for (int i = 0; i < listLotes.size(); i++) {
-                    lotes[i] = listLotes.get(i);
+
+        iRestMtlPhysicalInventoryTags.getLotesByInventorySubinventoryLocatorSegment(inventarioId, subinventarioCodigo, locatorId, segment).enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+               // List<String> listLotes = this.mPresenter.getLotes(inventarioId, subinventarioCodigo, locatorId, segment);
+                if(response.isSuccessful()==true){
+                    List<String> listLotes = response.body();
+                if (listLotes != null) {
+                    if (listLotes.size() > 0) {
+                        String[] lotes = new String[listLotes.size()];
+                        for (int i = 0; i < listLotes.size(); i++) {
+                            lotes[i] = listLotes.get(i);
+                        }
+                        ArrayAdapter<String> adapterLote = new ArrayAdapter<String> (getApplicationContext(), android.R.layout.select_dialog_item, lotes);
+                        textLote.setAdapter(adapterLote);
+                        textLote.setEnabled(true);
+                        layoutLote.setHintEnabled(true);
+                    } else {
+                        textLote.setEnabled(false);
+                        layoutLote.setHintEnabled(false);
+                    }
                 }
-                ArrayAdapter<String> adapterLote = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, lotes);
-                this.textLote.setAdapter(adapterLote);
-                this.textLote.setEnabled(true);
-                this.layoutLote.setHintEnabled(true);
-            } else {
-                this.textLote.setEnabled(false);
-                this.layoutLote.setHintEnabled(false);
+                }
             }
-        }
+
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+
+            }
+        });
+
+
     }
 
     public void fillVencimiento() {
-        List<String> listVencimientos = this.mPresenter.getVencimientos(inventarioId, subinventarioCodigo, locatorId, segment);
-        if (listVencimientos != null) {
-            if (listVencimientos.size() > 0) {
-                String[] vencimientos = new String[listVencimientos.size()];
-                for (int i = 0; i < listVencimientos.size(); i++) {
-                    vencimientos[i] = listVencimientos.get(i);
+
+
+        iRestMtlPhysicalInventoryTags.getVencimientosByInventorySubinventoryLocatorSegment(inventarioId, subinventarioCodigo, locatorId, segment).enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                // List<String> listVencimientos = this.mPresenter.getVencimientos(inventarioId, subinventarioCodigo, locatorId, segment);
+                if(response.isSuccessful()==true) {
+                    List<String> listVencimientos = response.body();
+                    if (listVencimientos != null) {
+                        if (listVencimientos.size() > 0) {
+                            String[] vencimientos = new String[listVencimientos.size()];
+                            for (int i = 0; i < listVencimientos.size(); i++) {
+                                vencimientos[i] = listVencimientos.get(i);
+                            }
+                            ArrayAdapter<String> adapterVencimiento = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.select_dialog_item, vencimientos);
+                            textFechaVencimiento.setAdapter(adapterVencimiento);
+                            textFechaVencimiento.setEnabled(true);
+                            layoutFechaVencimiento.setHintEnabled(true);
+                        } else {
+                            textFechaVencimiento.setEnabled(false);
+                            layoutFechaVencimiento.setHintEnabled(false);
+                        }
+                    }
                 }
-                ArrayAdapter<String> adapterVencimiento = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, vencimientos);
-                this.textFechaVencimiento.setAdapter(adapterVencimiento);
-                this.textFechaVencimiento.setEnabled(true);
-                this.layoutFechaVencimiento.setHintEnabled(true);
-            } else {
-                this.textFechaVencimiento.setEnabled(false);
-                this.layoutFechaVencimiento.setHintEnabled(false);
             }
-        }
+
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+
+            }
+        });
+
     }
 
     public void grabarInventario() {
