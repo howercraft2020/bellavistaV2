@@ -17,6 +17,9 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import cl.clsoft.bave.apis.ApiUtils;
+import cl.clsoft.bave.apis.IRestLocalizador;
+import cl.clsoft.bave.apis.IRestMtlSystemItems;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -30,6 +33,9 @@ import cl.clsoft.bave.model.MtlSystemItems;
 import cl.clsoft.bave.presenter.FisicoAgregarPresenter;
 import cl.clsoft.bave.service.impl.InventarioFisicoService;
 import cl.clsoft.bave.task.AppTaskExecutor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> implements ConfirmationDialog.ConfirmationDialogListener {
 
@@ -62,6 +68,10 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
     private TextInputLayout layoutCantidad;
     private TextInputEditText textCantidad;
     private ImageView iconSearch;
+
+    //API
+    private IRestLocalizador iRestLocalizador;
+    private IRestMtlSystemItems iRestMtlSystemItems;
 
     @NonNull
     @Override
@@ -101,6 +111,12 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
         this.textLote.setThreshold(1);
         this.textFechaVencimiento.setThreshold(1);
 
+
+
+        //API
+        this.iRestMtlSystemItems = ApiUtils.getIRestMtlSystemItems();
+        this.iRestLocalizador = ApiUtils.getIRestLocalizador();
+
         this.textLocator.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -109,10 +125,23 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                 locatorCodigo = parent.getAdapter().getItem(pos).toString();
                 Log.d(TAG, "locatorCodigo: " + locatorCodigo);
                 if (locatorCodigo != null && !locatorCodigo.equalsIgnoreCase("SIN LOCALIZADOR")) {
-                    Localizador localizador = mPresenter.getLocalizadorbyCodigo(locatorCodigo);
-                    if (localizador != null) {
-                        locatorId = localizador.getIdLocalizador();
-                    }
+
+                    iRestLocalizador.getByCodigo(locatorCodigo).enqueue(new Callback<Localizador>() {
+                        @Override
+                        public void onResponse(Call<Localizador> call, Response<Localizador> response) {
+                            //Localizador localizador = mPresenter.getLocalizadorbyCodigo(locatorCodigo);
+                            Localizador localizador = response.body();
+                            if (localizador != null) {
+                                locatorId = localizador.getIdLocalizador();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Localizador> call, Throwable t) {
+
+                        }
+                    });
+
                 }
                 loadSigle();
 
@@ -126,26 +155,39 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                 Log.d(TAG, "pos : " + pos);
                 textSigle.setEnabled(false);
                 segment = parent.getAdapter().getItem(pos).toString();
-                MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
-                if (item != null) {
-                    layoutCantidad.setHintEnabled(true);
-                    textCantidad.setEnabled(true);
-                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
-                    if (item.getLotControlCode().equalsIgnoreCase("2")) {
-                        fillLote();
+                iRestMtlSystemItems.getBySegment(segment).enqueue(new Callback<MtlSystemItems>() {
+                    @Override
+                    public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+                        //MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
+                        MtlSystemItems item = response.body();
+                        if (item != null) {
+                            layoutCantidad.setHintEnabled(true);
+                            textCantidad.setEnabled(true);
+                            layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
+                            if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                                fillLote();
+                            }
+                            if (item.getShelfLifeCode().equalsIgnoreCase("2") || item.getShelfLifeCode().equalsIgnoreCase("4")) {
+                                fillVencimiento();
+                            }
+                            if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                                fillSerie();
+                                textCantidad.setText("1.0");
+                                textCantidad.setEnabled(false);
+
+                            }
+                        } else {
+                            showWarning("Item " + segment + " no encontrado en tabla maestra");
+                        }
                     }
-                    if (item.getShelfLifeCode().equalsIgnoreCase("2") || item.getShelfLifeCode().equalsIgnoreCase("4")) {
-                        fillVencimiento();
-                    }
-                    if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
-                        fillSerie();
-                        textCantidad.setText("1.0");
-                        textCantidad.setEnabled(false);
+
+                    @Override
+                    public void onFailure(Call<MtlSystemItems> call, Throwable t) {
 
                     }
-                } else {
-                    showWarning("Item " + segment + " no encontrado en tabla maestra");
-                }
+                });
+
+
             }
         });
 
@@ -217,25 +259,41 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
                 segment = data.getStringExtra("Segment1");
                 this.textSigle.setText(segment);
                 Log.d(TAG, "sigle: " + segment);
-                MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
-                if (item != null) {
-                    layoutCantidad.setHintEnabled(true);
-                    textCantidad.setEnabled(true);
-                    layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
-                    if (item.getLotControlCode().equalsIgnoreCase("2")) {
-                        fillLote();
-                    }
-                    if (item.getShelfLifeCode().equalsIgnoreCase("2") || item.getShelfLifeCode().equalsIgnoreCase("4")) {
-                        fillVencimiento();
-                    }
-                    if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
-                        fillSerie();
-                        textCantidad.setText("1.0");
-                        textCantidad.setEnabled(false);
-                    }
-                } else {
-                    showWarning("Item " + segment + " no encontrado en tabla maestra");
-                }
+
+
+              iRestMtlSystemItems.getBySegment(segment).enqueue(new Callback<MtlSystemItems>() {
+                  @Override
+                  public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+                     // MtlSystemItems item = mPresenter.getMtlSystemItemsBySegment(segment);
+                      if(response.isSuccessful() == true){
+                          MtlSystemItems item = response.body();
+                          if (item != null) {
+                              layoutCantidad.setHintEnabled(true);
+                              textCantidad.setEnabled(true);
+                              layoutCantidad.setHint("Cantidad (" + item.getPrimaryUomCode() + ")");
+                              if (item.getLotControlCode().equalsIgnoreCase("2")) {
+                                  fillLote();
+                              }
+                              if (item.getShelfLifeCode().equalsIgnoreCase("2") || item.getShelfLifeCode().equalsIgnoreCase("4")) {
+                                  fillVencimiento();
+                              }
+                              if (item.getSerialNumberControlCode().equalsIgnoreCase("2") || item.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                                  fillSerie();
+                                  textCantidad.setText("1.0");
+                                  textCantidad.setEnabled(false);
+                              }
+                          } else {
+                              showWarning("Item " + segment + " no encontrado en tabla maestra");
+                          }
+
+                      }
+                  }
+
+                  @Override
+                  public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+
+                  }
+              });
             }
             if (resultCode == Activity.RESULT_CANCELED) {
             }
@@ -293,6 +351,9 @@ public class ActivityFisicoAgregar extends BaseActivity<FisicoAgregarPresenter> 
     }
 
     public void fillSerie() {
+
+
+
         List<String> listSeries = this.mPresenter.getSeries(inventarioId, subinventarioCodigo, locatorId, segment);
         if (listSeries != null) {
             if (listSeries.size() > 0) {
