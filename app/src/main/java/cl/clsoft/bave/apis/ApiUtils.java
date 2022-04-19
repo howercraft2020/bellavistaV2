@@ -12,6 +12,10 @@ public class ApiUtils {
         return RetrofitClient.getClient(BASE_URL).create(IRestPoheadersAll.class);
     }
 
+    public static IRestMtlPhysicalInventories getIRestMtlPhysicalInventories(){
+        return RetrofitClient.getClient(BASE_URL).create(IRestMtlPhysicalInventories.class);
+    }
+
     public static IRestPoheadersAll getIRestPoheadersAllResponse() {
         return RetrofitClient.getClientResponse(BASE_URL).create(IRestPoheadersAll.class);
     }
