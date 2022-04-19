@@ -308,7 +308,7 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                                         inventoryItemId = mtlSystemItems.getInventoryItemId();
 
                                         //mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
-                                      //  validaLinea();
+                                          validaLinea();
                                     }else {
                                         // showWarning("Item " + segment + " no se ha encontrado en la maestra.");
                                     }

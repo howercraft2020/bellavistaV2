@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import cl.clsoft.bave.apis.IRestMtlPhysicalInventories;
+import cl.clsoft.bave.apis.IRestMtlPhysicalInventoryTags;
 import cl.clsoft.bave.dao.ILocalizadorDao;
 import cl.clsoft.bave.dao.IMtlPhysicalInventoriesDao;
 import cl.clsoft.bave.dao.IMtlPhysicalInventoryTagsDao;
@@ -444,6 +446,7 @@ public class InventarioFisicoService implements IInventarioFisicoService {
             }
 
             // Update Tag Count
+
             MtlPhysicalInventoryTags tag = tags.get(0);
             if (tag.getCount().doubleValue() > 0 && tag.getLastUpdated() == null) {
                 throw new ServiceException(1, "Tag ya se encuentra ingresado.");

@@ -127,6 +127,21 @@ public class EntregaAgregarResumenPresenter extends BasePresenter {
         }
         return null;
     }
+    public String esVacio(String param){
+        String retorno ="";
+        if(param.isEmpty()==true){
+
+            retorno = "0";
+
+        }
+        if(param.isEmpty()==false){
+
+
+            retorno = param;
+        }
+        return retorno;
+
+    }
 
     public void addTransacctionInterface(Long shipmentHeaderId, Long transactionId, String subinventoryCode,
                                          String locatorCode, String lote, String loteProveedor, String vencimiento, String categoria, String atributo1,
@@ -138,7 +153,7 @@ public class EntregaAgregarResumenPresenter extends BasePresenter {
         Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface::shipmentHeaderId: " + shipmentHeaderId);
         Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface::transactionId: " + transactionId);
         Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface::subinventoryCode: " + subinventoryCode);
-        Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface::locatorCode: " + locatorCode);
+        Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface::locatorCode: " + esVacio(locatorCode));
         Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface::lote: " + lote);
         Log.d(TAG, "EntregaServiceImpl::addTransacctionInterface::loteProveedor: " + loteProveedor);
 
@@ -150,7 +165,7 @@ public class EntregaAgregarResumenPresenter extends BasePresenter {
         Observable<RcvShipmentHeaders> rcvShipmentHeadersObservable = iRestRcvShipmentHeaders.getRx(shipmentHeaderId);
         Observable<RcvTransactions> rcvTransactionsObservable = iRestRcvTransactions.getRx(transactionId);
         Observable<Subinventario> subinventarioObservable = iRestSubinventario.getByCodigoRx(subinventoryCode);
-        Observable<Localizador> localizadorObservable = iRestLocalizador.getByCodigoRx(locatorCode);
+        Observable<Localizador> localizadorObservable = iRestLocalizador.getByCodigoRx(esVacio(locatorCode));
 
 
 
@@ -159,9 +174,9 @@ public class EntregaAgregarResumenPresenter extends BasePresenter {
                 subinventarioObservable,
                 localizadorObservable,
                 new Function4<RcvShipmentHeaders, RcvTransactions, Subinventario,Localizador, List<Object>>() {
-                    @NonNull
+                    //@NonNull
                     @Override
-                    public List<Object> apply(@NonNull RcvShipmentHeaders rcvShipmentHeaders, @NonNull RcvTransactions rcvTransactions, @NonNull Subinventario Subinventario,@NonNull Localizador localizador) throws Exception {
+                    public List<Object> apply(@NonNull RcvShipmentHeaders rcvShipmentHeaders, @NonNull RcvTransactions rcvTransactions, @NonNull Subinventario Subinventario, Localizador localizador) throws Exception {
 
                         List<Object> r = new ArrayList<>();
                         r.add(rcvShipmentHeaders);
@@ -202,594 +217,604 @@ public class EntregaAgregarResumenPresenter extends BasePresenter {
 
 
 
-                                                                                                             @Override
-                                                                                                             public void onSubscribe(@NonNull Disposable d) {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
 
-                                                                                                             }
+            }
 
-                                                                                                             @Override
-                                                                                                             public void onNext(@NonNull List<Object> objects) {
-                                                                                                                 r = objects;
-                                                                                                             }
+            @Override
+            public void onNext(@NonNull List<Object> objects) {
+                r = objects;
+            }
 
-                                                                                                             @Override
-                                                                                                             public void onError(@NonNull Throwable e) {
-                                                                                                                 mView.showError(e.getMessage());
-                                                                                                             }
+            @Override
+            public void onError(@NonNull Throwable e) {
+                mView.showError(e.getMessage());
+            }
 
-                                                                                                             @Override
-                                                                                                             public void onComplete() {
+            @Override
+            public void onComplete() {
 
-                                                                                                                 Log.d(TAG, "COMPLETADO REST API OBSERVABLE CALLS" );
-                                                                                                                 rcvShipmentHeaders = RcvShipmentHeaders.class.cast(r.get(0));
-                                                                                                                 rcvTransactions = RcvTransactions.class.cast(r.get(1));
-                                                                                                                 subinventario = Subinventario.class.cast(r.get(2));
-                                                                                                                 localizador = Localizador.class.cast(r.get(3));
+                Log.d(TAG, "COMPLETADO REST API OBSERVABLE CALLS" );
+                rcvShipmentHeaders = RcvShipmentHeaders.class.cast(r.get(0));
+                rcvTransactions = RcvTransactions.class.cast(r.get(1));
+                subinventario = Subinventario.class.cast(r.get(2));
+                if(r.get(3)!=null) {
+                    localizador = Localizador.class.cast(r.get(3));
+                }
+                Gson gson = new Gson();
 
-                                                                                                                 Gson gson = new Gson();
 
+                Log.d(TAG, "rcvShipmentHeaders: " + gson.toJson(rcvShipmentHeaders));
+                Log.d(TAG, "rcvTransactions: " + gson.toJson(rcvTransactions));
+                Log.d(TAG, "subinventario: " + gson.toJson(subinventario));
+                Log.d(TAG, "localizador: " + gson.toJson(localizador));
 
-                                                                                                                 Log.d(TAG, "rcvShipmentHeaders: " + gson.toJson(rcvShipmentHeaders));
-                                                                                                                 Log.d(TAG, "rcvTransactions: " + gson.toJson(rcvTransactions));
-                                                                                                                 Log.d(TAG, "subinventario: " + gson.toJson(subinventario));
-                                                                                                                 Log.d(TAG, "localizador: " + gson.toJson(localizador));
 
+                iRestMtlSystemItems.get(rcvTransactions.getItemId()).enqueue(new Callback<MtlSystemItems>() {
+                    @Override
+                    public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
 
-                                                                                                                 iRestMtlSystemItems.get(rcvTransactions.getItemId()).enqueue(new Callback<MtlSystemItems>() {
-                                                                                                                     @Override
-                                                                                                                     public void onResponse(Call<MtlSystemItems> call, Response<MtlSystemItems> response) {
+                        if(response.isSuccessful()==true && response.code()==200 && response.body()!=null) {
+                            mtlSystemItems = response.body();
 
-                                                                                                                         if(response.isSuccessful()==true && response.code()==200 && response.body()!=null) {
-                                                                                                                             mtlSystemItems = response.body();
+                            if (mtlSystemItems.getLotControlCode().equalsIgnoreCase("2")) {
+                                isControlLote = true;
+                            }
+                            if (mtlSystemItems.getSerialNumberControlCode().equalsIgnoreCase("2") || mtlSystemItems.getSerialNumberControlCode().equalsIgnoreCase("5")) {
+                                isControlSerie = true;
+                            }
+                            if (mtlSystemItems.getShelfLifeCode().equalsIgnoreCase("2") || mtlSystemItems.getShelfLifeCode().equalsIgnoreCase("4")) {
+                                isControlVencimiento = true;
+                            }
 
-                                                                                                                             if (mtlSystemItems.getLotControlCode().equalsIgnoreCase("2")) {
-                                                                                                                                 isControlLote = true;
-                                                                                                                             }
-                                                                                                                             if (mtlSystemItems.getSerialNumberControlCode().equalsIgnoreCase("2") || mtlSystemItems.getSerialNumberControlCode().equalsIgnoreCase("5")) {
-                                                                                                                                 isControlSerie = true;
-                                                                                                                             }
-                                                                                                                             if (mtlSystemItems.getShelfLifeCode().equalsIgnoreCase("2") || mtlSystemItems.getShelfLifeCode().equalsIgnoreCase("4")) {
-                                                                                                                                 isControlVencimiento = true;
-                                                                                                                             }
 
+                            // Validaciones
 
-                                                                                                                             // Validaciones
 
+                            if (cantidad.longValue() > rcvTransactions.getQuantity().longValue()) {
+                                mView.showError("la cantidad es mayor a lo especificado " + rcvTransactions.getQuantity());
 
-                                                                                                                             if (cantidad.longValue() > rcvTransactions.getQuantity().longValue()) {
-                                                                                                                                 mView.showError("la cantidad es mayor a lo especificado " + rcvTransactions.getQuantity());
+                            }
 
-                                                                                                                             }
+                            if (isControlLote && lote == null) {
+                                mView.showError("Debe indicar el lote");
+                            }
 
-                                                                                                                             if (isControlLote && lote == null) {
-                                                                                                                                 mView.showError("Debe indicar el lote");
-                                                                                                                             }
-
-                                                                                                                             if (isControlVencimiento && vencimiento == null) {
-
-                                                                                                                                 mView.showError("Debe indicar el vencimiento");
-                                                                                                                             }
-
-                                                                                                                             if (isControlSerie && series == null) {
-
-
-                                                                                                                                 mView.showError("Debe indicar las series");
-                                                                                                                             }
-
-                                                                                                                             if (isControlSerie && series.size() == 0) {
-                                                                                                                                 mView.showError("Debe indicar las series");
-                                                                                                                             }
-
-                                                                                                                             if (isControlSerie && series.size() < cantidad.intValue()) {
-                                                                                                                                 mView.showError("Faltan series");
-                                                                                                                             }
-
-
-                                                                                                                             else {
-                                                                                                                             ///INSERCION DE TABLAS
-
-                                                                                                                             iRestRcvHeadersInterface.existe(rcvShipmentHeaders.getHeaderInterfaceId()).enqueue(new Callback<Long>() {
-                                                                                                                                 @Override
-                                                                                                                                 public void onResponse(Call<Long> call, Response<Long> response) {
-                                                                                                                                     RcvHeadersInterface rcvHeadersInterface;
-
-
-                                                                                                                                     if (response.isSuccessful() == true && response.code() == 200) {
-
-                                                                                                                                         Log.d(TAG, "Resultado Existe RcvHeadersInterface: " + response.body().intValue());
-
-                                                                                                                                         if (response.body().intValue() == 0) {
-
-                                                                                                                                             rcvHeadersInterface = new RcvHeadersInterface();
-
-                                                                                                                                             rcvHeadersInterface.setHeaderInterfaceId(rcvShipmentHeaders.getHeaderInterfaceId());
-                                                                                                                                             rcvHeadersInterface.setGroupId(rcvShipmentHeaders.getGroupId());
-                                                                                                                                             rcvHeadersInterface.setProcessingStatusCode("PENDING");
-                                                                                                                                             rcvHeadersInterface.setReciptSourceCode("VENDOR");
-                                                                                                                                             rcvHeadersInterface.setTransactionType("NEW");
-                                                                                                                                             rcvHeadersInterface.setAutoTransactCode("DELIVER");
-                                                                                                                                             rcvHeadersInterface.setLastUpdateDate(sysDate);
-                                                                                                                                             rcvHeadersInterface.setLastUpdateBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                             //rcvHeadersInterface.setla
-                                                                                                                                             rcvHeadersInterface.setCreatedBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                             rcvHeadersInterface.setVendorId(rcvShipmentHeaders.getVendorId());
-                                                                                                                                             rcvHeadersInterface.setShipToOrganizationCode(rcvShipmentHeaders.getShipToOrgId().toString());
-                                                                                                                                             //rcvHeadersInterface.sete
-                                                                                                                                             rcvHeadersInterface.setValidationFlag("Y");
-
-
-                                                                                                                                             iRestRcvHeadersInterface.insert(rcvHeadersInterface).enqueue(new Callback<Void>() {
-                                                                                                                                                 @Override
-                                                                                                                                                 public void onResponse(Call<Void> call, Response<Void> response) {
-                                                                                                                                                     if (response.isSuccessful() == true && response.code() == 200) {
-                                                                                                                                                         Log.d(TAG, "Inserción Correcta en RcvHeadersInterface");
-
-                                                                                                                                                     }
-                                                                                                                                                 }
-
-                                                                                                                                                 @Override
-                                                                                                                                                 public void onFailure(Call<Void> call, Throwable t) {
-                                                                                                                                                     Log.d(TAG, "Fallo Llamando iRestRcvHeadersInterface.insert: " + t.getMessage());
-                                                                                                                                                 }
-                                                                                                                                             });
-
-
-                                                                                                                                             // Crea RCV_TRANSACTIONS_INTERFACE
-                                                                                                                                             interfaceTransactionId = rcvShipmentHeaders.getInterfaceTransactionId() + rcvTransactions.getLineNum() - 1;
-                                                                                                                                             rcvTransactionsInterface = new RcvTransactionsInterface();
-                                                                                                                                             rcvTransactionsInterface.setInterfaceTransactionId(interfaceTransactionId);
-                                                                                                                                             rcvTransactionsInterface.setLastUpdatedDate(sysDate);
-                                                                                                                                             rcvTransactionsInterface.setLastUpdatedBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                             rcvTransactionsInterface.setCreationDate(sysDate);
-                                                                                                                                             rcvTransactionsInterface.setCreatedBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                             rcvTransactionsInterface.setTransactionType("DELIVER");
-                                                                                                                                             rcvTransactionsInterface.setTransactionDate(sysDate);
-                                                                                                                                             rcvTransactionsInterface.setProcessingStatusCode("PENDING");
-                                                                                                                                             rcvTransactionsInterface.setProcessingModeCode("BATCH");
-                                                                                                                                             rcvTransactionsInterface.setQuantity(cantidad);
-                                                                                                                                             rcvTransactionsInterface.setUnitOfMeasure(rcvTransactions.getUnitOfMeasure());
-                                                                                                                                             rcvTransactionsInterface.setItemId(mtlSystemItems.getInventoryItemId());
-                                                                                                                                             rcvTransactionsInterface.setItemDescription(mtlSystemItems.getDescription());
-                                                                                                                                             rcvTransactionsInterface.setUomCode(mtlSystemItems.getPrimaryUomCode());
-                                                                                                                                             rcvTransactionsInterface.setEmployeeId(rcvShipmentHeaders.getEmployeeId());
-                                                                                                                                             rcvTransactionsInterface.setShipmentHeaderId(rcvTransactions.getShipmentHeaderId());
-                                                                                                                                             rcvTransactionsInterface.setShipmentLineId(rcvTransactions.getShipmentLineId());
-                                                                                                                                             rcvTransactionsInterface.setShipToLocationId(248L);
-                                                                                                                                             rcvTransactionsInterface.setVendorId(rcvTransactions.getVendorId());
-                                                                                                                                             rcvTransactionsInterface.setVendorSiteId(rcvTransactions.getVendorSiteId());
-                                                                                                                                             rcvTransactionsInterface.setToOrganizationId(288L);
-                                                                                                                                             rcvTransactionsInterface.setSourceDocumentCode("PO");
-                                                                                                                                             rcvTransactionsInterface.setParentTransactionId(rcvTransactions.getTransactionId());
-                                                                                                                                             rcvTransactionsInterface.setPoHeaderId(rcvTransactions.getPoHeaderId());
-                                                                                                                                             rcvTransactionsInterface.setPoLineId(rcvTransactions.getPoLineId());
-                                                                                                                                             rcvTransactionsInterface.setPoLineLocation(rcvTransactions.getPoLineLocationId());
-                                                                                                                                             rcvTransactionsInterface.setPoUnitPrice(rcvTransactions.getPoUnitPrice());
-                                                                                                                                             rcvTransactionsInterface.setCurrencyCode(rcvTransactions.getCurrencyCode());
-                                                                                                                                             rcvTransactionsInterface.setCurrencyConversionType(rcvTransactions.getCurrencyConversionType());
-                                                                                                                                             rcvTransactionsInterface.setCurrencyConversionRate(rcvTransactions.getCurrencyConversionRate());
-                                                                                                                                             rcvTransactionsInterface.setCurrencyConversionDate(rcvTransactions.getCurrencyConversionDate());
-                                                                                                                                             rcvTransactionsInterface.setPoDistributionId(rcvTransactions.getPoDistributionId());
-                                                                                                                                             rcvTransactionsInterface.setDestinationTypeCode("INVENTORY");
-                                                                                                                                             rcvTransactionsInterface.setLocationId(rcvTransactions.getLocationId());
-                                                                                                                                             rcvTransactionsInterface.setDeliverToLocationId(248L);
-                                                                                                                                             rcvTransactionsInterface.setInspectionStatusCode("NOT INSPECTED");
-                                                                                                                                             rcvTransactionsInterface.setSubinventory(subinventario.getCodSubinventario());
-                                                                                                                                             rcvTransactionsInterface.setLocatorId(localizador != null ? localizador.getIdLocalizador() : null);
-                                                                                                                                             rcvTransactionsInterface.setShipmentNum(rcvShipmentHeaders.getShipmentNum());
-                                                                                                                                             rcvTransactionsInterface.setPrimaryQuantity(rcvTransactions.getQuantity());
-                                                                                                                                             if (isControlLote)
-                                                                                                                                                 rcvTransactionsInterface.setUseMtlLot(1L);
-                                                                                                                                             else
-                                                                                                                                                 rcvTransactionsInterface.setUseMtlLot(0L);
-                                                                                                                                             if (isControlSerie)
-                                                                                                                                                 rcvTransactionsInterface.setUseMtlSerial(1L);
-                                                                                                                                             else
-                                                                                                                                                 rcvTransactionsInterface.setUseMtlSerial(0L);
-                                                                                                                                             rcvTransactionsInterface.setGroupId(rcvShipmentHeaders.getGroupId());
-                                                                                                                                             rcvTransactionsInterface.setTransactionStatusCode("PENDING");
-                                                                                                                                             rcvTransactionsInterface.setReceiptSourceCode("VENDOR");
-                                                                                                                                             rcvTransactionsInterface.setValidationFlag("Y");
-                                                                                                                                             rcvTransactionsInterface.setOrgId(rcvTransactions.getOrganizationId());
-                                                                                                                                             rcvTransactionsInterface.setOrgId(82L);
-                                                                                                                                             rcvTransactionsInterface.setHeaderInterfaceId(rcvHeadersInterface.getHeaderInterfaceId());
-                                                                                                                                             rcvTransactionsInterface.setSegment1(mtlSystemItems.getSegment1());
-
-                                                                                                                                             Gson gson1 = new Gson();
-
-                                                                                                                                             Log.d(TAG, gson1.toJson(rcvTransactionsInterface));
-
-                                                                                                                                             iRestRcvTransactionsInterface.insert(rcvTransactionsInterface).enqueue(new Callback<Void>() {
-                                                                                                                                                 @Override
-                                                                                                                                                 public void onResponse(Call<Void> call, Response<Void> response) {
-
-                                                                                                                                                     if (response.isSuccessful() == true && response.code() == 200) {
-                                                                                                                                                         Log.d(TAG, "Inserción Correcta en RcvTransactionsInterface");
-
-
-                                                                                                                                                         Log.d(TAG, "PO_HEADER_ID: " + rcvTransactions.getPoHeaderId());
-                                                                                                                                                         Log.d(TAG, "GROUP_ID: " + rcvShipmentHeaders.getReceiptNum());
-
-
-                                                                                                                                                         iRestRcvStatus.actualiza_estado(7, rcvTransactions.getPoHeaderId(), Long.parseLong(rcvShipmentHeaders.getReceiptNum())).enqueue(new Callback<Void>() {
-                                                                                                                                                             @Override
-                                                                                                                                                             public void onResponse(Call<Void> call, Response<Void> response) {
-
-                                                                                                                                                                 if (response.isSuccessful() == true && response.code() == 200) {
-                                                                                                                                                                     Log.d(TAG, "Estado Actualizado a 7 en RCV_ESTATUS");
-                                                                                                                                                                 }
-
-                                                                                                                                                             }
-
-                                                                                                                                                             @Override
-                                                                                                                                                             public void onFailure(Call<Void> call, Throwable t) {
-                                                                                                                                                                 Log.d(TAG, "Error al actualizar RCV_ESTATUS " + t.getMessage());
-
-                                                                                                                                                             }
-                                                                                                                                                         });
-
-
-                                                                                                                                                         Log.d(TAG, "isControlLote  " + isControlLote);
-                                                                                                                                                         // Crea Lote
-                                                                                                                                                         if (isControlLote) {
-
-                                                                                                                                                             //irEstMtlTransactionsLotsIface.
-
-
-                                                                                                                                                             Log.d(TAG, "Agregando Lote " + transactionInterfaceId);
-                                                                                                                                                             MtlTransactionsLotsIface mtlTransactionsLotsIface = new MtlTransactionsLotsIface();
-                                                                                                                                                             mtlTransactionsLotsIface.setLastUpdateDate(sysDate);
-                                                                                                                                                             mtlTransactionsLotsIface.setLastUpdateBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                                             mtlTransactionsLotsIface.setCreationDate(sysDate);
-                                                                                                                                                             mtlTransactionsLotsIface.setCreatedBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                                             mtlTransactionsLotsIface.setLastUpdateLogin(-1L);
-                                                                                                                                                             mtlTransactionsLotsIface.setLotNumber(lote);
-                                                                                                                                                             mtlTransactionsLotsIface.setTransactionQuantity(cantidad);
-                                                                                                                                                             mtlTransactionsLotsIface.setPrimaryQuantity(cantidad);
-                                                                                                                                                             mtlTransactionsLotsIface.setProductCode("RCV");
-                                                                                                                                                             mtlTransactionsLotsIface.setProductTransactionId(interfaceTransactionId);
-                                                                                                                                                             mtlTransactionsLotsIface.setSupplierLotNumber(loteProveedor);
-                                                                                                                                                             mtlTransactionsLotsIface.setLotExpirationDate(vencimiento);
-                                                                                                                                                             mtlTransactionsLotsIface.setAttributeCategory(categoria);
-                                                                                                                                                             mtlTransactionsLotsIface.setAttrubute1(atributo1);
-                                                                                                                                                             mtlTransactionsLotsIface.setAttrubute2(atributo2);
-                                                                                                                                                             mtlTransactionsLotsIface.setAttrubute3(atributo3);
-                                                                                                                                                             //mtlTransactionLotsInterfaceDao.insert(mtlTransactionsLotsIface);
-
-                                                                                                                                                             irEstMtlTransactionsLotsIface.insert(mtlTransactionsLotsIface).enqueue(new Callback<Void>() {
-                                                                                                                                                                 @Override
-                                                                                                                                                                 public void onResponse(Call<Void> call, Response<Void> response) {
-                                                                                                                                                                     if (response.isSuccessful() == true && response.code() == 200) {
-
-                                                                                                                                                                         Log.d(TAG, "Inserción en mtlTransactionsLotsIface correcto");
-
-                                                                                                                                                                     }
-                                                                                                                                                                 }
-
-                                                                                                                                                                 @Override
-                                                                                                                                                                 public void onFailure(Call<Void> call, Throwable t) {
-
-                                                                                                                                                                     mView.showError("Error en irEstMtlTransactionsLotsIface.insert " + t.getMessage());
-
-                                                                                                                                                                 }
-                                                                                                                                                             });
-                                                                                                                                                         }
-
-                                                                                                                                                         // Crea Series
-
-                                                                                                                                                         Log.d(TAG, "isControlSerie  " + isControlSerie);
-                                                                                                                                                         if (isControlSerie) {
-                                                                                                                                                             int i = 0;
-
-                                                                                                                                                             for (String serie : series) {
-
-
-                                                                                                                                                                 Log.d(TAG, "Agregando Serie " + transactionInterfaceId);
-                                                                                                                                                                 MtlSerialNumbersInterface mtlSerialNumbersInterface = new MtlSerialNumbersInterface();
-                                                                                                                                                                 mtlSerialNumbersInterface.setLastUpdateDate(sysDate);
-                                                                                                                                                                 mtlSerialNumbersInterface.setLastUpdatedBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                                                 mtlSerialNumbersInterface.setCreationDate(sysDate);
-                                                                                                                                                                 mtlSerialNumbersInterface.setCreatedBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                                                 mtlSerialNumbersInterface.setLastUpdateLogin(-1L);
-                                                                                                                                                                 mtlSerialNumbersInterface.setFmSerialNumber(serie);
-                                                                                                                                                                 mtlSerialNumbersInterface.setToSerialNumber(serie);
-                                                                                                                                                                 mtlSerialNumbersInterface.setProductCode("RCV");
-                                                                                                                                                                 mtlSerialNumbersInterface.setProductTransactionId(interfaceTransactionId);
-
-                                                                                                                                                                 iRestMtlSerialNumbersInterface.insert(mtlSerialNumbersInterface).enqueue(new Callback<Void>() {
-                                                                                                                                                                     @Override
-                                                                                                                                                                     public void onResponse(Call<Void> call, Response<Void> response) {
-
-                                                                                                                                                                         if (response.isSuccessful() == true && response.code() == 200) {
-
-                                                                                                                                                                             Log.d(TAG, "Inserción en mtlSerialNumbersInterface correcto");
-
-                                                                                                                                                                         }
-
-                                                                                                                                                                     }
-
-                                                                                                                                                                     @Override
-                                                                                                                                                                     public void onFailure(Call<Void> call, Throwable t) {
-
-                                                                                                                                                                         mView.showError("Error en iRestMtlSerialNumbersInterface.insert " + t.getMessage());
-
-                                                                                                                                                                     }
-                                                                                                                                                                 });
-
-                                                                                                                                                             }
-
-                                                                                                                                                         }
-
-
-                                                                                                                                                         mView.resultadoOkAddTransaction();
-
-                                                                                                                                                     }
-
-
-                                                                                                                                                 }
-
-                                                                                                                                                 @Override
-                                                                                                                                                 public void onFailure(Call<Void> call, Throwable t) {
-                                                                                                                                                     Log.d(TAG, "Fallo Llamando iRestRcvTransactionsInterface.insert: " + t.getMessage());
-                                                                                                                                                 }
-                                                                                                                                             });
-
-
-                                                                                                                                         }
-
-
-                                                                                                                                         if (response.body().intValue() > 0) {
-
-
-                                                                                                                                             iRestRcvHeadersInterface.get(rcvShipmentHeaders.getHeaderInterfaceId()).enqueue(new Callback<RcvHeadersInterface>() {
-                                                                                                                                                 @Override
-                                                                                                                                                 public void onResponse(Call<RcvHeadersInterface> call, Response<RcvHeadersInterface> response) {
-
-
-                                                                                                                                                     if (response.isSuccessful() == true && response.code() == 200) {
-
-                                                                                                                                                         RcvHeadersInterface rcvHeadersInterface = response.body();
-
-                                                                                                                                                         // Crea RCV_TRANSACTIONS_INTERFACE
-                                                                                                                                                         interfaceTransactionId = rcvShipmentHeaders.getInterfaceTransactionId() + rcvTransactions.getLineNum() - 1;
-                                                                                                                                                         rcvTransactionsInterface = new RcvTransactionsInterface();
-                                                                                                                                                         rcvTransactionsInterface.setInterfaceTransactionId(interfaceTransactionId);
-                                                                                                                                                         rcvTransactionsInterface.setLastUpdatedDate(sysDate);
-                                                                                                                                                         rcvTransactionsInterface.setLastUpdatedBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                                         rcvTransactionsInterface.setCreationDate(sysDate);
-                                                                                                                                                         rcvTransactionsInterface.setCreatedBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                                         rcvTransactionsInterface.setTransactionType("DELIVER");
-                                                                                                                                                         rcvTransactionsInterface.setTransactionDate(sysDate);
-                                                                                                                                                         rcvTransactionsInterface.setProcessingStatusCode("PENDING");
-                                                                                                                                                         rcvTransactionsInterface.setProcessingModeCode("BATCH");
-                                                                                                                                                         rcvTransactionsInterface.setQuantity(cantidad);
-                                                                                                                                                         rcvTransactionsInterface.setUnitOfMeasure(rcvTransactions.getUnitOfMeasure());
-                                                                                                                                                         rcvTransactionsInterface.setItemId(mtlSystemItems.getInventoryItemId());
-                                                                                                                                                         rcvTransactionsInterface.setItemDescription(mtlSystemItems.getDescription());
-                                                                                                                                                         rcvTransactionsInterface.setUomCode(mtlSystemItems.getPrimaryUomCode());
-                                                                                                                                                         rcvTransactionsInterface.setEmployeeId(rcvShipmentHeaders.getEmployeeId());
-                                                                                                                                                         rcvTransactionsInterface.setShipmentHeaderId(rcvTransactions.getShipmentHeaderId());
-                                                                                                                                                         rcvTransactionsInterface.setShipmentLineId(rcvTransactions.getShipmentLineId());
-                                                                                                                                                         rcvTransactionsInterface.setShipToLocationId(248L);
-                                                                                                                                                         rcvTransactionsInterface.setVendorId(rcvTransactions.getVendorId());
-                                                                                                                                                         rcvTransactionsInterface.setVendorSiteId(rcvTransactions.getVendorSiteId());
-                                                                                                                                                         rcvTransactionsInterface.setToOrganizationId(288L);
-                                                                                                                                                         rcvTransactionsInterface.setSourceDocumentCode("PO");
-                                                                                                                                                         rcvTransactionsInterface.setParentTransactionId(rcvTransactions.getTransactionId());
-                                                                                                                                                         rcvTransactionsInterface.setPoHeaderId(rcvTransactions.getPoHeaderId());
-                                                                                                                                                         rcvTransactionsInterface.setPoLineId(rcvTransactions.getPoLineId());
-                                                                                                                                                         rcvTransactionsInterface.setPoLineLocation(rcvTransactions.getPoLineLocationId());
-                                                                                                                                                         rcvTransactionsInterface.setPoUnitPrice(rcvTransactions.getPoUnitPrice());
-                                                                                                                                                         rcvTransactionsInterface.setCurrencyCode(rcvTransactions.getCurrencyCode());
-                                                                                                                                                         rcvTransactionsInterface.setCurrencyConversionType(rcvTransactions.getCurrencyConversionType());
-                                                                                                                                                         rcvTransactionsInterface.setCurrencyConversionRate(rcvTransactions.getCurrencyConversionRate());
-                                                                                                                                                         rcvTransactionsInterface.setCurrencyConversionDate(rcvTransactions.getCurrencyConversionDate());
-                                                                                                                                                         rcvTransactionsInterface.setPoDistributionId(rcvTransactions.getPoDistributionId());
-                                                                                                                                                         rcvTransactionsInterface.setDestinationTypeCode("INVENTORY");
-                                                                                                                                                         rcvTransactionsInterface.setLocationId(rcvTransactions.getLocationId());
-                                                                                                                                                         rcvTransactionsInterface.setDeliverToLocationId(248L);
-                                                                                                                                                         rcvTransactionsInterface.setInspectionStatusCode("NOT INSPECTED");
-                                                                                                                                                         rcvTransactionsInterface.setSubinventory(subinventario.getCodSubinventario());
-                                                                                                                                                         rcvTransactionsInterface.setLocatorId(localizador != null ? localizador.getIdLocalizador() : null);
-                                                                                                                                                         rcvTransactionsInterface.setShipmentNum(rcvShipmentHeaders.getShipmentNum());
-                                                                                                                                                         rcvTransactionsInterface.setPrimaryQuantity(rcvTransactions.getQuantity());
-                                                                                                                                                         if (isControlLote)
-                                                                                                                                                             rcvTransactionsInterface.setUseMtlLot(1L);
-                                                                                                                                                         else
-                                                                                                                                                             rcvTransactionsInterface.setUseMtlLot(0L);
-                                                                                                                                                         if (isControlSerie)
-                                                                                                                                                             rcvTransactionsInterface.setUseMtlSerial(1L);
-                                                                                                                                                         else
-                                                                                                                                                             rcvTransactionsInterface.setUseMtlSerial(0L);
-                                                                                                                                                         rcvTransactionsInterface.setGroupId(rcvShipmentHeaders.getGroupId());
-                                                                                                                                                         rcvTransactionsInterface.setTransactionStatusCode("PENDING");
-                                                                                                                                                         rcvTransactionsInterface.setReceiptSourceCode("VENDOR");
-                                                                                                                                                         rcvTransactionsInterface.setValidationFlag("Y");
-                                                                                                                                                         rcvTransactionsInterface.setOrgId(rcvTransactions.getOrganizationId());
-                                                                                                                                                         rcvTransactionsInterface.setHeaderInterfaceId(rcvHeadersInterface.getHeaderInterfaceId());
-                                                                                                                                                         rcvTransactionsInterface.setSegment1(mtlSystemItems.getSegment1());
-
-                                                                                                                                                         Gson gson1 = new Gson();
-
-                                                                                                                                                         Log.d(TAG, gson1.toJson(rcvTransactionsInterface));
-
-                                                                                                                                                         iRestRcvTransactionsInterface.insert(rcvTransactionsInterface).enqueue(new Callback<Void>() {
-                                                                                                                                                             @Override
-                                                                                                                                                             public void onResponse(Call<Void> call, Response<Void> response) {
-
-                                                                                                                                                                 if (response.isSuccessful() == true && response.code() == 200) {
-                                                                                                                                                                     Log.d(TAG, "Inserción Correcta en RcvTransactionsInterface");
-
-
-                                                                                                                                                                     Log.d(TAG, "PO_HEADER_ID: " + rcvTransactions.getPoHeaderId());
-                                                                                                                                                                     Log.d(TAG, "GROUP_ID: " + rcvShipmentHeaders.getGroupId());
-                                                                                                                                                                     Log.d(TAG, "ReceiptNum: " + rcvShipmentHeaders.getReceiptNum());
-
-                                                                                                                                                                     Gson gson2 = new Gson();
-
-                                                                                                                                                                     Log.d(TAG, "rcvShipmentHeaders :" + gson2.toJson(rcvShipmentHeaders));
-
-
-                                                                                                                                                                     iRestRcvStatus.actualiza_estado(7, rcvTransactions.getPoHeaderId(), Long.parseLong(rcvShipmentHeaders.getReceiptNum())).enqueue(new Callback<Void>() {
-                                                                                                                                                                         @Override
-                                                                                                                                                                         public void onResponse(Call<Void> call, Response<Void> response) {
-
-                                                                                                                                                                             if (response.isSuccessful() == true && response.code() == 200) {
-                                                                                                                                                                                 Log.d(TAG, "Estado Actualizado a 7 en RCV_ESTATUS");
-                                                                                                                                                                             }
-
-                                                                                                                                                                         }
-
-                                                                                                                                                                         @Override
-                                                                                                                                                                         public void onFailure(Call<Void> call, Throwable t) {
-                                                                                                                                                                             Log.d(TAG, "Error al actualizar RCV_ESTATUS " + t.getMessage());
-
-                                                                                                                                                                         }
-                                                                                                                                                                     });
-
-
-                                                                                                                                                                     Log.d(TAG, "isControlLote  " + isControlLote);
-                                                                                                                                                                     // Crea Lote
-                                                                                                                                                                     if (isControlLote) {
-
-
-                                                                                                                                                                         MtlTransactionsLotsIface mtlTransactionsLotsIface = new MtlTransactionsLotsIface();
-                                                                                                                                                                         mtlTransactionsLotsIface.setLastUpdateDate(sysDate);
-                                                                                                                                                                         mtlTransactionsLotsIface.setLastUpdateBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                                                         mtlTransactionsLotsIface.setCreationDate(sysDate);
-                                                                                                                                                                         mtlTransactionsLotsIface.setCreatedBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                                                         mtlTransactionsLotsIface.setLastUpdateLogin(-1L);
-                                                                                                                                                                         mtlTransactionsLotsIface.setLotNumber(lote);
-                                                                                                                                                                         mtlTransactionsLotsIface.setTransactionQuantity(cantidad);
-                                                                                                                                                                         mtlTransactionsLotsIface.setPrimaryQuantity(cantidad);
-                                                                                                                                                                         mtlTransactionsLotsIface.setProductCode("RCV");
-                                                                                                                                                                         mtlTransactionsLotsIface.setProductTransactionId(interfaceTransactionId);
-                                                                                                                                                                         mtlTransactionsLotsIface.setSupplierLotNumber(loteProveedor);
-                                                                                                                                                                         mtlTransactionsLotsIface.setLotExpirationDate(vencimiento);
-                                                                                                                                                                         mtlTransactionsLotsIface.setAttributeCategory(categoria);
-                                                                                                                                                                         mtlTransactionsLotsIface.setAttrubute1(atributo1);
-                                                                                                                                                                         mtlTransactionsLotsIface.setAttrubute2(atributo2);
-                                                                                                                                                                         mtlTransactionsLotsIface.setAttrubute3(atributo3);
-
-                                                                                                                                                                         irEstMtlTransactionsLotsIface.insert(mtlTransactionsLotsIface).enqueue(new Callback<Void>() {
-                                                                                                                                                                             @Override
-                                                                                                                                                                             public void onResponse(Call<Void> call, Response<Void> response) {
-                                                                                                                                                                                 if (response.isSuccessful() == true && response.code() == 200) {
-                                                                                                                                                                                     mView.showSuccess("Insert Correcto mtlTransactionsLotsIface");
-                                                                                                                                                                                 }
-                                                                                                                                                                             }
-
-                                                                                                                                                                             @Override
-                                                                                                                                                                             public void onFailure(Call<Void> call, Throwable t) {
-                                                                                                                                                                                 mView.showError("Fallo Insert mtlTransactionsLotsIface" + t.getMessage());
-                                                                                                                                                                             }
-                                                                                                                                                                         });
-
-                                                                                                                                                                     }
-                                                                                                                                                                     Log.d(TAG, "isControlSerie  " + isControlSerie);
-                                                                                                                                                                     // Crea Series
-                                                                                                                                                                     if (isControlSerie) {
+                            if (isControlVencimiento && vencimiento == null) {
 
-                                                                                                                                                                         for (String serie : series) {
+                                mView.showError("Debe indicar el vencimiento");
+                            }
 
-                                                                                                                                                                             MtlSerialNumbersInterface mtlSerialNumbersInterface = new MtlSerialNumbersInterface();
-                                                                                                                                                                             mtlSerialNumbersInterface.setLastUpdateDate(sysDate);
-                                                                                                                                                                             mtlSerialNumbersInterface.setLastUpdatedBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                                                             mtlSerialNumbersInterface.setCreationDate(sysDate);
-                                                                                                                                                                             mtlSerialNumbersInterface.setCreatedBy(rcvShipmentHeaders.getUserId());
-                                                                                                                                                                             mtlSerialNumbersInterface.setLastUpdateLogin(-1L);
-                                                                                                                                                                             mtlSerialNumbersInterface.setFmSerialNumber(serie);
-                                                                                                                                                                             mtlSerialNumbersInterface.setToSerialNumber(serie);
-                                                                                                                                                                             mtlSerialNumbersInterface.setProductCode("RCV");
-                                                                                                                                                                             mtlSerialNumbersInterface.setProductTransactionId(interfaceTransactionId);
+                            if (isControlSerie && series == null) {
 
-                                                                                                                                                                             iRestMtlSerialNumbersInterface.insert(mtlSerialNumbersInterface).enqueue(new Callback<Void>() {
-                                                                                                                                                                                 @Override
-                                                                                                                                                                                 public void onResponse(Call<Void> call, Response<Void> response) {
 
-                                                                                                                                                                                     if (response.isSuccessful() == true && response.code() == 200) {
+                                mView.showError("Debe indicar las series");
+                            }
+
+                            if (isControlSerie && series.size() == 0) {
+                                mView.showError("Debe indicar las series");
+                            }
+
+                            if (isControlSerie && series.size() < cantidad.intValue()) {
+                                mView.showError("Faltan series");
+                            }
+
+
+                            else {
+                                ///INSERCION DE TABLAS
+
+                                if(localizador!=null) {
+
+                                    if( localizador.getIdLocalizador()==0){
+
+                                        localizador.setIdLocalizador(null);
+
+                                    }
+
+                                }
+                                iRestRcvHeadersInterface.existe(rcvShipmentHeaders.getHeaderInterfaceId()).enqueue(new Callback<Long>() {
+                                    @Override
+                                    public void onResponse(Call<Long> call, Response<Long> response) {
+                                        RcvHeadersInterface rcvHeadersInterface;
+
 
-                                                                                                                                                                                         Log.d(TAG, "Inserción en mtlSerialNumbersInterface correcto");
+                                        if (response.isSuccessful() == true && response.code() == 200) {
+
+                                            Log.d(TAG, "Resultado Existe RcvHeadersInterface: " + response.body().intValue());
+
+                                            if (response.body().intValue() == 0) {
+
+                                                rcvHeadersInterface = new RcvHeadersInterface();
+
+                                                rcvHeadersInterface.setHeaderInterfaceId(rcvShipmentHeaders.getHeaderInterfaceId());
+                                                rcvHeadersInterface.setGroupId(rcvShipmentHeaders.getGroupId());
+                                                rcvHeadersInterface.setProcessingStatusCode("PENDING");
+                                                rcvHeadersInterface.setReciptSourceCode("VENDOR");
+                                                rcvHeadersInterface.setTransactionType("NEW");
+                                                rcvHeadersInterface.setAutoTransactCode("DELIVER");
+                                                rcvHeadersInterface.setLastUpdateDate(sysDate);
+                                                rcvHeadersInterface.setLastUpdateBy(rcvShipmentHeaders.getUserId());
+                                                //rcvHeadersInterface.setla
+                                                rcvHeadersInterface.setCreatedBy(rcvShipmentHeaders.getUserId());
+                                                rcvHeadersInterface.setVendorId(rcvShipmentHeaders.getVendorId());
+                                                rcvHeadersInterface.setShipToOrganizationCode(rcvShipmentHeaders.getShipToOrgId().toString());
+                                                //rcvHeadersInterface.sete
+                                                rcvHeadersInterface.setValidationFlag("Y");
+
+
+                                                iRestRcvHeadersInterface.insert(rcvHeadersInterface).enqueue(new Callback<Void>() {
+                                                    @Override
+                                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                                        if (response.isSuccessful() == true && response.code() == 200) {
+                                                            Log.d(TAG, "Inserción Correcta en RcvHeadersInterface");
+
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<Void> call, Throwable t) {
+                                                        Log.d(TAG, "Fallo Llamando iRestRcvHeadersInterface.insert: " + t.getMessage());
+                                                    }
+                                                });
+
+
+                                                // Crea RCV_TRANSACTIONS_INTERFACE
+                                                interfaceTransactionId = rcvShipmentHeaders.getInterfaceTransactionId() + rcvTransactions.getLineNum() - 1;
+                                                rcvTransactionsInterface = new RcvTransactionsInterface();
+                                                rcvTransactionsInterface.setInterfaceTransactionId(interfaceTransactionId);
+                                                rcvTransactionsInterface.setLastUpdatedDate(sysDate);
+                                                rcvTransactionsInterface.setLastUpdatedBy(rcvShipmentHeaders.getUserId());
+                                                rcvTransactionsInterface.setCreationDate(sysDate);
+                                                rcvTransactionsInterface.setCreatedBy(rcvShipmentHeaders.getUserId());
+                                                rcvTransactionsInterface.setTransactionType("DELIVER");
+                                                rcvTransactionsInterface.setTransactionDate(sysDate);
+                                                rcvTransactionsInterface.setProcessingStatusCode("PENDING");
+                                                rcvTransactionsInterface.setProcessingModeCode("BATCH");
+                                                rcvTransactionsInterface.setQuantity(cantidad);
+                                                rcvTransactionsInterface.setUnitOfMeasure(rcvTransactions.getUnitOfMeasure());
+                                                rcvTransactionsInterface.setItemId(mtlSystemItems.getInventoryItemId());
+                                                rcvTransactionsInterface.setItemDescription(mtlSystemItems.getDescription());
+                                                rcvTransactionsInterface.setUomCode(mtlSystemItems.getPrimaryUomCode());
+                                                rcvTransactionsInterface.setEmployeeId(rcvShipmentHeaders.getEmployeeId());
+                                                rcvTransactionsInterface.setShipmentHeaderId(rcvTransactions.getShipmentHeaderId());
+                                                rcvTransactionsInterface.setShipmentLineId(rcvTransactions.getShipmentLineId());
+                                                rcvTransactionsInterface.setShipToLocationId(248L);
+                                                rcvTransactionsInterface.setVendorId(rcvTransactions.getVendorId());
+                                                rcvTransactionsInterface.setVendorSiteId(rcvTransactions.getVendorSiteId());
+                                                rcvTransactionsInterface.setToOrganizationId(288L);
+                                                rcvTransactionsInterface.setSourceDocumentCode("PO");
+                                                rcvTransactionsInterface.setParentTransactionId(rcvTransactions.getTransactionId());
+                                                rcvTransactionsInterface.setPoHeaderId(rcvTransactions.getPoHeaderId());
+                                                rcvTransactionsInterface.setPoLineId(rcvTransactions.getPoLineId());
+                                                rcvTransactionsInterface.setPoLineLocation(rcvTransactions.getPoLineLocationId());
+                                                rcvTransactionsInterface.setPoUnitPrice(rcvTransactions.getPoUnitPrice());
+                                                rcvTransactionsInterface.setCurrencyCode(rcvTransactions.getCurrencyCode());
+                                                rcvTransactionsInterface.setCurrencyConversionType(rcvTransactions.getCurrencyConversionType());
+                                                rcvTransactionsInterface.setCurrencyConversionRate(rcvTransactions.getCurrencyConversionRate());
+                                                rcvTransactionsInterface.setCurrencyConversionDate(rcvTransactions.getCurrencyConversionDate());
+                                                rcvTransactionsInterface.setPoDistributionId(rcvTransactions.getPoDistributionId());
+                                                rcvTransactionsInterface.setDestinationTypeCode("INVENTORY");
+                                                rcvTransactionsInterface.setLocationId(rcvTransactions.getLocationId());
+                                                rcvTransactionsInterface.setDeliverToLocationId(248L);
+                                                rcvTransactionsInterface.setInspectionStatusCode("NOT INSPECTED");
+                                                rcvTransactionsInterface.setSubinventory(subinventario.getCodSubinventario());
+                                                rcvTransactionsInterface.setLocatorId(localizador != null ? localizador.getIdLocalizador() : null);
+                                                rcvTransactionsInterface.setShipmentNum(rcvShipmentHeaders.getShipmentNum());
+                                                rcvTransactionsInterface.setPrimaryQuantity(rcvTransactions.getQuantity());
+                                                if (isControlLote)
+                                                    rcvTransactionsInterface.setUseMtlLot(1L);
+                                                else
+                                                    rcvTransactionsInterface.setUseMtlLot(0L);
+                                                if (isControlSerie)
+                                                    rcvTransactionsInterface.setUseMtlSerial(1L);
+                                                else
+                                                    rcvTransactionsInterface.setUseMtlSerial(0L);
+                                                rcvTransactionsInterface.setGroupId(rcvShipmentHeaders.getGroupId());
+                                                rcvTransactionsInterface.setTransactionStatusCode("PENDING");
+                                                rcvTransactionsInterface.setReceiptSourceCode("VENDOR");
+                                                rcvTransactionsInterface.setValidationFlag("Y");
+                                                rcvTransactionsInterface.setOrgId(rcvTransactions.getOrganizationId());
+                                                rcvTransactionsInterface.setOrgId(82L);
+                                                rcvTransactionsInterface.setHeaderInterfaceId(rcvHeadersInterface.getHeaderInterfaceId());
+                                                rcvTransactionsInterface.setSegment1(mtlSystemItems.getSegment1());
+
+                                                Gson gson1 = new Gson();
+
+                                                Log.d(TAG, gson1.toJson(rcvTransactionsInterface));
+
+                                                iRestRcvTransactionsInterface.insert(rcvTransactionsInterface).enqueue(new Callback<Void>() {
+                                                    @Override
+                                                    public void onResponse(Call<Void> call, Response<Void> response) {
+
+                                                        if (response.isSuccessful() == true && response.code() == 200) {
+                                                            Log.d(TAG, "Inserción Correcta en RcvTransactionsInterface");
+
+
+                                                            Log.d(TAG, "PO_HEADER_ID: " + rcvTransactions.getPoHeaderId());
+                                                            Log.d(TAG, "GROUP_ID: " + rcvShipmentHeaders.getReceiptNum());
+
+
+                                                            iRestRcvStatus.actualiza_estado(7, rcvTransactions.getPoHeaderId(), Long.parseLong(rcvShipmentHeaders.getReceiptNum())).enqueue(new Callback<Void>() {
+                                                                @Override
+                                                                public void onResponse(Call<Void> call, Response<Void> response) {
+
+                                                                    if (response.isSuccessful() == true && response.code() == 200) {
+                                                                        Log.d(TAG, "Estado Actualizado a 7 en RCV_ESTATUS");
+                                                                    }
+
+                                                                }
+
+                                                                @Override
+                                                                public void onFailure(Call<Void> call, Throwable t) {
+                                                                    Log.d(TAG, "Error al actualizar RCV_ESTATUS " + t.getMessage());
+
+                                                                }
+                                                            });
+
+
+                                                            Log.d(TAG, "isControlLote  " + isControlLote);
+                                                            // Crea Lote
+                                                            if (isControlLote) {
+
+                                                                //irEstMtlTransactionsLotsIface.
+
+
+                                                                Log.d(TAG, "Agregando Lote " + transactionInterfaceId);
+                                                                MtlTransactionsLotsIface mtlTransactionsLotsIface = new MtlTransactionsLotsIface();
+                                                                mtlTransactionsLotsIface.setLastUpdateDate(sysDate);
+                                                                mtlTransactionsLotsIface.setLastUpdateBy(rcvShipmentHeaders.getUserId());
+                                                                mtlTransactionsLotsIface.setCreationDate(sysDate);
+                                                                mtlTransactionsLotsIface.setCreatedBy(rcvShipmentHeaders.getUserId());
+                                                                mtlTransactionsLotsIface.setLastUpdateLogin(-1L);
+                                                                mtlTransactionsLotsIface.setLotNumber(lote);
+                                                                mtlTransactionsLotsIface.setTransactionQuantity(cantidad);
+                                                                mtlTransactionsLotsIface.setPrimaryQuantity(cantidad);
+                                                                mtlTransactionsLotsIface.setProductCode("RCV");
+                                                                mtlTransactionsLotsIface.setProductTransactionId(interfaceTransactionId);
+                                                                mtlTransactionsLotsIface.setSupplierLotNumber(loteProveedor);
+                                                                mtlTransactionsLotsIface.setLotExpirationDate(vencimiento);
+                                                                mtlTransactionsLotsIface.setAttributeCategory(categoria);
+                                                                mtlTransactionsLotsIface.setAttrubute1(atributo1);
+                                                                mtlTransactionsLotsIface.setAttrubute2(atributo2);
+                                                                mtlTransactionsLotsIface.setAttrubute3(atributo3);
+                                                                //mtlTransactionLotsInterfaceDao.insert(mtlTransactionsLotsIface);
 
-                                                                                                                                                                                     }
+                                                                irEstMtlTransactionsLotsIface.insert(mtlTransactionsLotsIface).enqueue(new Callback<Void>() {
+                                                                    @Override
+                                                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                                                        if (response.isSuccessful() == true && response.code() == 200) {
+
+                                                                            Log.d(TAG, "Inserción en mtlTransactionsLotsIface correcto");
+
+                                                                        }
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onFailure(Call<Void> call, Throwable t) {
+
+                                                                        mView.showError("Error en irEstMtlTransactionsLotsIface.insert " + t.getMessage());
+
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            // Crea Series
+
+                                                            Log.d(TAG, "isControlSerie  " + isControlSerie);
+                                                            if (isControlSerie) {
+                                                                int i = 0;
+
+                                                                for (String serie : series) {
+
+
+                                                                    Log.d(TAG, "Agregando Serie " + transactionInterfaceId);
+                                                                    MtlSerialNumbersInterface mtlSerialNumbersInterface = new MtlSerialNumbersInterface();
+                                                                    mtlSerialNumbersInterface.setLastUpdateDate(sysDate);
+                                                                    mtlSerialNumbersInterface.setLastUpdatedBy(rcvShipmentHeaders.getUserId());
+                                                                    mtlSerialNumbersInterface.setCreationDate(sysDate);
+                                                                    mtlSerialNumbersInterface.setCreatedBy(rcvShipmentHeaders.getUserId());
+                                                                    mtlSerialNumbersInterface.setLastUpdateLogin(-1L);
+                                                                    mtlSerialNumbersInterface.setFmSerialNumber(serie);
+                                                                    mtlSerialNumbersInterface.setToSerialNumber(serie);
+                                                                    mtlSerialNumbersInterface.setProductCode("RCV");
+                                                                    mtlSerialNumbersInterface.setProductTransactionId(interfaceTransactionId);
+
+                                                                    iRestMtlSerialNumbersInterface.insert(mtlSerialNumbersInterface).enqueue(new Callback<Void>() {
+                                                                        @Override
+                                                                        public void onResponse(Call<Void> call, Response<Void> response) {
+
+                                                                            if (response.isSuccessful() == true && response.code() == 200) {
+
+                                                                                Log.d(TAG, "Inserción en mtlSerialNumbersInterface correcto");
+
+                                                                            }
+
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onFailure(Call<Void> call, Throwable t) {
+
+                                                                            mView.showError("Error en iRestMtlSerialNumbersInterface.insert " + t.getMessage());
+
+                                                                        }
+                                                                    });
+
+                                                                }
+
+                                                            }
+
+
+                                                            mView.resultadoOkAddTransaction();
+
+                                                        }
+
+
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<Void> call, Throwable t) {
+                                                        Log.d(TAG, "Fallo Llamando iRestRcvTransactionsInterface.insert: " + t.getMessage());
+                                                    }
+                                                });
+
+
+                                            }
+
+
+                                            if (response.body().intValue() > 0) {
+
+
+                                                iRestRcvHeadersInterface.get(rcvShipmentHeaders.getHeaderInterfaceId()).enqueue(new Callback<RcvHeadersInterface>() {
+                                                    @Override
+                                                    public void onResponse(Call<RcvHeadersInterface> call, Response<RcvHeadersInterface> response) {
+
+
+                                                        if (response.isSuccessful() == true && response.code() == 200) {
+
+                                                            RcvHeadersInterface rcvHeadersInterface = response.body();
+
+                                                            // Crea RCV_TRANSACTIONS_INTERFACE
+                                                            interfaceTransactionId = rcvShipmentHeaders.getInterfaceTransactionId() + rcvTransactions.getLineNum() - 1;
+                                                            rcvTransactionsInterface = new RcvTransactionsInterface();
+                                                            rcvTransactionsInterface.setInterfaceTransactionId(interfaceTransactionId);
+                                                            rcvTransactionsInterface.setLastUpdatedDate(sysDate);
+                                                            rcvTransactionsInterface.setLastUpdatedBy(rcvShipmentHeaders.getUserId());
+                                                            rcvTransactionsInterface.setCreationDate(sysDate);
+                                                            rcvTransactionsInterface.setCreatedBy(rcvShipmentHeaders.getUserId());
+                                                            rcvTransactionsInterface.setTransactionType("DELIVER");
+                                                            rcvTransactionsInterface.setTransactionDate(sysDate);
+                                                            rcvTransactionsInterface.setProcessingStatusCode("PENDING");
+                                                            rcvTransactionsInterface.setProcessingModeCode("BATCH");
+                                                            rcvTransactionsInterface.setQuantity(cantidad);
+                                                            rcvTransactionsInterface.setUnitOfMeasure(rcvTransactions.getUnitOfMeasure());
+                                                            rcvTransactionsInterface.setItemId(mtlSystemItems.getInventoryItemId());
+                                                            rcvTransactionsInterface.setItemDescription(mtlSystemItems.getDescription());
+                                                            rcvTransactionsInterface.setUomCode(mtlSystemItems.getPrimaryUomCode());
+                                                            rcvTransactionsInterface.setEmployeeId(rcvShipmentHeaders.getEmployeeId());
+                                                            rcvTransactionsInterface.setShipmentHeaderId(rcvTransactions.getShipmentHeaderId());
+                                                            rcvTransactionsInterface.setShipmentLineId(rcvTransactions.getShipmentLineId());
+                                                            rcvTransactionsInterface.setShipToLocationId(248L);
+                                                            rcvTransactionsInterface.setVendorId(rcvTransactions.getVendorId());
+                                                            rcvTransactionsInterface.setVendorSiteId(rcvTransactions.getVendorSiteId());
+                                                            rcvTransactionsInterface.setToOrganizationId(288L);
+                                                            rcvTransactionsInterface.setSourceDocumentCode("PO");
+                                                            rcvTransactionsInterface.setParentTransactionId(rcvTransactions.getTransactionId());
+                                                            rcvTransactionsInterface.setPoHeaderId(rcvTransactions.getPoHeaderId());
+                                                            rcvTransactionsInterface.setPoLineId(rcvTransactions.getPoLineId());
+                                                            rcvTransactionsInterface.setPoLineLocation(rcvTransactions.getPoLineLocationId());
+                                                            rcvTransactionsInterface.setPoUnitPrice(rcvTransactions.getPoUnitPrice());
+                                                            rcvTransactionsInterface.setCurrencyCode(rcvTransactions.getCurrencyCode());
+                                                            rcvTransactionsInterface.setCurrencyConversionType(rcvTransactions.getCurrencyConversionType());
+                                                            rcvTransactionsInterface.setCurrencyConversionRate(rcvTransactions.getCurrencyConversionRate());
+                                                            rcvTransactionsInterface.setCurrencyConversionDate(rcvTransactions.getCurrencyConversionDate());
+                                                            rcvTransactionsInterface.setPoDistributionId(rcvTransactions.getPoDistributionId());
+                                                            rcvTransactionsInterface.setDestinationTypeCode("INVENTORY");
+                                                            rcvTransactionsInterface.setLocationId(rcvTransactions.getLocationId());
+                                                            rcvTransactionsInterface.setDeliverToLocationId(248L);
+                                                            rcvTransactionsInterface.setInspectionStatusCode("NOT INSPECTED");
+                                                            rcvTransactionsInterface.setSubinventory(subinventario.getCodSubinventario());
+                                                            rcvTransactionsInterface.setLocatorId(localizador != null ? localizador.getIdLocalizador() : null);
+                                                            rcvTransactionsInterface.setShipmentNum(rcvShipmentHeaders.getShipmentNum());
+                                                            rcvTransactionsInterface.setPrimaryQuantity(rcvTransactions.getQuantity());
+                                                            if (isControlLote)
+                                                                rcvTransactionsInterface.setUseMtlLot(1L);
+                                                            else
+                                                                rcvTransactionsInterface.setUseMtlLot(0L);
+                                                            if (isControlSerie)
+                                                                rcvTransactionsInterface.setUseMtlSerial(1L);
+                                                            else
+                                                                rcvTransactionsInterface.setUseMtlSerial(0L);
+                                                            rcvTransactionsInterface.setGroupId(rcvShipmentHeaders.getGroupId());
+                                                            rcvTransactionsInterface.setTransactionStatusCode("PENDING");
+                                                            rcvTransactionsInterface.setReceiptSourceCode("VENDOR");
+                                                            rcvTransactionsInterface.setValidationFlag("Y");
+                                                            rcvTransactionsInterface.setOrgId(rcvTransactions.getOrganizationId());
+                                                            rcvTransactionsInterface.setHeaderInterfaceId(rcvHeadersInterface.getHeaderInterfaceId());
+                                                            rcvTransactionsInterface.setSegment1(mtlSystemItems.getSegment1());
+
+                                                            Gson gson1 = new Gson();
+
+                                                            Log.d(TAG, gson1.toJson(rcvTransactionsInterface));
+
+                                                            iRestRcvTransactionsInterface.insert(rcvTransactionsInterface).enqueue(new Callback<Void>() {
+                                                                @Override
+                                                                public void onResponse(Call<Void> call, Response<Void> response) {
+
+                                                                    if (response.isSuccessful() == true && response.code() == 200) {
+                                                                        Log.d(TAG, "Inserción Correcta en RcvTransactionsInterface");
+
+
+                                                                        Log.d(TAG, "PO_HEADER_ID: " + rcvTransactions.getPoHeaderId());
+                                                                        Log.d(TAG, "GROUP_ID: " + rcvShipmentHeaders.getGroupId());
+                                                                        Log.d(TAG, "ReceiptNum: " + rcvShipmentHeaders.getReceiptNum());
+
+                                                                        Gson gson2 = new Gson();
+
+                                                                        Log.d(TAG, "rcvShipmentHeaders :" + gson2.toJson(rcvShipmentHeaders));
+
+
+                                                                        iRestRcvStatus.actualiza_estado(7, rcvTransactions.getPoHeaderId(), Long.parseLong(rcvShipmentHeaders.getReceiptNum())).enqueue(new Callback<Void>() {
+                                                                            @Override
+                                                                            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                                                                                if (response.isSuccessful() == true && response.code() == 200) {
+                                                                                    Log.d(TAG, "Estado Actualizado a 7 en RCV_ESTATUS");
+                                                                                }
+
+                                                                            }
+
+                                                                            @Override
+                                                                            public void onFailure(Call<Void> call, Throwable t) {
+                                                                                Log.d(TAG, "Error al actualizar RCV_ESTATUS " + t.getMessage());
+
+                                                                            }
+                                                                        });
+
+
+                                                                        Log.d(TAG, "isControlLote  " + isControlLote);
+                                                                        // Crea Lote
+                                                                        if (isControlLote) {
+
+
+                                                                            MtlTransactionsLotsIface mtlTransactionsLotsIface = new MtlTransactionsLotsIface();
+                                                                            mtlTransactionsLotsIface.setLastUpdateDate(sysDate);
+                                                                            mtlTransactionsLotsIface.setLastUpdateBy(rcvShipmentHeaders.getUserId());
+                                                                            mtlTransactionsLotsIface.setCreationDate(sysDate);
+                                                                            mtlTransactionsLotsIface.setCreatedBy(rcvShipmentHeaders.getUserId());
+                                                                            mtlTransactionsLotsIface.setLastUpdateLogin(-1L);
+                                                                            mtlTransactionsLotsIface.setLotNumber(lote);
+                                                                            mtlTransactionsLotsIface.setTransactionQuantity(cantidad);
+                                                                            mtlTransactionsLotsIface.setPrimaryQuantity(cantidad);
+                                                                            mtlTransactionsLotsIface.setProductCode("RCV");
+                                                                            mtlTransactionsLotsIface.setProductTransactionId(interfaceTransactionId);
+                                                                            mtlTransactionsLotsIface.setSupplierLotNumber(loteProveedor);
+                                                                            mtlTransactionsLotsIface.setLotExpirationDate(vencimiento);
+                                                                            mtlTransactionsLotsIface.setAttributeCategory(categoria);
+                                                                            mtlTransactionsLotsIface.setAttrubute1(atributo1);
+                                                                            mtlTransactionsLotsIface.setAttrubute2(atributo2);
+                                                                            mtlTransactionsLotsIface.setAttrubute3(atributo3);
+
+                                                                            irEstMtlTransactionsLotsIface.insert(mtlTransactionsLotsIface).enqueue(new Callback<Void>() {
+                                                                                @Override
+                                                                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                                                                    if (response.isSuccessful() == true && response.code() == 200) {
+                                                                                        mView.showSuccess("Insert Correcto mtlTransactionsLotsIface");
+                                                                                    }
+                                                                                }
 
-                                                                                                                                                                                 }
+                                                                                @Override
+                                                                                public void onFailure(Call<Void> call, Throwable t) {
+                                                                                    mView.showError("Fallo Insert mtlTransactionsLotsIface" + t.getMessage());
+                                                                                }
+                                                                            });
 
-                                                                                                                                                                                 @Override
-                                                                                                                                                                                 public void onFailure(Call<Void> call, Throwable t) {
+                                                                        }
+                                                                        Log.d(TAG, "isControlSerie  " + isControlSerie);
+                                                                        // Crea Series
+                                                                        if (isControlSerie) {
 
-                                                                                                                                                                                     mView.showError("Error en iRestMtlSerialNumbersInterface.insert " + t.getMessage());
+                                                                            for (String serie : series) {
 
-                                                                                                                                                                                 }
-                                                                                                                                                                             });
+                                                                                MtlSerialNumbersInterface mtlSerialNumbersInterface = new MtlSerialNumbersInterface();
+                                                                                mtlSerialNumbersInterface.setLastUpdateDate(sysDate);
+                                                                                mtlSerialNumbersInterface.setLastUpdatedBy(rcvShipmentHeaders.getUserId());
+                                                                                mtlSerialNumbersInterface.setCreationDate(sysDate);
+                                                                                mtlSerialNumbersInterface.setCreatedBy(rcvShipmentHeaders.getUserId());
+                                                                                mtlSerialNumbersInterface.setLastUpdateLogin(-1L);
+                                                                                mtlSerialNumbersInterface.setFmSerialNumber(serie);
+                                                                                mtlSerialNumbersInterface.setToSerialNumber(serie);
+                                                                                mtlSerialNumbersInterface.setProductCode("RCV");
+                                                                                mtlSerialNumbersInterface.setProductTransactionId(interfaceTransactionId);
 
-                                                                                                                                                                         }
+                                                                                iRestMtlSerialNumbersInterface.insert(mtlSerialNumbersInterface).enqueue(new Callback<Void>() {
+                                                                                    @Override
+                                                                                    public void onResponse(Call<Void> call, Response<Void> response) {
 
-                                                                                                                                                                     }
-                                                                                                                                                                     mView.resultadoOkAddTransaction();
+                                                                                        if (response.isSuccessful() == true && response.code() == 200) {
 
-                                                                                                                                                                 }
+                                                                                            Log.d(TAG, "Inserción en mtlSerialNumbersInterface correcto");
 
+                                                                                        }
 
-                                                                                                                                                             }
+                                                                                    }
 
-                                                                                                                                                             @Override
-                                                                                                                                                             public void onFailure(Call<Void> call, Throwable t) {
-                                                                                                                                                                 Log.d(TAG, "Fallo Llamando iRestRcvTransactionsInterface.insert: " + t.getMessage());
-                                                                                                                                                             }
-                                                                                                                                                         });
+                                                                                    @Override
+                                                                                    public void onFailure(Call<Void> call, Throwable t) {
 
+                                                                                        mView.showError("Error en iRestMtlSerialNumbersInterface.insert " + t.getMessage());
 
-                                                                                                                                                     }
+                                                                                    }
+                                                                                });
 
-                                                                                                                                                 }
+                                                                            }
 
-                                                                                                                                                 @Override
-                                                                                                                                                 public void onFailure(Call<RcvHeadersInterface> call, Throwable t) {
+                                                                        }
+                                                                        mView.resultadoOkAddTransaction();
 
-                                                                                                                                                 }
-                                                                                                                                             });
+                                                                    }
 
 
-                                                                                                                                         }
+                                                                }
 
+                                                                @Override
+                                                                public void onFailure(Call<Void> call, Throwable t) {
+                                                                    Log.d(TAG, "Fallo Llamando iRestRcvTransactionsInterface.insert: " + t.getMessage());
+                                                                }
+                                                            });
 
-                                                                                                                                     }
 
+                                                        }
 
-                                                                                                                                 }
+                                                    }
 
-                                                                                                                                 @Override
-                                                                                                                                 public void onFailure(Call<Long> call, Throwable t) {
-                                                                                                                                     Log.d(TAG, "Fallo Llamando iRestRcvHeadersInterface.get: " + t.getMessage());
-                                                                                                                                 }
-                                                                                                                             });
+                                                    @Override
+                                                    public void onFailure(Call<RcvHeadersInterface> call, Throwable t) {
 
-                                                                                                                             //ELSE VALIDACIONES
+                                                    }
+                                                });
 
-                                                                                                                         }
 
+                                            }
 
-                                                                                                                         }
-                                                                                                                         if(response.body()==null){
 
+                                        }
 
-                                                                                                                             mView.showError("SystemItem con Id " + rcvTransactions.getItemId() + " no existe en el sistema");
 
-                                                                                                                         }
+                                    }
 
+                                    @Override
+                                    public void onFailure(Call<Long> call, Throwable t) {
+                                        Log.d(TAG, "Fallo Llamando iRestRcvHeadersInterface.get: " + t.getMessage());
+                                    }
+                                });
 
-                                                                                                                     }
+                                //ELSE VALIDACIONES
 
-                                                                                                                     @Override
-                                                                                                                     public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+                            }
 
-                                                                                                                         Log.d(TAG, "Fallo Llamando iRestMtlSystemItems.get: " + t.getMessage());
 
-                                                                                                                     }
-                                                                                                                 });
+                        }
+                        if(response.body()==null){
 
-                                                                                                             }
-                                                                                                         });
+
+                            mView.showError("SystemItem con Id " + rcvTransactions.getItemId() + " no existe en el sistema");
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<MtlSystemItems> call, Throwable t) {
+
+                        Log.d(TAG, "Fallo Llamando iRestMtlSystemItems.get: " + t.getMessage());
+
+                    }
+                });
+
+            }
+        });
 
 
 
