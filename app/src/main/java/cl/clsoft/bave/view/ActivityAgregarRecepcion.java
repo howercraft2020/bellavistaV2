@@ -220,12 +220,14 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                             layoutCantidad.setHint("Cantidad (" + mtlSystemItems.getPrimaryUomCode() + ")");
                             textUdm.setText(mtlSystemItems.getPrimaryUomCode());
                             inventoryItemId = mtlSystemItems.getInventoryItemId();
+                            textDescripcion.setText(mtlSystemItems.getDescription().toString());
+
 
                             //mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
                             validaLinea();
                         }
                         else {
-                           // showWarning("Item " + segment + " no se ha encontrado en la maestra.");
+                            showWarning("Item " + segment + " no se ha encontrado en la maestra.");
                         }
 
                     }
@@ -310,11 +312,13 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                                         layoutCantidad.setHint("Cantidad (" + mtlSystemItems.getPrimaryUomCode() + ")");
                                         textUdm.setText(mtlSystemItems.getPrimaryUomCode());
                                         inventoryItemId = mtlSystemItems.getInventoryItemId();
+                                        textDescripcion.setText(mtlSystemItems.getDescription().toString());
+
 
                                         //mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
                                           validaLinea();
                                     }else {
-                                        // showWarning("Item " + segment + " no se ha encontrado en la maestra.");
+                                         showWarning("Item " + segment + " no se ha encontrado en la maestra.");
                                     }
                                 }
                             });
@@ -368,6 +372,8 @@ public class ActivityAgregarRecepcion extends BaseActivity<AgregarRecepcionPrese
                             layoutCantidad.setHint("Cantidad (" + mtlSystemItems.getPrimaryUomCode() + ")");
                             textUdm.setText(mtlSystemItems.getPrimaryUomCode());
                             inventoryItemId = mtlSystemItems.getInventoryItemId();
+                            textDescripcion.setText(mtlSystemItems.getDescription().toString());
+
 
 
                             //mPresenter.getLines(item.getInventoryItemId(),Long.parseLong(poHeaderId));
