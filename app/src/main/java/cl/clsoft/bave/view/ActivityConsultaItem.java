@@ -230,16 +230,6 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
         }
     }
 
-    /*private void fillStock(Long inventoryItemId) {
-        List<ConsultaItem> items = mPresenter.getAllByItem(inventoryItemId);
-        AdapterItemConsultaSigle adapterItemConsultaSigle = new AdapterItemConsultaSigle(items);
-        this.recyclerViewItems.setAdapter(adapterItemConsultaSigle);
-        if (items.size() == 0) {
-            showWarning("No se encontró Stock para " + segment);
-        }
-        this.textSigle.setText("");
-    }*/
-
     private void fillStock(Long inventoryItemId) {
         System.out.println("FillStock: "+inventoryItemId);
         iRestMtlSystemItems.getBySegment(String.valueOf(inventoryItemId)).enqueue(new Callback<MtlSystemItems>() {
@@ -267,7 +257,6 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
                     });
                 }
                 textCodigobarrasItem.setText("");
-
             }
 
             @Override
@@ -275,13 +264,8 @@ public class ActivityConsultaItem extends BaseActivity<ConsultaItemPresenter> {
 
             }
         });
-
-        //AdapterItemConsultaSigle adapterItemConsultaSigle = new AdapterItemConsultaSigle(items);
-        //this.recyclerViewItems.setAdapter(adapterItemConsultaSigle);
         this.textSigle.setText("");
         textCodigobarrasItem.performClick();
-      //  textCodigobarrasItem.callOnClick();
-
     }
 
 }

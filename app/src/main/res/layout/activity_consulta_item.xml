@@ -40,6 +40,7 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:hint="SCANER"
+                android:visibility="gone"
                 android:textColorHint="@color/red_btn_bg_color"
 
         ></Button>

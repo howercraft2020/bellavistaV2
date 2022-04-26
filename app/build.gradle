@@ -19,6 +19,8 @@ android {
         def APP_VERSION = "\"DEV: V 1.0 R 12\""
         buildConfigField("String", "APP_VERSION", APP_VERSION)
 
+        multiDexEnabled true
+
     }
 
     buildTypes {
@@ -70,6 +72,6 @@ dependencies {
     // EXCEL
     //implementation 'org.apache.poi:poi:3.15'
 
-
+    implementation 'org.apache.poi:poi:3.15'
 
 }

@@ -137,7 +137,6 @@ public class ActivityCiclicoSub extends BaseActivity<CiclicoSubPresenter> implem
                                 hideProgres();
                                 fillSubinventarios(response.body());
 
-
                             }
 
 

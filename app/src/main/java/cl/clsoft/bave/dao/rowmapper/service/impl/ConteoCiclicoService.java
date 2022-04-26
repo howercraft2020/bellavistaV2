@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import cl.clsoft.bave.ExcelCiclico;
 import cl.clsoft.bave.apis.IRestMtlCycleCountHeaders;
 import cl.clsoft.bave.apis.IRestMtlSystemItems;
 import cl.clsoft.bave.dao.ILocalizadorDao;
@@ -251,6 +252,8 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
         Log.d(TAG, "ConteoCiclicoService::closeConteoCiclico");
         Log.d(TAG, "ConteoCiclicoService::closeConteoCiclico::cycleCountHeaderId: ");
 
+        ExcelCiclico excel = new ExcelCiclico();
+
         String salida = "";
 
         try {
@@ -259,7 +262,8 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
             // Genera archivo Conteo
             DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
             String strLastUpdate = dateFormat.format(new Date());
-            String nombreArchivo = "I_C_" + cycleCountHeaderId + ".txt";
+            String nombreArchivo = "I_C_" + cycleCountHeaderId + ".csv";
+            String nombreArchivoSin = "I_C_" + cycleCountHeaderId;
 
             File tarjetaSD = Environment.getExternalStorageDirectory();
             File Dir = new File(tarjetaSD.getAbsolutePath(), "inbound");
@@ -297,6 +301,13 @@ public class ConteoCiclicoService implements IConteoCiclicoService {
             }
             writer.flush();
             writer.close();
+
+            System.out.println("INTENTANDO LEER CSV");
+            excel.leerArchivo(nombreArchivo,nombreArchivoSin);
+
+
+
+
 
             salida = archivo.getAbsolutePath();
 
